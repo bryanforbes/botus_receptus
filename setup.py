@@ -1,0 +1,40 @@
+from typing import List
+from setuptools import setup  # type: ignore
+
+requirements: List[str]
+dependency_links: List[str]
+db_requirements: List[str]
+
+with open('requirements/base.txt') as f:
+    lines: List[str] = f.read().splitlines()
+
+    requirements = [line for line in lines if not line.startswith('git+https')]
+    dependency_links = [line for line in lines if line.startswith('git+https')]
+
+with open('requirements/db.txt') as f:
+    db_requirements = [line for line in f.read().splitlines() if not line.startswith('-r ')]
+
+extras_require = {
+    'db': db_requirements
+}
+
+setup(name='botus_receptus',
+      author='Bryan Forbes',
+      url='https://github.com/BryanForbes/botus_receptus',
+      packages=['botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs', 'discord-stubs'],
+      package_data={
+          'botus_receptus': ['py.typed'],
+          'aiohttp-stubs': ['*.pyi'],
+          'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
+          'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi']
+      },
+      package_dir={
+          'botus_receptus': 'botus_receptus',
+          'aiohttp-stubs': 'stubs/aiohttp',
+          'asyncpg-stubs': 'stubs/asyncpg',
+          'discord-stubs': 'stubs/discord'
+      },
+      license='BSD 3-Clause',
+      extras_require=extras_require,
+      install_requires=requirements,
+      dependency_links=dependency_links)
