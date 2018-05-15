@@ -61,12 +61,14 @@ setup(name='botus_receptus',
       package_data={
           'botus_receptus': ['py.typed'],
           'aiohttp-stubs': ['*.pyi'],
+          'async_timeout-stubs': ['*.pyi'],
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
           'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi']
       },
       package_dir={
           'botus_receptus': 'botus_receptus',
           'aiohttp-stubs': 'stubs/aiohttp',
+          'async_timeout-stubs': 'stubs/async_timeout',
           'asyncpg-stubs': 'stubs/asyncpg',
           'discord-stubs': 'stubs/discord'
       },

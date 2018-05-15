@@ -13,7 +13,7 @@ def launcher(bot_name: str, config_path: str) -> Callable[[Callable[[str, Config
         @click.option('--log-level',
                       type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
                       default='info')
-        def main(log_to_console: bool, log_level: str):
+        def main(log_to_console: bool, log_level: str) -> None:
             log_level = log_level.upper()
 
             config = ConfigParser(default_section=bot_name)

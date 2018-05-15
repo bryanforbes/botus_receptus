@@ -1,9 +1,11 @@
+from typing import Any, AsyncContextManager
+
 import pytest  # type: ignore
 from unittest.mock import Mock, MagicMock
 
 
 class AsyncMixin(object):
-    async def __call__(_mock_self, *args, **kwargs):
+    async def __call__(_mock_self: Any, *args: Any, **kwargs: Any) -> Any:
         _mock_self._mock_check_sig(*args, **kwargs)
         return _mock_self._mock_call(*args, **kwargs)
 
@@ -16,7 +18,11 @@ class AsyncMagicMock(AsyncMixin, MagicMock):
     pass
 
 
-def AsyncWithMock(*args, **kwargs):
+class AsyncWithMockType(Mock, AsyncContextManager):
+    pass
+
+
+def AsyncWithMock(*args: Any, **kwargs: Any) -> AsyncWithMockType:
     mock = Mock(*args, **kwargs)
 
     setattr(type(mock), '__aenter__', AsyncMock())
@@ -26,7 +32,7 @@ def AsyncWithMock(*args, **kwargs):
 
 
 @pytest.fixture(autouse=True)
-def add_async_mocks(mocker):
+def add_async_mocks(mocker: Any) -> None:
     mocker.AsyncMock = AsyncMock
     mocker.AsyncMagicMock = AsyncMagicMock
     mocker.AsyncWithMock = AsyncWithMock
