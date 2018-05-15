@@ -1,5 +1,6 @@
 from typing import List
 from setuptools import setup  # type: ignore
+import re
 
 requirements: List[str]
 dependency_links: List[str]
@@ -18,9 +19,38 @@ extras_require = {
     'db': db_requirements
 }
 
+version = ''
+with open('botus_receptus/__init__.py') as f:
+    match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)
+
+    if match is not None:
+        version = match.group(1)
+
+
+if not version:
+    raise RuntimeError('version is not set')
+
+if version.endswith(('a', 'b', 'rc')):
+    # append version identifier based on commit count
+    try:
+        import subprocess
+        p = subprocess.Popen(['git', 'rev-list', '--count', 'HEAD'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out:
+            version += out.decode('utf-8').strip()
+        p = subprocess.Popen(['git', 'rev-parse', '--short', 'HEAD'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out:
+            version += '+g' + out.decode('utf-8').strip()
+    except Exception:
+        pass
+
 setup(name='botus_receptus',
       author='Bryan Forbes',
       url='https://github.com/BryanForbes/botus_receptus',
+      version=version,
       packages=['botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs', 'discord-stubs'],
       package_data={
           'botus_receptus': ['py.typed'],
