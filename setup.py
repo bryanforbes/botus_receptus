@@ -2,15 +2,21 @@ from typing import List
 from setuptools import setup  # type: ignore
 import re
 
-requirements: List[str]
-dependency_links: List[str]
+requirements: List[str] = []
+dependency_links: List[str] = []
 db_requirements: List[str]
 
 with open('requirements/base.txt') as f:
     lines: List[str] = f.read().splitlines()
 
-    requirements = [line for line in lines if not line.startswith('git+https')]
-    dependency_links = [line for line in lines if line.startswith('git+https')]
+    for line in lines:
+        if line.startswith('git+https'):
+            dependency_links.append(line)
+            req = line.split('#egg=')[1].split('-')
+            requirement = f'{req[0]}>={req[1]}'
+            requirements.append(requirement)
+        else:
+            requirements.append(line)
 
 with open('requirements/db.txt') as f:
     db_requirements = [line for line in f.read().splitlines() if not line.startswith('-r ')]
