@@ -57,7 +57,10 @@ setup(name='botus_receptus',
       author='Bryan Forbes',
       url='https://github.com/BryanForbes/botus_receptus',
       version=version,
-      packages=['botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs', 'discord-stubs'],
+      packages=[
+          'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'async_timeout-stubs', 'asyncpg-stubs',
+          'discord-stubs'
+      ],
       package_data={
           'botus_receptus': ['py.typed'],
           'aiohttp-stubs': ['*.pyi'],
