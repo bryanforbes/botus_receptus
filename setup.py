@@ -1,6 +1,17 @@
 from typing import List
 from setuptools import setup  # type: ignore
+from setuptools.command.install import install  # type: ignore
+from pathlib import Path
 import re
+
+
+class CustomInstallCommand(install):  # type: ignore
+    def run(self) -> None:
+        install.run(self)
+
+        import yarl
+        (Path(yarl.__file__).parent / 'py.typed').touch()
+
 
 requirements: List[str] = []
 dependency_links: List[str] = []
@@ -78,4 +89,5 @@ setup(name='botus_receptus',
       license='BSD 3-Clause',
       extras_require=extras_require,
       install_requires=requirements,
-      dependency_links=dependency_links)
+      dependency_links=dependency_links,
+      cmdclass={'install': CustomInstallCommand})

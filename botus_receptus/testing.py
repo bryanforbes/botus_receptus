@@ -18,7 +18,7 @@ class AsyncMagicMock(AsyncMixin, MagicMock):
     pass
 
 
-class AsyncWithMockType(Mock, AsyncContextManager):
+class AsyncWithMockType(Mock, AsyncContextManager[AsyncMock]):
     pass
 
 
