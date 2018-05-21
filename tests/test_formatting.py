@@ -46,8 +46,13 @@ class TestPaginator(object):
         paginator = Paginator(max_size=13)
         paginator.add_line('123 456 789')
 
-        for page in paginator:
-            assert page in ['```\n123\n```', '```\n456\n```', '```\n789\n```']
+        assert [page for page in paginator] == ['```\n123\n```', '```\n456\n```', '```\n789\n```']
+
+    def test_prefix_suffix(self) -> None:
+        paginator = Paginator(prefix=None, suffix=None, max_size=3)
+        paginator.add_line('123 456 789')
+
+        assert [page for page in paginator] == ['123', '456', '789']
 
 
 def test_remove_mentions() -> None:

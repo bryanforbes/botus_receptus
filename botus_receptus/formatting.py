@@ -19,8 +19,15 @@ class Paginator(Iterable[str]):
         if self.prefix is not None:
             self._current_page.append(self.prefix)
 
-        prefix_size = len(self.prefix) + 1 if self.prefix is not None else 0
-        suffix_size = len(self.suffix) + 1 if self.suffix is not None else 0
+        if self.prefix is not None:
+            prefix_size = len(self.prefix) + 1
+        else:
+            prefix_size = 0
+
+        if self.suffix is not None:
+            suffix_size = len(self.suffix) + 1
+        else:
+            suffix_size = 0
 
         self._real_max_size = self.max_size - (prefix_size + suffix_size)
 
