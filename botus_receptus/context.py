@@ -1,4 +1,4 @@
-from typing import Optional, List, Any, Callable, Awaitable
+from typing import Optional, List, Callable, Awaitable
 
 import discord
 from discord.ext import commands
