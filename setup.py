@@ -9,6 +9,7 @@ class CustomInstallCommand(install):  # type: ignore
     def run(self) -> None:
         install.run(self)
 
+        # mark yarl as being typed
         import yarl
         (Path(yarl.__file__).parent / 'py.typed').touch()
 

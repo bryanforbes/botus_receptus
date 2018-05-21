@@ -3,17 +3,15 @@ import pytest  # type: ignore
 from botus_receptus.db import util
 
 
-class MockDb(object):
-    def __init__(self, mocker):
-        self.fetch = mocker.AsyncMock()
-        self.fetchrow = mocker.AsyncMock()
-        self.execute = mocker.AsyncMock()
-
-
 class TestDbUtil(object):
     @pytest.fixture
     def mock_db(self, mocker):
-        return MockDb(mocker)
+        class MockDb(object):
+            fetch = mocker.AsyncMock()
+            fetchrow = mocker.AsyncMock()
+            execute = mocker.AsyncMock()
+
+        return MockDb()
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize('args,kwargs,expected_query', [

@@ -1,7 +1,78 @@
-from typing import Callable
+from typing import Callable, Iterable, Iterator, List, Optional
 from mypy_extensions import Arg, DefaultNamedArg
+import attr
 
 from . import re
+
+
+@attr.s(slots=True, auto_attribs=True)
+class Paginator(Iterable[str]):
+    prefix: Optional[str] = '```'
+    suffix: Optional[str] = '```'
+    max_size: int = 2000
+    _real_max_size: int = attr.ib(init=False)
+    _current_page: List[str] = attr.ib(init=False, default=attr.Factory(list))
+    _count: int = attr.ib(init=False, default=0)
+    _pages: List[str] = attr.ib(init=False, default=attr.Factory(list))
+
+    def __attrs_post_init__(self) -> None:
+        if self.prefix is not None:
+            self._current_page.append(self.prefix)
+
+        prefix_size = len(self.prefix) + 1 if self.prefix is not None else 0
+        suffix_size = len(self.suffix) + 1 if self.suffix is not None else 0
+
+        self._real_max_size = self.max_size - (prefix_size + suffix_size)
+
+    def _add_line(self, line: str = '', *, empty: bool = False) -> None:
+        if self._count + len(line) > self._real_max_size:
+            self.close_page()
+
+        self._current_page.append(line)
+        self._count += len(line) + 1
+
+        if empty:
+            self._current_page.append('')
+            self._count += 1
+
+    def add_line(self, line: str = '', *, empty: bool = False) -> None:
+        while len(line) > 0:
+            # if the line is too long, paginate it
+            if len(line) > self._real_max_size:
+                index = line.rfind(' ', 0, self._real_max_size + 1)
+                sub_line = line[:index]
+                sub_empty = False
+                line = line[index + 1:]
+            else:
+                sub_line = line
+                sub_empty = empty
+                line = ''
+
+            self._add_line(sub_line, empty=sub_empty)
+
+    def close_page(self) -> None:
+        if self.suffix is not None:
+            self._current_page.append(self.suffix)
+        self._pages.append('\n'.join(self._current_page))
+        self._current_page = []
+        if self.prefix is not None:
+            self._current_page.append(self.prefix)
+        self._count = 0
+
+    @property
+    def pages(self) -> List[str]:
+        if self.prefix is not None:
+            if len(self._current_page) > 1:
+                self.close_page()
+        else:
+            if len(self._current_page) > 0:
+                self.close_page()
+
+        return self._pages
+
+    def __iter__(self) -> Iterator[str]:
+        return self.pages.__iter__()
+
 
 PluralizerType = Callable[[Arg(int, 'value'),
                            DefaultNamedArg(bool, 'include_number')], str]
@@ -22,8 +93,8 @@ def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
     return pluralize
 
 
-_mention_pattern_re = re.compile(
-    '@', re.named_group('target')(re.one_or_more(re.ANY_CHARACTER))
+_mass_mention_pattern_re = re.compile(
+    '@', re.named_group('target')(re.either('everyone', 'here'))
 )
 
 _formatting_re = re.compile(
@@ -31,8 +102,8 @@ _formatting_re = re.compile(
 )
 
 
-def remove_mentions(string: str) -> str:
-    return _mention_pattern_re.sub('@\u200b\\g<target>', string)
+def remove_mass_mentions(string: str) -> str:
+    return _mass_mention_pattern_re.sub('@\u200b\g<target>', string)
 
 
 def error(text: str) -> str:
@@ -71,10 +142,10 @@ def code_block(text: str, language: str = '') -> str:
     return f'```{language}\n{text}\n```'
 
 
-def escape(text: str, *, mentions: bool = False, formatting: bool = False) -> str:
-    if mentions:
-        text = _mention_pattern_re.sub('@\u200b\\g<target>', text)
+def escape(text: str, *, mass_mentions: bool = False, formatting: bool = False) -> str:
+    if mass_mentions:
+        text = remove_mass_mentions(text)
     if formatting:
-        text = _formatting_re.sub('\\\\g<target>', text)
+        text = _formatting_re.sub('\\\\\g<target>', text)
 
     return text

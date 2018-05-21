@@ -52,7 +52,7 @@ async def select_all(db: Connection, *args: Any,
 async def select_one(db: Connection, *args: Any,
                      columns: Optional[Sequence[str]] = None,
                      table: str,
-                     where: Optional[Sequence[str]],
+                     where: Optional[Sequence[str]] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
     columns_str = _get_columns_string(columns)
     joins_str = _get_join_string(joins)

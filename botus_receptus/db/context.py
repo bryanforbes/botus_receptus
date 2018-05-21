@@ -28,12 +28,12 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
         await self.ctx.release()
 
 
-def dbmethod(func: Callable[..., Awaitable[Any]]) -> Callable[..., Awaitable[Any]]:
+def dbmethod(name: str) -> Callable[..., Awaitable[Any]]:
     async def method_wrapper(self: 'Context', *args: Any, **kwargs: Any) -> Any:
-        if self.db is None:
-            raise Exception()
+        if not hasattr(self, 'db'):
+            raise RuntimeError('No database object available; ensure acquire() was called')
 
-        return await func(self.db, *args, **kwargs)
+        return await getattr(util, name)(self.db, *args, **kwargs)
 
     return method_wrapper
 
@@ -63,14 +63,14 @@ class Context(commands.Context):
          DefaultNamedArg(Optional[str], 'order_by'),
          DefaultNamedArg(Optional[Sequence[str]], 'where'),
          DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[List[Any]]] = dbmethod(util.select_all)
+        Awaitable[List[Any]]] = dbmethod('select_all')
     select_one: Callable[
         [VarArg(Any),
          DefaultNamedArg(Optional[Sequence[str]], 'columns'),
          NamedArg(str, 'table'),
          DefaultNamedArg(Optional[Sequence[str]], 'where'),
          DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[Any]] = dbmethod(util.select_one)
+        Awaitable[Any]] = dbmethod('select_one')
     search: Callable[
         [VarArg(Any),
          DefaultNamedArg(Optional[Sequence[str]], 'columns'),
@@ -80,14 +80,14 @@ class Context(commands.Context):
          DefaultNamedArg(Optional[str], 'order_by'),
          DefaultNamedArg(Optional[Sequence[str]], 'where'),
          DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[List[Any]]] = dbmethod(util.search)
+        Awaitable[List[Any]]] = dbmethod('search')
     insert_into: Callable[
         [NamedArg(str, 'table'),
          NamedArg(Dict[str, Any], 'values'),
          DefaultNamedArg(str, 'extra')],
-        Awaitable[None]] = dbmethod(util.insert_into)
+        Awaitable[None]] = dbmethod('insert_into')
     delete_from: Callable[
         [VarArg(Any),
          NamedArg(str, 'table'),
          NamedArg(Sequence[str], 'where')],
-        Awaitable[None]] = dbmethod(util.delete_from)
+        Awaitable[None]] = dbmethod('delete_from')
