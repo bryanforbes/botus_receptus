@@ -1,7 +1,8 @@
 import pytest
+import discord
 from botus_receptus.formatting import (
     pluralizer, Paginator, remove_mass_mentions, error, warning, info, bold, italics, strikethrough, underline,
-    inline_code, code_block, escape
+    inline_code, code_block, escape, EmbedPaginator
 )
 
 
@@ -53,6 +54,17 @@ class TestPaginator(object):
         paginator.add_line('123 456 789')
 
         assert [page for page in paginator] == ['123', '456', '789']
+
+
+class TestEmbedPaginator(object):
+    def test_iterate(self) -> None:
+        paginator = EmbedPaginator()
+        paginator.add_line('123 456 789')
+
+        embeds = [embed for embed in paginator]
+
+        assert type(embeds[0]) == discord.Embed
+        assert embeds[0].description == '123 456 789'
 
 
 def test_remove_mentions() -> None:

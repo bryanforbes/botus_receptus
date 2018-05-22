@@ -2,7 +2,7 @@ import pytest  # typing: ignore
 import attr
 import discord
 from typing import Any
-from botus_receptus.context import EmbedContext, PaginatedContext, PaginatedEmbedContext
+from botus_receptus.context import EmbedContext, PaginatedContext
 
 
 @attr.s(slots=True, auto_attribs=True)
@@ -45,7 +45,8 @@ class TestEmbedContext(object):
         obj = mocker.sentinel.TEST_OBJECT
         await ctx.send_embed(embed=embed, tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
 
-        mock_context_send.assert_called_once_with(tts=True, embed=embed, file=obj, files=obj,
+        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {'type': 'rich'}
+        mock_context_send.assert_called_once_with(tts=True, embed=mocker.ANY, file=obj, files=obj,
                                                   delete_after=1.0, nonce=200)
 
     @pytest.mark.asyncio
@@ -57,9 +58,10 @@ class TestEmbedContext(object):
         obj = mocker.sentinel.TEST_OBJECT
         await ctx.send_embed('bar', embed=embed, tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
 
-        mock_context_send.assert_called_once_with(tts=True, embed=embed, file=obj, files=obj,
+        assert embed.description == 'foo'
+        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {'type': 'rich', 'description': 'bar'}
+        mock_context_send.assert_called_once_with(tts=True, embed=mocker.ANY, file=obj, files=obj,
                                                   delete_after=1.0, nonce=200)
-        assert embed.description == 'bar'
 
 
 class TestPaginatedContext(object):
@@ -87,27 +89,4 @@ class TestPaginatedContext(object):
         mock_context_send.assert_has_calls([
             mocker.call('```\nasdf\n```', tts=True, delete_after=1.0, nonce=200),
             mocker.call('```\nqwerty foo\n```', tts=True, delete_after=1.0, nonce=200)
-        ])
-
-
-class TestPaginatedEmbedContext(object):
-    @pytest.fixture
-    def mock_paginator(self, mocker):
-        return ['asdf', 'qwerty foo']
-
-    @pytest.mark.asyncio
-    async def test_send_embed_pages(self, mocker, mock_context_send, mock_paginator):
-        ctx = PaginatedEmbedContext(prefix='~', message=MockMessage())
-
-        messages = await ctx.send_embed_pages(mock_paginator)
-        assert len(messages) == 2
-
-        assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed
-        assert mock_context_send.call_args_list[0][1]['embed'].description == 'asdf'
-        assert type(mock_context_send.call_args_list[1][1]['embed']) == discord.Embed
-        assert mock_context_send.call_args_list[1][1]['embed'].description == 'qwerty foo'
-
-        mock_context_send.assert_has_calls([
-            mocker.call(embed=mocker.ANY, tts=False, delete_after=None, nonce=None, file=None, files=None),
-            mocker.call(embed=mocker.ANY, tts=False, delete_after=None, nonce=None, file=None, files=None),
         ])
