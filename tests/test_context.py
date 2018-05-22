@@ -3,6 +3,7 @@ import attr
 import discord
 from typing import Any
 from botus_receptus.context import EmbedContext, PaginatedContext
+from datetime import datetime
 
 
 @attr.s(slots=True, auto_attribs=True)
@@ -27,39 +28,75 @@ def mock_context_send(mocker):
 
 class TestEmbedContext(object):
     @pytest.mark.asyncio
-    async def test_send_content_only(self, mocker, mock_context_send):
+    async def test_send_embed_description_only(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
         await ctx.send_embed('baz')
 
         assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed
-        assert mock_context_send.call_args_list[0][1]['embed'].description == 'baz'
+        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+            'description': 'baz',
+            'type': 'rich'
+        }
         mock_context_send.assert_called_once_with(tts=False, embed=mocker.ANY, file=None, files=None,
                                                   delete_after=None, nonce=None)
 
     @pytest.mark.asyncio
-    async def test_send_embed_only(self, mocker, mock_context_send):
+    async def test_send_embed_args(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
-        embed = discord.Embed()
         obj = mocker.sentinel.TEST_OBJECT
-        await ctx.send_embed(embed=embed, tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
+        time = datetime.now()
+        await ctx.send_embed('foo', title='bar', color=discord.Color.default(), footer='baz',
+                             thumbnail='ham', author='spam', image='blah', timestamp=time,
+                             fields=[{'name': 'one', 'value': 'one', 'inline': True}],
+                             tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
 
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {'type': 'rich'}
+        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+            'type': 'rich',
+            'description': 'foo',
+            'title': 'bar',
+            'color': 0,
+            'footer': {
+                'text': 'baz'
+            },
+            'thumbnail': {
+                'url': 'ham'
+            },
+            'author': {
+                'name': 'spam'
+            },
+            'image': {
+                'url': 'blah'
+            },
+            'timestamp': time.isoformat(),
+            'fields': [{'name': 'one', 'value': 'one', 'inline': True}]
+        }
         mock_context_send.assert_called_once_with(tts=True, embed=mocker.ANY, file=obj, files=obj,
                                                   delete_after=1.0, nonce=200)
 
     @pytest.mark.asyncio
-    async def test_send_content_and_embed(self, mocker, mock_context_send):
+    async def test_send_embed_other_args(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
-        embed = discord.Embed()
-        embed.description = 'foo'
         obj = mocker.sentinel.TEST_OBJECT
-        await ctx.send_embed('bar', embed=embed, tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
+        await ctx.send_embed('foo', footer={'text': 'bar', 'icon_url': 'baz'},
+                             author={'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
+                             tts=True, file=obj, files=obj, delete_after=1.0, nonce=200)
 
-        assert embed.description == 'foo'
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {'type': 'rich', 'description': 'bar'}
+        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+            'type': 'rich',
+            'description': 'foo',
+            'footer': {
+                'text': 'bar',
+                'icon_url': 'baz'
+            },
+            'author': {
+                'name': 'ham',
+                'url': 'spam',
+                'icon_url': 'lamb'
+            }
+        }
         mock_context_send.assert_called_once_with(tts=True, embed=mocker.ANY, file=obj, files=obj,
                                                   delete_after=1.0, nonce=200)
 

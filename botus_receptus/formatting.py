@@ -82,22 +82,11 @@ class Paginator(Iterable[str]):
         return self.pages.__iter__()
 
 
-def embed_paginator_factory() -> Paginator:
-    return Paginator(prefix=None, suffix=None, max_size=2048)
-
-
 @attr.s(slots=True, auto_attribs=True)
-class EmbedPaginator(Iterable[discord.Embed]):
-    paginator: Paginator = attr.ib(init=False, default=attr.Factory(embed_paginator_factory))
-
-    def add_line(self, line: str = '', *, empty: bool = False) -> None:
-        self.paginator.add_line(line, empty=empty)
-
-    def __iter__(self) -> Iterator[discord.Embed]:
-        for page in self.paginator:
-            embed = discord.Embed()
-            embed.description = page
-            yield embed
+class EmbedPaginator(Paginator):
+    prefix: Optional[str] = None
+    suffix: Optional[str] = None
+    max_size: int = 2048
 
 
 PluralizerType = Callable[[Arg(int, 'value'),
