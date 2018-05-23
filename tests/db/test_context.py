@@ -36,23 +36,23 @@ class TestContext(object):
 
     @pytest.fixture
     def mock_select_all(self, mocker):
-        return mocker.patch('botus_receptus.db.context.util.select_all', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.select_all', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
     def mock_select_one(self, mocker):
-        return mocker.patch('botus_receptus.db.util.select_one', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.select_one', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
     def mock_search(self, mocker):
-        return mocker.patch('botus_receptus.db.util.search', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.search', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
     def mock_insert_into(self, mocker):
-        return mocker.patch('botus_receptus.db.util.insert_into', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.insert_into', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
     def mock_delete_from(self, mocker):
-        return mocker.patch('botus_receptus.db.util.delete_from', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.delete_from', new_callable=mocker.AsyncMock)
 
     @pytest.mark.asyncio
     async def test_acquire(self, mocker, mock_bot):
@@ -75,7 +75,8 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.select_all(table='foo')
-            mock_select_all.assert_called_once_with(ctx.db, table='foo')
+            mock_select_all.assert_called_once_with(ctx.db, table='foo', columns=None, order_by=None, where=None,
+                                                    joins=None)
 
     @pytest.mark.asyncio
     async def test_select_one(self, mocker, mock_bot, mock_select_one):
@@ -86,37 +87,38 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.select_one(table='foo')
-            mock_select_one.assert_called_once_with(ctx.db, table='foo')
+            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=None, where=None, joins=None)
 
     @pytest.mark.asyncio
     async def test_search(self, mocker, mock_bot, mock_search):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.search(table='foo')
+            await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
 
         async with ctx.acquire():
-            await ctx.search(table='foo')
-            mock_search.assert_called_once_with(ctx.db, table='foo')
+            await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
+            mock_search.assert_called_once_with(ctx.db, table='foo', columns=None, search_columns=['bar'],
+                                                terms=['baz'], where=[], order_by=None, joins=None)
 
     @pytest.mark.asyncio
     async def test_insert_into(self, mocker, mock_bot, mock_insert_into):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.insert_into(table='foo')
+            await ctx.insert_into(table='foo', values={'bar': 'baz'})
 
         async with ctx.acquire():
-            await ctx.insert_into(table='foo')
-            mock_insert_into.assert_called_once_with(ctx.db, table='foo')
+            await ctx.insert_into(table='foo', values={'bar': 'baz'})
+            mock_insert_into.assert_called_once_with(ctx.db, table='foo', values={'bar': 'baz'}, extra='')
 
     @pytest.mark.asyncio
     async def test_delete_from(self, mocker, mock_bot, mock_delete_from):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.delete_from(table='foo')
+            await ctx.delete_from(table='foo', where='bar')
 
         async with ctx.acquire():
-            await ctx.delete_from(table='foo')
-            mock_delete_from.assert_called_once_with(ctx.db, table='foo')
+            await ctx.delete_from(table='foo', where='bar')
+            mock_delete_from.assert_called_once_with(ctx.db, table='foo', where='bar')

@@ -1,13 +1,13 @@
 from typing import (
-    TYPE_CHECKING, AsyncContextManager, Awaitable, Any, Generator, Optional, Callable, List, Sequence, Tuple, Dict
+    TYPE_CHECKING, AsyncContextManager, Awaitable, Any, Generator, Optional, Callable, List, Sequence, Tuple, Dict,
+    TypeVar, cast
 )
 from asyncpg import Connection
 from discord.ext import commands
-from mypy_extensions import VarArg, DefaultNamedArg, NamedArg
 
 import attr
 
-from . import util
+from .util import select_all, select_one, search, insert_into, delete_from
 
 if TYPE_CHECKING:
     from .bot import Bot  # noqa
@@ -28,14 +28,18 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
         await self.ctx.release()
 
 
-def dbmethod(name: str) -> Callable[..., Awaitable[Any]]:
-    async def method_wrapper(self: 'Context', *args: Any, **kwargs: Any) -> Any:
+FunctionType = Callable[..., Awaitable[Any]]
+F = TypeVar('F', bound=FunctionType)
+
+
+def ensure_db(func: F) -> F:
+    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
         if not hasattr(self, 'db'):
             raise RuntimeError('No database object available; ensure acquire() was called')
 
-        return await getattr(util, name)(self.db, *args, **kwargs)
+        return func(self, *args, **kwargs)
 
-    return method_wrapper
+    return cast(F, wrapper)
 
 
 class Context(commands.Context):
@@ -56,38 +60,42 @@ class Context(commands.Context):
             await self.bot.pool.release(self.db)
             del self.db
 
-    select_all: Callable[
-        [VarArg(Any),
-         DefaultNamedArg(Optional[Sequence[str]], 'columns'),
-         NamedArg(str, 'table'),
-         DefaultNamedArg(Optional[str], 'order_by'),
-         DefaultNamedArg(Optional[Sequence[str]], 'where'),
-         DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[List[Any]]] = dbmethod('select_all')
-    select_one: Callable[
-        [VarArg(Any),
-         DefaultNamedArg(Optional[Sequence[str]], 'columns'),
-         NamedArg(str, 'table'),
-         DefaultNamedArg(Optional[Sequence[str]], 'where'),
-         DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[Any]] = dbmethod('select_one')
-    search: Callable[
-        [VarArg(Any),
-         DefaultNamedArg(Optional[Sequence[str]], 'columns'),
-         NamedArg(str, 'table'),
-         NamedArg(Sequence[str], 'search_columns'),
-         NamedArg(Sequence[str], 'terms'),
-         DefaultNamedArg(Optional[str], 'order_by'),
-         DefaultNamedArg(Optional[Sequence[str]], 'where'),
-         DefaultNamedArg(Optional[Sequence[Tuple[str, str]]], 'joins')],
-        Awaitable[List[Any]]] = dbmethod('search')
-    insert_into: Callable[
-        [NamedArg(str, 'table'),
-         NamedArg(Dict[str, Any], 'values'),
-         DefaultNamedArg(str, 'extra')],
-        Awaitable[None]] = dbmethod('insert_into')
-    delete_from: Callable[
-        [VarArg(Any),
-         NamedArg(str, 'table'),
-         NamedArg(Sequence[str], 'where')],
-        Awaitable[None]] = dbmethod('delete_from')
+    @ensure_db
+    async def select_all(self, *args: Any,
+                         columns: Optional[Sequence[str]] = None,
+                         table: str,
+                         order_by: Optional[str] = None,
+                         where: Optional[Sequence[str]] = None,
+                         joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
+        return await select_all(self.db, *args, columns=columns, table=table, order_by=order_by,
+                                where=where, joins=joins)
+
+    @ensure_db
+    async def select_one(self, *args: Any,
+                         columns: Optional[Sequence[str]] = None,
+                         table: str,
+                         where: Optional[Sequence[str]] = None,
+                         joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
+        return await select_one(self.db, *args, columns=columns, table=table, where=where, joins=joins)
+
+    @ensure_db
+    async def search(self, *args: Any,
+                     columns: Optional[Sequence[str]] = None,
+                     table: str,
+                     search_columns: Sequence[str],
+                     terms: Sequence[str],
+                     where: Sequence[str] = [],
+                     order_by: Optional[str] = None,
+                     joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
+        return await search(self.db, *args, columns=columns, table=table, search_columns=search_columns,
+                            terms=terms, where=where, order_by=order_by, joins=joins)
+
+    @ensure_db
+    async def insert_into(self, *, table: str,
+                          values: Dict[str, Any],
+                          extra: str = '') -> None:
+        return await insert_into(self.db, table=table, values=values, extra=extra)
+
+    @ensure_db
+    async def delete_from(self, *args: Any, table: str, where: Sequence[str]) -> None:
+        return await delete_from(self.db, *args, table=table, where=where)

@@ -40,18 +40,17 @@ def mock_response(mocker: Any) -> None:
 
 
 @pytest.fixture
-def mock_client_session(mocker: Any) -> None:
+def mock_client_session(mocker: Any, mock_response: Any) -> None:
     session = mocker.AsyncWithMock()
     session.__aenter__.return_value = session
+    session.get = Mock(return_value=mock_response)
+    session.post = Mock(return_value=mock_response)
 
     return session
 
 
 @pytest.fixture
-def MockClientSession(mocker: Any, mock_client_session: Any, mock_response: Any) -> None:
-    mocker.patch.object(mock_client_session, 'get', return_value=mock_response)
-    mocker.patch.object(mock_client_session, 'post', return_value=mock_response)
-
+def MockClientSession(mocker: Any, mock_client_session: Any) -> None:
     ClientSession = mocker.Mock()
     ClientSession.return_value = mock_client_session
 

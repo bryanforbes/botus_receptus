@@ -12,10 +12,15 @@ class Context(discord.abc.Messageable):
     kwargs: Dict[str, Any]
     prefix: str
     command: Command
-    invoked_with: str
-    invoked_subcommand: Command
+    invoked_with: Optional[str]
+    invoked_subcommand: Optional[Command]
     subcommand_passed: Optional[str]
     command_failed: bool
+
+    def __init__(self, *, prefix: str, message: discord.Message = ..., bot: Bot = ...,
+                 args: List[Any] = ..., kwargs: Dict[str, Any] = ..., command: Command = ...,
+                 invoked_with: str = ..., invoked_subcommand: str = ...,
+                 subcommand_passed: str = ..., command_failed: bool = ...) -> None: ...
 
     async def invoke(self, command: Command, *args, **kwargs) -> Any: ...
 
