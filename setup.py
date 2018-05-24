@@ -70,20 +70,18 @@ setup(name='botus_receptus',
       url='https://github.com/BryanForbes/botus_receptus',
       version=version,
       packages=[
-          'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'async_timeout-stubs', 'asyncpg-stubs',
+          'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs',
           'discord-stubs'
       ],
       package_data={
           'botus_receptus': ['py.typed'],
           'aiohttp-stubs': ['*.pyi'],
-          'async_timeout-stubs': ['*.pyi'],
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
           'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi']
       },
       package_dir={
           'botus_receptus': 'botus_receptus',
           'aiohttp-stubs': 'stubs/aiohttp',
-          'async_timeout-stubs': 'stubs/async_timeout',
           'asyncpg-stubs': 'stubs/asyncpg',
           'discord-stubs': 'stubs/discord'
       },
