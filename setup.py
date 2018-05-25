@@ -71,19 +71,21 @@ setup(name='botus_receptus',
       version=version,
       packages=[
           'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs',
-          'discord-stubs'
+          'discord-stubs', 'uvloop-stubs'
       ],
       package_data={
           'botus_receptus': ['py.typed'],
           'aiohttp-stubs': ['*.pyi'],
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
-          'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi']
+          'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi'],
+          'uvloop-stubs': ['*.pyi']
       },
       package_dir={
           'botus_receptus': 'botus_receptus',
           'aiohttp-stubs': 'stubs/aiohttp',
           'asyncpg-stubs': 'stubs/asyncpg',
-          'discord-stubs': 'stubs/discord'
+          'discord-stubs': 'stubs/discord',
+          'uvloop-stubs': 'stubs/uvloop'
       },
       license='BSD 3-Clause',
       extras_require=extras_require,
