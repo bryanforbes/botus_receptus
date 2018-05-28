@@ -1,7 +1,6 @@
 from typing import Callable, Iterable, Iterator, List, Optional
 from mypy_extensions import Arg, DefaultNamedArg
 import attr
-import discord
 
 from . import re
 

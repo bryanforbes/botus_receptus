@@ -15,17 +15,17 @@ class Bot(commands.Bot):
     default_prefix: str  # noqa
     session: aiohttp.ClientSession
 
-    def __init__(self, bot_name: str, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
-        self.bot_name = bot_name
+    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         self.config = config
-        self.default_prefix = kwargs['command_prefix'] = self.config.get(bot_name, 'command_prefix', fallback='$')
+        self.bot_name = self.config.get('bot', 'command_prefix')
+        self.default_prefix = kwargs['command_prefix'] = self.config.get('bot', 'command_prefix', fallback='$')
 
         super().__init__(*args, **kwargs)
 
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     def run_with_config(self) -> None:
-        self.run(self.config.get(self.bot_name, 'discord_api_key'))
+        self.run(self.config.get('bot', 'discord_api_key'))
 
     async def close(self) -> None:
         await super().close()
@@ -34,7 +34,7 @@ class Bot(commands.Bot):
 
 class DblBot(Bot):
     async def _report_guilds(self) -> None:
-        token = self.config.get(self.bot_name, 'dbl_token', fallback='')
+        token = self.config.get('bot', 'dbl_token', fallback='')
         if not token:
             return
 
