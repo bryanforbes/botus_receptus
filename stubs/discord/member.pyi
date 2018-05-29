@@ -1,4 +1,4 @@
-from typing import Any, Hashable, Optional, List, Union
+from typing import Any, Optional, List, Union
 from .abc import User as _BaseUser, Messageable, GuildChannel
 from .activity import Activity, Game, Streaming, Spotify
 from .enums import Status
@@ -19,7 +19,7 @@ class VoiceState:
     channel: VoiceChannel
 
 
-class Member(Messageable, _BaseUser, Hashable):
+class Member(Messageable, _BaseUser):
     roles: List[Role]
     joined_at: datetime
     status: Status
@@ -64,6 +64,8 @@ class Member(Messageable, _BaseUser, Hashable):
     def __eq__(self, other: Any) -> bool: ...
 
     def __ne__(self, other: Any) -> bool: ...
+
+    def __hash__(self) -> int: ...
 
     @property
     def colour(self) -> Colour: ...

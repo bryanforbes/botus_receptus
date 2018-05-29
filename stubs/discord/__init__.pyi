@@ -14,7 +14,7 @@ from .file import File as File
 from .colour import Colour as Colour, Color as Color
 from .invite import Invite as Invite
 from .object import Object as Object
-from . import abc as abc
+from . import utils as utils, abc as abc
 from .enums import *
 from collections import namedtuple
 from .embeds import Embed as Embed

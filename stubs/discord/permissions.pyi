@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Tuple, Generic, TypeVar, Optional, Hashable
+from typing import Any, Iterable, Iterator, Tuple, Generic, TypeVar, Optional
 
 PT = TypeVar('PT')
 
@@ -33,9 +33,13 @@ class _BasePermission(Generic[PT], Iterable[Tuple[str, PT]]):
     manage_webhooks: PT
     manage_emojis: PT
 
+    def __iter__(self) -> Iterator[Tuple[str, PT]]: ...
 
-class Permissions(_BasePermission[bool], Hashable):
+
+class Permissions(_BasePermission[bool]):
     def __init__(self, permissions: int = 0) -> None: ...
+
+    def __hash__(self) -> int: ...
 
     def __eq__(self, other: Any) -> bool: ...
 

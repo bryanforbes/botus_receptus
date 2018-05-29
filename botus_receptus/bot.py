@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, cast, _Union  # type: ignore
 
 import aiohttp
 import async_timeout
@@ -7,6 +7,22 @@ import discord
 
 from discord.ext import commands
 from configparser import ConfigParser
+
+
+old_do_conversion = commands.Command.do_conversion
+
+
+async def do_conversion(self: Any, ctx: commands.Context, converter: Any, argument: str) -> Any:
+    if isinstance(converter, _Union):
+        tree = converter._subs_tree()
+
+        if len(tree) == 3 and tree[2] == type(None):  # noqa: E721
+            converter = converter._subs_tree()[1]
+
+    return await old_do_conversion(self, ctx, converter, argument)
+
+
+commands.Command.do_conversion = do_conversion  # type: ignore
 
 
 class Bot(commands.Bot):

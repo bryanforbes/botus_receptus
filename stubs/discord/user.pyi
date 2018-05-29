@@ -1,4 +1,4 @@
-from typing import Optional, NamedTuple, List, Any, Hashable
+from typing import Optional, NamedTuple, List, Any
 from .abc import User as _BaseUser, Messageable, GuildChannel
 from .channel import DMChannel
 from .enums import UserFlags
@@ -29,7 +29,7 @@ class Profile(NamedTuple):
     def partner(self) -> bool: ...
 
 
-class BaseUser(_BaseUser, Hashable):
+class BaseUser(_BaseUser):
     __slots__ = ('name', 'id', 'discriminator', 'avatar', 'bot', '_state')
 
     name: str
@@ -37,6 +37,8 @@ class BaseUser(_BaseUser, Hashable):
     discriminator: str
     avatar: Optional[str]
     bot: bool
+
+    def __hash__(self) -> int: ...
 
     @property
     def avatar_url(self) -> str: ...

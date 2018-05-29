@@ -41,6 +41,8 @@ class Command:
 
     def reset_cooldown(self, ctx: Context) -> None: ...
 
+    async def do_conversion(self, ctx: Context, converter: Any, argument: str) -> Any: ...
+
 
 class GroupMixin:
     all_commands: Dict[str, Command]
