@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, TypeVar, Type, Generic, cast, ClassVar
 from configparser import ConfigParser
 
 import discord
@@ -15,8 +15,12 @@ from ..bot import Bot as BaseBot
 from .context import Context
 
 
-class Bot(BaseBot):
+DbContextType = TypeVar('DbContextType', bound=Context)
+
+
+class Bot(BaseBot[DbContextType], Generic[DbContextType]):
     pool: Pool
+    context_cls: ClassVar[Type[DbContextType]] = cast(Type[DbContextType], Context)
 
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         if not has_asyncpg:
@@ -35,9 +39,6 @@ class Bot(BaseBot):
     async def close(self) -> None:
         await self.pool.close()
         await super().close()
-
-    async def get_context(self, message: discord.Message, *, cls: Any=Context) -> Context:
-        return cast(Context, await super().get_context(message, cls=cls))
 
     async def process_commands(self, message: discord.Message) -> None:
         ctx = await self.get_context(message)

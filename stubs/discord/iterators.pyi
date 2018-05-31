@@ -1,6 +1,7 @@
 from typing import AsyncIterator as TypingAsyncIterator, TypeVar, Any, List, Optional, Union
 from datetime import datetime
 from .user import User
+from .member import Member
 from .message import Message
 from .emoji import Emoji
 from .abc import Messageable
@@ -32,7 +33,7 @@ class _FilteredAsyncIterator(_AsyncIterator[_T]):
     async def next(self) -> _T: ...
 
 
-class ReactionIterator(_AsyncIterator[User]):
+class ReactionIterator(_AsyncIterator[Union[User, Member]]):
     def __init__(self, message: Message, emoji: Emoji, limit: int = ..., after: Optional[Any] = ...) -> None: ...
 
     async def next(self) -> User: ...

@@ -3,10 +3,13 @@ from mypy_extensions import TypedDict
 from datetime import datetime
 from .guild import Guild
 from .channel import TextChannel, DMChannel, GroupChannel
+from .abc import GuildChannel
 from .enums import MessageType
 from .member import Member
 from .user import User
 from .embeds import Embed
+from .reaction import Reaction
+from .emoji import Emoji, PartialEmoji
 
 
 class Attachment:
@@ -39,7 +42,7 @@ class Message:
     webhook_id: Optional[int]
     attachments: List[Attachment]
     pinned: bool
-    reactions: List[object]
+    reactions: List[Reaction]
     activity: Optional[MessageActivity]
     application: Optional[MessageApplication]
 
@@ -56,6 +59,12 @@ class Message:
     def raw_role_mentions(self) -> List[int]: ...
 
     @property
+    def channel_mentions(self) -> List[GuildChannel]: ...
+
+    @property
+    def clean_content(self) -> str: ...
+
+    @property
     def created_at(self) -> datetime: ...
 
     @property
@@ -66,8 +75,15 @@ class Message:
 
     async def delete(self) -> None: ...
 
-    async def edit(self, *, content: Optional[str], embed: Optional[Embed], delete_after: Optional[float]) -> None: ...
+    async def edit(self, *, content: Optional[str] = ..., embed: Optional[Embed] = ...,
+                   delete_after: Optional[float] = ...) -> None: ...
 
     async def pin(self) -> None: ...
 
     async def unpin(self) -> None: ...
+
+    async def add_reaction(self, emoji: Union[Emoji, Reaction, PartialEmoji, str]) -> None: ...
+
+    async def remove_reaction(self, emoji: Union[Emoji, Reaction, PartialEmoji, str], member: Member) -> None: ...
+
+    async def clear_reactions(self) -> None: ...
