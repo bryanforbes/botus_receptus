@@ -9,6 +9,8 @@ import discord
 from discord.ext import commands
 from configparser import ConfigParser
 
+from . import abc
+
 
 old_do_conversion = commands.Command.do_conversion
 
@@ -71,7 +73,7 @@ class Bot(commands.Bot, Generic[ContextType]):
         await self.session.close()
 
 
-class DblBot(Bot[ContextType], Generic[ContextType]):
+class DblBot(Bot[ContextType], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove, Generic[ContextType]):
     async def _report_guilds(self) -> None:
         token = self.config.get('bot', 'dbl_token', fallback='')
         if not token:
