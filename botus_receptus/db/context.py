@@ -7,7 +7,7 @@ from discord.ext import commands
 
 import attr
 
-from .util import select_all, select_one, search, insert_into, delete_from
+from .util import select_all, select_one, search, insert_into, delete_from, update
 
 if TYPE_CHECKING:
     from .bot import Bot  # noqa
@@ -89,6 +89,13 @@ class Context(commands.Context):
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
         return await search(self.db, *args, columns=columns, table=table, search_columns=search_columns,
                             terms=terms, where=where, order_by=order_by, joins=joins)
+
+    @ensure_db
+    async def update(self, *args: Any,
+                     table: str,
+                     values: Dict[str, Any],
+                     where: Sequence[str] = []) -> None:
+        return await update(self.db, *args, table=table, values=values, where=where)
 
     @ensure_db
     async def insert_into(self, *, table: str,

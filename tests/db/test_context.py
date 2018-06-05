@@ -47,6 +47,10 @@ class TestContext(object):
         return mocker.patch('botus_receptus.db.context.search', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
+    def mock_update(self, mocker):
+        return mocker.patch('botus_receptus.db.context.update', new_callable=mocker.AsyncMock)
+
+    @pytest.fixture
     def mock_insert_into(self, mocker):
         return mocker.patch('botus_receptus.db.context.insert_into', new_callable=mocker.AsyncMock)
 
@@ -100,6 +104,17 @@ class TestContext(object):
             await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
             mock_search.assert_called_once_with(ctx.db, table='foo', columns=None, search_columns=['bar'],
                                                 terms=['baz'], where=[], order_by=None, joins=None)
+
+    @pytest.mark.asyncio
+    async def test_update(self, mocker, mock_bot, mock_update):
+        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+
+        with pytest.raises(RuntimeError):
+            await ctx.update(table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
+
+        async with ctx.acquire():
+            await ctx.update(table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
+            mock_update.assert_called_once_with(ctx.db, table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
 
     @pytest.mark.asyncio
     async def test_insert_into(self, mocker, mock_bot, mock_insert_into):

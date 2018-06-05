@@ -196,6 +196,33 @@ class TestDbUtil(object):
         mock_db.fetch.assert_called_once_with(expected_query, *args)
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize('args,kwargs,expected_query', [
+        ([1, '2', 3], {
+            'table': 'table',
+            'values': {
+                'one': '$1',
+                'two': '$2',
+                'three': '$3'
+            },
+        }, 'UPDATE table SET one = $1, two = $2, three = $3'),
+        ([1, '2', 3], {
+            'table': 'table',
+            'values': {
+                'one': '$1',
+                'two': '$2::VARCHAR',
+                'three': 'array_append(three, $3)'
+            },
+            'where': [
+                'one = 5'
+            ]
+        }, 'UPDATE table SET one = $1, two = $2::VARCHAR, three = array_append(three, $3) WHERE one = 5')
+    ])
+    async def test_update(self, mock_db, args, kwargs, expected_query):
+        await util.update(mock_db, *args, **kwargs)
+
+        mock_db.execute.assert_called_once_with(expected_query, *args)
+
+    @pytest.mark.asyncio
     @pytest.mark.parametrize('kwargs,expected_query', [
         ({
             'table': 'table',

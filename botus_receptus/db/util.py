@@ -87,6 +87,16 @@ async def search(db: Connection, *args: Any,
     )
 
 
+async def update(db: Connection, *args: Any,
+                 table: str,
+                 values: Dict[str, Any],
+                 where: Sequence[str] = []) -> None:
+    set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
+    where_str = _get_where_string(where)
+
+    await db.execute(f'UPDATE {table} SET {set_str}{where_str}', *args)
+
+
 async def insert_into(db: Connection, *, table: str,
                       values: Dict[str, Any],
                       extra: str = '') -> None:

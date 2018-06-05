@@ -17,6 +17,7 @@ class Command:
     aliases: List[str]
     enabled: bool
     parent: Optional['Command']
+    checks: List[CheckType]
     description: str
     hidden: bool
     _buckets: CooldownMapping

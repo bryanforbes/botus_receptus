@@ -1,5 +1,7 @@
-from typing import TypeVar, Iterable, Optional, Callable, Any, Iterator, Set
+from typing import TypeVar, Iterable, Optional, Callable, Any, Iterator, Set, Container
 from itertools import filterfalse
+
+import discord
 
 _T = TypeVar('_T')
 
@@ -16,3 +18,11 @@ def unique_seen(iterable: Iterable[_T], get_key: Optional[Callable[[_T], Any]] =
             if key not in seen:
                 seen.add(key)
                 yield element
+
+
+def has_any_role(member: discord.Member, roles: Container[str]) -> bool:
+    return discord.utils.find(lambda role: role.name in roles, member.roles) is not None
+
+
+def has_any_role_id(member: discord.Member, ids: Container[int]) -> bool:
+    return discord.utils.find(lambda role: role.id in ids, member.roles) is not None
