@@ -4,4 +4,5 @@ click==6.7
 git+https://github.com/Rapptz/discord.py@6b75179c1fed1aac0304526d130e93ad21dc84c3#egg=discord.py-1.0.0a
 mypy-extensions==0.3.0
 pip
+typing-extensions==3.6.5
 yarl<1.2

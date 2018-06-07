@@ -40,14 +40,15 @@ class Bot(commands.Bot, Generic[ContextType]):
     session: aiohttp.ClientSession
     context_cls: ClassVar[Type[ContextType]] = cast(Type[ContextType], commands.Context)
 
-    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: ConfigParser, *args: Any, verify_ssl: bool = True, **kwargs: Any) -> None:
         self.config = config
         self.bot_name = self.config.get('bot', 'command_prefix')
         self.default_prefix = kwargs['command_prefix'] = self.config.get('bot', 'command_prefix', fallback='$')
 
         super().__init__(*args, **kwargs)
 
-        self.session = aiohttp.ClientSession(loop=self.loop)
+        conn = aiohttp.TCPConnector(verify_ssl=verify_ssl)
+        self.session = aiohttp.ClientSession(loop=self.loop, connector=conn)
 
     @overload
     async def get_context(self, message: discord.Message) -> ContextType: pass
