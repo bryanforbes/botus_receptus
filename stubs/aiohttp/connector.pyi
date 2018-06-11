@@ -2,7 +2,7 @@ from typing import Optional
 import asyncio
 
 
-class BaseConnector(object):
+class BaseConnector:
     def __init__(self, *, keepalive_timeout: Optional[int] = ...,
                  force_close: bool = ..., limit: int = ...,
                  limit_per_host: int = ..., enable_cleanup_closed: bool = ...,

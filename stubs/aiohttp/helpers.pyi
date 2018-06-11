@@ -1,11 +1,4 @@
 from collections import namedtuple
-from typing import TypeVar, Coroutine
-
-_RT = TypeVar('_RT')
-
-
-class _BaseCoroMixin(Coroutine[None, None, _RT]):
-    ...
 
 
 class BasicAuth(namedtuple('BasicAuth', ['login', 'password', 'encoding'])):

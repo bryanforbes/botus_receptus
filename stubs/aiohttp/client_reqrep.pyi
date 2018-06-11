@@ -1,6 +1,11 @@
 from typing import Any, Dict, Callable, Optional
 
 
+class Fingerprint:
+    def __init__(self, fingerprint: bytes) -> None:
+        ...
+
+
 class ClientResponse:
     def close(self) -> None: ...
 
