@@ -32,44 +32,56 @@ def _get_order_by_string(order_by: Optional[str]) -> str:
     return f' ORDER BY {order_by} ASC'
 
 
+def _get_group_by_string(group_by: Optional[Sequence[str]]) -> str:
+    if group_by is None:
+        return ''
+
+    return ' GROUP BY ' + ', '.join(group_by)
+
+
 async def select_all(db: Connection, *args: Any,
-                     columns: Optional[Sequence[str]] = None,
                      table: str,
-                     order_by: Optional[str] = None,
+                     columns: Optional[Sequence[str]] = None,
                      where: Optional[Sequence[str]] = None,
+                     group_by: Optional[Sequence[str]] = None,
+                     order_by: Optional[str] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
     columns_str = _get_columns_string(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
+    group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
     return await db.fetch(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{order_by_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}{order_by_str}',
         *args
     )
 
 
 async def select_one(db: Connection, *args: Any,
-                     columns: Optional[Sequence[str]] = None,
                      table: str,
+                     columns: Optional[Sequence[str]] = None,
                      where: Optional[Sequence[str]] = None,
+                     group_by: Optional[Sequence[str]] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
     columns_str = _get_columns_string(columns)
     joins_str = _get_join_string(joins)
     where_str = _get_where_string(where)
+    group_by_str = _get_group_by_string(group_by)
 
     return await db.fetchrow(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}',
         *args
     )
 
 
 async def search(db: Connection, *args: Any,
-                 columns: Optional[Sequence[str]] = None,
                  table: str,
+                 columns: Optional[Sequence[str]] = None,
                  search_columns: Sequence[str],
                  terms: Sequence[str],
                  where: Sequence[str] = [],
+                 group_by: Optional[Sequence[str]] = None,
                  order_by: Optional[str] = None,
                  joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
     columns_str = _get_columns_string(columns)
@@ -79,10 +91,11 @@ async def search(db: Connection, *args: Any,
     where_str = _get_where_string(tuple(where) + (
         f"to_tsvector('english', {search_columns_str}) @@ to_tsquery('english', '{search_terms_str}')",
     ))
+    group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
     return await db.fetch(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{order_by_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}{order_by_str}',
         *args
     )
 

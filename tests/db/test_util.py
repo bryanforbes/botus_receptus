@@ -47,11 +47,13 @@ class TestDbUtil(object):
                 't2.col1 = $1',
                 't3.col2 = $2'
             ],
+            'group_by': ['t1.group1', 't1.group2'],
             'order_by': 't1.order'
         }, 'SELECT t1.one, t2.two, t3.three FROM table AS t1 '
          'JOIN table_two AS t2 ON t2.other_id = t1.id '
          'JOIN table_three AS t3 ON t3.other_id = t1.id '
          'WHERE t2.col1 = $1 AND t3.col2 = $2 '
+         'GROUP BY t1.group1, t1.group2 '
          'ORDER BY t1.order ASC')
     ])
     async def test_select_all(self, mock_db, args, kwargs, expected_query):
@@ -96,11 +98,13 @@ class TestDbUtil(object):
             'where': [
                 't2.col1 = $1',
                 't3.col2 = $2'
-            ]
+            ],
+            'group_by': ['t1.group1', 't1.group2']
         }, 'SELECT t1.one, t2.two, t3.three FROM table AS t1 '
          'JOIN table_two AS t2 ON t2.other_id = t1.id '
          'JOIN table_three AS t3 ON t3.other_id = t1.id '
-         'WHERE t2.col1 = $1 AND t3.col2 = $2')
+         'WHERE t2.col1 = $1 AND t3.col2 = $2 '
+         'GROUP BY t1.group1, t1.group2')
     ])
     async def test_select_one(self, mock_db, args, kwargs, expected_query):
         await util.select_one(mock_db, *args, **kwargs)
@@ -181,6 +185,7 @@ class TestDbUtil(object):
             ],
             'search_columns': ['t2.col3', 't3.col4'],
             'terms': ['term1', 'term2'],
+            'group_by': ['t1.group1', 't1.group2'],
             'order_by': 't1.order'
         }, 'SELECT t1.one, t2.two, t3.three FROM table AS t1 '
          'JOIN table_two AS t2 ON t2.other_id = t1.id '
@@ -188,6 +193,7 @@ class TestDbUtil(object):
          'WHERE t2.col1 = $1 AND t3.col2 = $2 '
          "AND to_tsvector('english', t2.col3 || ' ' || t3.col4) "
          "@@ to_tsquery('english', 'term1 & term2') "
+         'GROUP BY t1.group1, t1.group2 '
          'ORDER BY t1.order ASC')
     ])
     async def test_search(self, mock_db, args, kwargs, expected_query):

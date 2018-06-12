@@ -62,33 +62,37 @@ class Context(commands.Context):
 
     @ensure_db
     async def select_all(self, *args: Any,
-                         columns: Optional[Sequence[str]] = None,
                          table: str,
-                         order_by: Optional[str] = None,
+                         columns: Optional[Sequence[str]] = None,
                          where: Optional[Sequence[str]] = None,
+                         group_by: Optional[Sequence[str]] = None,
+                         order_by: Optional[str] = None,
                          joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
         return await select_all(self.db, *args, columns=columns, table=table, order_by=order_by,
-                                where=where, joins=joins)
+                                where=where, group_by=group_by, joins=joins)
 
     @ensure_db
     async def select_one(self, *args: Any,
-                         columns: Optional[Sequence[str]] = None,
                          table: str,
+                         columns: Optional[Sequence[str]] = None,
                          where: Optional[Sequence[str]] = None,
+                         group_by: Optional[Sequence[str]] = None,
                          joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
-        return await select_one(self.db, *args, columns=columns, table=table, where=where, joins=joins)
+        return await select_one(self.db, *args, columns=columns, table=table, where=where, group_by=group_by,
+                                joins=joins)
 
     @ensure_db
     async def search(self, *args: Any,
-                     columns: Optional[Sequence[str]] = None,
                      table: str,
+                     columns: Optional[Sequence[str]] = None,
                      search_columns: Sequence[str],
                      terms: Sequence[str],
                      where: Sequence[str] = [],
+                     group_by: Optional[Sequence[str]] = None,
                      order_by: Optional[str] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
         return await search(self.db, *args, columns=columns, table=table, search_columns=search_columns,
-                            terms=terms, where=where, order_by=order_by, joins=joins)
+                            terms=terms, where=where, group_by=group_by, order_by=order_by, joins=joins)
 
     @ensure_db
     async def update(self, *args: Any,

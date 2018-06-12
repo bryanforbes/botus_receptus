@@ -80,7 +80,7 @@ class TestContext(object):
         async with ctx.acquire():
             await ctx.select_all(table='foo')
             mock_select_all.assert_called_once_with(ctx.db, table='foo', columns=None, order_by=None, where=None,
-                                                    joins=None)
+                                                    joins=None, group_by=None)
 
     @pytest.mark.asyncio
     async def test_select_one(self, mocker, mock_bot, mock_select_one):
@@ -91,7 +91,8 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.select_one(table='foo')
-            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=None, where=None, joins=None)
+            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=None, where=None, joins=None,
+                                                    group_by=None)
 
     @pytest.mark.asyncio
     async def test_search(self, mocker, mock_bot, mock_search):
@@ -103,7 +104,7 @@ class TestContext(object):
         async with ctx.acquire():
             await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
             mock_search.assert_called_once_with(ctx.db, table='foo', columns=None, search_columns=['bar'],
-                                                terms=['baz'], where=[], order_by=None, joins=None)
+                                                terms=['baz'], where=[], order_by=None, joins=None, group_by=None)
 
     @pytest.mark.asyncio
     async def test_update(self, mocker, mock_bot, mock_update):
