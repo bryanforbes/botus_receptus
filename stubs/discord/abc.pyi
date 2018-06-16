@@ -1,4 +1,5 @@
 from typing import List, Union, Iterator, Optional, Tuple
+from typing_extensions import Protocol
 from datetime import datetime
 from abc import ABCMeta
 
@@ -15,7 +16,7 @@ from .user import ClientUser
 from .guild import Guild
 
 
-class Snowflake(metaclass=ABCMeta):
+class Snowflake(Protocol, metaclass=ABCMeta):
     id: int
 
     @property
