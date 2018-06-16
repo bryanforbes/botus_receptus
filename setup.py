@@ -13,9 +13,6 @@ with open('requirements/base.txt') as f:
     for line in lines:
         if line.startswith('git+https'):
             dependency_links.append(line)
-            req = line.split('#egg=')[1].split('-')
-            requirement = f'{req[0]}>={req[1]}'
-            requirements.append(requirement)
         else:
             requirements.append(line)
 
