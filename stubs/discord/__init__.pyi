@@ -15,11 +15,12 @@ from .colour import Colour as Colour, Color as Color
 from .invite import Invite as Invite
 from .object import Object as Object
 from .reaction import Reaction as Reaction
-from . import utils as utils, abc as abc
+from . import utils as utils, opus as opus, abc as abc
 from .enums import *
 from collections import namedtuple
 from .embeds import Embed as Embed
 from .shard import AutoShardedClient as AutoShardedClient
+from .player import *
 from .webhook import *
 from .voice_client import VoiceClient as VoiceClient
 from .audit_logs import AuditLogChanges as AuditLogChanges, AuditLogEntry as AuditLogEntry, AuditLogDiff as AuditLogDiff

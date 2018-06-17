@@ -1,4 +1,4 @@
-from typing import Optional, List, Union
+from typing import Optional, List, Union, BinaryIO
 from mypy_extensions import TypedDict
 from datetime import datetime
 from .guild import Guild
@@ -13,7 +13,15 @@ from .emoji import Emoji, PartialEmoji
 
 
 class Attachment:
-    ...
+    id: int
+    size: int
+    height: Optional[int]
+    width: Optional[int]
+    filename: str
+    url: str
+    proxy_url: str
+
+    async def save(self, fp: Union[BinaryIO, str], *, seek_begin: bool = ...) -> int: ...
 
 
 class MessageActivity(TypedDict, total=False):
