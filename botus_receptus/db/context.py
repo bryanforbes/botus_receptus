@@ -63,7 +63,7 @@ class Context(commands.Context):
     @ensure_db
     async def select_all(self, *args: Any,
                          table: str,
-                         columns: Optional[Sequence[str]] = None,
+                         columns: Sequence[str],
                          where: Optional[Sequence[str]] = None,
                          group_by: Optional[Sequence[str]] = None,
                          order_by: Optional[str] = None,
@@ -74,7 +74,7 @@ class Context(commands.Context):
     @ensure_db
     async def select_one(self, *args: Any,
                          table: str,
-                         columns: Optional[Sequence[str]] = None,
+                         columns: Sequence[str],
                          where: Optional[Sequence[str]] = None,
                          group_by: Optional[Sequence[str]] = None,
                          joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
@@ -84,7 +84,7 @@ class Context(commands.Context):
     @ensure_db
     async def search(self, *args: Any,
                      table: str,
-                     columns: Optional[Sequence[str]] = None,
+                     columns: Sequence[str],
                      search_columns: Sequence[str],
                      terms: Sequence[str],
                      where: Sequence[str] = [],

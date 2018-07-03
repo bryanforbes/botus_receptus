@@ -75,11 +75,11 @@ class TestContext(object):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.select_all(table='foo')
+            await ctx.select_all(table='foo', columns=['col1'])
 
         async with ctx.acquire():
-            await ctx.select_all(table='foo')
-            mock_select_all.assert_called_once_with(ctx.db, table='foo', columns=None, order_by=None, where=None,
+            await ctx.select_all(table='foo', columns=['col1'])
+            mock_select_all.assert_called_once_with(ctx.db, table='foo', columns=['col1'], order_by=None, where=None,
                                                     joins=None, group_by=None)
 
     @pytest.mark.asyncio
@@ -87,11 +87,11 @@ class TestContext(object):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.select_one(table='foo')
+            await ctx.select_one(table='foo', columns=['col1'])
 
         async with ctx.acquire():
-            await ctx.select_one(table='foo')
-            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=None, where=None, joins=None,
+            await ctx.select_one(table='foo', columns=['col1'])
+            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=['col1'], where=None, joins=None,
                                                     group_by=None)
 
     @pytest.mark.asyncio
@@ -99,11 +99,11 @@ class TestContext(object):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
+            await ctx.search(table='foo', columns=['col1'], search_columns=['bar'], terms=['baz'])
 
         async with ctx.acquire():
-            await ctx.search(table='foo', search_columns=['bar'], terms=['baz'])
-            mock_search.assert_called_once_with(ctx.db, table='foo', columns=None, search_columns=['bar'],
+            await ctx.search(table='foo', columns=['col1'], search_columns=['bar'], terms=['baz'])
+            mock_search.assert_called_once_with(ctx.db, table='foo', columns=['col1'], search_columns=['bar'],
                                                 terms=['baz'], where=[], order_by=None, joins=None, group_by=None)
 
     @pytest.mark.asyncio

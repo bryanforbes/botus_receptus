@@ -4,13 +4,6 @@ from asyncpg import Connection
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-def _get_columns_string(columns: Optional[Sequence[str]]) -> str:
-    if columns is None:
-        return '*'
-
-    return ', '.join(columns)
-
-
 def _get_join_string(joins: Optional[Sequence[Tuple[str, str]]]) -> str:
     if joins is None or len(joins) == 0:
         return ''
@@ -41,12 +34,12 @@ def _get_group_by_string(group_by: Optional[Sequence[str]]) -> str:
 
 async def select_all(db: Connection, *args: Any,
                      table: str,
-                     columns: Optional[Sequence[str]] = None,
+                     columns: Sequence[str],
                      where: Optional[Sequence[str]] = None,
                      group_by: Optional[Sequence[str]] = None,
                      order_by: Optional[str] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
-    columns_str = _get_columns_string(columns)
+    columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
     group_by_str = _get_group_by_string(group_by)
@@ -60,13 +53,13 @@ async def select_all(db: Connection, *args: Any,
 
 async def select_one(db: Connection, *args: Any,
                      table: str,
-                     columns: Optional[Sequence[str]] = None,
+                     columns: Sequence[str],
                      where: Optional[Sequence[str]] = None,
                      group_by: Optional[Sequence[str]] = None,
                      joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
-    columns_str = _get_columns_string(columns)
-    joins_str = _get_join_string(joins)
+    columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
+    joins_str = _get_join_string(joins)
     group_by_str = _get_group_by_string(group_by)
 
     return await db.fetchrow(
@@ -77,14 +70,14 @@ async def select_one(db: Connection, *args: Any,
 
 async def search(db: Connection, *args: Any,
                  table: str,
-                 columns: Optional[Sequence[str]] = None,
+                 columns: Sequence[str],
                  search_columns: Sequence[str],
                  terms: Sequence[str],
                  where: Sequence[str] = [],
                  group_by: Optional[Sequence[str]] = None,
                  order_by: Optional[str] = None,
                  joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
-    columns_str = _get_columns_string(columns)
+    columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
     search_columns_str = " || ' ' || ".join(search_columns)
     search_terms_str = ' & '.join(terms)

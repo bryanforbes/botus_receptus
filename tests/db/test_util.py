@@ -15,27 +15,29 @@ class TestDbUtil(object):
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize('args,kwargs,expected_query', [
-        ([], {'table': 'table'}, 'SELECT * FROM table'),
-        ([], {'table': 'table', 'columns': ['one', 'two']}, 'SELECT one, two FROM table'),
+        ([], {'table': 'table', 'columns': ['one']}, 'SELECT one FROM table'),
         ([], {
             'table': 'table',
+            'columns': ['one', 'two'],
             'joins': [
                 ('table_two', 'table_two.other_id = table.id'),
                 ('table_three', 'table_three.other_id = table.id')
             ]
-        }, 'SELECT * FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
+        }, 'SELECT one, two FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
          'table_three ON table_three.other_id = table.id'),
         (['one', 'two'], {
             'table': 'table',
+            'columns': ['one', 'two'],
             'where': [
                 'col1 = $1',
                 'col2 = $2'
             ]
-        }, 'SELECT * FROM table WHERE col1 = $1 AND col2 = $2'),
+        }, 'SELECT one, two FROM table WHERE col1 = $1 AND col2 = $2'),
         ([], {
             'table': 'table',
+            'columns': ['one', 'two'],
             'order_by': 'col1'
-        }, 'SELECT * FROM table ORDER BY col1 ASC'),
+        }, 'SELECT one, two FROM table ORDER BY col1 ASC'),
         (['one', 'two'], {
             'table': 'table AS t1',
             'columns': ['t1.one', 't2.two', 't3.three'],
@@ -65,11 +67,12 @@ class TestDbUtil(object):
     @pytest.mark.parametrize('args,kwargs,expected_query', [
         (['one', 'two'], {
             'table': 'table',
+            'columns': ['col1'],
             'where': [
                 'col1 = $1',
                 'col2 = $2'
             ]
-        }, 'SELECT * FROM table WHERE col1 = $1 AND col2 = $2'),
+        }, 'SELECT col1 FROM table WHERE col1 = $1 AND col2 = $2'),
         (['one', 'two'], {
             'table': 'table',
             'columns': ['col1', 'col2', 'col3'],
@@ -80,12 +83,13 @@ class TestDbUtil(object):
         }, 'SELECT col1, col2, col3 FROM table WHERE col1 = $1 AND col2 = $2'),
         (['one'], {
             'table': 'table',
+            'columns': ['col1', 'col2', 'col3'],
             'where': ['table.col1 = $1'],
             'joins': [
                 ('table_two', 'table_two.other_id = table.id'),
                 ('table_three', 'table_three.other_id = table.id')
             ]
-        }, 'SELECT * FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
+        }, 'SELECT col1, col2, col3 FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
          'table_three ON table_three.other_id = table.id '
          'WHERE table.col1 = $1'),
         (['one', 'two'], {
@@ -114,9 +118,10 @@ class TestDbUtil(object):
     @pytest.mark.parametrize('args,kwargs,expected_query', [
         ([], {
             'table': 'table',
+            'columns': ['col1'],
             'search_columns': ['col3'],
             'terms': ['term1']
-        }, 'SELECT * FROM table WHERE '
+        }, 'SELECT col1 FROM table WHERE '
          "to_tsvector('english', col3) "
          "@@ to_tsquery('english', 'term1')"),
         ([], {
@@ -131,44 +136,48 @@ class TestDbUtil(object):
          "@@ to_tsquery('english', 'term1 & term2 & term3')"),
         (['one', 'two'], {
             'table': 'table',
+            'columns': ['col1', 'col2'],
             'where': [
                 'col1 = $1',
                 'col2 = $2'
             ],
             'search_columns': ['col3'],
             'terms': ['term1']
-        }, 'SELECT * FROM table WHERE col1 = $1 AND col2 = $2 AND '
+        }, 'SELECT col1, col2 FROM table WHERE col1 = $1 AND col2 = $2 AND '
          "to_tsvector('english', col3) "
          "@@ to_tsquery('english', 'term1')"),
         ([], {
             'table': 'table',
+            'columns': ['col1', 'col2'],
             'joins': [
                 ('table_two', 'table_two.other_id = table.id'),
                 ('table_three', 'table_three.other_id = table.id')
             ],
             'search_columns': ['table.col3'],
             'terms': ['term1']
-        }, 'SELECT * FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
+        }, 'SELECT col1, col2 FROM table JOIN table_two ON table_two.other_id = table.id JOIN '
          'table_three ON table_three.other_id = table.id '
          "WHERE to_tsvector('english', table.col3) "
          "@@ to_tsquery('english', 'term1')"),
         (['one', 'two'], {
             'table': 'table',
+            'columns': ['col1', 'col2'],
             'where': [
                 'col1 = $1',
                 'col2 = $2'
             ],
             'search_columns': ['col3'],
             'terms': ['term1']
-        }, 'SELECT * FROM table WHERE col1 = $1 AND col2 = $2 '
+        }, 'SELECT col1, col2 FROM table WHERE col1 = $1 AND col2 = $2 '
          "AND to_tsvector('english', col3) "
          "@@ to_tsquery('english', 'term1')"),
         ([], {
             'table': 'table',
+            'columns': ['col1', 'col2'],
             'search_columns': ['col3'],
             'terms': ['term1'],
             'order_by': 'col1'
-        }, 'SELECT * FROM table '
+        }, 'SELECT col1, col2 FROM table '
          "WHERE to_tsvector('english', col3) "
          "@@ to_tsquery('english', 'term1') "
          'ORDER BY col1 ASC'),
