@@ -3,24 +3,22 @@ from setuptools import setup  # type: ignore
 import re
 
 
-requirements: List[str] = []
-dependency_links: List[str] = []
-db_requirements: List[str]
+requirements = [
+    'async_timeout>=3.0.0',
+    'attrs>=18.1.0',
+    'click>=6.7',
+    'mypy_extensions>=0.3.0',
+    'typing-extensions>=3.6.5'
+]
 
-with open('requirements/base.txt') as f:
-    lines: List[str] = f.read().splitlines()
-
-    for line in lines:
-        if line.startswith('git+https'):
-            dependency_links.append(line)
-        else:
-            requirements.append(line)
-
-with open('requirements/db.txt') as f:
-    db_requirements = [line for line in f.read().splitlines() if not line.startswith('-r ')]
+dependency_links = [
+    'git+https://github.com/Rapptz/discord.py@607771c4f49a12d984d782883a580e7332359a10#egg=discord.py'
+]
 
 extras_require = {
-    'db': db_requirements
+    'db': [
+        'asyncpg>=0.15.0'
+    ]
 }
 
 version = ''

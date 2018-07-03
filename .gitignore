@@ -1,6 +1,7 @@
 .mypy_cache/
 .pytest_cache/
 __pycache__/
+botus_receptus.egg-info/
 /htmlcov/
 /venv/
 .coverage*
