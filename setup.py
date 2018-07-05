@@ -1,4 +1,3 @@
-from typing import List
 from setuptools import setup  # type: ignore
 import re
 
@@ -12,7 +11,7 @@ requirements = [
 ]
 
 dependency_links = [
-    'git+https://github.com/Rapptz/discord.py@607771c4f49a12d984d782883a580e7332359a10#egg=discord.py'
+    'git+https://github.com/Rapptz/discord.py@ec3435b22418d36a01c04d2098a70d71844a4c87#egg=discord.py'
 ]
 
 extras_require = {

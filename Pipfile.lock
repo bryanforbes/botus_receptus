@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bf00cc9ba4c00cf9bfec0e50485e19e8b27446aaa0468c60734e95a39ddd3e31"
+            "sha256": "5a69f1898eaf9cc51d582da589ba5918620cd7dc305c595e71602e709e89dcc0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -84,7 +84,7 @@
         "discord.py": {
             "editable": true,
             "git": "https://github.com/Rapptz/discord.py",
-            "ref": "607771c4f49a12d984d782883a580e7332359a10"
+            "ref": "ec3435b22418d36a01c04d2098a70d71844a4c87"
         },
         "e1839a8": {
             "editable": true,
@@ -102,9 +102,9 @@
         },
         "idna-ssl": {
             "hashes": [
-                "sha256:1293f030bc608e9aa9cdee72aa93c1521bbb9c7698068c61c9ada6772162b979"
+                "sha256:a933e3bb13da54383f9e8f35dc4f9cb9eb9b3b78c6b36f311254d6d0d92c6c7c"
             ],
-            "version": "==1.0.1"
+            "version": "==1.1.0"
         },
         "multidict": {
             "hashes": [
@@ -286,11 +286,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:8ea01fc4fcc8e1b1e305252b4bc80a1528019ab99fd3b88666c9dc38d754406c",
-                "sha256:90898786b3d0b880b47645bae7b51aa9bbf1e9d1e4510c2cfd15dd65c70ea0cd"
+                "sha256:0453c8676c2bee6feb0434748b068d5510273a916295fd61d306c4f22fbfd752",
+                "sha256:4b208614ae6d98195430ad6bde03641c78553acee7c83cec2e85d613c0cd383d"
             ],
             "index": "pypi",
-            "version": "==3.6.2"
+            "version": "==3.6.3"
         },
         "pytest-asyncio": {
             "hashes": [
