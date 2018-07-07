@@ -1,6 +1,6 @@
 from typing import Any, cast, TypeVar, Type, Generic, ClassVar, overload, Optional, Union
-from typing import _Union  # type: ignore
 
+import sys
 import aiohttp
 import async_timeout
 import json
@@ -15,8 +15,23 @@ from . import abc
 old_do_conversion = commands.Command.do_conversion
 
 
+NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)
+
+if NEW_TYPING:
+    from typing import _GenericAlias  # type: ignore
+else:
+    from typing import _Union  # type: ignore
+
+
+def is_union(tp: Any) -> bool:
+    if NEW_TYPING:
+        return isinstance(tp, _GenericAlias) and tp.__origin__ is Union
+    else:
+        return isinstance(tp, _Union)
+
+
 async def do_conversion(self: Any, ctx: commands.Context, converter: Any, argument: str) -> Any:
-    if isinstance(converter, _Union):
+    if is_union(converter):
         args = converter.__args__
 
         # Optional[T]
