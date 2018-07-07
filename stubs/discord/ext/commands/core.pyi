@@ -1,11 +1,12 @@
-from typing import Any, Callable, Dict, Optional, Iterator, Union, Awaitable, Type, ValuesView, List, TypeVar
+from typing import Any, Callable, Dict, Optional, Iterator, Union, Coroutine, Type, ValuesView, List, TypeVar
 from .context import Context
 from .cooldowns import CooldownMapping, BucketType
 
-CallbackType = Callable[..., Awaitable[Any]]
-ErrorHandlerType = Callable[..., Awaitable[None]]
-CheckType = Union[Callable[[Context], bool],
-                  Callable[[Context], Awaitable[bool]]]
+CallbackType = Callable[..., Coroutine[Any, Any, Any]]
+ErrorHandlerType = Callable[..., Coroutine[Any, Any, None]]
+ContextType = TypeVar('ContextType', bound=Context)
+CheckType = Union[Callable[[ContextType], bool],
+                  Callable[[ContextType], Coroutine[Any, Any, bool]]]
 
 
 class Command:

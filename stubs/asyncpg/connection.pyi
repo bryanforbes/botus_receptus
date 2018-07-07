@@ -12,7 +12,7 @@ from .prepared_stmt import PreparedStatement
 from .transaction import Transaction
 from collections import namedtuple
 from typing import (
-    Any, Optional, Union, Type, TypeVar, overload, Callable, List, Iterable, Sequence, IO, Awaitable,
+    Any, Optional, Union, Type, TypeVar, Callable, List, Iterable, Sequence, IO, Coroutine,
     AsyncIterable
 )
 from os import PathLike
@@ -40,13 +40,15 @@ class Connection:
     async def fetch(self, query: str, *args, timeout: float = ...) -> List[Record[Any]]: ...
     async def fetchval(self, query: str, *args, column: int = ..., timeout: float = ...) -> Optional[Any]: ...
     async def fetchrow(self, query: str, *args, timeout: float = ...) -> Optional[Record[Any]]: ...
-    async def copy_from_table(self, table_name: str, *, output: Union[PathLike, IO, Callable[[bytes], Awaitable[Any]]],
+    async def copy_from_table(self, table_name: str, *, output: Union[PathLike, IO, Callable[[bytes],
+                                                                                             Coroutine[Any, Any, Any]]],
                               columns: List[str] = ..., schema_name: str = ..., timeout: float = ...,
                               format: Optional[Any] = ..., oids: Optional[Any] = ..., delimiter: Optional[Any] = ...,
                               null: Optional[Any] = ..., header: Optional[Any] = ..., quote: Optional[Any] = ...,
                               escape: Optional[Any] = ..., force_quote: Optional[Any] = ...,
                               encoding: Optional[Any] = ...) -> str: ...
-    async def copy_from_query(self, query: str, *args, output: Union[PathLike, IO, Callable[[bytes], Awaitable[Any]]],
+    async def copy_from_query(self, query: str, *args, output: Union[PathLike, IO, Callable[[bytes],
+                                                                                            Coroutine[Any, Any, Any]]],
                               timeout: float = ..., format: Optional[Any] = ...,
                               oids: Optional[Any] = ..., delimiter: Optional[Any] = ..., null: Optional[Any] = ...,
                               header: Optional[Any] = ..., quote: Optional[Any] = ..., escape: Optional[Any] = ...,

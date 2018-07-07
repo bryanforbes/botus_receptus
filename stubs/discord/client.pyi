@@ -1,4 +1,4 @@
-from typing import Union, Callable, Awaitable, TypeVar, Optional, List, NamedTuple, Any
+from typing import Union, Callable, TypeVar, Optional, List, NamedTuple, Any, Coroutine
 from asyncio import AbstractEventLoop
 from .user import User, ClientUser
 from .enums import Status
@@ -8,9 +8,7 @@ from .emoji import Emoji
 from .abc import PrivateChannel, GuildChannel
 from .voice_client import VoiceClient
 
-_Type = TypeVar('_Type')
 _ReturnType = TypeVar('_ReturnType')
-_CoroType = Callable[..., Awaitable[_Type]]
 
 
 class AppInfo(NamedTuple):
@@ -81,7 +79,8 @@ class Client:
 
     def get_emoji(self, id: int) -> Optional[Emoji]: ...
 
-    def event(self, coro: _CoroType[_ReturnType]) -> _CoroType[_ReturnType]: ...
+    def event(self, coro: Callable[..., Coroutine[Any, Any, _ReturnType]]) -> \
+        Callable[..., Coroutine[Any, Any, _ReturnType]]: ...
 
     async def change_presence(self, *, activity: Optional[Union[Activity, Game, Streaming, Spotify]] = ...,
                               status: Optional[Status] = ..., afk: bool = ...) -> None: ...
