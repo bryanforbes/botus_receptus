@@ -4,11 +4,11 @@ from inspect import Parameter
 from .cooldowns import Cooldown
 import discord
 
-__all__ = ['CommandError', 'MissingRequiredArgument', 'BadArgument',
+__all__ = ['CommandError', 'ConversionError', 'MissingRequiredArgument', 'BadArgument',
            'NoPrivateMessage', 'CheckFailure', 'CommandNotFound',
            'DisabledCommand', 'CommandInvokeError', 'TooManyArguments',
            'UserInputError', 'CommandOnCooldown', 'NotOwner',
-           'MissingPermissions', 'BotMissingPermissions']
+           'MissingPermissions', 'BotMissingPermissions', 'BadUnionArgument']
 
 
 class CommandError(DiscordException):
