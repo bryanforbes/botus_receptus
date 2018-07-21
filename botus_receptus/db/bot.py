@@ -1,7 +1,8 @@
-from typing import Any, TypeVar, Type, Generic, cast, ClassVar
+from typing import Any, TypeVar, Type, Generic, cast, ClassVar, Dict
 from configparser import ConfigParser
 
 import discord
+import asyncio
 
 try:
     from asyncpg import create_pool
@@ -28,11 +29,19 @@ class Bot(BaseBot[DbContextType], Generic[DbContextType]):
 
         super().__init__(config, *args, **kwargs)
 
+        pool_kwargs: Dict[str, Any] = {}
+
+        if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(cast(Any, self).__init_connection__):
+            pool_kwargs['init'] = cast(Any, self).__init_connection__
+        if hasattr(self, '__setup_connection__') and asyncio.iscoroutinefunction(cast(Any, self).__setup_connection__):
+            pool_kwargs['setup'] = cast(Any, self).__setup_connection__
+
         self.pool = self.loop.run_until_complete(
             create_pool(
                 self.config.get('bot', 'db_url'),
                 min_size=1,
-                max_size=10
+                max_size=10,
+                **pool_kwargs
             )
         )
 
