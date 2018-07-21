@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Any, Tuple
 from discord.errors import DiscordException
 from inspect import Parameter
 from .cooldowns import Cooldown
@@ -13,6 +13,13 @@ __all__ = ['CommandError', 'MissingRequiredArgument', 'BadArgument',
 
 class CommandError(DiscordException):
     def __init__(self, message: Optional[str] = ..., *args) -> None: ...
+
+
+class ConversionError(DiscordException):
+    converter: Any
+    original: Exception
+
+    def __init__(self, converter: Any, original: Exception) -> None: ...
 
 
 class UserInputError(CommandError):
@@ -76,3 +83,11 @@ class BotMissingPermissions(CheckFailure):
     missing_perms: List[discord.Permissions]
 
     def __init__(self, missing_perms: List[discord.Permissions], *args) -> None: ...
+
+
+class BadUnionArgument(UserInputError):
+    param: Parameter
+    converters: Tuple[Any]
+    errors: List[CommandError]
+
+    def __init__(self, param: Parameter, converters: Tuple[Any], errors: List[CommandError]) -> None: ...

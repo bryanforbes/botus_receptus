@@ -1,4 +1,4 @@
-from typing import AsyncIterator as TypingAsyncIterator, TypeVar, Any, List, Optional, Union
+from typing import AsyncIterator as TypingAsyncIterator, TypeVar, Any, List, Optional, Union, Awaitable
 from datetime import datetime
 from .user import User
 from .member import Member
@@ -14,6 +14,8 @@ _T = TypeVar('_T')
 
 
 class _AsyncIterator(TypingAsyncIterator[_T]):
+    def __anext__(self) -> Awaitable[_T]: ...
+
     def get(self, **attrs: Any) -> _T: ...
 
     async def find(self, predicate: Any) -> _T: ...

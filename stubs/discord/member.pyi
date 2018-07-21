@@ -7,6 +7,7 @@ from .message import Message
 from .role import Role
 from .permissions import Permissions
 from .channel import VoiceChannel
+from .guild import Guild
 from datetime import datetime
 
 
@@ -25,6 +26,7 @@ class Member(Messageable, _BaseUser):
     status: Status
     activity: Union[Activity, Game, Streaming, Spotify]
     nick: Optional[str]
+    guild: Guild
 
     # From BaseUser:
     name: str
@@ -88,7 +90,7 @@ class Member(Messageable, _BaseUser):
     async def kick(self, *, reason: Optional[str] = ...) -> None: ...
 
     async def edit(self, *, reason: Optional[str] = ..., nick: Optional[str] = ..., mute: bool = ...,
-                   deafen: bool = ..., roles: List[Role] = ...) -> None: ...
+                   deafen: bool = ..., roles: List[Role] = ..., voice_channel: VoiceChannel = ...) -> None: ...
 
     async def move_to(self, channel: VoiceChannel, *, reason: Optional[str] = ...) -> None: ...
 

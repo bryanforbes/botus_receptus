@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 "e1839a8" = {path = ".", editable = true, extras = ["db"]}
-"discord.py" = {ref = "ec3435b22418d36a01c04d2098a70d71844a4c87", git = "https://github.com/Rapptz/discord.py", editable = true}
+"discord.py" = {ref = "8d3b2d0b7094d924b1f1640c1ef75c40cfe180b2", git = "https://github.com/Rapptz/discord.py", editable = true}
 
 [dev-packages]
 flake8 = "*"

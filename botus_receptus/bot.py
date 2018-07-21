@@ -1,6 +1,5 @@
 from typing import Any, cast, TypeVar, Type, Generic, ClassVar, overload, Optional, Union
 
-import sys
 import aiohttp
 import async_timeout
 import json
@@ -10,38 +9,6 @@ from discord.ext import commands
 from configparser import ConfigParser
 
 from . import abc
-
-
-old_do_conversion = commands.Command.do_conversion
-
-
-NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)
-
-if NEW_TYPING:
-    from typing import _GenericAlias  # type: ignore
-else:
-    from typing import _Union  # type: ignore
-
-
-def is_union(tp: Any) -> bool:
-    if NEW_TYPING:
-        return isinstance(tp, _GenericAlias) and tp.__origin__ is Union
-    else:
-        return isinstance(tp, _Union)
-
-
-async def do_conversion(self: Any, ctx: commands.Context, converter: Any, argument: str) -> Any:
-    if is_union(converter):
-        args = converter.__args__
-
-        # Optional[T]
-        if len(args) == 2 and args[1] == type(None):  # noqa: E721
-            converter = args[0]
-
-    return await old_do_conversion(self, ctx, converter, argument)
-
-
-commands.Command.do_conversion = do_conversion  # type: ignore
 
 
 ContextType = TypeVar('ContextType', bound=commands.Context)

@@ -1,8 +1,9 @@
 import asyncio
 from typing import (
     Dict, Mapping, Iterable, Callable, Union, AsyncContextManager, Any, Optional, TypeVar, IO, Generator, Coroutine,
-    Tuple, overload
+    Tuple, overload, Type
 )
+from types import TracebackType
 from .connector import BaseConnector
 from .abc import AbstractCookieJar
 from .helpers import BasicAuth
@@ -15,6 +16,13 @@ _RT = TypeVar('_RT')
 
 
 class _BaseRequestContextManager(Coroutine[Any, None, _RT], AsyncContextManager[_RT]):
+    def send(self, arg: None) -> Any: ...
+
+    def throw(self, typ: Type[BaseException], val: Optional[BaseException] = ...,
+              tb: Optional[TracebackType] = ...) -> Any: ...
+
+    def close(self) -> None: ...
+
     def __await__(self) -> Generator[Any, None, _RT]:
         ...
 

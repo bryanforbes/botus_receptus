@@ -11,12 +11,12 @@ requirements = [
 ]
 
 dependency_links = [
-    'git+https://github.com/Rapptz/discord.py@ec3435b22418d36a01c04d2098a70d71844a4c87#egg=discord.py'
+    'git+https://github.com/Rapptz/discord.py@8d3b2d0b7094d924b1f1640c1ef75c40cfe180b2#egg=discord.py'
 ]
 
 extras_require = {
     'db': [
-        'asyncpg>=0.15.0'
+        'asyncpg>=0.17.0'
     ]
 }
 

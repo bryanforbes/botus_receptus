@@ -1,4 +1,4 @@
-from typing import Iterable, Any, Sized, Union, Optional
+from typing import Iterable, Iterator, Any, Sized, Union, Optional
 from datetime import datetime
 from . import enums
 from .member import Member
@@ -6,7 +6,9 @@ from .user import User
 
 
 class AuditLogDiff(Sized, Iterable[Any]):
-    ...
+    def __len__(self) -> int: ...
+
+    def __iter__(self) -> Iterator[Any]: ...
 
 
 class AuditLogChanges:

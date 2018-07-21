@@ -10,15 +10,15 @@ class AsyncMixin(object):
         return _mock_self._mock_call(*args, **kwargs)
 
 
-class AsyncMock(AsyncMixin, Mock):
+class AsyncMock(AsyncMixin, Mock):  # type: ignore
     pass
 
 
-class AsyncMagicMock(AsyncMixin, MagicMock):
+class AsyncMagicMock(AsyncMixin, MagicMock):  # type: ignore
     pass
 
 
-class AsyncWithMockType(Mock, AsyncContextManager[AsyncMock]):
+class AsyncWithMockType(Mock, AsyncContextManager[AsyncMock]):  # type: ignore
     pass
 
 

@@ -1,4 +1,5 @@
-from typing import Any, Callable, Dict, Optional, Iterator, Union, Coroutine, Type, ValuesView, List, TypeVar
+from typing import Any, Callable, Dict, Optional, Iterator, Union, Coroutine, Type, ValuesView, List, TypeVar, Mapping
+from inspect import Parameter
 from .context import Context
 from .cooldowns import CooldownMapping, BucketType
 
@@ -21,6 +22,7 @@ class Command:
     checks: List[CheckType]
     description: str
     hidden: bool
+    params: Mapping[str, Parameter]
     _buckets: CooldownMapping
 
     def __init__(self, name: str, callback: CallbackType, *, enabled: bool = ...,
@@ -39,11 +41,18 @@ class Command:
     @property
     def short_doc(self) -> str: ...
 
+    @property
+    def signature(self) -> str: ...
+
+    async def can_run(self, ctx: Context) -> bool: ...
+
     def is_on_cooldown(self, ctx: Context) -> bool: ...
 
     def reset_cooldown(self, ctx: Context) -> None: ...
 
-    async def do_conversion(self, ctx: Context, converter: Any, argument: str) -> Any: ...
+    async def do_conversion(self, ctx: Context, converter: Any, argument: str, param: Parameter) -> Any: ...
+
+    async def transform(self, ctx: Context, param: Parameter) -> Any: ...
 
 
 class GroupMixin:
@@ -71,15 +80,25 @@ class GroupMixin:
 class Group(GroupMixin, Command):
     invoke_without_command: bool
 
+    def __init__(self, *, invoke_without_command: bool = ...,
+                 case_insensitive: bool = ...) -> None: ...
+
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=Union[FuncType, Command])
 
 
-def command(name: Optional[str] = ..., cls: Optional[Type[Command]] = ..., **kwargs) -> Callable[..., Command]: ...
+def command(name: Optional[str] = ..., cls: Optional[Type[Command]] = ..., *, enabled: bool = ...,
+            help: Optional[str] = ..., brief: Optional[str] = ..., usage: Optional[str] = ...,
+            rest_is_raw: bool = ..., aliases: List[str] = ..., description: str = ...,
+            hidden: bool = ...) -> Callable[..., Command]: ...
 
 
-def group(name: Optional[str] = ..., cls: Optional[Type[Group]] = ..., **kwargs) -> Callable[..., Group]: ...
+def group(name: Optional[str] = ..., cls: Optional[Type[Group]] = ..., invoke_without_command: bool = ...,
+          case_insensitive: bool = ..., enabled: bool = ...,
+          help: Optional[str] = ..., brief: Optional[str] = ..., usage: Optional[str] = ...,
+          rest_is_raw: bool = ..., aliases: List[str] = ..., description: str = ...,
+          hidden: bool = ...) -> Callable[..., Group]: ...
 
 
 def check(predicate: CheckType) -> Callable[[F], F]: ...
