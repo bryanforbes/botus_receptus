@@ -11,7 +11,7 @@ requirements = [
 ]
 
 dependency_links = [
-    'git+https://github.com/Rapptz/discord.py@8d3b2d0b7094d924b1f1640c1ef75c40cfe180b2#egg=discord.py'
+    'git+https://github.com/bryanforbes/discord.py@486f7f053fc71d7da22edd310de78eaa5ad09cf0#egg=discord.py[typings]'
 ]
 
 extras_require = {
@@ -54,20 +54,18 @@ setup(name='botus_receptus',
       version=version,
       packages=[
           'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs',
-          'discord-stubs', 'uvloop-stubs'
+          'uvloop-stubs'
       ],
       package_data={
           'botus_receptus': ['py.typed'],
           'aiohttp-stubs': ['*.pyi'],
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
-          'discord-stubs': ['*.pyi', 'ext/*.pyi', 'ext/commands/*.pyi'],
           'uvloop-stubs': ['*.pyi']
       },
       package_dir={
           'botus_receptus': 'botus_receptus',
           'aiohttp-stubs': 'stubs/aiohttp',
           'asyncpg-stubs': 'stubs/asyncpg',
-          'discord-stubs': 'stubs/discord',
           'uvloop-stubs': 'stubs/uvloop'
       },
       license='BSD 3-Clause',
