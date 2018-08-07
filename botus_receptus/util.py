@@ -3,10 +3,10 @@ from itertools import filterfalse
 
 import discord
 
-_T = TypeVar('_T')
+T = TypeVar('T')
 
 
-def unique_seen(iterable: Iterable[_T], get_key: Optional[Callable[[_T], Any]] = None) -> Iterator[_T]:
+def unique_seen(iterable: Iterable[T], get_key: Optional[Callable[[T], Any]] = None) -> Iterator[T]:
     seen: Set[Any] = set()
     if get_key is None:
         for element in filterfalse(seen.__contains__, iterable):

@@ -1,4 +1,4 @@
-from typing import Any, cast, TypeVar, Type, Generic, ClassVar, overload, Optional, Union
+from typing import Any, cast, TypeVar, Type, ClassVar, overload, Optional, Union
 
 import aiohttp
 import async_timeout
@@ -11,16 +11,16 @@ from configparser import ConfigParser
 from . import abc
 
 
-ContextType = TypeVar('ContextType', bound=commands.Context)
-OverrideType = TypeVar('OverrideType', bound=commands.Context)
+CT = TypeVar('CT', bound=commands.Context)
+OT = TypeVar('OT', bound=commands.Context)
 
 
-class Bot(commands.Bot, Generic[ContextType]):
+class Bot(commands.Bot[CT]):
     bot_name: str
     config: ConfigParser
     default_prefix: str  # noqa
     session: aiohttp.ClientSession
-    context_cls: ClassVar[Type[ContextType]] = cast(Type[ContextType], commands.Context)
+    context_cls: ClassVar[Type[CT]] = cast(Type[CT], commands.Context)
 
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         self.config = config
@@ -32,14 +32,14 @@ class Bot(commands.Bot, Generic[ContextType]):
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     @overload
-    async def get_context(self, message: discord.Message) -> ContextType: pass
+    async def get_context(self, message: discord.Message) -> CT: pass
 
     @overload  # noqa: F811
-    async def get_context(self, message: discord.Message, *, cls: Type[OverrideType]) -> OverrideType: pass
+    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT: pass
 
     async def get_context(self, message: discord.Message, *,  # noqa: F811
-                          cls: Optional[Type[OverrideType]] = None) -> Union[ContextType, OverrideType]:
-        context_cls: Union[Type[ContextType], Type[OverrideType]]
+                          cls: Optional[Type[OT]] = None) -> Union[CT, OT]:
+        context_cls: Union[Type[CT], Type[OT]]
         if cls is None:
             context_cls = self.context_cls
         else:
@@ -55,7 +55,7 @@ class Bot(commands.Bot, Generic[ContextType]):
         await self.session.close()
 
 
-class DblBot(Bot[ContextType], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove, Generic[ContextType]):
+class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
     async def _report_guilds(self) -> None:
         token = self.config.get('bot', 'dbl_token', fallback='')
         if not token:

@@ -3,22 +3,22 @@ from abc import abstractmethod, ABCMeta
 from datetime import datetime
 import discord
 
-ContextType_contra = TypeVar('ContextType_contra', contravariant=True)
+CT_contra = TypeVar('CT_contra', contravariant=True)
 
 
-class OnCommandError(Generic[ContextType_contra]):
+class OnCommandError(Generic[CT_contra]):
     @abstractmethod
-    async def on_command_error(self, context: ContextType_contra, exception: Exception) -> None: ...
+    async def on_command_error(self, context: CT_contra, exception: Exception) -> None: ...
 
 
-class OnCommand(Generic[ContextType_contra]):
+class OnCommand(Generic[CT_contra]):
     @abstractmethod
-    async def on_command(self, context: ContextType_contra) -> None: ...
+    async def on_command(self, context: CT_contra) -> None: ...
 
 
-class OnCommandCompletion(Generic[ContextType_contra]):
+class OnCommandCompletion(Generic[CT_contra]):
     @abstractmethod
-    async def on_command_completion(self, context: ContextType_contra) -> None: ...
+    async def on_command_completion(self, context: CT_contra) -> None: ...
 
 
 class OnMessageDelete(metaclass=ABCMeta):

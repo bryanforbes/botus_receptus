@@ -1,13 +1,10 @@
-from typing import TypeVar, Type, cast, Any, Union, Dict
+from typing import Type, cast, Any, Union, Dict
 from configparser import ConfigParser
 
 import click
 
 from .bot import Bot
 from .logging import setup_logging
-
-
-BotType = TypeVar('BotType', bound=Bot)
 
 
 def config_callback(ctx: click.Context, param: Union[click.Option, click.Parameter],

@@ -41,10 +41,10 @@ class EmbedContext(commands.Context):
                          image: Optional[str] = None,
                          timestamp: Optional[datetime] = None,
                          fields: Optional[List[FieldData]] = None,
-                         tts: bool = False, file: Optional[object] = None,
-                         files: Optional[List[object]] = None, delete_after: Optional[float] = None,
+                         tts: bool = False, file: Optional[discord.File] = None,
+                         files: Optional[List[discord.File]] = None, delete_after: Optional[float] = None,
                          nonce: Optional[int] = None) -> discord.Message:
-        embed: discord.Embed = discord.Embed(description=description)
+        embed = discord.Embed(description=description)
 
         if title is not None:
             embed.title = title
