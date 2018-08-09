@@ -39,7 +39,7 @@ if version.endswith(('a', 'b', 'rc')):
         pass
 
 dependency_links = [
-    'git+https://github.com/bryanforbes/discord.py@990e9e89c67c6a1ab609e5a2f2c09b4d28f87abc#egg=discord.py[typings]'
+    'git+https://github.com/bryanforbes/discord.py@3bbae11dd637528fb3fbff9dfcab2dcb50d997b6#egg=discord.py[typings]'
 ]
 
 extras_require = {
