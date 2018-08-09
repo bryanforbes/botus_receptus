@@ -63,4 +63,5 @@ setup(name='botus_receptus',
       package_dir={'': 'src'},
       license='BSD 3-Clause',
       install_requires=requirements,
-      extras_require=extras_require)
+      extras_require=extras_require,
+      dependency_links=dependency_links)
