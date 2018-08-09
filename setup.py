@@ -11,7 +11,7 @@ requirements = [
 ]
 
 dependency_links = [
-    'git+https://github.com/bryanforbes/discord.py@f79cc8ad01cf03dcca2d4f83051a743c193c6f41#egg=discord.py[typings]'
+    'git+https://github.com/bryanforbes/discord.py@990e9e89c67c6a1ab609e5a2f2c09b4d28f87abc#egg=discord.py[typings]'
 ]
 
 extras_require = {
