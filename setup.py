@@ -10,16 +10,6 @@ requirements = [
     'typing-extensions>=3.6.5'
 ]
 
-dependency_links = [
-    'git+https://github.com/bryanforbes/discord.py@990e9e89c67c6a1ab609e5a2f2c09b4d28f87abc#egg=discord.py[typings]'
-]
-
-extras_require = {
-    'db': [
-        'asyncpg>=0.17.0'
-    ]
-}
-
 version = ''
 with open('src/botus_receptus/__init__.py') as f:
     match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)
@@ -48,6 +38,14 @@ if version.endswith(('a', 'b', 'rc')):
     except Exception:
         pass
 
+dependency_links = [
+    'git+https://github.com/bryanforbes/discord.py@990e9e89c67c6a1ab609e5a2f2c09b4d28f87abc#egg=discord.py[typings]'
+]
+
+extras_require = {
+    'db': ['asyncpg>=0.17.0']
+}
+
 setup(name='botus_receptus',
       author='Bryan Forbes',
       url='https://github.com/BryanForbes/botus_receptus',
@@ -64,6 +62,5 @@ setup(name='botus_receptus',
       },
       package_dir={'': 'src'},
       license='BSD 3-Clause',
-      extras_require=extras_require,
       install_requires=requirements,
-      dependency_links=dependency_links)
+      extras_require=extras_require)
