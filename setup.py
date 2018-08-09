@@ -11,7 +11,7 @@ requirements = [
 ]
 
 dependency_links = [
-    'git+https://github.com/bryanforbes/discord.py@69970153c702a315362afc1f93a16ec8650a1a6f#egg=discord.py[typings]'
+    'git+https://github.com/bryanforbes/discord.py@f79cc8ad01cf03dcca2d4f83051a743c193c6f41#egg=discord.py[typings]'
 ]
 
 extras_require = {
@@ -21,7 +21,7 @@ extras_require = {
 }
 
 version = ''
-with open('botus_receptus/__init__.py') as f:
+with open('src/botus_receptus/__init__.py') as f:
     match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)
 
     if match is not None:
@@ -62,12 +62,7 @@ setup(name='botus_receptus',
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
           'uvloop-stubs': ['*.pyi']
       },
-      package_dir={
-          'botus_receptus': 'botus_receptus',
-          'aiohttp-stubs': 'stubs/aiohttp',
-          'asyncpg-stubs': 'stubs/asyncpg',
-          'uvloop-stubs': 'stubs/uvloop'
-      },
+      package_dir={'': 'src'},
       license='BSD 3-Clause',
       extras_require=extras_require,
       install_requires=requirements,

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "eef9713c003d19bef96ec7c41275254b4ca6fffe9b7a356367b819942dd5f9d8"
+            "sha256": "3aef6aed367ebd3f4f87ccb8c972d8793a4bfef433b87dd293ee80aa5822d4ad"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -93,7 +93,7 @@
                 "typings"
             ],
             "git": "https://github.com/bryanforbes/discord.py",
-            "ref": "67720dbb89465624aeb8593e72df0ee59ee7c46c"
+            "ref": "f79cc8ad01cf03dcca2d4f83051a743c193c6f41"
         },
         "e1839a8": {
             "editable": true,
@@ -187,6 +187,7 @@
                 "sha256:f17495e6fe3d377e3faac68121caef6f974fcb9e046bc075bcff40d8e5cc69a4",
                 "sha256:f85900b9cca0c67767bb61b2b9bd53208aaa7373dae633dbe25d179b4bf38aa7"
             ],
+            "markers": "python_version >= '3.4.1'",
             "version": "==1.2.6"
         }
     },
@@ -239,7 +240,7 @@
                 "sha256:e05cb4d9aad6233d67e0541caa7e511fa4047ed7750ec2510d466e806e0255d6",
                 "sha256:f3f501f345f24383c0000395b26b726e46758b71393267aeae0bd36f8b3ade80"
             ],
-            "markers": "python_version != '3.0.*' and python_version != '3.1.*' and python_version != '3.2.*' and python_version >= '2.6' and python_version < '4'",
+            "markers": "python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version >= '2.6' and python_version < '4'",
             "version": "==4.5.1"
         },
         "flake8": {
@@ -278,7 +279,7 @@
                 "sha256:6e3836e39f4d36ae72840833db137f7b7d35105079aee6ec4a62d9f80d594dd1",
                 "sha256:95eb8364a4708392bae89035f45341871286a333f749c3141c20573d2b3876e1"
             ],
-            "markers": "python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.2.*' and python_version != '3.0.*' and python_version >= '2.7'",
+            "markers": "python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version >= '2.7'",
             "version": "==0.7.1"
         },
         "py": {
@@ -286,7 +287,7 @@
                 "sha256:3fd59af7435864e1a243790d322d763925431213b6b8529c6ca71081ace3bbf7",
                 "sha256:e31fb2767eb657cbde86c454f02e99cb846d3cd9d61b318525140214fdc0e98e"
             ],
-            "markers": "python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.2.*' and python_version != '3.0.*' and python_version >= '2.7'",
+            "markers": "python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version >= '2.7'",
             "version": "==1.5.4"
         },
         "pycodestyle": {
