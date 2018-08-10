@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, TypeVar, Type, ClassVar, Dict, cast
 from configparser import ConfigParser
 

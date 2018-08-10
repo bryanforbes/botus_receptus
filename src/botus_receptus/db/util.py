@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Sequence, List, Any, Optional, Tuple, Dict
 from asyncpg import Connection
 

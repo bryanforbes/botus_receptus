@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Callable, Any, TypeVar, Union
 from discord.ext import commands
 import discord

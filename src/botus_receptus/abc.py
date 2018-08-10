@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Generic, TypeVar, Union, List
 from abc import abstractmethod, ABCMeta
 from datetime import datetime

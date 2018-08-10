@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (
     TYPE_CHECKING, AsyncContextManager, Awaitable, Any, Generator, Optional, Callable, List, Sequence, Tuple, Dict,
     TypeVar, cast
@@ -15,7 +17,7 @@ if TYPE_CHECKING:
 
 @attr.s(slots=True, auto_attribs=True)
 class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
-    ctx: 'Context'
+    ctx: Context  # noqa: F821
     timeout: Optional[float] = None
 
     def __await__(self) -> Generator[Any, None, Connection]:

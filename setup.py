@@ -64,4 +64,5 @@ setup(name='botus_receptus',
       license='BSD 3-Clause',
       install_requires=requirements,
       extras_require=extras_require,
+      python_requires=">=3.7",
       dependency_links=dependency_links)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, cast, TypeVar, Type, ClassVar, overload, Optional, Union
 
 import aiohttp

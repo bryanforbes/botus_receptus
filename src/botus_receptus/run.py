@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Type, cast, Any, Union, Dict
 from configparser import ConfigParser
 

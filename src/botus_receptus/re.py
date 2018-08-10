@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Inspired by https://github.com/TehShrike/regex-fun
 
 from typing import Callable, Pattern, AnyStr, cast, Union, Iterator, Iterable
