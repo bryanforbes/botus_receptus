@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "59f69f9ff2096c5a049a57c918222d87819e0d43e4188cb7bb507cc80492aab3"
+            "sha256": "e135723673eed18d1d1eecd5db40afdc57f5390750e5b5ec0fc3cc689251820e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -93,7 +93,7 @@
                 "typings"
             ],
             "git": "https://github.com/bryanforbes/discord.py",
-            "ref": "3bbae11dd637528fb3fbff9dfcab2dcb50d997b6"
+            "ref": "31718c540643329468d462c5433ecff5ff51035a"
         },
         "e1839a8": {
             "editable": true,
