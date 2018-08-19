@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from typing import (
-    TYPE_CHECKING, AsyncContextManager, Awaitable, Any, Generator, Optional, Callable, List, Sequence, Tuple, Dict,
-    TypeVar, cast
+    TYPE_CHECKING, AsyncContextManager, Awaitable, Coroutine, Any, Generator, Optional, Callable, List, Sequence,
+    Tuple, Dict, TypeVar, cast
 )
 from asyncpg import Connection
 from discord.ext import commands
@@ -30,7 +30,7 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
         await self.ctx.release()
 
 
-FunctionType = Callable[..., Awaitable[Any]]
+FunctionType = Callable[..., Coroutine[Any, Any, Any]]
 F = TypeVar('F', bound=FunctionType)
 
 

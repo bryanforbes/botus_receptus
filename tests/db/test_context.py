@@ -29,34 +29,34 @@ class TestContext(object):
     @pytest.fixture
     def mock_bot(self, mocker):
         class MockPool:
-            acquire = mocker.AsyncMock()
-            release = mocker.AsyncMock()
+            acquire = mocker.CoroutineMock()
+            release = mocker.CoroutineMock()
 
         return MockBot(pool=MockPool())
 
     @pytest.fixture
     def mock_select_all(self, mocker):
-        return mocker.patch('botus_receptus.db.context.select_all', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.select_all', new_callable=mocker.CoroutineMock)
 
     @pytest.fixture
     def mock_select_one(self, mocker):
-        return mocker.patch('botus_receptus.db.context.select_one', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.select_one', new_callable=mocker.CoroutineMock)
 
     @pytest.fixture
     def mock_search(self, mocker):
-        return mocker.patch('botus_receptus.db.context.search', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.search', new_callable=mocker.CoroutineMock)
 
     @pytest.fixture
     def mock_update(self, mocker):
-        return mocker.patch('botus_receptus.db.context.update', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.update', new_callable=mocker.CoroutineMock)
 
     @pytest.fixture
     def mock_insert_into(self, mocker):
-        return mocker.patch('botus_receptus.db.context.insert_into', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.insert_into', new_callable=mocker.CoroutineMock)
 
     @pytest.fixture
     def mock_delete_from(self, mocker):
-        return mocker.patch('botus_receptus.db.context.delete_from', new_callable=mocker.AsyncMock)
+        return mocker.patch('botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock)
 
     @pytest.mark.asyncio
     async def test_acquire(self, mocker, mock_bot):

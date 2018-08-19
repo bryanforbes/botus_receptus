@@ -7,9 +7,9 @@ class TestDbUtil(object):
     @pytest.fixture
     def mock_db(self, mocker):
         class MockDb(object):
-            fetch = mocker.AsyncMock()
-            fetchrow = mocker.AsyncMock()
-            execute = mocker.AsyncMock()
+            fetch = mocker.CoroutineMock()
+            fetchrow = mocker.CoroutineMock()
+            execute = mocker.CoroutineMock()
 
         return MockDb()
 

@@ -23,7 +23,7 @@ class MockMessage(object):
 
 @pytest.fixture
 def mock_context_send(mocker):
-    return mocker.patch('discord.ext.commands.Context.send', new_callable=mocker.AsyncMock)
+    return mocker.patch('discord.ext.commands.Context.send')
 
 
 class TestEmbedContext(object):
