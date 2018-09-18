@@ -6,7 +6,7 @@ requirements = [
     'async_timeout>=3.0.0',
     'attrs>=18.1.0',
     'click>=6.7',
-    'mypy_extensions>=0.3.0',
+    'mypy_extensions>=0.4.1',
     'typing-extensions>=3.6.5'
 ]
 
@@ -39,7 +39,7 @@ if version.endswith(('a', 'b', 'rc')):
         pass
 
 dependency_links = [
-    'git+https://github.com/bryanforbes/discord.py@c9d20e5ccb3997a07bf511fc4e48fe106d297670#egg=discord.py[typings]'
+    'git+https://github.com/bryanforbes/discord.py@1e5682656e81a50149b276dee93c49189e610d84#egg=discord.py[typings]'
 ]
 
 extras_require = {
@@ -51,12 +51,10 @@ setup(name='botus_receptus',
       url='https://github.com/BryanForbes/botus_receptus',
       version=version,
       packages=[
-          'botus_receptus', 'botus_receptus.db', 'aiohttp-stubs', 'asyncpg-stubs',
-          'uvloop-stubs'
+          'botus_receptus', 'botus_receptus.db', 'asyncpg-stubs', 'uvloop-stubs'
       ],
       package_data={
           'botus_receptus': ['py.typed'],
-          'aiohttp-stubs': ['*.pyi'],
           'asyncpg-stubs': ['*.pyi', 'exceptions/*.pyi', 'protocol/*.pyi', 'protocol/codecs/*.pyi'],
           'uvloop-stubs': ['*.pyi']
       },

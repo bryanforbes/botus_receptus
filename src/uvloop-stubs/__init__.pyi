@@ -1,8 +1,9 @@
 import asyncio
 from asyncio.events import BaseDefaultEventLoopPolicy as __BasePolicy
+from .loop import Loop as __BaseLoop
 
 
-class Loop(asyncio.AbstractEventLoop):
+class Loop(__BaseLoop, asyncio.AbstractEventLoop):
     ...
 
 
