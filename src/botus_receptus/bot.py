@@ -26,7 +26,7 @@ class Bot(commands.Bot[CT]):
 
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         self.config = config
-        self.bot_name = self.config.get('bot', 'command_prefix')
+        self.bot_name = self.config.get('bot', 'bot_name')
         self.default_prefix = kwargs['command_prefix'] = self.config.get('bot', 'command_prefix', fallback='$')
 
         super().__init__(*args, **kwargs)
@@ -34,12 +34,10 @@ class Bot(commands.Bot[CT]):
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     @overload
-    async def get_context(self, message: discord.Message) -> CT: pass
-
-    @overload  # noqa: F811
-    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT: pass
-
-    async def get_context(self, message: discord.Message, *,  # noqa: F811
+    async def get_context(self, message: discord.Message) -> CT: pass  # pragma: no cover
+    @overload  # noqa: F811, E301
+    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT: pass  # pragma: no cover
+    async def get_context(self, message: discord.Message, *,  # noqa: F811, E301
                           cls: Optional[Type[OT]] = None) -> Union[CT, OT]:
         context_cls: Union[Type[CT], Type[OT]]
         if cls is None:
@@ -58,7 +56,7 @@ class Bot(commands.Bot[CT]):
 
 
 class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
-    async def _report_guilds(self) -> None:
+    async def __report_guilds(self) -> None:
         token = self.config.get('bot', 'dbl_token', fallback='')
         if not token:
             return
@@ -76,13 +74,13 @@ class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
                                     headers=headers)
 
     async def on_ready(self) -> None:
-        await self._report_guilds()
+        await self.__report_guilds()
 
     async def on_guild_available(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
+        await self.__report_guilds()
 
     async def on_guild_join(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
+        await self.__report_guilds()
 
     async def on_guild_remove(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
+        await self.__report_guilds()

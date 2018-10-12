@@ -11,7 +11,12 @@ pytest_mock._get_mock_module._module = asynctest.mock
 
 @pytest.fixture
 def mock_aiohttp(mocker: Any) -> None:
-    mocker.patch('aiohttp.ClientSession')
+    mocker.patch('aiohttp.ClientSession', autospec=True)
+
+
+@pytest.fixture
+def mock_discord_bot(mocker: Any) -> None:
+    mocker.patch('discord.ext.commands.Bot')
 
 
 @pytest.fixture(autouse=True)
