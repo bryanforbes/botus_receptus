@@ -9,7 +9,7 @@ name = "pypi"
 
 [dev-packages]
 flake8 = "*"
-mypy = ">=0.610"
+mypy = ">=0.610,!=0.640"
 pytest = ">=3.6.1"
 pytest-asyncio = "*"
 pytest-cov = "*"
