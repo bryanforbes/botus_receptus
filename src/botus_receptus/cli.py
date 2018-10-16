@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import click
 
 from .bot import Bot
-from .logging import setup_logging
+from . import logging
 
 
 def config_callback(ctx: click.Context, param: Union[click.Option, click.Parameter],
@@ -25,7 +25,7 @@ def config_callback(ctx: click.Context, param: Union[click.Option, click.Paramet
     return parser
 
 
-def run(bot_class: Type[Bot], default_config_path: str) -> None:
+def cli(bot_class: Type[Bot], default_config_path: str) -> click.Command:
     @click.command()
     @click.option('--config', required=True, is_eager=True,
                   type=click.Path(exists=True, file_okay=True, resolve_path=True),
@@ -38,11 +38,11 @@ def run(bot_class: Type[Bot], default_config_path: str) -> None:
         bot_name = config.get('bot', 'bot_name')
         log_level = log_level.upper()
 
-        with setup_logging(bot_name,
-                           config.get('logging', 'log_file', fallback=f'{bot_name}.log'),
-                           log_to_console,
-                           log_level):
+        with logging.setup_logging(bot_name,
+                                   config.get('logging', 'log_file', fallback=f'{bot_name}.log'),
+                                   log_to_console,
+                                   log_level):
             bot = bot_class(config)
             bot.run_with_config()
 
-    main()
+    return main
