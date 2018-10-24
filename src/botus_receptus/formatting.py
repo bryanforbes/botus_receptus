@@ -119,7 +119,7 @@ _formatting_re = re.compile(
 
 
 def remove_mass_mentions(string: str) -> str:
-    return _mass_mention_pattern_re.sub('@\u200b\g<target>', string)
+    return _mass_mention_pattern_re.sub('@\u200b' r'\g<target>', string)
 
 
 def error(text: str) -> str:
@@ -162,6 +162,6 @@ def escape(text: str, *, mass_mentions: bool = False, formatting: bool = False) 
     if mass_mentions:
         text = remove_mass_mentions(text)
     if formatting:
-        text = _formatting_re.sub('\\\\\g<target>', text)
+        text = _formatting_re.sub(r'\\\g<target>', text)
 
     return text
