@@ -43,7 +43,8 @@ dependency_links = [
 ]
 
 extras_require = {
-    'db': ['asyncpg>=0.17.0']
+    'db': ['asyncpg>=0.17.0'],
+    'gino': ['gino>=0.8.0']
 }
 
 setup(name='botus_receptus',
@@ -51,7 +52,7 @@ setup(name='botus_receptus',
       url='https://github.com/BryanForbes/botus_receptus',
       version=version,
       packages=[
-          'botus_receptus', 'botus_receptus.db', 'asyncpg-stubs', 'uvloop-stubs'
+          'botus_receptus', 'botus_receptus.db', 'botus_receptus.gino', 'asyncpg-stubs', 'uvloop-stubs'
       ],
       package_data={
           'botus_receptus': ['py.typed'],

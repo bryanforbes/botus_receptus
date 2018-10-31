@@ -1,6 +1,5 @@
 from . import formatting
 from . import re
-from . import db
 from . import checks
 from . import abc
 from . import util

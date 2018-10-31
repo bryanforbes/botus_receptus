@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"e1839a8" = {path = ".", editable = true, extras = ["db"]}
+"e1839a8" = {path = ".", editable = true, extras = ["db", "gino"]}
 "discord.py" = {ref = "8c18bf868e47740e8ae1c2fb2741b3482412efab", git = "https://github.com/bryanforbes/discord.py", editable = true, extras = ["typings"]}
 
 [dev-packages]
@@ -18,9 +18,12 @@ pytest-mock = "*"
 pytest-mypy = "*"
 asynctest = "*"
 pytest-xdist = "*"
+gino-stubs = {editable = true, ref = "0876b3f85780781d18dba8a3a77a757f8c548b68", git = "https://github.com/bryanforbes/gino-stubs.git"}
+sqlalchemy-stubs = {editable = true, ref = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [requires]
 python_version = "3.7"
 
 [scripts]
 test = "py.test"
+coverage = "py.test --cov-report=html"
