@@ -35,13 +35,15 @@ def cli(bot_class: Type[Bot], default_config_path: str) -> click.Command:
                   type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
                   default='info')
     def main(config: ConfigParser, log_to_console: bool, log_level: str) -> None:
-        bot_name = config.get('bot', 'bot_name')
-        log_level = log_level.upper()
+        if not config.has_section('logging'):
+            config.add_section('logging')
 
-        with logging.setup_logging(bot_name,
-                                   config.get('logging', 'log_file', fallback=f'{bot_name}.log'),
-                                   log_to_console,
-                                   log_level):
+        if not config.has_option('logging', 'log_file'):
+            config.set('logging', 'log_file', f'{config.get("bot", "bot_name")}.log')
+        config.set('logging', 'log_to_console', str(log_to_console))
+        config.set('logging', 'log_level', log_level)
+
+        with logging.setup_logging(config):
             bot = bot_class(config)
             bot.run_with_config()
 

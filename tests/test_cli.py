@@ -37,7 +37,12 @@ bot_name = botty''')
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, [])
 
-    mock_setup_logging.assert_called_with('botty', 'botty.log', False, 'INFO')
+    mock_setup_logging.assert_called()
+    config = mock_setup_logging.call_args[0][0]
+    assert config.has_section('logging')
+    assert config.get('logging', 'log_file') == 'botty.log'
+    assert not config.getboolean('logging', 'log_to_console')
+    assert config.get('logging', 'log_level') == 'info'
     mock_bot_class.assert_called()
     mock_bot_class_instance.run_with_config.assert_called()
 
@@ -54,7 +59,12 @@ log_level = warning''')
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, [])
 
-    mock_setup_logging.assert_called_with('botty', 'botty-log.log', False, 'WARNING')
+    mock_setup_logging.assert_called()
+    config = mock_setup_logging.call_args[0][0]
+    assert config.has_section('logging')
+    assert config.get('logging', 'log_file') == 'botty-log.log'
+    assert not config.getboolean('logging', 'log_to_console')
+    assert config.get('logging', 'log_level') == 'warning'
 
 
 def test_run_config(cli_runner, mock_bot_class, mock_setup_logging):
@@ -69,7 +79,12 @@ bot_name = botty-test''')
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--config=config-test.ini'])
 
-    mock_setup_logging.assert_called_with('botty-test', 'botty-test.log', False, 'INFO')
+    mock_setup_logging.assert_called()
+    config = mock_setup_logging.call_args[0][0]
+    assert config.has_section('logging')
+    assert config.get('logging', 'log_file') == 'botty-test.log'
+    assert not config.getboolean('logging', 'log_to_console')
+    assert config.get('logging', 'log_level') == 'info'
 
 
 def test_run_log_to_console(cli_runner, mock_bot_class, mock_setup_logging):
@@ -80,7 +95,12 @@ bot_name = botty''')
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--log-to-console'])
 
-    mock_setup_logging.assert_called_with('botty', 'botty.log', True, 'INFO')
+    mock_setup_logging.assert_called()
+    config = mock_setup_logging.call_args[0][0]
+    assert config.has_section('logging')
+    assert config.get('logging', 'log_file') == 'botty.log'
+    assert config.getboolean('logging', 'log_to_console')
+    assert config.get('logging', 'log_level') == 'info'
 
 
 def test_run_log_level(cli_runner, mock_bot_class, mock_setup_logging):
@@ -94,4 +114,9 @@ log_level = error''')
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--log-level=critical'])
 
-    mock_setup_logging.assert_called_with('botty', 'botty.log', False, 'CRITICAL')
+    mock_setup_logging.assert_called()
+    config = mock_setup_logging.call_args[0][0]
+    assert config.has_section('logging')
+    assert config.get('logging', 'log_file') == 'botty.log'
+    assert not config.getboolean('logging', 'log_to_console')
+    assert config.get('logging', 'log_level') == 'critical'
