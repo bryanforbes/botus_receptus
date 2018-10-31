@@ -16,3 +16,11 @@ class Bot(BaseBot[CT]):
         super().__init__(config, *args, **kwargs)
 
         self.loop.run_until_complete(db.set_bind(self.config.get('bot', 'db_url')))
+
+    async def close(self) -> None:
+        bind = db.pop_bind()
+
+        if bind is not None:
+            await bind.close()
+
+        await super().close()
