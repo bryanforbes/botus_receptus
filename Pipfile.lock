@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "db105d767532a44468d11c2c0d0d00a94be73a79bee9c958aa4966d3146fe93d"
+            "sha256": "c6389614add9ab54abb8d0f53fff373a9242e48bec477b64620ff56deb770e34"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -319,7 +319,7 @@
         "gino-stubs": {
             "editable": true,
             "git": "https://github.com/bryanforbes/gino-stubs.git",
-            "ref": "0876b3f85780781d18dba8a3a77a757f8c548b68"
+            "ref": "d0c68dd29e1d5edd98a283873d2e14b5ca18865e"
         },
         "mccabe": {
             "hashes": [
@@ -381,11 +381,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:a9e5e8d7ab9d5b0747f37740276eb362e6a76275d76cebbb52c6049d93b475db",
-                "sha256:bf47e8ed20d03764f963f0070ff1c8fda6e2671fc5dd562a4d3b7148ad60f5ca"
+                "sha256:630ff1dbe04f469ee78faa5660f712e58b953da7df22ea5d828c9012e134da43",
+                "sha256:a2b5232735dd0b736cbea9c0f09e5070d78fcaba2823a4f6f09d9a81bd19415c"
             ],
             "index": "pypi",
-            "version": "==3.9.3"
+            "version": "==3.10.0"
         },
         "pytest-asyncio": {
             "hashes": [

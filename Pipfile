@@ -18,7 +18,7 @@ pytest-mock = "*"
 pytest-mypy = "*"
 asynctest = "*"
 pytest-xdist = "*"
-gino-stubs = {editable = true, ref = "0876b3f85780781d18dba8a3a77a757f8c548b68", git = "https://github.com/bryanforbes/gino-stubs.git"}
+gino-stubs = {editable = true, ref = "d0c68dd29e1d5edd98a283873d2e14b5ca18865e", git = "https://github.com/bryanforbes/gino-stubs.git"}
 sqlalchemy-stubs = {editable = true, ref = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [requires]
