@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "botus_receptus"
+version = "0.0.1a"
+description = ""
+authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
+license = "BSD-3-Clause"
+packages = [
+	{ include = "botus_receptus", from = "src" },
+	{ include = "asyncpg-stubs", from = "src" },
+	{ include = "uvloop-stubs", from = "src" }
+]
+
+include = [
+	"botus_receptus/py.typed",
+	"asyncpg-stubs/**/*.pyi",
+	"uvloop-stubs/**/*.pyi"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+"async-timeout" = ">=3.0.0"
+attrs = ">=3.0.0"
+click = ">=6.7"
+"discord.py" = {rev = "8c18bf868e47740e8ae1c2fb2741b3482412efab", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"mypy_extensions" = ">=0.4.1"
+"typing-extensions" = ">=3.6.4"
+asyncpg = {version = ">=0.17.0", optional = true}
+gino = {version = ">=0.8.0", optional = true}
+
+[tool.poetry.extras]
+db = ["asyncpg"]
+gino = ["gino"]
+
+[tool.poetry.dev-dependencies]
+asynctest = "^0.12.2"
+flake8 = "^3.6"
+mypy = "^0.641.0"
+pytest = "^3.9"
+pytest-asyncio = "^0.9.0"
+pytest-cov = "^2.6"
+pytest-flake8 = "^1.0"
+pytest-mock = "^1.10"
+pytest-mypy = "^0.3.2"
+pytest-xdist = "^1.24"
+gino-stubs = {rev = "d0c68dd29e1d5edd98a283873d2e14b5ca18865e", git = "https://github.com/bryanforbes/gino-stubs.git"}
+sqlalchemy-stubs = {rev = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
+
+[tool.black]
+line-length = 88
+py36 = true
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.venv
+  | alembic
+  | htmlcov
+)/
+'''
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
