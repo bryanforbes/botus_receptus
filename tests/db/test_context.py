@@ -36,27 +36,39 @@ class TestContext(object):
 
     @pytest.fixture
     def mock_select_all(self, mocker):
-        return mocker.patch('botus_receptus.db.context.select_all', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.select_all', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.fixture
     def mock_select_one(self, mocker):
-        return mocker.patch('botus_receptus.db.context.select_one', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.select_one', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.fixture
     def mock_search(self, mocker):
-        return mocker.patch('botus_receptus.db.context.search', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.search', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.fixture
     def mock_update(self, mocker):
-        return mocker.patch('botus_receptus.db.context.update', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.update', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.fixture
     def mock_insert_into(self, mocker):
-        return mocker.patch('botus_receptus.db.context.insert_into', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.insert_into', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.fixture
     def mock_delete_from(self, mocker):
-        return mocker.patch('botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.mark.asyncio
     async def test_acquire(self, mocker, mock_bot):
@@ -79,8 +91,15 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.select_all(table='foo', columns=['col1'])
-            mock_select_all.assert_called_once_with(ctx.db, table='foo', columns=['col1'], order_by=None, where=None,
-                                                    joins=None, group_by=None)
+            mock_select_all.assert_called_once_with(
+                ctx.db,
+                table='foo',
+                columns=['col1'],
+                order_by=None,
+                where=None,
+                joins=None,
+                group_by=None,
+            )
 
     @pytest.mark.asyncio
     async def test_select_one(self, mocker, mock_bot, mock_select_one):
@@ -91,20 +110,39 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.select_one(table='foo', columns=['col1'])
-            mock_select_one.assert_called_once_with(ctx.db, table='foo', columns=['col1'], where=None, joins=None,
-                                                    group_by=None)
+            mock_select_one.assert_called_once_with(
+                ctx.db,
+                table='foo',
+                columns=['col1'],
+                where=None,
+                joins=None,
+                group_by=None,
+            )
 
     @pytest.mark.asyncio
     async def test_search(self, mocker, mock_bot, mock_search):
         ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
 
         with pytest.raises(RuntimeError):
-            await ctx.search(table='foo', columns=['col1'], search_columns=['bar'], terms=['baz'])
+            await ctx.search(
+                table='foo', columns=['col1'], search_columns=['bar'], terms=['baz']
+            )
 
         async with ctx.acquire():
-            await ctx.search(table='foo', columns=['col1'], search_columns=['bar'], terms=['baz'])
-            mock_search.assert_called_once_with(ctx.db, table='foo', columns=['col1'], search_columns=['bar'],
-                                                terms=['baz'], where=[], order_by=None, joins=None, group_by=None)
+            await ctx.search(
+                table='foo', columns=['col1'], search_columns=['bar'], terms=['baz']
+            )
+            mock_search.assert_called_once_with(
+                ctx.db,
+                table='foo',
+                columns=['col1'],
+                search_columns=['bar'],
+                terms=['baz'],
+                where=None,
+                order_by=None,
+                joins=None,
+                group_by=None,
+            )
 
     @pytest.mark.asyncio
     async def test_update(self, mocker, mock_bot, mock_update):
@@ -115,7 +153,9 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.update(table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
-            mock_update.assert_called_once_with(ctx.db, table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
+            mock_update.assert_called_once_with(
+                ctx.db, table='foo', values={'bar': 'baz'}, where=['spam = "ham"']
+            )
 
     @pytest.mark.asyncio
     async def test_insert_into(self, mocker, mock_bot, mock_insert_into):
@@ -126,7 +166,9 @@ class TestContext(object):
 
         async with ctx.acquire():
             await ctx.insert_into(table='foo', values={'bar': 'baz'})
-            mock_insert_into.assert_called_once_with(ctx.db, table='foo', values={'bar': 'baz'}, extra='')
+            mock_insert_into.assert_called_once_with(
+                ctx.db, table='foo', values={'bar': 'baz'}, extra=''
+            )
 
     @pytest.mark.asyncio
     async def test_delete_from(self, mocker, mock_bot, mock_delete_from):

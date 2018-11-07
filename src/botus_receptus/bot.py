@@ -27,18 +27,25 @@ class Bot(commands.Bot[CT]):
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         self.config = config
         self.bot_name = self.config.get('bot', 'bot_name')
-        self.default_prefix = kwargs['command_prefix'] = self.config.get('bot', 'command_prefix', fallback='$')
+        self.default_prefix = kwargs['command_prefix'] = self.config.get(
+            'bot', 'command_prefix', fallback='$'
+        )
 
         super().__init__(*args, **kwargs)
 
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     @overload
-    async def get_context(self, message: discord.Message) -> CT: pass  # pragma: no cover
+    async def get_context(self, message: discord.Message) -> CT:
+        pass  # pragma: no cover
+
     @overload  # noqa: F811, E301
-    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT: pass  # pragma: no cover
-    async def get_context(self, message: discord.Message, *,  # noqa: F811, E301
-                          cls: Optional[Type[OT]] = None) -> Union[CT, OT]:
+    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT:
+        pass  # pragma: no cover
+
+    async def get_context(  # noqa: F811
+        self, message: discord.Message, *, cls: Optional[Type[OT]] = None
+    ) -> Union[CT, OT]:
         context_cls: Union[Type[CT], Type[OT]]
         if cls is None:
             context_cls = self.context_cls
@@ -61,17 +68,16 @@ class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
         if not token:
             return
 
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
+        headers = {'Content-Type': 'application/json', 'Authorization': token}
         payload = {'server_count': len(self.guilds)}
         user = cast(discord.ClientUser, self.user)
 
         with async_timeout.timeout(10):
-            await self.session.post(f'https://discordbots.org/api/bots/{user.id}/stats',
-                                    data=json.dumps(payload, ensure_ascii=True),
-                                    headers=headers)
+            await self.session.post(
+                f'https://discordbots.org/api/bots/{user.id}/stats',
+                data=json.dumps(payload, ensure_ascii=True),
+                headers=headers,
+            )
 
     async def on_ready(self) -> None:
         await self.__report_guilds()

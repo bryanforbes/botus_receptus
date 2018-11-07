@@ -51,7 +51,7 @@ class Paginator(Iterable[str]):
                 index = line.rfind(' ', 0, self._real_max_size + 1)
                 sub_line = line[:index]
                 sub_empty = False
-                line = line[index + 1:]
+                line = line[index + 1 :]
             else:
                 sub_line = line
                 sub_empty = empty
@@ -90,8 +90,9 @@ class EmbedPaginator(Paginator):
     max_size: int = 2048
 
 
-PluralizerType = Callable[[Arg(int, 'value'),
-                           DefaultNamedArg(bool, 'include_number')], str]
+PluralizerType = Callable[
+    [Arg(int, 'value'), DefaultNamedArg(bool, 'include_number')], str
+]
 
 
 def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
@@ -113,9 +114,7 @@ _mass_mention_pattern_re = re.compile(
     '@', re.named_group('target')(re.either('everyone', 'here'))
 )
 
-_formatting_re = re.compile(
-    re.named_group('target')('[`*_~]')
-)
+_formatting_re = re.compile(re.named_group('target')('[`*_~]'))
 
 
 def remove_mass_mentions(string: str) -> str:

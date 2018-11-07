@@ -14,5 +14,19 @@ __author__ = 'Bryan Forbes'
 __license__ = 'BSD 3-clause'
 __version__ = '0.0.1a'
 
-__all__ = ('formatting', 're', 'db', 'checks', 'abc', 'util', 'setup_logging', 'cli',
-           'Bot', 'DblBot', 'EmbedContext', 'PaginatedContext', 'OnlyDirectMessage', 'NotGuildOwner')
+__all__ = (
+    'formatting',
+    're',
+    'db',
+    'checks',
+    'abc',
+    'util',
+    'setup_logging',
+    'cli',
+    'Bot',
+    'DblBot',
+    'EmbedContext',
+    'PaginatedContext',
+    'OnlyDirectMessage',
+    'NotGuildOwner',
+)

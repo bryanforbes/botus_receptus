@@ -35,17 +35,24 @@ class FieldData(FieldDataBase, total=False):
 
 
 class EmbedContext(commands.Context):
-    async def send_embed(self, description: str, *,
-                         title: Optional[str] = None, color: Optional[Union[discord.Color, int]] = None,
-                         footer: Optional[Union[str, FooterData]] = None,
-                         thumbnail: Optional[str] = None,
-                         author: Optional[Union[str, AuthorData]] = None,
-                         image: Optional[str] = None,
-                         timestamp: Optional[datetime] = None,
-                         fields: Optional[List[FieldData]] = None,
-                         tts: bool = False, file: Optional[discord.File] = None,
-                         files: Optional[List[discord.File]] = None, delete_after: Optional[float] = None,
-                         nonce: Optional[int] = None) -> discord.Message:
+    async def send_embed(
+        self,
+        description: str,
+        *,
+        title: Optional[str] = None,
+        color: Optional[Union[discord.Color, int]] = None,
+        footer: Optional[Union[str, FooterData]] = None,
+        thumbnail: Optional[str] = None,
+        author: Optional[Union[str, AuthorData]] = None,
+        image: Optional[str] = None,
+        timestamp: Optional[datetime] = None,
+        fields: Optional[List[FieldData]] = None,
+        tts: bool = False,
+        file: Optional[discord.File] = None,
+        files: Optional[List[discord.File]] = None,
+        delete_after: Optional[float] = None,
+        nonce: Optional[int] = None,
+    ) -> discord.Message:
         embed = discord.Embed(description=description)
 
         if title is not None:
@@ -71,10 +78,26 @@ class EmbedContext(commands.Context):
         if fields is not None:
             setattr(embed, '_fields', fields)
 
-        return await self.send(tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+        return await self.send(
+            tts=tts,
+            embed=embed,
+            file=file,
+            files=files,
+            delete_after=delete_after,
+            nonce=nonce,
+        )
 
 
 class PaginatedContext(commands.Context):
-    async def send_pages(self, pages: Iterable[str], *, tts: bool = False, delete_after: Optional[float] = None,
-                         nonce: Optional[int] = None) -> List[discord.Message]:
-        return [await self.send(page, tts=tts, delete_after=delete_after, nonce=nonce) for page in pages]
+    async def send_pages(
+        self,
+        pages: Iterable[str],
+        *,
+        tts: bool = False,
+        delete_after: Optional[float] = None,
+        nonce: Optional[int] = None,
+    ) -> List[discord.Message]:
+        return [
+            await self.send(page, tts=tts, delete_after=delete_after, nonce=nonce)
+            for page in pages
+        ]

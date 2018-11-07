@@ -9,7 +9,9 @@ import re
 
 _ReOrStrType = Union[str, Pattern[AnyStr]]
 _ReOrStrFuncType = Callable[[VarArg(_ReOrStrType)], str]
-_ReOrStrGreedyFuncType = Callable[[VarArg(_ReOrStrType), DefaultNamedArg(bool, 'greedy')], str]
+_ReOrStrGreedyFuncType = Callable[
+    [VarArg(_ReOrStrType), DefaultNamedArg(bool, 'greedy')], str
+]
 
 A = re.A
 ASCII = re.ASCII
@@ -49,7 +51,9 @@ capture = cast(_ReOrStrFuncType, partial(group, start='('))
 either = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
-def named_group(name: str) -> Callable[[VarArg(_ReOrStrType), DefaultNamedArg(str, 'joiner')], str]:
+def named_group(
+    name: str
+) -> Callable[[VarArg(_ReOrStrType), DefaultNamedArg(str, 'joiner')], str]:
     def grouper(*args: _ReOrStrType, joiner: str = '') -> str:
         return group(*args, start=f'(?P<{name}>', joiner=joiner)
 
@@ -60,7 +64,9 @@ def atomic(string: str) -> str:
     if len(string) == 2 and string[0] == '\\':
         return string
 
-    if (string[0] == '(' and string[-1] == ')') or (string[0] == '[' and string[-1] == ']'):
+    if (string[0] == '(' and string[-1] == ')') or (
+        string[0] == '[' and string[-1] == ']'
+    ):
         return string
 
     return group(string)

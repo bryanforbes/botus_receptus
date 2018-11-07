@@ -31,8 +31,10 @@ def mock_setup_logging(mocker):
 
 def test_run(cli_runner, mock_bot_class, mock_bot_class_instance, mock_setup_logging):
     with open('config.ini', 'w') as f:
-        f.write('''[bot]
-bot_name = botty''')
+        f.write(
+            '''[bot]
+bot_name = botty'''
+        )
 
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, [])
@@ -49,12 +51,14 @@ bot_name = botty''')
 
 def test_run_logging_config(cli_runner, mock_bot_class, mock_setup_logging):
     with open('config.ini', 'w') as f:
-        f.write('''[bot]
+        f.write(
+            '''[bot]
 bot_name = botty
 
 [logging]
 log_file = botty-log.log
-log_level = warning''')
+log_level = warning'''
+        )
 
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, [])
@@ -69,12 +73,16 @@ log_level = warning''')
 
 def test_run_config(cli_runner, mock_bot_class, mock_setup_logging):
     with open('config.ini', 'w') as f:
-        f.write('''[bot]
-bot_name = botty''')
+        f.write(
+            '''[bot]
+bot_name = botty'''
+        )
 
     with open('config-test.ini', 'w') as f:
-        f.write('''[bot]
-bot_name = botty-test''')
+        f.write(
+            '''[bot]
+bot_name = botty-test'''
+        )
 
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--config=config-test.ini'])
@@ -89,8 +97,10 @@ bot_name = botty-test''')
 
 def test_run_log_to_console(cli_runner, mock_bot_class, mock_setup_logging):
     with open('config.ini', 'w') as f:
-        f.write('''[bot]
-bot_name = botty''')
+        f.write(
+            '''[bot]
+bot_name = botty'''
+        )
 
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--log-to-console'])
@@ -105,11 +115,13 @@ bot_name = botty''')
 
 def test_run_log_level(cli_runner, mock_bot_class, mock_setup_logging):
     with open('config.ini', 'w') as f:
-        f.write('''[bot]
+        f.write(
+            '''[bot]
 bot_name = botty
 
 [logging]
-log_level = error''')
+log_level = error'''
+        )
 
     command = cli(mock_bot_class, './config.ini')
     cli_runner.invoke(command, ['--log-level=critical'])

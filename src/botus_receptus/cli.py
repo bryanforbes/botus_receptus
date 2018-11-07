@@ -9,8 +9,9 @@ from .bot import Bot
 from . import logging
 
 
-def config_callback(ctx: click.Context, param: Union[click.Option, click.Parameter],
-                    value: str) -> Any:
+def config_callback(
+    ctx: click.Context, param: Union[click.Option, click.Parameter], value: str
+) -> Any:
     if not ctx.default_map:
         ctx.default_map = {}
 
@@ -27,13 +28,20 @@ def config_callback(ctx: click.Context, param: Union[click.Option, click.Paramet
 
 def cli(bot_class: Type[Bot], default_config_path: str) -> click.Command:
     @click.command()
-    @click.option('--config', required=True, is_eager=True,
-                  type=click.Path(exists=True, file_okay=True, resolve_path=True),
-                  default=default_config_path, callback=cast(Any, config_callback))
+    @click.option(
+        '--config',
+        required=True,
+        is_eager=True,
+        type=click.Path(exists=True, file_okay=True, resolve_path=True),
+        default=default_config_path,
+        callback=cast(Any, config_callback),
+    )
     @click.option('--log-to-console', is_flag=True)
-    @click.option('--log-level',
-                  type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
-                  default='info')
+    @click.option(
+        '--log-level',
+        type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
+        default='info',
+    )
     def main(config: ConfigParser, log_to_console: bool, log_level: str) -> None:
         if not config.has_section('logging'):
             config.add_section('logging')

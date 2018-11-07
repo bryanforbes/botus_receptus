@@ -4,7 +4,17 @@ import contextlib
 
 from typing import Iterator
 from configparser import ConfigParser
-from logging import getLogger, Formatter, FileHandler, StreamHandler, CRITICAL, ERROR, WARNING, INFO, DEBUG
+from logging import (
+    getLogger,
+    Formatter,
+    FileHandler,
+    StreamHandler,
+    CRITICAL,
+    ERROR,
+    WARNING,
+    INFO,
+    DEBUG,
+)
 
 
 log_levels = {
@@ -12,7 +22,7 @@ log_levels = {
     'error': ERROR,
     'warning': WARNING,
     'info': INFO,
-    'debug': DEBUG
+    'debug': DEBUG,
 }
 
 
@@ -37,7 +47,9 @@ def setup_logging(config: ConfigParser) -> Iterator[None]:
         log.setLevel(log_levels['info'])
 
         dt_fmt = '%Y-%m-%d %H:%M:%S'
-        fmt = Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
+        fmt = Formatter(
+            '[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{'
+        )
 
         handler = FileHandler(filename=log_file, encoding='utf-8', mode='a')
         handler.setFormatter(fmt)

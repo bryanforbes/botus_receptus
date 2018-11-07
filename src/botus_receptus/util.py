@@ -8,7 +8,9 @@ import discord
 T = TypeVar('T')
 
 
-def unique_seen(iterable: Iterable[T], get_key: Optional[Callable[[T], Any]] = None) -> Iterator[T]:
+def unique_seen(
+    iterable: Iterable[T], get_key: Optional[Callable[[T], Any]] = None
+) -> Iterator[T]:
     seen: Set[T] = set()
     seen_add: Callable[[T], None] = seen.add
     if get_key is None:

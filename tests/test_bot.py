@@ -22,10 +22,7 @@ class MockConnection:
 class TestBot(object):
     @pytest.fixture
     def config(self):
-        return {
-            'bot_name': 'botty',
-            'discord_api_key': 'API_KEY'
-        }
+        return {'bot_name': 'botty', 'discord_api_key': 'API_KEY'}
 
     @pytest.fixture
     def config_parser(self, config):
@@ -33,10 +30,13 @@ class TestBot(object):
         parser['bot'] = config
         return parser
 
-    @pytest.mark.parametrize('config,prefix', [
-        ({'bot_name': 'botty'}, '$'),
-        ({'bot_name': 'mcbotterson', 'command_prefix': '!'}, '!')
-    ])
+    @pytest.mark.parametrize(
+        'config,prefix',
+        [
+            ({'bot_name': 'botty'}, '$'),
+            ({'bot_name': 'mcbotterson', 'command_prefix': '!'}, '!'),
+        ],
+    )
     def test_init(self, mocker, config, prefix, config_parser) -> None:
         mocker.patch('discord.ext.commands.Bot', autospec=True)
 
@@ -49,22 +49,23 @@ class TestBot(object):
         assert isinstance(bot, OriginalBot)
         assert bot.session is not None
 
-    @pytest.mark.parametrize('context_cls', [
-        None,
-        MockContext
-    ])
+    @pytest.mark.parametrize('context_cls', [None, MockContext])
     @pytest.mark.asyncio
     async def test_get_context(self, mocker, config_parser, context_cls) -> None:
-        get_context = mocker.patch('discord.ext.commands.bot.BotBase.get_context',
-                                   new_callable=mocker.CoroutineMock,
-                                   return_value=mocker.sentinel.RESULT)
+        get_context = mocker.patch(
+            'discord.ext.commands.bot.BotBase.get_context',
+            new_callable=mocker.CoroutineMock,
+            return_value=mocker.sentinel.RESULT,
+        )
 
         bot = Bot(config_parser)
 
         result = await bot.get_context(mocker.sentinel.MESSAGE, cls=context_cls)
 
-        get_context.assert_awaited_with(mocker.sentinel.MESSAGE,
-                                        cls=context_cls is None and bot.context_cls or context_cls)
+        get_context.assert_awaited_with(
+            mocker.sentinel.MESSAGE,
+            cls=context_cls is None and bot.context_cls or context_cls,
+        )
         assert result is mocker.sentinel.RESULT
 
     def test_run_with_config(self, mocker, config_parser) -> None:
@@ -77,7 +78,9 @@ class TestBot(object):
 
     @pytest.mark.asyncio
     async def test_close(self, mocker, config_parser) -> None:
-        close = mocker.patch('discord.ext.commands.bot.BotBase.close', new_callable=mocker.CoroutineMock)
+        close = mocker.patch(
+            'discord.ext.commands.bot.BotBase.close', new_callable=mocker.CoroutineMock
+        )
 
         bot = Bot(config_parser)
         await bot.close()
@@ -87,9 +90,11 @@ class TestBot(object):
 
 
 class MockSession:
-    async def post(self, url, *, data=None, **kwargs): pass
+    async def post(self, url, *, data=None, **kwargs):
+        pass
 
-    async def close(self): pass
+    async def close(self):
+        pass
 
 
 class TestDblBot(object):
@@ -103,16 +108,19 @@ class TestDblBot(object):
         parser['bot'] = {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
-            'dbl_token': 'DBL_TOKEN'
+            'dbl_token': 'DBL_TOKEN',
         }
         return parser
 
-    @pytest.mark.parametrize('method,args', [
-        ('on_ready', []),
-        ('on_guild_available', [None]),
-        ('on_guild_join', [None]),
-        ('on_guild_remove', [None]),
-    ])
+    @pytest.mark.parametrize(
+        'method,args',
+        [
+            ('on_ready', []),
+            ('on_guild_available', [None]),
+            ('on_guild_join', [None]),
+            ('on_guild_remove', [None]),
+        ],
+    )
     @pytest.mark.asyncio
     async def test_report_guilds(self, method, args, mocker, config_parser) -> None:
         bot = DblBot(config_parser)
@@ -120,9 +128,8 @@ class TestDblBot(object):
 
         await getattr(bot, method)(*args)
 
-        bot.session.post.assert_awaited_with('https://discordbots.org/api/bots/12/stats',
-                                             data='{"server_count": 4}',
-                                             headers={
-                                                 'Content-Type': 'application/json',
-                                                 'Authorization': 'DBL_TOKEN'
-                                             })
+        bot.session.post.assert_awaited_with(
+            'https://discordbots.org/api/bots/12/stats',
+            data='{"server_count": 4}',
+            headers={'Content-Type': 'application/json', 'Authorization': 'DBL_TOKEN'},
+        )

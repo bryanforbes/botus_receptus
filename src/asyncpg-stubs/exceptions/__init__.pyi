@@ -286,7 +286,9 @@ class HeldCursorRequiresSameIsolationLevelError(InvalidTransactionStateError):
 class InappropriateAccessModeForBranchTransactionError(InvalidTransactionStateError):
     sqlstate: str = ...
 
-class InappropriateIsolationLevelForBranchTransactionError(InvalidTransactionStateError):
+class InappropriateIsolationLevelForBranchTransactionError(
+    InvalidTransactionStateError
+):
     sqlstate: str = ...
 
 class NoActiveSQLTransactionForBranchTransactionError(InvalidTransactionStateError):

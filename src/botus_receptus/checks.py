@@ -22,7 +22,9 @@ def dm_only() -> Callable[[F], F]:
 def is_guild_owner() -> Callable[[F], F]:
     def predicate(ctx: commands.Context) -> bool:
         if ctx.guild is None:
-            raise commands.NoPrivateMessage('This command cannot be used in private messages.')
+            raise commands.NoPrivateMessage(
+                'This command cannot be used in private messages.'
+            )
         if ctx.guild.owner != ctx.author:
             raise NotGuildOwner('You do not own this guild')
         return True

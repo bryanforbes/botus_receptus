@@ -4,26 +4,32 @@
 
 from . import connresource
 from .protocol import Record
-from typing import Optional, AsyncIterable, AsyncIterator, Awaitable, List, Generator, Any
+from typing import (
+    Optional,
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
+    List,
+    Generator,
+    Any,
+)
 
-
-class CursorFactory(connresource.ConnectionResource, AsyncIterable[Record], Awaitable['Cursor']):
+class CursorFactory(
+    connresource.ConnectionResource, AsyncIterable[Record], Awaitable['Cursor']
+):
     def __init__(self, connection, query, state, args, prefetch, timeout) -> None: ...
     def __aiter__(self) -> 'CursorIterator': ...
     def __await__(self) -> Generator[Any, None, 'Cursor']: ...
     def __del__(self): ...
 
-
 class BaseCursor(connresource.ConnectionResource):
     def __init__(self, connection, query, state, args) -> None: ...
     def __del__(self): ...
-
 
 class CursorIterator(BaseCursor, AsyncIterator[Record]):
     def __init__(self, connection, query, state, args, prefetch, timeout) -> None: ...
     def __anext__(self) -> Awaitable[Record]: ...
     def __aiter__(self) -> 'CursorIterator': ...
-
 
 class Cursor(BaseCursor):
     async def fetch(self, n: int, *, timeout: float = ...) -> List[Record]: ...

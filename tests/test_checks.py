@@ -8,7 +8,9 @@ class MockContext:
     pass
 
 
-class MockGuild:
+class MockGuild(object):
+    __slots__ = ('owner',)
+
     def __init__(self, owner):
         self.owner = owner
 

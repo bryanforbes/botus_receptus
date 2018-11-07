@@ -1,21 +1,36 @@
 import pytest
 from botus_receptus.formatting import (
-    pluralizer, Paginator, remove_mass_mentions, error, warning, info, bold, italics, strikethrough, underline,
-    inline_code, code_block, escape, EmbedPaginator
+    pluralizer,
+    Paginator,
+    remove_mass_mentions,
+    error,
+    warning,
+    info,
+    bold,
+    italics,
+    strikethrough,
+    underline,
+    inline_code,
+    code_block,
+    escape,
+    EmbedPaginator,
 )
 
 
-@pytest.mark.parametrize('pluralizer_args,pluralize_args,pluralize_kwargs,expected', [
-    (['ham'], [0], {}, '0 hams'),
-    (['ham'], [1], {}, '1 ham'),
-    (['ham'], [2], {}, '2 hams'),
-    (['fish', 'es'], [0], {}, '0 fishes'),
-    (['fish', 'es'], [1], {}, '1 fish'),
-    (['fish', 'es'], [2], {}, '2 fishes'),
-    (['fish', 'es'], [0], {'include_number': False}, 'fishes'),
-    (['fish', 'es'], [1], {'include_number': False}, 'fish'),
-    (['fish', 'es'], [2], {'include_number': False}, 'fishes'),
-])
+@pytest.mark.parametrize(
+    'pluralizer_args,pluralize_args,pluralize_kwargs,expected',
+    [
+        (['ham'], [0], {}, '0 hams'),
+        (['ham'], [1], {}, '1 ham'),
+        (['ham'], [2], {}, '2 hams'),
+        (['fish', 'es'], [0], {}, '0 fishes'),
+        (['fish', 'es'], [1], {}, '1 fish'),
+        (['fish', 'es'], [2], {}, '2 fishes'),
+        (['fish', 'es'], [0], {'include_number': False}, 'fishes'),
+        (['fish', 'es'], [1], {'include_number': False}, 'fish'),
+        (['fish', 'es'], [2], {'include_number': False}, 'fishes'),
+    ],
+)
 def test_pluralizer(pluralizer_args, pluralize_args, pluralize_kwargs, expected):
     pluralize = pluralizer(*pluralizer_args)
 
@@ -46,7 +61,11 @@ class TestPaginator(object):
         paginator = Paginator(max_size=13)
         paginator.add_line('123 456 789')
 
-        assert [page for page in paginator] == ['```\n123\n```', '```\n456\n```', '```\n789\n```']
+        assert [page for page in paginator] == [
+            '```\n123\n```',
+            '```\n456\n```',
+            '```\n789\n```',
+        ]
 
     def test_prefix_suffix(self) -> None:
         paginator = Paginator(prefix=None, suffix=None, max_size=3)
@@ -112,5 +131,9 @@ def test_code_block() -> None:
 
 def test_escape() -> None:
     assert escape(bold(strikethrough('some text @here'))) == '**~~some text @here~~**'
-    assert escape(bold(strikethrough('some text @here')), formatting=True, mass_mentions=True) == \
-        r'\*\*\~\~some text @' + '\u200b' + r'here\~\~\*\*'
+    assert (
+        escape(
+            bold(strikethrough('some text @here')), formatting=True, mass_mentions=True
+        )
+        == r'\*\*\~\~some text @' + '\u200b' + r'here\~\~\*\*'
+    )

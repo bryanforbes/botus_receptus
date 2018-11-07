@@ -20,6 +20,7 @@ include = [
 python = "^3.7"
 "async-timeout" = ">=3.0.0"
 attrs = ">=3.0.0"
+black = "^18.3-alpha.0"
 click = ">=6.7"
 "discord.py" = {rev = "8c18bf868e47740e8ae1c2fb2741b3482412efab", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
@@ -34,7 +35,11 @@ gino = ["gino"]
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
 flake8 = "^3.6"
+flake8-bugbear = "^18.8"
+flake8-per-file-ignores = "^0.6.0"
+flake8-pyi = "^18.1"
 mypy = "^0.641.0"
+pre-commit = "^1.12"
 pytest = "^3.9"
 pytest-asyncio = "^0.9.0"
 pytest-cov = "^2.6"

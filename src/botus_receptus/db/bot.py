@@ -33,17 +33,18 @@ class Bot(BaseBot[CT]):
 
         pool_kwargs: Dict[str, Any] = {}
 
-        if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(cast(Any, self).__init_connection__):
+        if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(
+            cast(Any, self).__init_connection__
+        ):
             pool_kwargs['init'] = cast(Any, self).__init_connection__
-        if hasattr(self, '__setup_connection__') and asyncio.iscoroutinefunction(cast(Any, self).__setup_connection__):
+        if hasattr(self, '__setup_connection__') and asyncio.iscoroutinefunction(
+            cast(Any, self).__setup_connection__
+        ):
             pool_kwargs['setup'] = cast(Any, self).__setup_connection__
 
         self.pool = self.loop.run_until_complete(
             create_pool(
-                self.config.get('bot', 'db_url'),
-                min_size=1,
-                max_size=10,
-                **pool_kwargs
+                self.config.get('bot', 'db_url'), min_size=1, max_size=10, **pool_kwargs
             )
         )
 
