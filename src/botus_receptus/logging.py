@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import contextlib
 
-from typing import Iterator
-from configparser import ConfigParser
+from typing import Dict, Iterator
 from logging import (
     getLogger,
     Formatter,
@@ -16,8 +15,10 @@ from logging import (
     DEBUG,
 )
 
+from .config import Config
 
-log_levels = {
+
+log_levels: Dict[str, int] = {
     'critical': CRITICAL,
     'error': ERROR,
     'warning': WARNING,
@@ -27,20 +28,20 @@ log_levels = {
 
 
 @contextlib.contextmanager
-def setup_logging(config: ConfigParser) -> Iterator[None]:
+def setup_logging(config: Config) -> Iterator[None]:
     try:
-        bot_name = config.get('bot', 'bot_name')
-        log_file = config.get('logging', 'log_file')
-        log_to_console = config.getboolean('logging', 'log_to_console')
-        log_level = config.get('logging', 'log_level')
+        bot_name = config['bot_name']
+        log_file = config['logging']['log_file']
+        log_to_console = config['logging']['log_to_console']
+        log_level = config['logging']['log_level']
 
         getLogger('discord').setLevel(log_levels['info'])
         getLogger('discord.http').setLevel(log_levels['warning'])
 
         getLogger(bot_name).setLevel(log_levels.get(log_level, log_levels['info']))
 
-        if config.has_section('loggers'):
-            for name, value in config.items('loggers'):
+        if 'loggers' in config['logging']:
+            for name, value in config['logging']['loggers'].items():
                 getLogger(name).setLevel(log_levels.get(value, log_levels['info']))
 
         log = getLogger()

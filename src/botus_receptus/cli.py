@@ -1,40 +1,57 @@
 from __future__ import annotations
 
-from typing import Type, cast, Any, Union, Dict
-from configparser import ConfigParser
+from typing import Any, Union, Dict, Type, cast
 
 import click
+import toml
 
 from .bot import Bot
-from . import logging
+from . import logging, config
 
 
 def config_callback(
-    ctx: click.Context, param: Union[click.Option, click.Parameter], value: str
+    ctx: click.Context, param: click.Parameter, value: Union[str, int, bool, None]
 ) -> Any:
-    if not ctx.default_map:
-        ctx.default_map = {}
-
-    parser = ConfigParser(default_section='bot')
-    parser.read(value)
+    assert (
+        not isinstance(value, (int, bool)) and value is not None
+    ), "Invalid parameter type passed"
 
     try:
-        cast(Dict[str, Any], ctx.default_map).update(parser['logging'])
+        bot_config = config.load(value)
+    except (toml.TomlDecodeError, OSError) as e:
+        raise click.BadOptionUsage(  # type: ignore
+            param.name, f'Error reading configuration file: {e}', ctx=ctx
+        )
+    except config.ConfigException as e:
+        raise click.BadOptionUsage(param.name, e.args[0], ctx=ctx)  # type: ignore
+
+    if ctx.default_map is None:
+        ctx.default_map = {}
+
+    try:
+        cast(Dict[str, Any], ctx.default_map).update(
+            {
+                k.replace("--", "").replace("-", "_"): v
+                for k, v in bot_config['logging'].items()
+            }
+        )
     except KeyError:
         pass
 
-    return parser
+    return bot_config
 
 
 def cli(bot_class: Type[Bot], default_config_path: str) -> click.Command:
     @click.command()
     @click.option(
+        '-c',
         '--config',
+        'bot_config',
         required=True,
         is_eager=True,
-        type=click.Path(exists=True, file_okay=True, resolve_path=True),
+        type=click.Path(exists=True, file_okay=True),
         default=default_config_path,
-        callback=cast(Any, config_callback),
+        callback=config_callback,
     )
     @click.option('--log-to-console', is_flag=True)
     @click.option(
@@ -42,17 +59,13 @@ def cli(bot_class: Type[Bot], default_config_path: str) -> click.Command:
         type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
         default='info',
     )
-    def main(config: ConfigParser, log_to_console: bool, log_level: str) -> None:
-        if not config.has_section('logging'):
-            config.add_section('logging')
+    def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
+        cast(Dict[str, Any], bot_config['logging']).update(
+            {'log_to_console': log_to_console, 'log_level': log_level}
+        )
 
-        if not config.has_option('logging', 'log_file'):
-            config.set('logging', 'log_file', f'{config.get("bot", "bot_name")}.log')
-        config.set('logging', 'log_to_console', str(log_to_console))
-        config.set('logging', 'log_level', log_level)
-
-        with logging.setup_logging(config):
-            bot = bot_class(config)
+        with logging.setup_logging(bot_config):
+            bot = bot_class(bot_config)
             bot.run_with_config()
 
     return main

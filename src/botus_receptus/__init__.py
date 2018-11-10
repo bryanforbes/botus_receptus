@@ -3,6 +3,7 @@ from . import re
 from . import checks
 from . import abc
 from . import util
+from .config import Config
 from .logging import setup_logging
 from .cli import cli
 from .bot import Bot, DblBot
@@ -23,6 +24,7 @@ __all__ = (
     'util',
     'setup_logging',
     'cli',
+    'Config',
     'Bot',
     'DblBot',
     'EmbedContext',

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import Any, TypeVar, Type, ClassVar, Dict, cast
-from configparser import ConfigParser
 
 import discord
 import asyncio
@@ -15,6 +14,7 @@ except ImportError:
     has_asyncpg = False
 
 from ..bot import Bot as BaseBot
+from ..config import Config
 from .context import Context
 
 
@@ -25,7 +25,7 @@ class Bot(BaseBot[CT]):
     pool: Pool
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], Context)
 
-    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         if not has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')
 
@@ -44,7 +44,7 @@ class Bot(BaseBot[CT]):
 
         self.pool = self.loop.run_until_complete(
             create_pool(
-                self.config.get('bot', 'db_url'), min_size=1, max_size=10, **pool_kwargs
+                self.config.get('db_url', ''), min_size=1, max_size=10, **pool_kwargs
             )
         )
 

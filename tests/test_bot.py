@@ -1,5 +1,4 @@
 import pytest  # type: ignore
-from configparser import ConfigParser
 from botus_receptus import Bot, DblBot
 
 import discord
@@ -24,12 +23,6 @@ class TestBot(object):
     def config(self):
         return {'bot_name': 'botty', 'discord_api_key': 'API_KEY'}
 
-    @pytest.fixture
-    def config_parser(self, config):
-        parser = ConfigParser()
-        parser['bot'] = config
-        return parser
-
     @pytest.mark.parametrize(
         'config,prefix',
         [
@@ -37,12 +30,12 @@ class TestBot(object):
             ({'bot_name': 'mcbotterson', 'command_prefix': '!'}, '!'),
         ],
     )
-    def test_init(self, mocker, config, prefix, config_parser) -> None:
+    def test_init(self, mocker, config, prefix) -> None:
         mocker.patch('discord.ext.commands.Bot', autospec=True)
 
-        bot = Bot(config_parser)
+        bot = Bot(config)
 
-        assert bot.config == config_parser
+        assert bot.config == config
         assert bot.bot_name == config['bot_name']
         assert bot.default_prefix == prefix
 
@@ -51,14 +44,14 @@ class TestBot(object):
 
     @pytest.mark.parametrize('context_cls', [None, MockContext])
     @pytest.mark.asyncio
-    async def test_get_context(self, mocker, config_parser, context_cls) -> None:
+    async def test_get_context(self, mocker, config, context_cls) -> None:
         get_context = mocker.patch(
             'discord.ext.commands.bot.BotBase.get_context',
             new_callable=mocker.CoroutineMock,
             return_value=mocker.sentinel.RESULT,
         )
 
-        bot = Bot(config_parser)
+        bot = Bot(config)
 
         result = await bot.get_context(mocker.sentinel.MESSAGE, cls=context_cls)
 
@@ -68,21 +61,21 @@ class TestBot(object):
         )
         assert result is mocker.sentinel.RESULT
 
-    def test_run_with_config(self, mocker, config_parser) -> None:
+    def test_run_with_config(self, mocker, config) -> None:
         mocker.patch('discord.ext.commands.Bot.run')
 
-        bot = Bot(config_parser)
+        bot = Bot(config)
 
         bot.run_with_config()
         bot.run.assert_called_once_with('API_KEY')
 
     @pytest.mark.asyncio
-    async def test_close(self, mocker, config_parser) -> None:
+    async def test_close(self, mocker, config) -> None:
         close = mocker.patch(
             'discord.ext.commands.bot.BotBase.close', new_callable=mocker.CoroutineMock
         )
 
-        bot = Bot(config_parser)
+        bot = Bot(config)
         await bot.close()
 
         close.assert_awaited()
@@ -103,14 +96,12 @@ class TestDblBot(object):
         mocker.patch('aiohttp.ClientSession', new=mocker.create_autospec(MockSession))
 
     @pytest.fixture
-    def config_parser(self):
-        parser = ConfigParser()
-        parser['bot'] = {
+    def config(self):
+        return {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
             'dbl_token': 'DBL_TOKEN',
         }
-        return parser
 
     @pytest.mark.parametrize(
         'method,args',
@@ -122,8 +113,8 @@ class TestDblBot(object):
         ],
     )
     @pytest.mark.asyncio
-    async def test_report_guilds(self, method, args, mocker, config_parser) -> None:
-        bot = DblBot(config_parser)
+    async def test_report_guilds(self, method, args, mocker, config) -> None:
+        bot = DblBot(config)
         bot._connection = MockConnection()
 
         await getattr(bot, method)(*args)

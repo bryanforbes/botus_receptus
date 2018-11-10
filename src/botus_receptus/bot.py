@@ -8,9 +8,9 @@ import json
 import discord
 
 from discord.ext import commands
-from configparser import ConfigParser
 
 from . import abc
+from .config import Config
 
 
 CT = TypeVar('CT', bound=commands.Context)
@@ -19,16 +19,16 @@ OT = TypeVar('OT', bound=commands.Context)
 
 class Bot(commands.Bot[CT]):
     bot_name: str
-    config: ConfigParser
+    config: Config
     default_prefix: str  # noqa
     session: aiohttp.ClientSession
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], commands.Context)
 
-    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         self.config = config
-        self.bot_name = self.config.get('bot', 'bot_name')
+        self.bot_name = self.config['bot_name']
         self.default_prefix = kwargs['command_prefix'] = self.config.get(
-            'bot', 'command_prefix', fallback='$'
+            'command_prefix', '$'
         )
 
         super().__init__(*args, **kwargs)
@@ -55,7 +55,7 @@ class Bot(commands.Bot[CT]):
         return await super().get_context(message, cls=context_cls)
 
     def run_with_config(self) -> None:
-        self.run(self.config.get('bot', 'discord_api_key'))
+        self.run(self.config['discord_api_key'])
 
     async def close(self) -> None:
         await super().close()
@@ -64,7 +64,7 @@ class Bot(commands.Bot[CT]):
 
 class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
     async def __report_guilds(self) -> None:
-        token = self.config.get('bot', 'dbl_token', fallback='')
+        token = self.config.get('dbl_token', '')
         if not token:
             return
 

@@ -1,7 +1,6 @@
 import pytest
 
 import logging
-from configparser import ConfigParser
 from botus_receptus.logging import setup_logging
 
 
@@ -33,19 +32,17 @@ def mock_stream_handler(mocker):
 def test_setup_logging(
     mocker, mock_get_logger, mock_formatter, mock_file_handler, mock_stream_handler
 ):
-    parser = ConfigParser()
-    parser.read_string(
-        '''
-[bot]
-bot_name = botty
+    config = {
+        'bot_name': 'botty',
+        'discord_api_key': 'API_KEY',
+        'logging': {
+            'log_file': 'botty.log',
+            'log_to_console': False,
+            'log_level': 'info',
+        },
+    }
 
-[logging]
-log_file = botty.log
-log_to_console = False
-log_level = info'''
-    )
-
-    with setup_logging(parser):
+    with setup_logging(config):
         mock_get_logger.assert_has_calls(
             [
                 mocker.call('discord'),
@@ -74,19 +71,17 @@ log_level = info'''
 def test_setup_logging_console(
     mocker, mock_get_logger, mock_formatter, mock_stream_handler
 ):
-    parser = ConfigParser()
-    parser.read_string(
-        '''
-[bot]
-bot_name = botty
+    config = {
+        'bot_name': 'botty',
+        'discord_api_key': 'API_KEY',
+        'logging': {
+            'log_file': 'botty.log',
+            'log_to_console': True,
+            'log_level': 'info',
+        },
+    }
 
-[logging]
-log_file = botty.log
-log_to_console = True
-log_level = info'''
-    )
-
-    with setup_logging(parser):
+    with setup_logging(config):
         mock_stream_handler.assert_called()
         mock_stream_handler.return_value.setFormatter.assert_called_with(
             mock_formatter.return_value
@@ -99,23 +94,18 @@ log_level = info'''
 def test_setup_logging_loggers(
     mocker, mock_get_logger, mock_formatter, mock_file_handler, mock_stream_handler
 ):
-    parser = ConfigParser()
-    parser.read_string(
-        '''
-[bot]
-bot_name = botty
+    config = {
+        'bot_name': 'botty',
+        'discord_api_key': 'API_KEY',
+        'logging': {
+            'log_file': 'botty.log',
+            'log_to_console': True,
+            'log_level': 'info',
+            'loggers': {'gino': 'error', 'discord.http': 'error'},
+        },
+    }
 
-[logging]
-log_file = botty.log
-log_to_console = True
-log_level = info
-
-[loggers]
-gino = error
-discord.http = error'''
-    )
-
-    with setup_logging(parser):
+    with setup_logging(config):
         mock_get_logger.assert_has_calls(
             [
                 mocker.call('discord'),
