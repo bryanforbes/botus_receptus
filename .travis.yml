@@ -16,4 +16,4 @@ install:
   - poetry install -v --extras "db gino"
 
 script:
-  - poetry run py.test
+  - poetry run py.test -p no:sugar
