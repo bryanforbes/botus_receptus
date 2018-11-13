@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.7"
+
+dist: xenial
+
+cache:
+  pip: true
+  directories:
+    - "$HOME/.cache/pypoetry"
+
+install:
+  - pip install -U pip
+  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y
+  - source $HOME/.poetry/env
+  - poetry install -v
+
+script:
+  - poetry run py.test
