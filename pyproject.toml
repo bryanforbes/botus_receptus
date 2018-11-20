@@ -25,7 +25,7 @@ click = ">=6.7"
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.17.0", optional = true}
-gino = {version = ">=0.8.0", optional = true}
+gino = {version = "~0.8.0", optional = true}
 toml = "^0.10.0"
 
 [tool.poetry.extras]
@@ -33,7 +33,7 @@ db = ["asyncpg"]
 gino = ["gino"]
 
 [tool.poetry.dev-dependencies]
-asynctest = "^0.12.2"
+asynctest = "~0.12.2"
 black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
@@ -41,7 +41,7 @@ flake8-per-file-ignores = "^0.6.0"
 flake8-pyi = "^18.1"
 mypy = "^0.641.0"
 pre-commit = "^1.12"
-pytest = "^3.9"
+pytest = "^4.0"
 pytest-asyncio = "^0.9.0"
 pytest-cov = "^2.6"
 pytest-flake8 = "^1.0"
