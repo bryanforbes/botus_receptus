@@ -654,7 +654,7 @@ db = ["asyncpg"]
 gino = ["gino"]
 
 [metadata]
-content-hash = "72e908b5a22bb18755bc5eb9bd56b91c4eac01b33e5d83db26e579cdb9482bbc"
+content-hash = "f14475af6ca53d8749374697846316610af4cdfd29c4c72c49f3b4a21404dd11"
 python-versions = "^3.7"
 
 [metadata.hashes]
