@@ -24,8 +24,8 @@ click = ">=6.7"
 "discord.py" = {rev = "ab85c4432cb07606e1a1296c8ece6eeb1c9dcf52", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
-asyncpg = {version = ">=0.17.0", optional = true}
-gino = {version = "~0.8.0", optional = true}
+asyncpg = {version = ">=0.18.2", optional = true}
+gino = {version = "~0.8.1", optional = true}
 toml = "^0.10.0"
 
 [tool.poetry.extras]
