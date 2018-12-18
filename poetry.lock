@@ -160,7 +160,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1642+g1073917"
+version = "1.0.0a1646+g853bff4"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
@@ -169,7 +169,7 @@ typing-extensions = ">=3.6.5"
 websockets = ">=6.0,<7.0"
 
 [package.source]
-reference = "1073917861fe03d00b2039315754c98992cf6902"
+reference = "853bff488d6843dbe73196f8845c13a8bb33d225"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -255,11 +255,11 @@ python-versions = "^3.6"
 version = "0.1"
 
 [package.dependencies]
-sqlalchemy-stubs = "rev 8b45fc4345778e3f08e8a3b53ff71aaaa775e632"
+sqlalchemy-stubs = "rev b6647c0931a173f90d817263da5db733f3bf93d5"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "7b91ab9e6f4965f1a1199bb1e47f6105299c7774"
+reference = "6c8666c34c33401e2f0795baa4f2b2c7c1bc732b"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 
@@ -576,7 +576,7 @@ version = "0.1"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632"
+reference = "b6647c0931a173f90d817263da5db733f3bf93d5"
 type = "git"
 url = "https://github.com/dropbox/sqlalchemy-stubs.git"
 
@@ -656,7 +656,7 @@ db = ["asyncpg"]
 gino = ["gino"]
 
 [metadata]
-content-hash = "68b44656835b73e7bbe13bb70688e2363b33446186245aed46b9f6dad402d838"
+content-hash = "d00de5d17e3088cbd693d3d2794c3098690b78e3465718d839d277025c8e6426"
 python-versions = "^3.7"
 
 [metadata.hashes]
