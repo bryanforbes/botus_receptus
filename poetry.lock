@@ -255,11 +255,11 @@ python-versions = "^3.6"
 version = "0.1"
 
 [package.dependencies]
-sqlalchemy-stubs = "rev f34692196984085592ca2eebe219d531393d05cd"
+sqlalchemy-stubs = "rev d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "fff01efcfc88f416152397dca4e65aac4f362a08"
+reference = "be25999f90d84e1d29d14fec3cc6dae5259827ce"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -575,7 +575,7 @@ version = "0.1"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "f34692196984085592ca2eebe219d531393d05cd"
+reference = "d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9"
 type = "git"
 url = "https://github.com/dropbox/sqlalchemy-stubs.git"
 [[package]]
@@ -655,7 +655,7 @@ gino = ["gino"]
 gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [metadata]
-content-hash = "ff4d593118f1128fc4718042e8badfc1e7451b50dea6ba121403d05b53b46398"
+content-hash = "9da593a71b30bfe116598ec64e7e633ee286f5bfeba5f052d6ec2d6f08655033"
 python-versions = "^3.7"
 
 [metadata.hashes]
