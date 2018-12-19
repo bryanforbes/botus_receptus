@@ -13,7 +13,7 @@ install:
   - pip install -U pip
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y
   - source $HOME/.poetry/env
-  - poetry install -v --extras "db gino"
+  - poetry install -v --extras "db gino_typed"
 
 script:
   - poetry run py.test -p no:sugar
