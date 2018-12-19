@@ -172,6 +172,7 @@ websockets = ">=6.0,<7.0"
 reference = "853bff488d6843dbe73196f8845c13a8bb33d225"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "execnet: rapid multi-Python deployment"
@@ -255,14 +256,13 @@ python-versions = "^3.6"
 version = "0.1"
 
 [package.dependencies]
-sqlalchemy-stubs = "rev b6647c0931a173f90d817263da5db733f3bf93d5"
+sqlalchemy-stubs = "rev f34692196984085592ca2eebe219d531393d05cd"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "6c8666c34c33401e2f0795baa4f2b2c7c1bc732b"
+reference = "fff01efcfc88f416152397dca4e65aac4f362a08"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -656,7 +656,7 @@ db = ["asyncpg"]
 gino = ["gino"]
 
 [metadata]
-content-hash = "d00de5d17e3088cbd693d3d2794c3098690b78e3465718d839d277025c8e6426"
+content-hash = "ce78cedd4b5ad3d7828ec9f2eb722a476e6b4d65a87752253f7138638336d3dc"
 python-versions = "^3.7"
 
 [metadata.hashes]

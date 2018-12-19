@@ -1,5 +1,6 @@
 from typing import Any, Union, TypeVar, Type, Sequence, Mapping, List, Dict, cast
 from gino.crud import CRUDModel
+from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
 
 from .base import db
@@ -29,5 +30,5 @@ async def create_or_update(
         set_={k: getattr(stmt.excluded, v) for k, v in set_values.items()},
     ).execution_options(return_model=False, model=cls)
 
-    row = await db.bind.first(stmt)
+    row = await cast(GinoEngine, db.bind).first(stmt)
     return cls(**{column_name_map.invert_get(k, ''): v for k, v in row.items()})
