@@ -26,11 +26,14 @@ click = ">=6.7"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
+gino-stubs = {rev = "fff01efcfc88f416152397dca4e65aac4f362a08", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+sqlalchemy-stubs = {rev = "f34692196984085592ca2eebe219d531393d05cd", git = "https://github.com/dropbox/sqlalchemy-stubs.git", optional = true}
 toml = "^0.10.0"
 
 [tool.poetry.extras]
 db = ["asyncpg"]
 gino = ["gino"]
+gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [tool.poetry.dev-dependencies]
 asynctest = "~0.12.2"
@@ -49,7 +52,6 @@ pytest-mock = "^1.10"
 pytest-mypy = "^0.3.2"
 pytest-sugar = "^0.9.1"
 pytest-xdist = "^1.24"
-gino-stubs = {rev = "fff01efcfc88f416152397dca4e65aac4f362a08", git = "https://github.com/bryanforbes/gino-stubs.git"}
 
 [tool.black]
 line-length = 88
