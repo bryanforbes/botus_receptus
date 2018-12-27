@@ -70,11 +70,10 @@ class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
 
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         payload = {'server_count': len(self.guilds)}
-        user = cast(discord.ClientUser, self.user)
 
         with async_timeout.timeout(10):
             await self.session.post(
-                f'https://discordbots.org/api/bots/{user.id}/stats',
+                f'https://discordbots.org/api/bots/{self.user.id}/stats',
                 data=json.dumps(payload, ensure_ascii=True),
                 headers=headers,
             )

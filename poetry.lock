@@ -160,7 +160,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1646+g853bff4"
+version = "1.0.0a1647+ga93f53e"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
@@ -169,7 +169,7 @@ typing-extensions = ">=3.6.5"
 websockets = ">=6.0,<7.0"
 
 [package.source]
-reference = "853bff488d6843dbe73196f8845c13a8bb33d225"
+reference = "a93f53eb53ee36042531c98d32afc45f54dc83b8"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -379,7 +379,7 @@ description = "A framework for managing and maintaining multi-language pre-commi
 name = "pre-commit"
 optional = false
 python-versions = "*"
-version = "1.12.0"
+version = "1.13.0"
 
 [package.dependencies]
 "aspy.yaml" = "*"
@@ -655,7 +655,7 @@ gino = ["gino"]
 gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [metadata]
-content-hash = "9da593a71b30bfe116598ec64e7e633ee286f5bfeba5f052d6ec2d6f08655033"
+content-hash = "7afa8d2e5b08c7c156815ccbb1eb004cba5a146d9892f80acde896fcf4de4da0"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -696,7 +696,7 @@ nodeenv = ["ad8259494cf1c9034539f6cced78a1da4840a4b157e23640bc4a0c0546b0cb7a"]
 packaging = ["0886227f54515e592aaa2e5a553332c73962917f2831f1b0f9b9f4380a4b9807", "f95a1e147590f204328170981833854229bb2912ac3d5f89e2a8ccd2834800c9"]
 pathmatch = ["b35db907d0532c66132e5bc8aaa20dbfae916441987c8f0abd53ac538376d9a7"]
 pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "bde19360a8ec4dfd8a20dcb811780a30998101f078fc7ded6162f0076f50508f"]
-pre-commit = ["7542bd8ae1c58745175ea0a9295964ee82a10f7e18c4344f5e4c02bd85d02561", "87f687da6a2651d5067cfec95b854b004e95b70143cbf2369604bb3acbce25ec"]
+pre-commit = ["33bb9bf599c334d458fa9e311bde54e0c306a651473b6a36fdb36a61c8605c89", "e233f5cf3230ae9ed9ada132e9cf6890e18cc937adc669353fb64394f6e80c17"]
 py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"]
 pycodestyle = ["74abc4e221d393ea5ce1f129ea6903209940c1ecd29e002e8c6933c2b21026e0", "cbc619d09254895b0d12c2c691e237b2e91e9b2ecf5e84c26b35400f93dcfb83", "cbfca99bd594a10f674d0cd97a3d802a1fdef635d4361e1a2658de47ed261e3a"]
 pyflakes = ["9a7662ec724d0120012f6e29d6248ae3727d821bba522a0e6b356eff19126a49", "f661252913bc1dbe7fcfcbf0af0db3f42ab65aabd1a6ca68fe5d466bace94dae"]

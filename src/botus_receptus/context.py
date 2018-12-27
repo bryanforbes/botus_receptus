@@ -8,6 +8,20 @@ from mypy_extensions import TypedDict
 from datetime import datetime
 
 
+class GuildContext(commands.Context):
+    @discord.utils.cached_property
+    def guild(self) -> discord.Guild:  # type: ignore
+        return self.message.guild  # type: ignore
+
+    @discord.utils.cached_property
+    def channel(self) -> discord.TextChannel:  # type: ignore
+        return self.message.channel  # type: ignore
+
+    @discord.utils.cached_property
+    def author(self) -> discord.Member:  # type: ignore
+        return self.message.author  # type: ignore
+
+
 class FooterData(TypedDict, total=False):
     text: str
     icon_url: str

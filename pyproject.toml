@@ -21,7 +21,7 @@ python = "^3.7"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "853bff488d6843dbe73196f8845c13a8bb33d225", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "a93f53eb53ee36042531c98d32afc45f54dc83b8", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
