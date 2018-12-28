@@ -1,6 +1,6 @@
 import attr
 
-from botus_receptus.util import unique_seen, has_any_role, has_any_role_id
+from botus_receptus.util import has_any_role, has_any_role_id
 
 
 @attr.s(slots=True, auto_attribs=True)
@@ -12,19 +12,6 @@ class MockRole(object):
 @attr.s(slots=True)
 class MockMember(object):
     roles = attr.ib(default=attr.Factory(list))
-
-
-def test_unique_seen() -> None:
-    assert list(unique_seen('AaAABBBCcDAABBBcab')) == [
-        'A',
-        'a',
-        'B',
-        'C',
-        'c',
-        'D',
-        'b',
-    ]
-    assert list(unique_seen('AaAABBBCcDAABBBcab', str.lower)) == ['A', 'B', 'C', 'D']
 
 
 def test_has_any_role() -> None:
