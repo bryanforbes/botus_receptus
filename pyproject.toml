@@ -23,12 +23,12 @@ python = "^3.7"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "a93f53eb53ee36042531c98d32afc45f54dc83b8", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "7842f3b7bbcb9f74eec43592a2428d6f3c840d97", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
-gino-stubs = {rev = "be25999f90d84e1d29d14fec3cc6dae5259827ce", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "fcadcd703f602011124ff6c4010be47be02a40df", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 sqlalchemy-stubs = {rev = "d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9", git = "https://github.com/dropbox/sqlalchemy-stubs.git", optional = true}
 toml = "^0.10.0"
 
@@ -42,11 +42,11 @@ asynctest = "~0.12.2"
 black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
-flake8-per-file-ignores = "^0.6.0"
+flake8-per-file-ignores = "^0.7.0"
 flake8-pyi = "^18.1"
 mypy = "^0.650"
 pre-commit = "^1.12"
-pytest = "^4.0"
+pytest = "~4.0.0"
 pytest-asyncio = "^0.9.0"
 pytest-cov = "^2.6"
 pytest-flake8 = "^1.0"
