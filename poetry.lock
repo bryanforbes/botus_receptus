@@ -172,6 +172,7 @@ websockets = ">=6.0,<7.0"
 reference = "7842f3b7bbcb9f74eec43592a2428d6f3c840d97"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "execnet: rapid multi-Python deployment"
@@ -262,6 +263,7 @@ typing-extensions = ">=3.6.5"
 reference = "fcadcd703f602011124ff6c4010be47be02a40df"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -367,6 +369,18 @@ version = "0.2.1"
 [package.dependencies]
 six = ">=1.10.0"
 typing = ">=3.5.2"
+
+[[package]]
+category = "main"
+description = "Python datetimes made easy"
+name = "pendulum"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.0.4"
+
+[package.dependencies]
+python-dateutil = ">=2.6,<3.0"
+pytzdata = ">=2018.3"
 
 [[package]]
 category = "dev"
@@ -543,6 +557,25 @@ pytest-forked = "*"
 six = "*"
 
 [[package]]
+category = "main"
+description = "Extensions to the standard Python datetime module"
+name = "python-dateutil"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "2.7.5"
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
+category = "main"
+description = "The Olson timezone database for Python."
+name = "pytzdata"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2018.7"
+
+[[package]]
 category = "dev"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
@@ -551,7 +584,7 @@ python-versions = "*"
 version = "3.13"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -581,6 +614,7 @@ typing-extensions = ">=3.6.5"
 reference = "d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9"
 type = "git"
 url = "https://github.com/dropbox/sqlalchemy-stubs.git"
+
 [[package]]
 category = "dev"
 description = "ANSII Color formatting for output in terminal."
@@ -669,7 +703,7 @@ gino = ["gino"]
 gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [metadata]
-content-hash = "8defc20ecac5c1b78e199210ebffdc10d08f6c35f0cb557c78af8bc0c9e39c7b"
+content-hash = "c96233e832088d7908c83e1497f4b908e948f0f209f88ed08b428df06fff879e"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -709,6 +743,7 @@ mypy-extensions = ["37e0e956f41369209a3d5f34580150bcacfabaa57b33a15c0b25f4b5725e
 nodeenv = ["ad8259494cf1c9034539f6cced78a1da4840a4b157e23640bc4a0c0546b0cb7a"]
 packaging = ["0886227f54515e592aaa2e5a553332c73962917f2831f1b0f9b9f4380a4b9807", "f95a1e147590f204328170981833854229bb2912ac3d5f89e2a8ccd2834800c9"]
 pathmatch = ["b35db907d0532c66132e5bc8aaa20dbfae916441987c8f0abd53ac538376d9a7"]
+pendulum = ["0f43d963b27e92b04047ce8352e4c277db99f20d0b513df7d0ceafe674a2f727", "14e60d26d7400980123dbb6e3f2a90b70d7c18c63742ffe5bd6d6a643f8c6ef1", "5035a4e17504814a679f138374269cc7cc514aeac7ba6d9dc020abc224f25dbc", "8c0b3d655c1e9205d4dacf42fffc929cde3b19b5fb544a7f7561e6896eb8a000", "bfc7b33ae193a204ec0bec12ad0d2d3300cd7e51d91d992da525ba3b28f0d265", "cd70b75800439794e1ad8dbfa24838845e171918df81fa98b68d0d5a6f9b8bf2", "cf535d36c063575d4752af36df928882b2e0e31541b4482c97d63752785f9fcb"]
 pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "bde19360a8ec4dfd8a20dcb811780a30998101f078fc7ded6162f0076f50508f"]
 pre-commit = ["33bb9bf599c334d458fa9e311bde54e0c306a651473b6a36fdb36a61c8605c89", "e233f5cf3230ae9ed9ada132e9cf6890e18cc937adc669353fb64394f6e80c17"]
 py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"]
@@ -724,6 +759,8 @@ pytest-mock = ["53801e621223d34724926a5c98bd90e8e417ce35264365d39d6c896388dcc928
 pytest-mypy = ["8f6436eed8118afd6c10a82b3b60fb537336736b0fd7a29262a656ac42ce01ac", "acc653210e7d8d5c72845a5248f00fd33f4f3379ca13fe56cfc7b749b5655c3e"]
 pytest-sugar = ["26cf8289fe10880cbbc130bd77398c4e6a8b936d8393b116a5c16121d95ab283", "fcd87a74b2bce5386d244b49ad60549bfbc4602527797fac167da147983f58ab"]
 pytest-xdist = ["96f893094c89fddeaff3f4783f4807f7aeb138be1a0d87a8805057b6af1201b5", "aab1402f2b063df48bf044b042707610f8fcc4c49d0eb9c10e79e30b3f26074f"]
+python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93", "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"]
+pytzdata = ["10c74b0cfc51a9269031f86ecd11096c9c6a141f5bb15a3b8a88f9979f6361e2", "279cbd9900d5da9a8f9053e60db0db7f42d9a799673744b76aaeb6b4f14abe77"]
 pyyaml = ["3d7da3009c0f3e783b2c873687652d83b1bbfd5c88e9813fb7e5b03c0dd3108b", "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf", "40c71b8e076d0550b2e6380bada1f1cd1017b882f7e16f09a65be98e017f211a", "558dd60b890ba8fd982e05941927a3911dc409a63dcb8b634feaa0cda69330d3", "a7c28b45d9f99102fa092bb213aa12e0aaf9a6a1f5e395d36166639c1f96c3a1", "aa7dd4a6a427aed7df6fb7f08a580d68d9b118d90310374716ae90b710280af1", "bc558586e6045763782014934bfaf39d48b8ae85a2713117d16c39864085c613", "d46d7982b62e0729ad0175a9bc7e10a566fc07b224d2c79fafb5e032727eaa04", "d5eef459e30b09f5a098b9cea68bebfeb268697f78d647bd255a085371ac7f3f", "e01d3203230e1786cd91ccfdc8f8454c8069c91bee3962ad93b87a4b2860f537", "e170a9e6fcfd19021dd29845af83bb79236068bf5fd4df3327c1be18182b2531"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 sqlalchemy = ["809547455d012734b4252081db1e6b4fc731de2299f3755708c39863625e1c77"]
