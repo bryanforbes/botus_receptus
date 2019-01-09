@@ -53,7 +53,23 @@ def test_has_any_role_id() -> None:
         ('20h5m', pendulum.duration(hours=20, minutes=5)),
         ('7d10h12s', pendulum.duration(seconds=12, days=7, hours=10)),
         ('2m1y', pendulum.duration(years=1, seconds=120)),
+        (' 2m  1y ', pendulum.duration(years=1, seconds=120)),
     ],
 )
 def test_parse_duration(duration, expected):
     assert parse_duration(duration) == expected
+
+
+@pytest.mark.parametrize(
+    'duration,message',
+    [
+        ('42 s', 'Invalid duration'),
+        ('42p', 'Invalid duration'),
+        ('invalid', 'Invalid duration'),
+        ('', 'No duration provided.'),
+        ('   ', 'No duration provided.'),
+    ],
+)
+def test_parse_duration_failures(duration, message):
+    with pytest.raises(ValueError, message=message):
+        parse_duration(duration)

@@ -31,7 +31,7 @@ gino = {version = "~0.8.1", optional = true}
 gino-stubs = {rev = "fcadcd703f602011124ff6c4010be47be02a40df", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 sqlalchemy-stubs = {rev = "d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9", git = "https://github.com/dropbox/sqlalchemy-stubs.git", optional = true}
 toml = "^0.10.0"
-pendulum = "^2.0"
+pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 
 [tool.poetry.extras]
 db = ["asyncpg"]

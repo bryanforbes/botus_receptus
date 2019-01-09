@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Container, Dict
 import discord
-import pendulum  # type: ignore
+import pendulum
 
 
 def has_any_role(member: discord.Member, roles: Container[str]) -> bool:
@@ -24,7 +24,9 @@ UNITS = {
 
 
 # Adapted from https://github.com/python-discord/site/blob/master/pysite/utils/time.py
-def parse_duration(duration: str) -> pendulum.Duration:  # type: ignore
+def parse_duration(duration: str) -> pendulum.Duration:
+    duration = duration.strip()
+
     if not duration:
         raise ValueError('No duration provided.')
 
@@ -35,6 +37,12 @@ def parse_duration(duration: str) -> pendulum.Duration:  # type: ignore
         if char.isdigit():
             digits += char
             continue
+
+        if char == ' ':
+            if len(digits) > 0:
+                raise ValueError('Invalid duration')
+
+            continue  # pragma: no cover
 
         if char not in UNITS or not digits:
             raise ValueError('Invalid duration')
