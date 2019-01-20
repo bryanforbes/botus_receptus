@@ -64,6 +64,11 @@ optional = true
 python-versions = ">=3.5.0"
 version = "0.18.2"
 
+[package.extras]
+dev = ["Cython (0.29)", "pytest (>=3.6.0)", "Sphinx (>=1.7.0,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sphinx-rtd-theme (>=0.2.0,<0.3.0)", "flake8 (>=3.5.0,<3.6.0)", "uvloop (>=0.8.0)"]
+docs = ["Sphinx (>=1.7.0,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sphinx-rtd-theme (>=0.2.0,<0.3.0)"]
+test = ["flake8 (>=3.5.0,<3.6.0)", "uvloop (>=0.8.0)"]
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -88,6 +93,11 @@ optional = false
 python-versions = "*"
 version = "18.2.0"
 
+[package.extras]
+dev = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface", "sphinx", "zope.interface", "pre-commit"]
+docs = ["sphinx", "zope.interface"]
+tests = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface"]
+
 [[package]]
 category = "dev"
 description = "The uncompromising code formatter."
@@ -101,6 +111,9 @@ appdirs = "*"
 attrs = ">=17.4.0"
 click = ">=6.5"
 toml = ">=0.9.4"
+
+[package.extras]
+d = ["aiohttp (>=3.3.2)"]
 
 [[package]]
 category = "dev"
@@ -156,9 +169,20 @@ version = "1.0.0a1651+ga0de547"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
-mypy-extensions = ">=0.3.0"
-typing-extensions = ">=3.6.5"
 websockets = ">=6.0,<7.0"
+
+[package.dependencies.mypy-extensions]
+optional = true
+version = ">=0.3.0"
+
+[package.dependencies.typing-extensions]
+optional = true
+version = ">=3.6.5"
+
+[package.extras]
+docs = ["sphinx (1.7.4)", "sphinxcontrib-asyncio", "sphinxcontrib-websupport"]
+typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
+voice = ["PyNaCl (1.2.1)"]
 
 [package.source]
 reference = "a0de54741d277fedb0abd641735210b948f1787a"
@@ -251,7 +275,7 @@ sqlalchemy-stubs = "rev c0d559246eb9ec24a0bf552253ef4018b5f49a31"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "6c6b1776be4f95935ddce5f6c59b6451b5ab2d54"
+reference = "89a886ba95ac7e8157595be9f9857b9fd71783b2"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -260,7 +284,7 @@ description = "File identification library for Python"
 name = "identify"
 optional = false
 python-versions = "*"
-version = "1.1.8"
+version = "1.2.0"
 
 [[package]]
 category = "main"
@@ -320,6 +344,9 @@ version = "0.660"
 mypy_extensions = ">=0.4.0,<0.5.0"
 typed-ast = ">=1.2.0,<1.3.0"
 
+[package.extras]
+dmypy = ["psutil (>=5.4.0,<5.5.0)"]
+
 [[package]]
 category = "main"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
@@ -360,6 +387,9 @@ version = "0.2.1"
 six = ">=1.10.0"
 typing = ">=3.5.2"
 
+[package.extras]
+dev = ["pylint (>=1.5.6)"]
+
 [[package]]
 category = "main"
 description = ""
@@ -383,6 +413,9 @@ name = "pluggy"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.8.1"
+
+[package.extras]
+dev = ["pre-commit", "tox"]
 
 [[package]]
 category = "dev"
@@ -453,6 +486,9 @@ py = ">=1.5.0"
 setuptools = "*"
 six = ">=1.10.0"
 
+[package.extras]
+testing = ["hypothesis (>=3.56)", "nose", "requests", "mock"]
+
 [[package]]
 category = "dev"
 description = "Pytest support for asyncio."
@@ -463,6 +499,9 @@ version = "0.10.0"
 
 [package.dependencies]
 pytest = ">=3.0.6"
+
+[package.extras]
+testing = ["async-generator (>=1.3)", "coverage", "hypothesis (>=3.64)"]
 
 [[package]]
 category = "dev"
@@ -592,6 +631,17 @@ optional = true
 python-versions = "*"
 version = "1.2.16"
 
+[package.extras]
+mssql_pymssql = ["pymssql"]
+mssql_pyodbc = ["pyodbc"]
+mysql = ["mysqlclient"]
+oracle = ["cx-oracle"]
+postgresql = ["psycopg2"]
+postgresql_pg8000 = ["pg8000"]
+postgresql_psycopg2binary = ["psycopg2-binary"]
+postgresql_psycopg2cffi = ["psycopg2cffi"]
+pymysql = ["pymysql"]
+
 [[package]]
 category = "main"
 description = ""
@@ -661,6 +711,10 @@ version = "16.2.0"
 [package.dependencies]
 setuptools = ">=18.0.0"
 
+[package.extras]
+docs = ["sphinx (>=1.8.0,<2)", "towncrier (>=18.5.0)", "sphinx-rtd-theme (>=0.4.2,<1)"]
+testing = ["pytest (>=4.0.0,<5)", "coverage (>=4.5.0,<5)", "six (>=1.10.0,<2)", "pytest-timeout (>=1.3.0,<2)", "pytest-xdist", "mock", "xonsh"]
+
 [[package]]
 category = "main"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
@@ -689,13 +743,17 @@ optional = false
 python-versions = ">=2.7"
 version = "0.3.3"
 
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pathlib2"]
+
 [extras]
 db = ["asyncpg"]
 gino = ["gino"]
 gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [metadata]
-content-hash = "f4ae00dcf5673074cbd66805f9ba6f61647f264c9a4ebcdb0e9f2b69a3f4db92"
+content-hash = "5dab816724bf976deaccc2e9d7cfb353f70d7f551b9dfce315acf2bea9ceee37"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -723,7 +781,7 @@ flake8-per-file-ignores = ["166951535bfb7f373eecdcbe70af867aafcafdcccec88b28a0e1
 flake8-pyi = ["3e67e2441118a3b889bcec1a6bce5f0594de2abe1f502ec18201c777bd7d9a54", "e7c9f257cc609a1123b2171a47b8bbcc8ee16827a675e4e148686b46ccf02959"]
 gino = ["3471e2f5b44f787eff3381d47e3e252ba184749ba2747adca06658d56272e912", "741cc5b96fbf8d7f62a8ce37efc14204ab67a17efa78c38b34f74fcc8155b4b2"]
 gino-stubs = []
-identify = ["08826e68e39e7de53cc2ddd8f6228a4e463b4bacb20565e5301c3ec690e68d27", "2364e24a7699fea0dc910e90740adbab43eef3746eeea4e016029c34123ce66d"]
+identify = ["0b2bb67c857b8048d979caeef4d20a3dfdb0337f154d16a8f9e31cd6e04ae554", "113622f73da90a723e9baf764553f807051ad80c3a9e8a7edd15aa4309861f4d"]
 idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 importlib-metadata = ["a17ce1a8c7bff1e8674cb12c992375d8d0800c9190177ecf0ad93e0097224095", "b50191ead8c70adfa12495fba19ce6d75f2e0275c14c5a7beb653d6799b512bd"]
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
