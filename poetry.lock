@@ -165,7 +165,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1651+ga0de547"
+version = "1.0.0a1652+g28136a0"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
@@ -185,7 +185,7 @@ typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
 voice = ["PyNaCl (1.2.1)"]
 
 [package.source]
-reference = "a0de54741d277fedb0abd641735210b948f1787a"
+reference = "28136a015d2fd833badbbb0166e454a9ed2ca614"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -275,7 +275,7 @@ sqlalchemy-stubs = "rev c0d559246eb9ec24a0bf552253ef4018b5f49a31"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "89a886ba95ac7e8157595be9f9857b9fd71783b2"
+reference = "291b390566416103ce4c88c10521c40344645dea"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -369,7 +369,7 @@ description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "18.0"
+version = "19.0"
 
 [package.dependencies]
 pyparsing = ">=2.0.2"
@@ -753,7 +753,7 @@ gino = ["gino"]
 gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
 
 [metadata]
-content-hash = "5dab816724bf976deaccc2e9d7cfb353f70d7f551b9dfce315acf2bea9ceee37"
+content-hash = "87c54e5ca2a265225a7ac64d949f8f449687c1f37100b95b7ae3730571c747a3"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -790,7 +790,7 @@ multidict = ["024b8129695a952ebd93373e45b5d341dbb87c17ce49637b34000093f243dd4f",
 mypy = ["986a7f97808a865405c5fd98fae5ebfa963c31520a56c783df159e9a81e41b3e", "cc5df73cc11d35655a8c364f45d07b13c8db82c000def4bd7721be13356533b4"]
 mypy-extensions = ["37e0e956f41369209a3d5f34580150bcacfabaa57b33a15c0b25f4b5725e0812", "b16cabe759f55e3409a7d231ebd2841378fb0c27a5d1994719e340e4f429ac3e"]
 nodeenv = ["ad8259494cf1c9034539f6cced78a1da4840a4b157e23640bc4a0c0546b0cb7a"]
-packaging = ["0886227f54515e592aaa2e5a553332c73962917f2831f1b0f9b9f4380a4b9807", "f95a1e147590f204328170981833854229bb2912ac3d5f89e2a8ccd2834800c9"]
+packaging = ["0c98a5d0be38ed775798ece1b9727178c4469d9c3b4ada66e8e6b7849f8732af", "9e1cbf8c12b1f1ce0bb5344b8d7ecf66a6f8a6e91bcb0c84593ed6d3ab5c4ab3"]
 pathmatch = ["b35db907d0532c66132e5bc8aaa20dbfae916441987c8f0abd53ac538376d9a7"]
 pendulum = []
 pluggy = ["8ddc32f03971bfdf900a81961a48ccf2fb677cf7715108f85295c67405798616", "980710797ff6a041e9a73a5787804f848996ecaa6f8a1b1e08224a5894f2074a"]

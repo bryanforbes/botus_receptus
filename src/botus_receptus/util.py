@@ -1,8 +1,26 @@
 from __future__ import annotations
 
-from typing import Container, Dict
+from typing import (
+    Any,
+    TypeVar,
+    Union,
+    Container,
+    Dict,
+    Tuple,
+    List,
+    Iterable,
+    AsyncIterable,
+    AsyncIterator,
+    Callable,
+    Coroutine,
+)
+import asyncio
 import discord
 import pendulum
+import builtins
+
+T = TypeVar('T')
+R = TypeVar('R')
 
 
 def has_any_role(member: discord.Member, roles: Container[str]) -> bool:
@@ -51,3 +69,54 @@ def parse_duration(duration: str) -> pendulum.Duration:
         digits = ''
 
     return pendulum.duration(**args)
+
+
+SyncOrAsyncIterable = Union[Iterable[T], AsyncIterable[T]]
+SyncOrAsyncIterableIterable = Union[
+    Iterable[SyncOrAsyncIterable[T]], AsyncIterable[SyncOrAsyncIterable[T]]
+]
+SyncOrAsyncFunction = Union[Callable[..., R], Callable[..., Coroutine[Any, Any, R]]]
+
+
+def iter(iterable: SyncOrAsyncIterable[T]) -> AsyncIterator[T]:
+    if isinstance(iterable, AsyncIterator):
+        return iterable
+
+    if isinstance(iterable, AsyncIterable):
+        return iterable.__aiter__()
+
+    async def gen() -> AsyncIterator[T]:
+        assert isinstance(iterable, Iterable)
+        for item in iterable:
+            yield item
+
+    return gen()
+
+
+async def list(iterable: SyncOrAsyncIterable[T]) -> List[T]:
+    return [item async for item in iter(iterable)]
+
+
+async def tuple(iterable: SyncOrAsyncIterable[T]) -> Tuple[T, ...]:
+    return builtins.tuple([item async for item in iter(iterable)])
+
+
+async def enumerate(
+    iterable: SyncOrAsyncIterable[T], start: int = 0
+) -> AsyncIterator[Tuple[int, T]]:
+    async for item in iter(iterable):
+        yield start, item
+        start += 1
+
+
+async def starmap(
+    fn: SyncOrAsyncFunction[R], iterable: SyncOrAsyncIterable[Iterable[T]]
+) -> AsyncIterator[R]:
+    async for inner_iterable in iter(iterable):
+        args = await tuple(inner_iterable)
+        result = fn(*args)
+
+        if asyncio.iscoroutine(result):
+            yield await result  # type: ignore
+        else:
+            yield result  # type: ignore
