@@ -12,6 +12,7 @@ from botus_receptus.util import (
     starmap,
     list as util_list,
     tuple as util_tuple,
+    maybe_await,
 )
 
 
@@ -119,6 +120,19 @@ def test_parse_duration(duration, expected):
 def test_parse_duration_failures(duration, message):
     with pytest.raises(ValueError, message=message):
         parse_duration(duration)
+
+
+@pytest.mark.asyncio
+async def test_maybe_await():
+    assert (await maybe_await(4)) == 4
+
+
+@pytest.mark.asyncio
+async def test_maybe_await_coroutine():
+    async def func():
+        return 4
+
+    assert (await maybe_await(func())) == 4
 
 
 @pytest.mark.asyncio

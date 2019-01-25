@@ -11,8 +11,6 @@ from typing import (
     TypeVar,
     Type,
     Generic,
-    Iterable,
-    AsyncIterator,
     cast,
 )
 from abc import abstractmethod
@@ -21,7 +19,7 @@ import discord
 import asyncio
 from discord.ext import commands
 
-from .util import enumerate as aenumerate
+from .util import enumerate as aenumerate, maybe_await, SyncOrAsyncIterable
 
 
 class CannotPaginate(Exception):
@@ -58,7 +56,9 @@ class PageFetcher(Generic[T]):
         return self.total > self.per_page
 
     @abstractmethod
-    def get_page(self, page: int) -> Union[Iterable[T], AsyncIterator[T]]:
+    def get_page(
+        self, page: int
+    ) -> Union[Coroutine[Any, Any, SyncOrAsyncIterable[T]], SyncOrAsyncIterable[T]]:
         ...
 
     def format_entry(self, index: int, entry: T) -> str:
@@ -76,7 +76,7 @@ class PageFetcher(Generic[T]):
         return text
 
     async def get_formatted_page(self, page: int) -> Page:
-        entries = self.get_page(page)
+        entries: SyncOrAsyncIterable[T] = await maybe_await(self.get_page(page))
         lines = [
             self.format_entry(index, entry)
             async for index, entry in aenumerate(

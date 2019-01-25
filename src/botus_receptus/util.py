@@ -13,6 +13,7 @@ from typing import (
     AsyncIterator,
     Callable,
     Coroutine,
+    cast,
 )
 import asyncio
 import discord
@@ -71,6 +72,13 @@ def parse_duration(duration: str) -> pendulum.Duration:
     return pendulum.duration(**args)
 
 
+async def maybe_await(object: Any) -> Any:
+    if asyncio.iscoroutine(object):
+        return await object
+    else:
+        return object
+
+
 SyncOrAsyncIterable = Union[Iterable[T], AsyncIterable[T]]
 SyncOrAsyncIterableIterable = Union[
     Iterable[SyncOrAsyncIterable[T]], AsyncIterable[SyncOrAsyncIterable[T]]
@@ -86,8 +94,7 @@ def iter(iterable: SyncOrAsyncIterable[T]) -> AsyncIterator[T]:
         return iterable.__aiter__()
 
     async def gen() -> AsyncIterator[T]:
-        assert isinstance(iterable, Iterable)
-        for item in iterable:
+        for item in cast(Iterable[T], iterable):
             yield item
 
     return gen()
@@ -113,10 +120,6 @@ async def starmap(
     fn: SyncOrAsyncFunction[R], iterable: SyncOrAsyncIterable[Iterable[T]]
 ) -> AsyncIterator[R]:
     async for inner_iterable in iter(iterable):
-        args = await tuple(inner_iterable)
+        args = await list(inner_iterable)
         result = fn(*args)
-
-        if asyncio.iscoroutine(result):
-            yield await result  # type: ignore
-        else:
-            yield result  # type: ignore
+        yield await maybe_await(result)
