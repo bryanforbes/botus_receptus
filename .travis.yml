@@ -13,6 +13,7 @@ install:
   - pip install -U pip
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y --preview
   - source $HOME/.poetry/env
+  - poetry config settings.virtualenvs.in-project true
   - poetry --version
   - poetry install -v --extras "db gino_typed"
 
