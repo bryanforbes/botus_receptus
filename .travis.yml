@@ -11,7 +11,7 @@ cache:
 
 install:
   - pip install -U pip
-  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y
+  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y --preview
   - source $HOME/.poetry/env
   - poetry install -v --extras "db gino_typed"
 
