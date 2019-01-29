@@ -194,7 +194,7 @@ class InteractivePager(Generic[T]):
             and message.content.isdigit()
         )
 
-    async def __modify_embed(
+    async def modify_embed(
         self, page: Page, page_num: int, *, first: bool = False
     ) -> None:
         lines = [page['entry_text']]
@@ -211,7 +211,7 @@ class InteractivePager(Generic[T]):
     async def __show_page(self, page_num: int, *, first: bool = False) -> None:
         self.current_page = page_num
         page = await self.source.get_page(page_num)
-        await self.__modify_embed(page, page_num, first=first)
+        await self.modify_embed(page, page_num, first=first)
 
         if not self.paginating:
             await self.channel.send(embed=self.embed)
@@ -408,7 +408,7 @@ class FieldPageSource(PageSource[T]):
 class InteractiveFieldPager(InteractivePager[T]):
     source: FieldPageSource[T]
 
-    async def __modify_embed(  # type: ignore
+    async def modify_embed(  # type: ignore
         self, page: FieldPage, page_num: int, *, first: bool = False
     ) -> None:
         self.embed.clear_fields()
