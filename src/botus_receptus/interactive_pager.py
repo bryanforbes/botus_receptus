@@ -250,6 +250,7 @@ class InteractivePager(Generic[T]):
         await self.__checked_show_page(self.current_page + 1)
 
     async def __numbered_page(self) -> None:
+        '''lets you type a page number to go to'''
         to_delete: List[discord.Message] = []
         to_delete.append(await self.channel.send('What page do you want to go to?'))
 
