@@ -91,7 +91,7 @@ class PageSource(Generic[T]):
         return {'entry_text': '\n'.join(lines).strip(), 'footer_text': footer_text}
 
 
-LPS = TypeVar('LPS', bound='ListPageSource')  # noqa: F821
+LPS = TypeVar('LPS', bound='ListPageSource')
 
 
 @attr.s(slots=True, auto_attribs=True)

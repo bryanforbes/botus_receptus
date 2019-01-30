@@ -24,12 +24,12 @@ import attr
 from .util import select_all, select_one, search, insert_into, delete_from, update
 
 if TYPE_CHECKING:
-    from .bot import Bot  # noqa
+    from .bot import Bot
 
 
 @attr.s(slots=True, auto_attribs=True)
 class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
-    ctx: Context  # noqa: F821
+    ctx: Context
     timeout: Optional[float] = None
 
     def __await__(self) -> Generator[Any, None, Connection]:
@@ -59,7 +59,7 @@ def ensure_db(func: F) -> F:
 
 
 class Context(commands.Context):
-    bot: 'Bot'
+    bot: Bot
     db: Connection
 
     async def _acquire(self, timeout: Optional[float]) -> Connection:

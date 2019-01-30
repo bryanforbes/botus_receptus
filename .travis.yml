@@ -18,4 +18,5 @@ install:
   - poetry install -v --extras "db gino_typed"
 
 script:
+  - poetry run flake8 src/
   - poetry run py.test -p no:sugar

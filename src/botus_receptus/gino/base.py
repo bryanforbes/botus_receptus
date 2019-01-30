@@ -24,5 +24,5 @@ class Snowflake(IntBase):
     def process_result_value(self, value: Any, dialect: Any) -> Optional[int]:
         return int(value) if value is not None else value
 
-    def copy(self, **kwargs: Any) -> Snowflake:  # noqa: F821
+    def copy(self, **kwargs: Any) -> Snowflake:
         return Snowflake(self.impl.length)

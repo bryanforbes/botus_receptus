@@ -20,7 +20,7 @@ OT = TypeVar('OT', bound=commands.Context)
 class Bot(commands.Bot[CT]):
     bot_name: str
     config: Config
-    default_prefix: str  # noqa
+    default_prefix: str
     session: aiohttp.ClientSession
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], commands.Context)
 
