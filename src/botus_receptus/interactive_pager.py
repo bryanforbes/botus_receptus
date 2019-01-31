@@ -21,7 +21,14 @@ import asyncio
 from discord.ext import commands
 from mypy_extensions import TypedDict
 
-from .util import enumerate as aenumerate, maybe_await, SyncOrAsyncIterable, starmap
+from .formatting import warning
+from .util import (
+    enumerate as aenumerate,
+    maybe_await,
+    SyncOrAsyncIterable,
+    starmap,
+    wait_for_first,
+)
 
 
 class CannotPaginate(Exception):
@@ -124,6 +131,7 @@ class InteractivePager(Generic[T]):
     message: discord.Message
     channel: Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]
     author: Union[discord.User, discord.Member]
+    can_manage_messages: bool
     source: PageSource[T]
 
     embed: discord.Embed = attr.ib(init=False)
@@ -302,6 +310,15 @@ class InteractivePager(Generic[T]):
 
             messages.append(f'{emoji} - {func.__doc__}')
 
+        if not self.can_manage_messages:
+            messages.append(
+                '\n'
+                + warning(
+                    'Giving me "Manage Messages" permissions will provide a better '
+                    'user experience for the interactive pager'
+                )
+            )
+
         self.embed.description = '\n'.join(messages)
         self.embed.clear_fields()
         self.embed.set_footer(
@@ -326,16 +343,21 @@ class InteractivePager(Generic[T]):
 
         while self.paginating:
             try:
-                reaction, user = await self.bot.wait_for(
-                    'reaction_add', check=self.__react_check, timeout=120.0
+                waits = [self.bot.wait_for('reaction_add', check=self.__react_check)]
+
+                if not self.can_manage_messages:
+                    waits.append(
+                        self.bot.wait_for('reaction_remove', check=self.__react_check)
+                    )
+
+                reaction, user = await wait_for_first(
+                    waits, timeout=120.0, loop=self.bot.loop
                 )
             except asyncio.TimeoutError:
                 self.paginating = False
 
                 try:
                     await self.message.clear_reactions()
-                except Exception:
-                    pass
                 finally:
                     break
 
@@ -380,6 +402,7 @@ class InteractivePager(Generic[T]):
             message=ctx.message,
             channel=ctx.channel,
             author=ctx.author,
+            can_manage_messages=permissions.manage_messages,
             source=source,
         )
 

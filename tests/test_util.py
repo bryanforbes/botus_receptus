@@ -2,6 +2,7 @@ import pytest  # type: ignore
 import attr
 import pendulum  # type: ignore
 from typing import AsyncIterator
+import asyncio
 
 from botus_receptus.util import (
     has_any_role,
@@ -13,6 +14,7 @@ from botus_receptus.util import (
     list as util_list,
     tuple as util_tuple,
     maybe_await,
+    wait_for_first,
 )
 
 
@@ -218,3 +220,35 @@ async def test_enumerate_start():
 @pytest.mark.asyncio
 async def test_starmap(concat, data):
     assert [item async for item in starmap(concat, data)] == ['AB', 'BC', 'ABC']
+
+
+@pytest.mark.asyncio
+async def test_wait_for_first():
+    async def one():
+        await asyncio.sleep(5)
+        return 1
+
+    async def two():
+        await asyncio.sleep(3)
+        return 2
+
+    async def three():
+        await asyncio.sleep(0.1)
+        return 3
+
+    result = await wait_for_first([one(), two(), three()])
+    assert result == 3
+
+
+@pytest.mark.asyncio
+async def test_wait_for_first_timeout(event_loop):
+    async def one():
+        await asyncio.sleep(5)
+        return 1
+
+    async def two():
+        await asyncio.sleep(3)
+        return 2
+
+    with pytest.raises(asyncio.TimeoutError):
+        await wait_for_first([one(), two()], timeout=0.1, loop=event_loop)

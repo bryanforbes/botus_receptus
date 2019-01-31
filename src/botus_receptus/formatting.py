@@ -13,9 +13,9 @@ class Paginator(Iterable[str]):
     suffix: Optional[str] = '```'
     max_size: int = 2000
     _real_max_size: int = attr.ib(init=False)
-    _current_page: List[str] = attr.ib(init=False, default=attr.Factory(list))
+    _current_page: List[str] = attr.ib(init=False, factory=list)
     _count: int = attr.ib(init=False, default=0)
-    _pages: List[str] = attr.ib(init=False, default=attr.Factory(list))
+    _pages: List[str] = attr.ib(init=False, factory=list)
 
     def __attrs_post_init__(self) -> None:
         if self.prefix is not None:

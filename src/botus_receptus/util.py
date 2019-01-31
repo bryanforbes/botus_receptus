@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import (
     Any,
+    Optional,
     TypeVar,
     Union,
     Container,
@@ -13,15 +14,20 @@ from typing import (
     AsyncIterator,
     Callable,
     Coroutine,
+    Generator,
+    Awaitable,
     cast,
+    overload,
 )
 import asyncio
-import discord
-import pendulum
 import builtins
+import discord
+import inspect
+import pendulum
 
 T = TypeVar('T')
 R = TypeVar('R')
+FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]
 
 
 def has_any_role(member: discord.Member, roles: Container[str]) -> bool:
@@ -72,11 +78,20 @@ def parse_duration(duration: str) -> pendulum.Duration:
     return pendulum.duration(**args)
 
 
-async def maybe_await(object: Any) -> Any:
-    if asyncio.iscoroutine(object):
-        return await object
-    else:
-        return object
+@overload
+async def maybe_await(object: Awaitable[T]) -> T:
+    ...
+
+
+@overload  # noqa: F811
+async def maybe_await(object: T) -> T:
+    ...
+
+
+async def maybe_await(object: Union[Awaitable[T], T]) -> T:  # noqa: F811
+    if inspect.isawaitable(object):
+        return await object  # type: ignore
+    return object  # type: ignore
 
 
 SyncOrAsyncIterable = Union[Iterable[T], AsyncIterable[T]]
@@ -123,3 +138,28 @@ async def starmap(
         args = await list(inner_iterable)
         result = fn(*args)
         yield await maybe_await(result)
+
+
+async def wait_for_first(
+    futures: Iterable[FutureT[T]],
+    *,
+    timeout: Optional[float] = None,
+    loop: Optional[asyncio.AbstractEventLoop] = None,
+) -> T:
+    if loop is None:
+        loop = asyncio.get_running_loop()
+
+    tasks = {future for future in futures}
+
+    done, pending = await asyncio.wait(
+        tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED
+    )
+
+    try:
+        if len(pending) == len(tasks):
+            raise asyncio.TimeoutError()
+
+        return done.pop().result()
+    finally:
+        for future in pending:
+            future.cancel()
