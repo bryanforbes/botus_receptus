@@ -18,6 +18,7 @@ from abc import abstractmethod
 import attr
 import discord
 import asyncio
+import enum
 from discord.ext import commands
 from mypy_extensions import TypedDict
 
@@ -31,8 +32,21 @@ from .util import (
 )
 
 
+# Inspired by paginator from https://github.com/Rapptz/RoboDanny
+
+
+class CannotPaginateReason(enum.IntEnum):
+    embed_links = 0
+    send_messages = 1
+    add_reactions = 2
+    read_message_history = 3
+
+
 class CannotPaginate(Exception):
-    pass
+    reason: CannotPaginateReason
+
+    def __init__(self, reason: CannotPaginateReason) -> None:
+        self.reason = reason
 
 
 IP = TypeVar('IP', bound='InteractivePager')
@@ -70,7 +84,7 @@ class PageSource(Generic[T]):
     ) -> Union[Coroutine[Any, Any, SyncOrAsyncIterable[T]], SyncOrAsyncIterable[T]]:
         ...
 
-    def format_entry(self, index: int, entry: T) -> str:
+    def format_line(self, index: int, entry: T) -> str:
         return f'{index}. {entry}'
 
     def get_footer_text(self, page: int) -> Optional[str]:
@@ -87,7 +101,7 @@ class PageSource(Generic[T]):
     async def get_page(self, page: int) -> Page:
         entries: SyncOrAsyncIterable[T] = await maybe_await(self.get_page_items(page))
         lines = [
-            self.format_entry(index, entry)
+            self.format_line(index, entry)
             async for index, entry in aenumerate(
                 entries, 1 + (page - 1) * self.per_page
             )
@@ -382,20 +396,18 @@ class InteractivePager(Generic[T]):
             )
 
         if not permissions.embed_links:
-            raise CannotPaginate('Bot does not have Embed Links permission.')
+            raise CannotPaginate(CannotPaginateReason.embed_links)
 
         if not permissions.send_messages:
-            raise CannotPaginate('Bot cannot send messages.')
+            raise CannotPaginate(CannotPaginateReason.send_messages)
 
         if source.paginated:
             # verify we can actually use the pagination session
             if not permissions.add_reactions:
-                raise CannotPaginate('Bot does not have Add Reactions permission.')
+                raise CannotPaginate(CannotPaginateReason.add_reactions)
 
             if not permissions.read_message_history:
-                raise CannotPaginate(
-                    'Bot does not have Read Message History permission.'
-                )
+                raise CannotPaginate(CannotPaginateReason.read_message_history)
 
         return cls(
             bot=ctx.bot,
@@ -413,13 +425,13 @@ class FieldPage(Page):
 
 @attr.s(slots=True, auto_attribs=True)
 class FieldPageSource(PageSource[T]):
-    def format_entry(self, index: int, entry: T) -> Tuple[Any, Any]:  # type: ignore
+    def format_field(self, index: int, entry: T) -> Tuple[Any, Any]:
         return (index, entry)
 
     async def get_page(self, page: int) -> FieldPage:
         entries: SyncOrAsyncIterable[T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
-            self.format_entry, aenumerate(entries, 1 + (page - 1) * self.per_page)
+            self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
         )
         return {
             'entry_text': '',
