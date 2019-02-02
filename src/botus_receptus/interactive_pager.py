@@ -31,6 +31,7 @@ from .util import (
     wait_for_first,
 )
 
+WaitResult = Tuple[discord.Reaction, Optional[Union[discord.User, discord.Member]]]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -155,6 +156,9 @@ class InteractivePager(Generic[T]):
         Tuple[str, bool, Callable[[], Coroutine[Any, Any, None]]]
     ] = attr.ib(init=False)
     match: Optional[Callable[[], Coroutine[Any, Any, None]]] = attr.ib(
+        init=False, default=None
+    )
+    wait_task: Optional['asyncio.Future[WaitResult]'] = attr.ib(
         init=False, default=None
     )
     help_task: Optional[asyncio.Task] = attr.ib(init=False, default=None)
@@ -305,6 +309,12 @@ class InteractivePager(Generic[T]):
         '''stops the interactive pagination session'''
         await self.message.delete()
         self.paginating = False
+        if self.wait_task is not None:
+            self.wait_task.cancel()
+            self.wait_task = None
+        if self.help_task is not None:
+            self.help_task.cancel()
+            self.help_task = None
 
     async def __show_current_page(self) -> None:
         if self.paginating:
@@ -355,18 +365,34 @@ class InteractivePager(Generic[T]):
 
         self.bot.loop.create_task(first_page)
 
+        if self.can_manage_messages:
+
+            def wait_for_reaction() -> 'asyncio.Future[WaitResult]':
+                return self.bot.wait_for(
+                    'reaction_add', check=self.__react_check, timeout=120.0
+                )
+
+        else:
+
+            def wait_for_reaction() -> 'asyncio.Future[WaitResult]':
+                return self.bot.loop.create_task(
+                    wait_for_first(
+                        [
+                            self.bot.wait_for('reaction_add', check=self.__react_check),
+                            self.bot.wait_for(
+                                'reaction_remove', check=self.__react_check
+                            ),
+                        ],
+                        timeout=120.0,
+                        loop=self.bot.loop,
+                    )
+                )
+
         while self.paginating:
             try:
-                waits = [self.bot.wait_for('reaction_add', check=self.__react_check)]
-
-                if not self.can_manage_messages:
-                    waits.append(
-                        self.bot.wait_for('reaction_remove', check=self.__react_check)
-                    )
-
-                reaction, user = await wait_for_first(
-                    waits, timeout=120.0, loop=self.bot.loop
-                )
+                self.wait_task = wait_for_reaction()
+                reaction, user = await self.wait_task
+                self.wait_task = None
             except asyncio.TimeoutError:
                 self.paginating = False
 
