@@ -171,14 +171,6 @@ version = "1.0.0a1672+g3f71dbd"
 aiohttp = ">=3.3.0,<3.5.0"
 websockets = ">=6.0,<7.0"
 
-[package.dependencies.mypy-extensions]
-optional = true
-version = ">=0.3.0"
-
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.6.5"
-
 [package.extras]
 docs = ["sphinx (1.7.4)", "sphinxcontrib-asyncio", "sphinxcontrib-websupport"]
 typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
@@ -188,6 +180,7 @@ voice = ["PyNaCl (1.2.1)"]
 reference = "3f71dbd6a24cb23c257f63d1446650baf2ddc9b4"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Discover and load entry points from installed packages."
@@ -274,6 +267,7 @@ typing-extensions = ">=3.6.5"
 reference = "291b390566416103ce4c88c10521c40344645dea"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -387,6 +381,7 @@ pytzdata = ">=2018.3"
 reference = "306239b83efbdbbf857ef6b0388276b53cf678be"
 type = "git"
 url = "https://github.com/bryanforbes/pendulum.git"
+
 [[package]]
 category = "dev"
 description = "plugin and hook calling mechanisms for python"
@@ -638,6 +633,7 @@ typing-extensions = ">=3.6.5"
 reference = "c0d559246eb9ec24a0bf552253ef4018b5f49a31"
 type = "git"
 url = "https://github.com/dropbox/sqlalchemy-stubs.git"
+
 [[package]]
 category = "dev"
 description = "ANSII Color formatting for output in terminal."
