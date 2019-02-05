@@ -28,8 +28,8 @@ click = ">=6.7"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
-sqlalchemy-stubs = {rev = "c0d559246eb9ec24a0bf552253ef4018b5f49a31", git = "https://github.com/dropbox/sqlalchemy-stubs.git", optional = true}
-gino-stubs = {rev = "291b390566416103ce4c88c10521c40344645dea", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+sqlalchemy-stubs = {rev = "c155b67180e14eb68331fb7deb108bc1cb79bf88", git = "https://github.com/dropbox/sqlalchemy-stubs.git", optional = true}
+gino-stubs = {rev = "bad51347918eeedbe1ddd5dca2f5ae0860892235", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 
