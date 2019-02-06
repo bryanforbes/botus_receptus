@@ -22,42 +22,6 @@ class MockMember(object):
     roles = attr.ib(default=attr.Factory(list))
 
 
-class async_iterator:
-    def __init__(self, items):
-        self.iter = iter(items)
-
-    def __aiter__(self):
-        return self
-
-    async def __anext__(self):
-        try:
-            return next(self.iter)
-        except StopIteration:
-            raise StopAsyncIteration
-
-
-class async_iterable:
-    def __init__(self, items):
-        self.items = items
-
-    def __aiter__(self):
-        return async_iterator(self.items)
-
-
-def concat(*args):
-    return ''.join(args)
-
-
-async def async_concat(*args):
-    return ''.join(args)
-
-
-async def gen():
-    yield ['A', 'B']
-    yield ['B', 'C']
-    yield ['A', 'B', 'C']
-
-
 def test_has_any_role() -> None:
     assert has_any_role(
         MockMember(
