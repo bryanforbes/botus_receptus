@@ -1,19 +1,12 @@
 import pytest  # type: ignore
 import attr
 import pendulum  # type: ignore
-from typing import AsyncIterator
 import asyncio
 
 from botus_receptus.util import (
     has_any_role,
     has_any_role_id,
     parse_duration,
-    iter as util_iter,
-    enumerate,
-    starmap,
-    list as util_list,
-    tuple as util_tuple,
-    maybe_await,
     wait_for_first,
 )
 
@@ -122,104 +115,6 @@ def test_parse_duration(duration, expected):
 def test_parse_duration_failures(duration, message):
     with pytest.raises(ValueError, message=message):
         parse_duration(duration)
-
-
-@pytest.mark.asyncio
-async def test_maybe_await():
-    assert (await maybe_await(4)) == 4
-
-
-@pytest.mark.asyncio
-async def test_maybe_await_coroutine():
-    async def func():
-        return 4
-
-    assert (await maybe_await(func())) == 4
-
-
-@pytest.mark.asyncio
-async def test_iter_list():
-    items = ['A', 'B', 'C']
-    aitems = util_iter(items)
-
-    assert isinstance(aitems, AsyncIterator)
-
-    assert [item async for item in aitems] == items
-
-
-@pytest.mark.asyncio
-async def test_iter_range():
-    items = range(3)
-    aitems = util_iter(items)
-
-    assert isinstance(aitems, AsyncIterator)
-
-    assert [item async for item in aitems] == list(items)
-
-
-@pytest.mark.asyncio
-async def test_iter_async_iterable():
-    items = ['A', 'B', 'C']
-
-    assert [item async for item in util_iter(async_iterable(items))] == items
-
-
-@pytest.mark.asyncio
-async def test_iter_async_iterator():
-    items = ['A', 'B', 'C']
-
-    assert [item async for item in util_iter(async_iterator(items))] == items
-
-
-@pytest.mark.asyncio
-async def test_iter_async_generator():
-    async def async_gen():
-        yield 1
-        yield 2
-
-    assert [item async for item in util_iter(async_gen())] == [1, 2]
-
-
-@pytest.mark.asyncio
-async def test_list():
-    assert (await util_list(('A', 'B', 'C'))) == ['A', 'B', 'C']
-
-
-@pytest.mark.asyncio
-async def test_tuple():
-    assert (await util_tuple(['A', 'B', 'C'])) == ('A', 'B', 'C')
-
-
-@pytest.mark.asyncio
-async def test_enumerate():
-    assert [item async for item in enumerate(['A', 'B', 'C'])] == [
-        (0, 'A'),
-        (1, 'B'),
-        (2, 'C'),
-    ]
-
-
-@pytest.mark.asyncio
-async def test_enumerate_start():
-    assert [item async for item in enumerate(['A', 'B', 'C'], 4)] == [
-        (4, 'A'),
-        (5, 'B'),
-        (6, 'C'),
-    ]
-
-
-@pytest.mark.parametrize(
-    'concat,data',
-    [
-        (concat, [['A', 'B'], ['B', 'C'], ['A', 'B', 'C']]),
-        (async_concat, [['A', 'B'], ['B', 'C'], ['A', 'B', 'C']]),
-        (concat, gen()),
-        (async_concat, gen()),
-    ],
-)
-@pytest.mark.asyncio
-async def test_starmap(concat, data):
-    assert [item async for item in starmap(concat, data)] == ['AB', 'BC', 'ABC']
 
 
 @pytest.mark.asyncio

@@ -22,14 +22,12 @@ import enum
 from discord.ext import commands
 from mypy_extensions import TypedDict
 
+from aioitertools import enumerate as aenumerate, starmap
+from aioitertools.types import AnyIterable
+from aioitertools.helpers import maybe_await
+
 from .formatting import warning
-from .util import (
-    enumerate as aenumerate,
-    maybe_await,
-    SyncOrAsyncIterable,
-    starmap,
-    wait_for_first,
-)
+from .util import wait_for_first
 
 WaitResult = Tuple[discord.Reaction, Optional[Union[discord.User, discord.Member]]]
 
@@ -82,7 +80,7 @@ class PageSource(Generic[T]):
     @abstractmethod
     def get_page_items(
         self, page: int
-    ) -> Union[Coroutine[Any, Any, SyncOrAsyncIterable[T]], SyncOrAsyncIterable[T]]:
+    ) -> Union[Coroutine[Any, Any, AnyIterable[T]], AnyIterable[T]]:
         ...
 
     def format_line(self, index: int, entry: T) -> str:
@@ -100,7 +98,7 @@ class PageSource(Generic[T]):
         return text
 
     async def get_page(self, page: int) -> Page:
-        entries: SyncOrAsyncIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         lines = [
             self.format_line(index, entry)
             async for index, entry in aenumerate(
@@ -455,7 +453,7 @@ class FieldPageSource(PageSource[T]):
         return (index, entry)
 
     async def get_page(self, page: int) -> FieldPage:
-        entries: SyncOrAsyncIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
             self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
         )

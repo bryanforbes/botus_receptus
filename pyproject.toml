@@ -32,6 +32,7 @@ sqlalchemy-stubs = {rev = "c155b67180e14eb68331fb7deb108bc1cb79bf88", git = "htt
 gino-stubs = {rev = "bad51347918eeedbe1ddd5dca2f5ae0860892235", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
+aioitertools = {rev = "a196c30c453c0e9accd927315545bda2f3e930ab", git = "https://github.com/jreese/aioitertools.git"}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
