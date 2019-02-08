@@ -742,7 +742,7 @@ gino = ["gino"]
 gino_typed = ["gino", "gino-stubs"]
 
 [metadata]
-content-hash = "4371f0cc8d5d9bd38643c7cd7e5988bad453e1a0796aefa14dbd4df2b8109dae"
+content-hash = "4e156684e0426982a7b926cce92f01099f93c2d28553b3825df736ca12a7852d"
 python-versions = "^3.7"
 
 [metadata.hashes]

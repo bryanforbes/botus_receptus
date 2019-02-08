@@ -36,7 +36,7 @@ aioitertools = "^0.3.0"
 [tool.poetry.extras]
 db = ["asyncpg"]
 gino = ["gino"]
-gino_typed = ["gino", "sqlalchemy-stubs", "gino-stubs"]
+gino_typed = ["gino", "gino-stubs"]
 
 [tool.poetry.dev-dependencies]
 asynctest = "~0.12.2"
