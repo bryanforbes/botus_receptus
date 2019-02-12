@@ -32,11 +32,15 @@ gino-stubs = {rev = "cadb2cec69d11ca8c4a83a0530e88dd1fbf41861", git = "https://g
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 aioitertools = "^0.3.0"
+uvloop = {version = "~0.12.1", optional = true}
+more-itertools = {version = "~6.0.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
 gino = ["gino"]
 gino_typed = ["gino", "gino-stubs"]
+more_itertools = ["more-itertools"]
+uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asynctest = "~0.12.2"
@@ -44,7 +48,7 @@ black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
 flake8-pyi = "^18.1"
-mypy = "^0.660"
+mypy = "^0.670"
 pre-commit = "^1.12"
 pytest = "~4.2.0"
 pytest-asyncio = "^0.10.0"
