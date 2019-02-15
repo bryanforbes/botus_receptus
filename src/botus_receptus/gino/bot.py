@@ -1,24 +1,26 @@
 from __future__ import annotations
 
-from typing import Any, TypeVar
+from typing import Any, TypeVar, ClassVar
 from discord.ext import commands
+from gino import Gino
 
 from ..bot import Bot as BaseBot
 from ..config import Config
-from .base import db
 
 
 CT = TypeVar('CT', bound=commands.Context)
 
 
 class Bot(BaseBot[CT]):
+    db: ClassVar[Gino]
+
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         super().__init__(config, *args, **kwargs)
 
-        self.loop.run_until_complete(db.set_bind(self.config.get('db_url', '')))
+        self.loop.run_until_complete(self.db.set_bind(self.config.get('db_url', '')))
 
     async def close(self) -> None:
-        bind = db.pop_bind()
+        bind = self.db.pop_bind()
 
         if bind is not None:
             await bind.close()

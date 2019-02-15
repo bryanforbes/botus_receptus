@@ -23,12 +23,12 @@ python = "^3.7"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "e174ea0f91d4c7874b5f2715366ea51981b61aa1", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "48afd69587c1006b9354e07400f907b7658fd5f9", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
-gino-stubs = {rev = "cadb2cec69d11ca8c4a83a0530e88dd1fbf41861", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "cd4533c8cd37503c2ce55dfd0364914aad808939", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 aioitertools = "^0.3.0"

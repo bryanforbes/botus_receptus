@@ -2,16 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional
 from sqlalchemy.types import TypeDecorator, String
-from gino import Gino
-from gino.crud import CRUDModel
-
-db = Gino()
 
 if TYPE_CHECKING:
-    Base = CRUDModel
     IntBase = TypeDecorator[int]
 else:
-    Base = db.Model
     IntBase = TypeDecorator
 
 

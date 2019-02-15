@@ -1,9 +1,6 @@
 from typing import Any, Union, TypeVar, Type, Sequence, Mapping, List, Dict, cast
 from gino.crud import CRUDModel
-from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
-
-from .base import db
 
 _CM = TypeVar('_CM', bound=CRUDModel)
 
@@ -30,5 +27,7 @@ async def create_or_update(
         set_={k: getattr(stmt.excluded, v) for k, v in set_values.items()},
     ).execution_options(return_model=False, model=cls)
 
-    row = await cast(GinoEngine, db.bind).first(stmt)
+    assert cls.__metadata__.bind is not None
+
+    row = await cls.__metadata__.bind.first(stmt)
     return cls(**{column_name_map.invert_get(k, ''): v for k, v in row.items()})
