@@ -28,7 +28,7 @@ click = ">=6.7"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
-gino-stubs = {rev = "593d45662cef0dd3015f951df8300fb3ab9243fd", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "a74a82bdd1b08cc555932e0d773d5a629f11b4bb", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 aioitertools = "^0.3.0"
