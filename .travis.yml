@@ -15,7 +15,10 @@ before_install:
   - source $HOME/.poetry/env
 
 install:
-  - poetry install -v --extras "db gino_typed"
+  - poetry install -v --extras "db gino_typed more_itertools uvloop"
 
-script:
-  - poetry run py.test -p no:sugar
+script: |
+  set -e
+  poetry run flake8 src
+  poetry run mypy -m botus_receptus
+  poetry run py.test -p no:sugar
