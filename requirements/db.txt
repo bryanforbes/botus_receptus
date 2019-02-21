@@ -1,2 +1,0 @@
--r base.txt
-asyncpg==0.15.0

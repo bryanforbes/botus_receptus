@@ -1,7 +1,0 @@
-async-timeout==3.0.0
-attrs==18.1.0
-click==6.7
-git+https://github.com/Rapptz/discord.py@607771c4f49a12d984d782883a580e7332359a10#egg=discord.py
-mypy-extensions==0.3.0
-pip
-typing-extensions==3.6.5
