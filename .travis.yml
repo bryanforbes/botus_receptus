@@ -12,7 +12,9 @@ cache:
 
 before_install:
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y --preview
+  - deactivate
   - source $HOME/.poetry/env
+  - poetry config settings.virtualenvs.in-project true
 
 install:
   - poetry install -v --extras "db gino_typed more_itertools uvloop"
