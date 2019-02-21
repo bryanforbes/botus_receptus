@@ -31,7 +31,7 @@ def create_pool(
     loop: Optional[Any] = ...,
     pool_class: Any = ...,
     connection_class: Any = ...,
-    **connect_kwargs: Any
+    **connect_kwargs: Any,
 ): ...
 
 class ClusterTestCase(TestCase):

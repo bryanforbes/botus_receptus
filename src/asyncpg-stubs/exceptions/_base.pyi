@@ -47,7 +47,7 @@ class OutdatedSchemaCacheError(InternalClientError):
         *,
         schema: Optional[Any] = ...,
         data_type: Optional[Any] = ...,
-        position: Optional[Any] = ...
+        position: Optional[Any] = ...,
     ) -> None: ...
 
 class PostgresLogMessage(PostgresMessage):
