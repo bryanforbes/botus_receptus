@@ -16,9 +16,13 @@ before_install:
 
 install:
   - poetry install -v --extras "db gino_typed more_itertools uvloop"
+  - poetry run pip install codecov
 
 script: |
   set -e
   poetry run flake8 src
   poetry run mypy -m botus_receptus
   poetry run py.test -p no:sugar
+
+after_success:
+  - poetry run codecov
