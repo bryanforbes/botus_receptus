@@ -63,7 +63,7 @@ class MockBot(object):
         str, List[Tuple['asyncio.Future[Any]', Callable[..., Any]]]
     ] = attr.ib(factory=dict)
 
-    def _dispatch_wait_for(self, event: str, *args: Any) -> None:
+    async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
         listeners = self._listeners.setdefault(event, [])
 
         if listeners:
@@ -94,6 +94,8 @@ class MockBot(object):
                 for idx in reversed(removed):
                     del listeners[idx]
 
+        await asyncio.sleep(0.1)
+
     def wait_for(
         self,
         event: str,
@@ -115,7 +117,7 @@ class MockBot(object):
         listeners.append((future, check))
 
         return asyncio.wait_for(
-            future, timeout if timeout is None else 1, loop=self.loop
+            future, timeout if timeout is None else 0.5, loop=self.loop
         )
 
     @staticmethod

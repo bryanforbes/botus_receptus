@@ -156,9 +156,6 @@ class InteractivePager(Generic[T]):
     match: Optional[Callable[[], Coroutine[Any, Any, None]]] = attr.ib(
         init=False, default=None
     )
-    wait_task: Optional['asyncio.Future[WaitResult]'] = attr.ib(
-        init=False, default=None
-    )
     help_task: Optional[asyncio.Task] = attr.ib(init=False, default=None)
 
     def __attrs_post_init__(self) -> None:
@@ -307,9 +304,6 @@ class InteractivePager(Generic[T]):
         '''stops the interactive pagination session'''
         await self.message.delete()
         self.paginating = False
-        if self.wait_task is not None:
-            self.wait_task.cancel()
-            self.wait_task = None
         if self.help_task is not None:
             self.help_task.cancel()
             self.help_task = None
@@ -388,9 +382,7 @@ class InteractivePager(Generic[T]):
 
         while self.paginating:
             try:
-                self.wait_task = wait_for_reaction()
-                reaction, user = await self.wait_task
-                self.wait_task = None
+                reaction, user = await wait_for_reaction()
             except asyncio.TimeoutError:
                 self.paginating = False
 
