@@ -23,7 +23,7 @@ python = "^3.7"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "ec91122e62983eaf5015424c80c96c9d1b69f063", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "95e116f84faf3cbb4291e7fccfcd202e0259781d", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 asyncpg = {version = ">=0.18.2", optional = true}
@@ -47,7 +47,8 @@ asynctest = "~0.12.2"
 black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
-flake8-pyi = "^18.1"
+flake8-per-file-ignores = "^0.8.1"
+flake8-pyi = "^19.2"
 mypy = "^0.670"
 pre-commit = "^1.12"
 pytest = "^4.2.0"
