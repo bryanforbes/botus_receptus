@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 
 @attr.s(slots=True, auto_attribs=True)
 class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
-    ctx: Context  # noqa: F821
+    ctx: Context
     timeout: Optional[float] = None
 
     def __await__(self) -> Generator[Any, None, Connection]:
