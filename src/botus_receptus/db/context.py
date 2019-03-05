@@ -17,9 +17,9 @@ from typing import (
     cast,
 )
 from asyncpg import Connection
+from dataclasses import dataclass
+from dataslots import with_slots
 from discord.ext import commands
-
-import attr
 
 from .util import select_all, select_one, search, insert_into, delete_from, update
 
@@ -27,7 +27,8 @@ if TYPE_CHECKING:
     from .bot import Bot
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
     ctx: Context
     timeout: Optional[float] = None

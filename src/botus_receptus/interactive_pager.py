@@ -15,7 +15,8 @@ from typing import (
     cast,
 )
 from abc import abstractmethod
-import attr
+from dataclasses import dataclass, field
+from dataslots import with_slots
 import discord
 import asyncio
 import enum
@@ -58,14 +59,15 @@ class Page(TypedDict):
     footer_text: Optional[str]
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots  # type: ignore
+@dataclass
 class PageSource(Generic[T]):
     total: int
     per_page: int
     show_entry_count: bool
-    max_pages: int = attr.ib(init=False)
+    max_pages: int = field(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         max_pages, left_over = divmod(self.total, self.per_page)
 
         if left_over:
@@ -114,7 +116,8 @@ class PageSource(Generic[T]):
 LPS = TypeVar('LPS', bound='ListPageSource')
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class ListPageSource(PageSource[T]):
     entries: List[T]
 
@@ -138,7 +141,8 @@ class ListPageSource(PageSource[T]):
         )
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class InteractivePager(Generic[T]):
     bot: commands.Bot
     message: discord.Message
@@ -147,18 +151,19 @@ class InteractivePager(Generic[T]):
     can_manage_messages: bool
     source: PageSource[T]
 
-    embed: discord.Embed = attr.ib(init=False)
-    paginating: bool = attr.ib(init=False)
-    current_page: int = attr.ib(init=False, default=-1)
+    embed: discord.Embed = field(init=False)
+    paginating: bool = field(init=False)
+    current_page: int = field(init=False)
     reaction_emojis: List[
         Tuple[str, bool, Callable[[], Coroutine[Any, Any, None]]]
-    ] = attr.ib(init=False)
-    match: Optional[Callable[[], Coroutine[Any, Any, None]]] = attr.ib(
-        init=False, default=None
-    )
-    help_task: Optional[asyncio.Task] = attr.ib(init=False, default=None)
+    ] = field(init=False)
+    match: Optional[Callable[[], Coroutine[Any, Any, None]]] = field(init=False)
+    help_task: Optional[asyncio.Task] = field(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
+        self.current_page = -1
+        self.match = None
+        self.help_task = None
         self.embed = discord.Embed()
         self.paginating = self.source.paginated
         self.reaction_emojis = [
@@ -439,7 +444,8 @@ class FieldPage(Page):
     fields: AsyncIterable[Tuple[str, str]]
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots  # type: ignore
+@dataclass
 class FieldPageSource(PageSource[T]):
     def format_field(self, index: int, entry: T) -> Tuple[Any, Any]:
         return (index, entry)
@@ -456,7 +462,8 @@ class FieldPageSource(PageSource[T]):
         }
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class InteractiveFieldPager(InteractivePager[T]):
     source: FieldPageSource[T]
 

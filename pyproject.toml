@@ -20,25 +20,26 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
+aioitertools = "^0.3.0"
 "async-timeout" = ">=3.0.0"
-attrs = ">=18.2.0"
 click = ">=6.7"
+dataslots = "^1.0"
 "discord.py" = {rev = "95e116f84faf3cbb4291e7fccfcd202e0259781d", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
-asyncpg = {version = ">=0.18.2", optional = true}
-gino = {version = "~0.8.1", optional = true}
-gino-stubs = {rev = "816a9f09730e44b9b695530ca2c7267d3f6fee70", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
-aioitertools = "^0.3.0"
+asyncpg = {version = ">=0.18.2", optional = true}
+gino = {version = "~0.8.1", optional = true}
+sqlalchemy = {version = "~1.2.18", optional = true}
+gino-stubs = {rev = "816a9f09730e44b9b695530ca2c7267d3f6fee70", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.12.1", optional = true}
 more-itertools = {version = "~6.0.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
-gino = ["gino"]
-gino_typed = ["gino", "gino-stubs"]
+gino = ["gino", "sqlalchemy"]
+gino_typed = ["gino", "sqlalchemy", "gino-stubs"]
 more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 

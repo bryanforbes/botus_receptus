@@ -1,8 +1,10 @@
 import pytest  # type: ignore
-import attr
 import pendulum  # type: ignore
 import asyncio
 
+from typing import List
+from dataclasses import dataclass, field
+from dataslots import with_slots
 from botus_receptus.util import (
     has_any_role,
     has_any_role_id,
@@ -11,15 +13,17 @@ from botus_receptus.util import (
 )
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockRole(object):
     id: int = 0
     name: str = ''
 
 
-@attr.s(slots=True)
+@with_slots
+@dataclass
 class MockMember(object):
-    roles = attr.ib(default=attr.Factory(list))
+    roles: List[MockRole] = field(default_factory=list)
 
 
 def test_has_any_role() -> None:

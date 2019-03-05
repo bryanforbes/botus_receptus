@@ -1,28 +1,32 @@
 import pytest  # type: ignore
-import attr
 import discord
 from typing import Any, Optional
+from dataclasses import dataclass
+from dataslots import with_slots
 from botus_receptus.db.context import Context
 
 
-@attr.s(slots=True)
+@with_slots
+@dataclass
 class MockBot(object):
-    pool = attr.ib()
+    pool: Any
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockUser(object):
     bot: Optional[bool] = None
     id: Optional[int] = None
     mention: Optional[str] = None
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockMessage(object):
     author: Optional[MockUser] = None
     content: Optional[str] = None
-    channel: Optional[discord.abc.GuildChannel] = attr.ib(init=False, default=None)
-    _state: Any = attr.ib(init=False, default=None)
+    channel: Optional[discord.abc.GuildChannel] = None
+    _state: Any = None
 
 
 class TestContext(object):

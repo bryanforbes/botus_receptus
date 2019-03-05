@@ -1,0 +1,9 @@
+from typing import TypeVar, Type, Callable, overload
+
+_T = TypeVar('_T')
+@overload
+def with_slots(_cls: Type[_T]) -> Type[_T]: ...
+@overload
+def with_slots(
+    *, add_dict: bool = ..., add_weakref: bool = ...
+) -> Callable[[Type[_T]], Type[_T]]: ...

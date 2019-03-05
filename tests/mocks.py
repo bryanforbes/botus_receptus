@@ -1,19 +1,22 @@
 from __future__ import annotations
 
-import attr
+from dataclasses import dataclass, field
+from dataslots import with_slots
 import asyncio
 
 from typing import Any, Optional, Dict, List, Tuple, Callable
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockUser(object):
     id: int
     bot: Optional[bool] = None
     mention: Optional[str] = None
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockPermissions(object):
     embed_links: bool = True
     send_messages: bool = True
@@ -22,13 +25,14 @@ class MockPermissions(object):
     manage_messages: bool = True
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockGuild(object):
     me: Optional[MockUser] = None
     owner: Optional[MockUser] = None
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class MockChannel(object):
     def permissions_for(self, thing):
         pass
@@ -55,13 +59,13 @@ class MockChannel(object):
         return channel
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class MockBot(object):
     user: MockUser
     loop: Any
     _listeners: Dict[
         str, List[Tuple['asyncio.Future[Any]', Callable[..., Any]]]
-    ] = attr.ib(factory=dict)
+    ] = field(default_factory=dict)
 
     async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
         listeners = self._listeners.setdefault(event, [])
@@ -125,7 +129,7 @@ class MockBot(object):
         return MockBot(user=user, loop=loop)
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class MockMessage(object):
     id: int
     author: MockUser
@@ -161,7 +165,8 @@ class MockMessage(object):
         return message
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockContext(object):
     bot: MockBot
     author: MockUser

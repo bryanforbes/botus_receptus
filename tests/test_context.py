@@ -1,24 +1,27 @@
 import pytest  # typing: ignore
-import attr
 import discord
-from typing import Any
+from typing import Any, Optional
+from dataclasses import dataclass
+from dataslots import with_slots
 from botus_receptus.context import EmbedContext, PaginatedContext
 from datetime import datetime
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockUser(object):
     bot: bool = None
     id: int = None
     mention: str = None
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockMessage(object):
     author: MockUser = None
     content: str = None
-    channel: discord.abc.GuildChannel = attr.ib(init=False, default=None)
-    _state: Any = attr.ib(init=False, default=None)
+    channel: Optional[discord.abc.GuildChannel] = None
+    _state: Optional[Any] = None
 
 
 @pytest.fixture

@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import pytest
 import asyncio
-import attr
 import discord
 
 from typing import Any, List
 from aioitertools import list as alist
+from dataclasses import dataclass
+from dataslots import with_slots
 from botus_receptus.interactive_pager import (
     PageSource,
     ListPageSource,
@@ -19,7 +20,8 @@ from botus_receptus.interactive_pager import (
 from .mocks import MockUser, MockPermissions, MockGuild, MockContext
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class MockReaction(object):
     message: Any
     emoji: str
@@ -29,7 +31,8 @@ class MockReaction(object):
         return MockReaction(message=discord.Object(message_id), emoji=emoji)
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class SubPageSource(PageSource[str]):
     strings: List[str]
 
@@ -38,7 +41,8 @@ class SubPageSource(PageSource[str]):
         return self.strings[base : base + self.per_page]
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class SubFieldPageSource(FieldPageSource[str]):
     strings: List[str]
 
