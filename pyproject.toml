@@ -8,7 +8,8 @@ packages = [
 	{ include = "botus_receptus", from = "src" },
 	{ include = "asyncpg-stubs", from = "src" },
 	{ include = "uvloop-stubs", from = "src" },
-	{ include = "more_itertools-stubs", from = "src" }
+	{ include = "more_itertools-stubs", from = "src" },
+	{ include = "dataslots-stubs", from = "src" }
 ]
 
 include = [
