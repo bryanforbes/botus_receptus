@@ -184,7 +184,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1740+g95e116f"
+version = "1.0.0a1752+g5fcfe17"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.6.0"
@@ -204,7 +204,7 @@ typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
 voice = ["PyNaCl (1.2.1)"]
 
 [package.source]
-reference = "95e116f84faf3cbb4291e7fccfcd202e0259781d"
+reference = "5fcfe177b87f2a6303c344a687d4510ce6b7e76f"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -740,7 +740,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "bd08543bfa6ec85fdf2480f3b936115f6eafb6e90d4e7e679cc492d85de87168"
+content-hash = "532eecbde849a861aa5e21e9006a5c7fd9115dda8c90aabe67aca0345815bde9"
 python-versions = "^3.7"
 
 [metadata.hashes]
