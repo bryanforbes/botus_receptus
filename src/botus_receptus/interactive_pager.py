@@ -7,7 +7,7 @@ from typing import (
     List,
     Tuple,
     Callable,
-    Coroutine,
+    Awaitable,
     TypeVar,
     Type,
     Generic,
@@ -82,7 +82,7 @@ class PageSource(Generic[T]):
     @abstractmethod
     def get_page_items(
         self, page: int
-    ) -> Union[Coroutine[Any, Any, AnyIterable[T]], AnyIterable[T]]:
+    ) -> Union[Awaitable[AnyIterable[T]], AnyIterable[T]]:
         ...
 
     def format_line(self, index: int, entry: T) -> str:
@@ -154,10 +154,10 @@ class InteractivePager(Generic[T]):
     embed: discord.Embed = field(init=False)
     paginating: bool = field(init=False)
     current_page: int = field(init=False)
-    reaction_emojis: List[
-        Tuple[str, bool, Callable[[], Coroutine[Any, Any, None]]]
-    ] = field(init=False)
-    match: Optional[Callable[[], Coroutine[Any, Any, None]]] = field(init=False)
+    reaction_emojis: List[Tuple[str, bool, Callable[[], Awaitable[None]]]] = field(
+        init=False
+    )
+    match: Optional[Callable[[], Awaitable[None]]] = field(init=False)
     help_task: Optional[asyncio.Task] = field(init=False)
 
     def __post_init__(self) -> None:
