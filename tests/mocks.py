@@ -1,22 +1,19 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
+from attr import dataclass, attrib
 import asyncio
 
 from typing import Any, Optional, Dict, List, Tuple, Callable
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockUser(object):
     id: int
     bot: Optional[bool] = None
     mention: Optional[str] = None
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockPermissions(object):
     embed_links: bool = True
     send_messages: bool = True
@@ -25,8 +22,7 @@ class MockPermissions(object):
     manage_messages: bool = True
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockGuild(object):
     me: Optional[MockUser] = None
     owner: Optional[MockUser] = None
@@ -65,7 +61,7 @@ class MockBot(object):
     loop: Any
     _listeners: Dict[
         str, List[Tuple['asyncio.Future[Any]', Callable[..., Any]]]
-    ] = field(default_factory=dict)
+    ] = attrib(factory=dict)
 
     async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
         listeners = self._listeners.setdefault(event, [])
@@ -165,8 +161,7 @@ class MockMessage(object):
         return message
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockContext(object):
     bot: MockBot
     author: MockUser

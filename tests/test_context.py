@@ -1,22 +1,19 @@
 import pytest  # typing: ignore
 import discord
 from typing import Any, Optional
-from dataclasses import dataclass
-from dataslots import with_slots
+from attr import dataclass
 from botus_receptus.context import EmbedContext, PaginatedContext
 from datetime import datetime
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockUser(object):
     bot: bool = None
     id: int = None
     mention: str = None
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockMessage(object):
     author: MockUser = None
     content: str = None

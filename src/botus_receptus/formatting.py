@@ -1,29 +1,23 @@
 from __future__ import annotations
 
 from typing import Callable, Iterable, Iterator, List, Optional
-from dataclasses import dataclass, field
-from dataslots import with_slots
+from attr import dataclass, attrib
 from mypy_extensions import Arg, DefaultNamedArg
 
 from . import re
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class Paginator(Iterable[str]):
     prefix: Optional[str] = '```'
     suffix: Optional[str] = '```'
     max_size: int = 2000
-    _real_max_size: int = field(init=False)
-    _current_page: List[str] = field(init=False)
-    _count: int = field(init=False)
-    _pages: List[str] = field(init=False)
+    _real_max_size: int = attrib(init=False)
+    _current_page: List[str] = attrib(init=False, factory=list)
+    _count: int = attrib(init=False, default=0)
+    _pages: List[str] = attrib(init=False, factory=list)
 
-    def __post_init__(self) -> None:
-        self._current_page = []
-        self._count = 0
-        self._pages = []
-
+    def __attrs_post_init__(self) -> None:
         if self.prefix is not None:
             self._current_page.append(self.prefix)
 
@@ -89,8 +83,7 @@ class Paginator(Iterable[str]):
         return self.pages.__iter__()
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class EmbedPaginator(Paginator):
     prefix: Optional[str] = None
     suffix: Optional[str] = None

@@ -8,8 +8,7 @@ packages = [
 	{ include = "botus_receptus", from = "src" },
 	{ include = "asyncpg-stubs", from = "src" },
 	{ include = "uvloop-stubs", from = "src" },
-	{ include = "more_itertools-stubs", from = "src" },
-	{ include = "dataslots-stubs", from = "src" }
+	{ include = "more_itertools-stubs", from = "src" }
 ]
 
 include = [
@@ -23,8 +22,8 @@ include = [
 python = "^3.7"
 aioitertools = "^0.3.0"
 "async-timeout" = ">=3.0.0"
+attrs = ">=18.2.0"
 click = ">=6.7"
-dataslots = "^1.0"
 "discord.py" = {rev = "a26ad4f9a56c2b42abd09ec0b95d512942057650", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"

@@ -6,8 +6,7 @@ import discord
 
 from typing import Any, List
 from aioitertools import list as alist
-from dataclasses import dataclass
-from dataslots import with_slots
+from attr import dataclass
 from botus_receptus.interactive_pager import (
     PageSource,
     ListPageSource,
@@ -20,8 +19,7 @@ from botus_receptus.interactive_pager import (
 from .mocks import MockUser, MockPermissions, MockGuild, MockContext
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockReaction(object):
     message: Any
     emoji: str
@@ -31,8 +29,7 @@ class MockReaction(object):
         return MockReaction(message=discord.Object(message_id), emoji=emoji)
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class SubPageSource(PageSource[str]):
     strings: List[str]
 
@@ -41,8 +38,7 @@ class SubPageSource(PageSource[str]):
         return self.strings[base : base + self.per_page]
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class SubFieldPageSource(FieldPageSource[str]):
     strings: List[str]
 

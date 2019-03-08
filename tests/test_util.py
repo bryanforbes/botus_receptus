@@ -3,8 +3,7 @@ import pendulum  # type: ignore
 import asyncio
 
 from typing import List
-from dataclasses import dataclass, field
-from dataslots import with_slots
+from attr import dataclass, attrib
 from botus_receptus.util import (
     has_any_role,
     has_any_role_id,
@@ -13,17 +12,15 @@ from botus_receptus.util import (
 )
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockRole(object):
     id: int = 0
     name: str = ''
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockMember(object):
-    roles: List[MockRole] = field(default_factory=list)
+    roles: List[MockRole] = attrib(factory=list)
 
 
 def test_has_any_role() -> None:
