@@ -3,7 +3,7 @@ import discord
 from typing import Any, Optional
 from attr import dataclass
 from botus_receptus.context import EmbedContext, PaginatedContext
-from datetime import datetime
+from pendulum import now, UTC
 
 
 @dataclass(slots=True)
@@ -52,7 +52,7 @@ class TestEmbedContext(object):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
         obj = mocker.sentinel.TEST_OBJECT
-        time = datetime.now()
+        time = now(UTC)
         await ctx.send_embed(
             'foo',
             title='bar',

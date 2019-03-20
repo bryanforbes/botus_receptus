@@ -24,7 +24,7 @@ aioitertools = "^0.3.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "5264e14fbfde2ea504d399cfb192a2a76c90a703", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "48b21ef1dbf47c9f32f41f32f8960d9493737a0b", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 toml = "^0.10.0"
@@ -45,7 +45,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asynctest = "~0.12.2"
-black = "^18.3-alpha.0"
+black = "^18.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
 flake8-pyi = "^19.2"
@@ -60,7 +60,7 @@ pytest-xdist = "^1.24"
 
 [tool.black]
 line-length = 88
-py36 = true
+target-version = ["py37"]
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
