@@ -73,6 +73,32 @@ class TestPaginator(object):
 
         assert [page for page in paginator] == ['123', '456', '789']
 
+    def test_len(self) -> None:
+        paginator = Paginator(max_size=11)
+        paginator.add_line('123 456 789')
+        assert len(paginator) == 30
+        paginator.add_line('11')
+        assert len(paginator) == 40
+
+    def test_len_no_prefix_suffix(self) -> None:
+        paginator = Paginator(prefix=None, suffix=None, max_size=3)
+        paginator.add_line('123 456 789')
+        assert len(paginator) == 10
+        paginator.add_line('11')
+        assert len(paginator) == 12
+
+    def test_clear(self) -> None:
+        paginator = Paginator(max_size=11)
+        paginator.add_line('123 456 789')
+        paginator.clear()
+        assert len(paginator) == 4
+
+    def test_clear_no_prefix_suffix(self) -> None:
+        paginator = Paginator(prefix=None, suffix=None, max_size=3)
+        paginator.add_line('123 456 789')
+        paginator.clear()
+        assert len(paginator) == 0
+
 
 class TestEmbedPaginator(object):
     def test_iterate(self) -> None:

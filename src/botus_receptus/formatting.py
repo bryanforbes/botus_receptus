@@ -13,13 +13,12 @@ class Paginator(Iterable[str]):
     suffix: Optional[str] = '```'
     max_size: int = 2000
     _real_max_size: int = attrib(init=False)
-    _current_page: List[str] = attrib(init=False, factory=list)
-    _count: int = attrib(init=False, default=0)
-    _pages: List[str] = attrib(init=False, factory=list)
+    _current_page: List[str] = attrib(init=False)
+    _count: int = attrib(init=False)
+    _pages: List[str] = attrib(init=False)
 
     def __attrs_post_init__(self) -> None:
-        if self.prefix is not None:
-            self._current_page.append(self.prefix)
+        self.clear()
 
         if self.prefix is not None:
             prefix_size = len(self.prefix) + 1
@@ -32,6 +31,15 @@ class Paginator(Iterable[str]):
             suffix_size = 0
 
         self._real_max_size = self.max_size - (prefix_size + suffix_size)
+
+    def clear(self) -> None:
+        if self.prefix is not None:
+            self._current_page = [self.prefix]
+        else:
+            self._current_page = []
+
+        self._count = 0
+        self._pages = []
 
     def _add_line(self, line: str = '', *, empty: bool = False) -> None:
         if self._count + len(line) > self._real_max_size:
@@ -63,10 +71,18 @@ class Paginator(Iterable[str]):
         if self.suffix is not None:
             self._current_page.append(self.suffix)
         self._pages.append('\n'.join(self._current_page))
-        self._current_page = []
+
         if self.prefix is not None:
-            self._current_page.append(self.prefix)
+            self._current_page = [self.prefix]
+        else:
+            self._current_page = []
+
         self._count = 0
+
+    def __len__(self) -> int:
+        total = sum(len(p) for p in self._pages)
+        prefix_length = (len(self.prefix) + 1) if self.prefix is not None else 0
+        return total + self._count + prefix_length
 
     @property
     def pages(self) -> List[str]:
