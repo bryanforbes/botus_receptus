@@ -53,6 +53,10 @@ class Paginator(Iterable[str]):
             self._count += 1
 
     def add_line(self, line: str = '', *, empty: bool = False) -> None:
+        if len(line) == 0:
+            self._add_line(line, empty=empty)
+            return None
+
         while len(line) > 0:
             # if the line is too long, paginate it
             if len(line) > self._real_max_size:

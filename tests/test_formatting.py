@@ -39,6 +39,12 @@ def test_pluralizer(pluralizer_args, pluralize_args, pluralize_kwargs, expected)
 
 
 class TestPaginator(object):
+    def test_add_line_no_args(self) -> None:
+        paginator = Paginator(max_size=13)
+        paginator.add_line('123 456 789')
+        paginator.add_line()
+        assert paginator.pages == ['```\n123\n```', '```\n456\n```', '```\n789\n\n```']
+
     def test_add_line_larger_than_max_size(self) -> None:
         paginator = Paginator(max_size=13)
         paginator.add_line('123 456 789')
