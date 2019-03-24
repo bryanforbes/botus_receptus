@@ -24,7 +24,7 @@ aioitertools = "^0.3.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "53d85e7bcb1417b365bbbc71f1bdb6f6f61ad183", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "cb6434196a71b2c9910776ac207200948d813cbe", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "mypy_extensions" = ">=0.4.1"
 "typing-extensions" = ">=3.6.4"
 toml = "^0.10.0"
