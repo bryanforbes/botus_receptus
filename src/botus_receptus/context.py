@@ -90,7 +90,7 @@ class EmbedContext(commands.Context):
         if timestamp is not None:
             embed.timestamp = timestamp
         if fields is not None:
-            setattr(embed, '_fields', fields)
+            setattr(embed, '_fields', fields)  # noqa: B010
 
         return await self.send(
             tts=tts,
