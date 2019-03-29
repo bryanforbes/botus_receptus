@@ -34,7 +34,7 @@ gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
 gino-stubs = {rev = "816a9f09730e44b9b695530ca2c7267d3f6fee70", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.12.1", optional = true}
-more-itertools = {version = "~6.0.0", optional = true}
+more-itertools = {version = "~7.0.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
@@ -45,9 +45,9 @@ uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asynctest = "~0.12.2"
-black = "^18.3b0"
+black = "^19.3b0"
 flake8 = "^3.6"
-flake8-bugbear = "^18.8"
+flake8-bugbear = "^19.3"
 flake8-pyi = "^19.2"
 mypy = "^0.670"
 pre-commit = "^1.12"
