@@ -4,7 +4,7 @@ description = "Asyncio support for PEP-567 contextvars backport."
 name = "aiocontextvars"
 optional = true
 python-versions = ">=3.5"
-version = "0.2.1"
+version = "0.2.2"
 
 [[package]]
 category = "main"
@@ -176,7 +176,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1903+gc0e2ad7"
+version = "1.0.1"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.6.0"
@@ -193,10 +193,10 @@ version = ">=3.6.5"
 [package.extras]
 docs = ["sphinx (1.7.4)", "sphinxcontrib-asyncio", "sphinxcontrib-websupport"]
 typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
-voice = ["PyNaCl (1.2.1)"]
+voice = ["PyNaCl (1.3.0)"]
 
 [package.source]
-reference = "c0e2ad75e33785e4348bfe83032bfae656e672d2"
+reference = "38a0e39ccbe56eb6dae9be78ebcf08e02804a29a"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -583,7 +583,7 @@ description = "The Olson timezone database for Python."
 name = "pytzdata"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "2018.9"
+version = "2019.1"
 
 [[package]]
 category = "dev"
@@ -735,11 +735,11 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "e3d48bfa7b4e4a9e14a3b7597bf3cb1b65e7672827028935ebabe53e57fa31ed"
+content-hash = "9b24a2b16826f2e38d56effb61066b952f1441f6440a0ec80c6b800e14148e91"
 python-versions = "^3.7"
 
 [metadata.hashes]
-aiocontextvars = ["1e0ff5837c8b01c36a1107acdd0baf7853ebdf6c9fc43e8e311f4be37ac2038a", "6ff7aee14f549d52f0446cbb84d0deddcd3fc677bcf8fbc2ce13f5756d2064dc"]
+aiocontextvars = ["885daf8261818767d8f7cbd79f9d4482d118f024b6586ef6e67980236a27bfa3", "f027372dc48641f683c559f247bd84962becaacdc9ba711d583c3871fb5652aa"]
 aiohttp = ["00d198585474299c9c3b4f1d5de1a576cc230d562abc5e4a0e81d71a20a6ca55", "0155af66de8c21b8dba4992aaeeabf55503caefae00067a3b1139f86d0ec50ed", "09654a9eca62d1bd6d64aa44db2498f60a5c1e0ac4750953fdd79d5c88955e10", "199f1d106e2b44b6dacdf6f9245493c7d716b01d0b7fbe1959318ba4dc64d1f5", "296f30dedc9f4b9e7a301e5cc963012264112d78a1d3094cd83ef148fdf33ca1", "368ed312550bd663ce84dc4b032a962fcb3c7cae099dbbd48663afc305e3b939", "40d7ea570b88db017c51392349cf99b7aefaaddd19d2c78368aeb0bddde9d390", "629102a193162e37102c50713e2e31dc9a2fe7ac5e481da83e5bb3c0cee700aa", "6d5ec9b8948c3d957e75ea14d41e9330e1ac3fed24ec53766c780f82805140dc", "87331d1d6810214085a50749160196391a712a13336cd02ce1c3ea3d05bcf8d5", "9a02a04bbe581c8605ac423ba3a74999ec9d8bce7ae37977a3d38680f5780b6d", "9c4c83f4fa1938377da32bc2d59379025ceeee8e24b89f72fcbccd8ca22dc9bf", "9cddaff94c0135ee627213ac6ca6d05724bfe6e7a356e5e09ec57bd3249510f6", "a25237abf327530d9561ef751eef9511ab56fd9431023ca6f4803f1994104d72", "a5cbd7157b0e383738b8e29d6e556fde8726823dae0e348952a61742b21aeb12", "a97a516e02b726e089cffcde2eea0d3258450389bbac48cbe89e0f0b6e7b0366", "acc89b29b5f4e2332d65cd1b7d10c609a75b88ef8925d487a611ca788432dfa4", "b05bd85cc99b06740aad3629c2585bda7b83bd86e080b44ba47faf905fdf1300", "c2bec436a2b5dafe5eaeb297c03711074d46b6eb236d002c13c42f25c4a8ce9d", "cc619d974c8c11fe84527e4b5e1c07238799a8c29ea1c1285149170524ba9303", "d4392defd4648badaa42b3e101080ae3313e8f4787cb517efd3f5b8157eaefd6", "e1c3c582ee11af7f63a34a46f0448fca58e59889396ffdae1f482085061a2889"]
 aioitertools = ["6421500480ac6cfda723a0f06119b068a6b33e1f32efd7f9755a29b301a7890c"]
 apipkg = ["37228cda29411948b422fae072f57e31d3396d2ee1c9783775980ee9c9990af6", "58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"]
@@ -789,7 +789,7 @@ pytest-mock = ["330bfa1a71c9b6e84e2976f01d70d8a174f755e7f9dc5b22f4b7335992e1e98b
 pytest-sugar = ["26cf8289fe10880cbbc130bd77398c4e6a8b936d8393b116a5c16121d95ab283", "fcd87a74b2bce5386d244b49ad60549bfbc4602527797fac167da147983f58ab"]
 pytest-xdist = ["b0bb4b0293ee8657b9eb3ff334a3b6aac4db74fd4a86b81e1982c879237a47eb", "f83a485293e81fd57c8a5a85a3f12473a532c5ca7dec518857cbb72766bb526c"]
 python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
-pytzdata = ["9626e42fd9df77b16aedbd909d1e5fda839be47966adb7089b990f3452c45dd8", "dddaaf4f1717820a6fdcac94057e03c1a15b3829a44d9eaf19988917977db408"]
+pytzdata = ["778db26940e38cf6547d6574f49375570f7d697970461de531c56cf8400958a3", "f0469062f799c66480fcc7eae69a8270dc83f0e6522c0e70db882d6bd708d378"]
 pyyaml = ["1adecc22f88d38052fb787d959f003811ca858b799590a5eaa70e63dca50308c", "436bc774ecf7c103814098159fbb84c2715d25980175292c648f2da143909f95", "460a5a4248763f6f37ea225d19d5c205677d8d525f6a83357ca622ed541830c2", "5a22a9c84653debfbf198d02fe592c176ea548cccce47553f35f466e15cf2fd4", "7a5d3f26b89d688db27822343dfa25c599627bc92093e788956372285c6298ad", "9372b04a02080752d9e6f990179a4ab840227c6e2ce15b95e1278456664cf2ba", "a5dcbebee834eaddf3fa7366316b880ff4062e4bcc9787b78c7fbb4a26ff2dd1", "aee5bab92a176e7cd034e57f46e9df9a9862a71f8f37cad167c6fc74c65f5b4e", "c51f642898c0bacd335fc119da60baae0824f2cde95b0330b56c0553439f0673", "c68ea4d3ba1705da1e0d85da6684ac657912679a649e8868bd850d2c299cce13", "e23d0cc5299223dcc37885dae624f382297717e459ea24053709675a976a3e19"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 sqlalchemy = ["8027fa183f5be466030617a497b2d64e0e16c8d615e5a34bdf9fab6f66bf4723"]
