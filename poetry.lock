@@ -196,7 +196,7 @@ typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
 voice = ["PyNaCl (1.3.0)"]
 
 [package.source]
-reference = "92db5a53718d061372abf037166c4cb306b3d19f"
+reference = "911ca5fc2481d4d86c65f6623435cb3aecec3b44"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -735,7 +735,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "6cf7c5582ec8dc8eda45bcb610d154f6514dd8c37397b60f73570c87a65afd49"
+content-hash = "f76f5a9ed4110674d392c401811a0b3f047a3d6a9613a283d114cff60e8ab8f9"
 python-versions = "^3.7"
 
 [metadata.hashes]
