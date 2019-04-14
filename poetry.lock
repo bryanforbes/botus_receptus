@@ -399,7 +399,7 @@ python-dateutil = "^2.6"
 pytzdata = ">=2018.3"
 
 [package.source]
-reference = "306239b83efbdbbf857ef6b0388276b53cf678be"
+reference = "a9996e0d592c9df332260b4e9231a8d6713270ae"
 type = "git"
 url = "https://github.com/bryanforbes/pendulum.git"
 [[package]]
