@@ -39,7 +39,7 @@ class Bot(commands.Bot[CT]):
     async def get_context(self, message: discord.Message) -> CT:
         pass  # pragma: no cover
 
-    @overload  # noqa: F811, E301
+    @overload  # noqa: F811
     async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT:
         pass  # pragma: no cover
 
