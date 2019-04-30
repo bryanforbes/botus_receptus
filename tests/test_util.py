@@ -4,12 +4,7 @@ import asyncio
 
 from typing import List
 from attr import dataclass, attrib
-from botus_receptus.util import (
-    has_any_role,
-    has_any_role_id,
-    parse_duration,
-    wait_for_first,
-)
+from botus_receptus.util import has_any_role, has_any_role_id, parse_duration, race
 
 
 @dataclass(slots=True)
@@ -83,7 +78,7 @@ def test_parse_duration_failures(duration, message):
 
 
 @pytest.mark.asyncio
-async def test_wait_for_first():
+async def test_race():
     async def one():
         await asyncio.sleep(5)
         return 1
@@ -96,12 +91,12 @@ async def test_wait_for_first():
         await asyncio.sleep(0.1)
         return 3
 
-    result = await wait_for_first([one(), two(), three()])
+    result = await race([one(), two(), three()])
     assert result == 3
 
 
 @pytest.mark.asyncio
-async def test_wait_for_first_timeout(event_loop):
+async def test_race_timeout(event_loop):
     async def one():
         await asyncio.sleep(5)
         return 1
@@ -111,4 +106,4 @@ async def test_wait_for_first_timeout(event_loop):
         return 2
 
     with pytest.raises(asyncio.TimeoutError):
-        await wait_for_first([one(), two()], timeout=0.1, loop=event_loop)
+        await race([one(), two()], timeout=0.1, loop=event_loop)

@@ -27,7 +27,7 @@ from aioitertools.types import AnyIterable
 from aioitertools.helpers import maybe_await
 
 from .formatting import warning
-from .util import wait_for_first
+from .util import race
 
 WaitResult = Tuple[discord.Reaction, Optional[Union[discord.User, discord.Member]]]
 
@@ -366,7 +366,7 @@ class InteractivePager(Generic[T]):
 
             def wait_for_reaction() -> 'asyncio.Future[WaitResult]':
                 return self.bot.loop.create_task(
-                    wait_for_first(
+                    race(
                         [
                             self.bot.wait_for('reaction_add', check=self.__react_check),
                             self.bot.wait_for(

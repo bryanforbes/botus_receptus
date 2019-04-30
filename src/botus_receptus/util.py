@@ -67,7 +67,7 @@ def parse_duration(duration: str) -> pendulum.Duration:
     return pendulum.duration(**args)
 
 
-async def wait_for_first(
+async def race(
     futures: Iterable[FutureT[T]],
     *,
     timeout: Optional[float] = None,
