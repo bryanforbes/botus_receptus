@@ -32,7 +32,7 @@ pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "updat
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "816a9f09730e44b9b695530ca2c7267d3f6fee70", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "da87454aba1a905666797d91227e7e1090a9607d", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.12.1", optional = true}
 more-itertools = {version = "~7.0.0", optional = true}
 
