@@ -151,8 +151,8 @@ class TestFieldPageSource(object):
 
 class TestInteractivePager(object):
     @pytest.fixture(autouse=True)
-    def wait_for_first(self, mocker):
-        return mocker.patch('botus_receptus.interactive_pager.wait_for_first')
+    def race(self, mocker):
+        return mocker.patch('botus_receptus.interactive_pager.race')
 
     @pytest.fixture
     def fetcher(self, request):
@@ -254,12 +254,12 @@ class TestInteractivePager(object):
     )
     @pytest.mark.asyncio
     async def test_paginate_timeout_no_manage_messages(
-        self, mocker, context, event_loop, fetcher, wait_for_first
+        self, mocker, context, event_loop, fetcher, race
     ):
         mocker.patch.object(context.bot, 'wait_for')
 
         future = event_loop.create_future()
-        wait_for_first.return_value = asyncio.wait_for(future, 1, loop=event_loop)
+        race.return_value = asyncio.wait_for(future, 1, loop=event_loop)
         p = InteractivePager.create(context, fetcher)
 
         assert p.paginating
