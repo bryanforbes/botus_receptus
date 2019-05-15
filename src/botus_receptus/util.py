@@ -79,7 +79,7 @@ async def race(
     tasks = {future for future in futures}
 
     done, pending = await asyncio.wait(
-        tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED
+        tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED, loop=loop
     )
 
     try:

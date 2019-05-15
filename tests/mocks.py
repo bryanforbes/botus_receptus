@@ -3,7 +3,7 @@ from __future__ import annotations
 from attr import dataclass, attrib
 import asyncio
 
-from typing import Any, Optional, Dict, List, Tuple, Callable
+from typing import Any, Optional, Dict, List, Tuple, Callable, Awaitable
 
 
 @dataclass(slots=True)
@@ -59,6 +59,7 @@ class MockChannel(object):
 class MockBot(object):
     user: MockUser
     loop: Any
+    advance_time: Callable[[float], Awaitable[None]]
     _listeners: Dict[
         str, List[Tuple['asyncio.Future[Any]', Callable[..., Any]]]
     ] = attrib(factory=dict)
@@ -94,7 +95,7 @@ class MockBot(object):
                 for idx in reversed(removed):
                     del listeners[idx]
 
-        await asyncio.sleep(0.1)
+        await self.advance_time(0)
 
     def wait_for(
         self,
@@ -116,13 +117,16 @@ class MockBot(object):
         listeners = self._listeners.setdefault(ev, [])
         listeners.append((future, check))
 
-        return asyncio.wait_for(
-            future, timeout if timeout is None else 0.5, loop=self.loop
-        )
+        return asyncio.wait_for(future, timeout, loop=self.loop)
 
     @staticmethod
-    def create(mocker: Any, user: MockUser, loop: Any) -> MockBot:
-        return MockBot(user=user, loop=loop)
+    def create(
+        mocker: Any,
+        user: MockUser,
+        loop: Any,
+        advance_time: Callable[[float], Awaitable[None]],
+    ) -> MockBot:
+        return MockBot(user=user, loop=loop, advance_time=advance_time)
 
 
 @dataclass
@@ -173,6 +177,7 @@ class MockContext(object):
     def create(
         mocker: Any,
         event_loop: Any,
+        advance_time: Callable[[float], Awaitable[None]],
         bot_user: MockUser,
         permissions: MockPermissions,
         guild: Optional[MockGuild] = None,
@@ -182,7 +187,7 @@ class MockContext(object):
         message = MockMessage.create(mocker, 10, author, channel, 'foo')
 
         return MockContext(
-            bot=MockBot.create(mocker, bot_user, event_loop),
+            bot=MockBot.create(mocker, bot_user, event_loop, advance_time),
             author=author,
             message=message,
             channel=channel,

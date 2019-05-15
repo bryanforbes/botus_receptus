@@ -78,32 +78,36 @@ def test_parse_duration_failures(duration, message):
 
 
 @pytest.mark.asyncio
-async def test_race():
+async def test_race(event_loop, advance_time):
     async def one():
-        await asyncio.sleep(5)
+        await asyncio.sleep(100, loop=event_loop)
         return 1
 
     async def two():
-        await asyncio.sleep(3)
+        await asyncio.sleep(50, loop=event_loop)
         return 2
 
     async def three():
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(25, loop=event_loop)
         return 3
 
-    result = await race([one(), two(), three()])
-    assert result == 3
+    task = event_loop.create_task(race([one(), two(), three()], loop=event_loop))
+    await advance_time(35)
+    await advance_time(60)
+    await advance_time(110)
+    assert task.result() == 3
 
 
 @pytest.mark.asyncio
-async def test_race_timeout(event_loop):
+async def test_race_timeout(event_loop, advance_time):
     async def one():
-        await asyncio.sleep(5)
+        await asyncio.sleep(100, loop=event_loop)
         return 1
 
     async def two():
-        await asyncio.sleep(3)
+        await asyncio.sleep(50, loop=event_loop)
         return 2
 
-    with pytest.raises(asyncio.TimeoutError):
-        await race([one(), two()], timeout=0.1, loop=event_loop)
+    task = event_loop.create_task(race([one(), two()], timeout=25, loop=event_loop))
+    await advance_time(30)
+    assert isinstance(task.exception(), asyncio.TimeoutError)
