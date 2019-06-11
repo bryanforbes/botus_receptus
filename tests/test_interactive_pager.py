@@ -184,7 +184,7 @@ class TestInteractivePager(object):
 
         context.channel.permissions_for.assert_called_with(context.guild.me)
 
-    @pytest.mark.parametrize('guild,me_user', [(None, MockUser(id=400))])
+    @pytest.mark.parametrize('guild', [None])
     def test_create_no_guild(self, context, fetcher, guild):
         InteractivePager.create(context, fetcher)
 

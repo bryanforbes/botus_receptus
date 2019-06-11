@@ -169,7 +169,7 @@ typing-extensions = ">=3.6.5"
 websockets = ">=6.0,<7.0"
 
 [package.source]
-reference = "d5ac7b51b62e7bb6b6b716ac2f45d53615f2195b"
+reference = "4122aba0aa612dca550df6c6b49236dd745079aa"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -682,7 +682,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "5ce5a3eb6861b457a40b8edbec793e04993a11942d3bb0ec31fdd39e7e6736bd"
+content-hash = "c3121621d9d72dc1ae44aef74baa94ac5cb834332f0fd344b30426350bc16581"
 python-versions = "^3.7"
 
 [metadata.hashes]

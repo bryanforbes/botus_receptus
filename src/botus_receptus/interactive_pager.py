@@ -279,7 +279,7 @@ class InteractivePager(Generic[T]):
             )
         except asyncio.TimeoutError:
             to_delete.append(await self.channel.send('Took too long.'))
-            await asyncio.sleep(5)
+            await asyncio.sleep(5, loop=self.bot.loop)
         else:
             page = int(message.content)
             to_delete.append(message)
@@ -291,7 +291,7 @@ class InteractivePager(Generic[T]):
                         f'Invalid page given. ({page}/{self.source.max_pages})'
                     )
                 )
-                await asyncio.sleep(5)
+                await asyncio.sleep(5, loop=self.bot.loop)
 
         try:
             await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
@@ -341,7 +341,7 @@ class InteractivePager(Generic[T]):
         await self.message.edit(embed=self.embed)
 
         async def go_back_to_current_page() -> None:
-            await asyncio.sleep(60.0)
+            await asyncio.sleep(60.0, loop=self.bot.loop)
             await self.__show_current_page()
             self.help_task = None
 

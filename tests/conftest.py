@@ -17,12 +17,13 @@ class EventLoopClockAdvancer:
     wake up any awaiting handlers.
     """
 
-    __slots__ = ("offset", "loop", "_base_time")
+    __slots__ = ("offset", "loop", "sleep_duration", "_base_time")
 
-    def __init__(self, loop):
+    def __init__(self, loop, sleep_duration=1e-4):
         self.offset = 0.0
         self._base_time = loop.time
         self.loop = loop
+        self.sleep_duration = sleep_duration
 
         # incorporate offset timing into the event loop
         self.loop.time = self.time
@@ -41,7 +42,7 @@ class EventLoopClockAdvancer:
         of time are proceeding.
         """
         # sleep so that the loop does everything currently waiting
-        await asyncio.sleep(0.0001)
+        await asyncio.sleep(self.sleep_duration)
 
         if seconds > 0:
             # advance the clock by the given offset
@@ -49,7 +50,7 @@ class EventLoopClockAdvancer:
 
             # Once the clock is adjusted, new tasks may have just been
             # scheduled for running in the next pass through the event loop
-            await asyncio.sleep(0.0001)
+            await asyncio.sleep(self.sleep_duration)
 
 
 @pytest.fixture
