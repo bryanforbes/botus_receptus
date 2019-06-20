@@ -681,7 +681,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "5c20e6e43d8e534f27e64ac5db634e2b2a8d380ee291d225a245d4aa1aeea679"
+content-hash = "70a344ce6bb0cb7c2b247ca4c83dfe0edc80a8d0bdea56de0619dcb7e05d6754"
 python-versions = "^3.7"
 
 [metadata.hashes]
