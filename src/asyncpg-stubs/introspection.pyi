@@ -1,5 +1,5 @@
 from typing import Any, Tuple
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 
 INTRO_LOOKUP_TYPES: str
 TYPE_BY_NAME: str

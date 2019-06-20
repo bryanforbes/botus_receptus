@@ -3,7 +3,7 @@ from __future__ import annotations
 import toml
 
 from typing import Any, Optional, Dict, cast
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 
 
 class ConfigException(Exception):

@@ -14,13 +14,13 @@ from typing import (
     AsyncIterable,
     cast,
 )
+from typing_extensions import TypedDict
 from abc import abstractmethod
 from attr import dataclass, attrib
 import discord
 import asyncio
 import enum
 from discord.ext import commands
-from mypy_extensions import TypedDict
 
 from aioitertools import enumerate as aenumerate, starmap
 from aioitertools.types import AnyIterable

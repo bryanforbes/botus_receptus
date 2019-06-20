@@ -2,16 +2,28 @@ from __future__ import annotations
 
 # Inspired by https://github.com/TehShrike/regex-fun
 
-from typing import Callable, Pattern, AnyStr, cast, Union, Iterator, Iterable
-from mypy_extensions import VarArg, DefaultNamedArg
+from typing import Pattern, AnyStr, cast, Union, Iterator, Iterable
+from typing_extensions import Protocol
 from functools import partial
 import re
 
 _ReOrStrType = Union[str, Pattern[AnyStr]]
-_ReOrStrFuncType = Callable[[VarArg(_ReOrStrType)], str]
-_ReOrStrGreedyFuncType = Callable[
-    [VarArg(_ReOrStrType), DefaultNamedArg(bool, 'greedy')], str
-]
+
+
+class _ReOrStrFuncType(Protocol):
+    def __call__(self, *__args: _ReOrStrType) -> str:
+        ...
+
+
+class _ReOrStrGreedyFuncType(Protocol):
+    def __call__(self, *__args: _ReOrStrType, greedy: bool = True) -> str:
+        ...
+
+
+class _GrouperType(Protocol):
+    def __call__(self, *__args: _ReOrStrType, joiner: str = '') -> str:
+        ...
+
 
 A = re.A
 ASCII = re.ASCII
@@ -51,9 +63,7 @@ capture = cast(_ReOrStrFuncType, partial(group, start='('))
 either = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
-def named_group(
-    name: str
-) -> Callable[[VarArg(_ReOrStrType), DefaultNamedArg(str, 'joiner')], str]:
+def named_group(name: str) -> _GrouperType:
     def grouper(*args: _ReOrStrType, joiner: str = '') -> str:
         return group(*args, start=f'(?P<{name}>', joiner=joiner)
 

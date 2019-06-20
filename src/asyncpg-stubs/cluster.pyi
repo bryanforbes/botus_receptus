@@ -1,8 +1,8 @@
 from typing import Any, Optional, Union, TypeVar, Type, Tuple, Callable, overload
+from typing_extensions import TypedDict
 from asyncio import AbstractEventLoop
 from ssl import SSLContext
 from .connection import Connection
-from mypy_extensions import TypedDict
 
 class _ConnectionSpec(TypedDict):
     host: str

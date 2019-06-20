@@ -20,13 +20,12 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-aioitertools = "^0.3.0"
+aioitertools = "^0.4.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "4122aba0aa612dca550df6c6b49236dd745079aa", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
-"mypy_extensions" = ">=0.4.1"
-"typing-extensions" = ">=3.6.4"
+"discord.py" = {rev = "d14d11421284fb23256a45d5fcd88cf9ba490f43", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"typing-extensions" = ">=3.7.4"
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 asyncpg = {version = ">=0.18.2", optional = true}
@@ -49,7 +48,7 @@ black = "^19.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.2"
-mypy = "^0.701"
+mypy = "^0.710"
 pre-commit = "^1.12"
 pytest = "^4.2.0"
 pytest-asyncio = "^0.10.0"

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from typing import Optional, List, Iterable, Union
+from typing_extensions import TypedDict
 
 import discord
 from discord.ext import commands
-from mypy_extensions import TypedDict
 from datetime import datetime
 
 

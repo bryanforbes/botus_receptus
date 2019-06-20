@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Callable, Iterable, Iterator, List, Optional
+from typing import Iterable, Iterator, List, Optional
+from typing_extensions import Protocol
 from attr import dataclass, attrib
-from mypy_extensions import Arg, DefaultNamedArg
 
 from . import re
 
@@ -110,9 +110,9 @@ class EmbedPaginator(Paginator):
     max_size: int = 2048
 
 
-PluralizerType = Callable[
-    [Arg(int, 'value'), DefaultNamedArg(bool, 'include_number')], str
-]
+class PluralizerType(Protocol):
+    def __call__(self, value: int, *, include_number: bool = True) -> str:
+        ...
 
 
 def pluralizer(word: str, suffix: str = 's') -> PluralizerType:

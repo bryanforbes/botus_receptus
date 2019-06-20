@@ -19,11 +19,11 @@ def config_callback(
     try:
         bot_config = config.load(value)
     except (toml.TomlDecodeError, OSError) as e:
-        raise click.BadOptionUsage(  # type: ignore
+        raise click.BadOptionUsage(
             param.name, f'Error reading configuration file: {e}', ctx=ctx
         )
     except config.ConfigException as e:
-        raise click.BadOptionUsage(param.name, e.args[0], ctx=ctx)  # type: ignore
+        raise click.BadOptionUsage(param.name, e.args[0], ctx=ctx)
 
     if ctx.default_map is None:
         ctx.default_map = {}
