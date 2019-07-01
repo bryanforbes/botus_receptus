@@ -24,14 +24,14 @@ aioitertools = "^0.4.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "6e55d5b3b4962dff7c0cf204fea66d4d7563929d", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "b00e426ee5889d0cb91c0dbe47136fd02ba3bcd9", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "da87454aba1a905666797d91227e7e1090a9607d", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "e0b22f7958dbd500d4ae0439fab6a7df5a1ab6e1", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.12.1", optional = true}
 more-itertools = {version = "~7.0.0", optional = true}
 
@@ -48,9 +48,9 @@ black = "^19.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.2"
-mypy = "^0.710"
+mypy = "^0.711"
 pre-commit = "^1.12"
-pytest = "^4.2.0"
+pytest = "^5.0.0"
 pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
 pytest-mock = "^1.10"
