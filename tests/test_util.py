@@ -73,7 +73,7 @@ def test_parse_duration(duration, expected):
     ],
 )
 def test_parse_duration_failures(duration, message):
-    with pytest.raises(ValueError, message=message):
+    with pytest.raises(ValueError, match=message):
         parse_duration(duration)
 
 

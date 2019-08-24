@@ -47,7 +47,7 @@ discord_api_key = "API_KEY"
     )
 
     with pytest.raises(
-        config.ConfigException, message='"bot" section not in config file'
+        config.ConfigException, match='"bot" section not in config file'
     ):
         config.load(str(c))
 
@@ -61,7 +61,7 @@ discord_api_key = "API_KEY"
     )
 
     with pytest.raises(
-        config.ConfigException, message='"bot_name" not specified in the config file'
+        config.ConfigException, match='"bot_name" not specified in the config file'
     ):
         config.load(str(c))
 
@@ -76,6 +76,6 @@ bot_name = "botty"
 
     with pytest.raises(
         config.ConfigException,
-        message='"discord_api_key" not specified in the config file',
+        match='"discord_api_key" not specified in the config file',
     ):
         config.load(str(c))
