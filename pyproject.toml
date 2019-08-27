@@ -24,7 +24,7 @@ aioitertools = "^0.4.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {rev = "5b5cc6a526d36bd88fc9a5a10bbc501bc0586d02", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
+"discord.py" = {rev = "c50c3a2129cb353812bd3999ee8ed436c720d0a8", git = "https://github.com/bryanforbes/discord.py.git", extras = ["typings"]}
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.0"
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
