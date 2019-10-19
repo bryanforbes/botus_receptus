@@ -21,7 +21,7 @@ install:
 script: |
   set -e
   poetry run flake8 src
-  poetry run mypy -m botus_receptus
+  poetry run mypy src/botus_receptus
   poetry run py.test -p no:sugar
 
 after_success:
