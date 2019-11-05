@@ -22,7 +22,7 @@ script: |
   set -e
   poetry run flake8 src
   poetry run mypy src/botus_receptus
-  poetry run py.test -p no:sugar
+  poetry run py.test -- -p no:sugar
 
 after_success:
   - poetry run codecov
