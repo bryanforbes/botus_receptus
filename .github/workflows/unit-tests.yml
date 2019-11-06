@@ -1,4 +1,4 @@
-name: Python package
+name: Unit tests
 
 on: [push]
 
@@ -30,8 +30,9 @@ jobs:
         poetry run mypy src/botus_receptus
     - name: Test with pytest
       run: |
-        poetry run py.test -- -p no:sugar
+        poetry run py.test -- -p no:sugar --cov-report=xml:.coverage.xml
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v1.0.3
       with:
         token: ${{secrets.CODECOV_TOKEN}}
+        file: ./.coverage.xml
