@@ -287,7 +287,7 @@ sqlalchemy-stubs = "rev 46008db95fd2205ee04661640263434dc394d63f"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "82cbdc1458bd98cd9b06d274561c6f7b9a41b86e"
+reference = "9bf7387c42b61c263d51ba53387c9561235c7ef5"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -778,7 +778,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "f499408175c77745014d7b395dbb9ef4b9e3d812a3c3616cc0aba34025f82e33"
+content-hash = "7c772ef69a12eadbfb40ecca2f0598b3d96f06c71ff6babdef290f331814e6e3"
 python-versions = "^3.7"
 
 [metadata.files]
