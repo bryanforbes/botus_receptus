@@ -57,7 +57,7 @@ class Loop:
         ],
     ) -> None: ...
     def get_task_factory(
-        self
+        self,
     ) -> Optional[
         Callable[
             [asyncio.AbstractEventLoop, Generator[Any, None, _T]], asyncio.Future[_T]
