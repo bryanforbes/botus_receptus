@@ -10,12 +10,14 @@ from typing import (
     Tuple,
     Sequence,
     Dict,
+    IO,
     overload,
 )
 import asyncio
 import ssl
-from socket import socket
+from socket import socket, _Address, _RetAddress
 import selectors
+import sys
 
 _T = TypeVar('_T')
 _Context = Dict[str, Any]
@@ -67,8 +69,7 @@ class Loop:
     def run_until_complete(self, future: Generator[Any, None, _T]) -> _T: ...
     @overload
     def run_until_complete(self, future: Awaitable[_T]) -> _T: ...
-    @asyncio.coroutine
-    def getaddrinfo(
+    async def getaddrinfo(
         self,
         host: Optional[str],
         port: Union[str, int, None],
@@ -77,61 +78,241 @@ class Loop:
         type: int = ...,
         proto: int = ...,
         flags: int = ...,
-    ) -> Generator[Any, None, List[Tuple[int, int, int, str, Tuple[Any, ...]]]]: ...
-    @asyncio.coroutine
-    def getnameinfo(
-        self, sockaddr: tuple, flags: int = ...
-    ) -> Generator[Any, None, Tuple[str, int]]: ...
-    @asyncio.coroutine
-    def create_server(
-        self,
-        protocol_factory: _ProtocolFactory,
-        host: Union[str, Sequence[str]] = ...,
-        port: int = ...,
-        *,
-        family: int = ...,
-        flags: int = ...,
-        sock: Optional[socket] = ...,
-        backlog: int = ...,
-        ssl: _SSLContext = ...,
-        reuse_address: Optional[bool] = ...,
-        reuse_port: Optional[bool] = ...,
-    ) -> Generator[Any, None, asyncio.AbstractServer]: ...
-    @asyncio.coroutine
-    def create_connection(
-        self,
-        protocol_factory: _ProtocolFactory,
-        host: str = ...,
-        port: int = ...,
-        *,
-        ssl: _SSLContext = ...,
-        family: int = ...,
-        proto: int = ...,
-        flags: int = ...,
-        sock: Optional[socket] = ...,
-        local_addr: str = ...,
-        server_hostname: str = ...,
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def create_unix_server(
-        self,
-        protocol_factory: _ProtocolFactory,
-        path: str,
-        *,
-        sock: Optional[socket] = ...,
-        backlog: int = ...,
-        ssl: _SSLContext = ...,
-    ) -> Generator[Any, None, asyncio.AbstractServer]: ...
-    @asyncio.coroutine
-    def create_unix_connection(
-        self,
-        protocol_factory: _ProtocolFactory,
-        path: str,
-        *,
-        ssl: _SSLContext = ...,
-        sock: Optional[socket] = ...,
-        server_hostname: str = ...,
-    ) -> Generator[Any, None, _TransProtPair]: ...
+    ) -> List[Tuple[int, int, int, str, Tuple[Any, ...]]]: ...
+    async def getnameinfo(
+        self, sockaddr: Tuple[Any, ...], flags: int = ...
+    ) -> Tuple[str, int]: ...
+    if sys.version_info >= (3, 7):
+        @overload
+        async def create_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: Optional[Union[str, Sequence[str]]] = ...,
+            port: int = ...,
+            *,
+            family: int = ...,
+            flags: int = ...,
+            sock: None = ...,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+            reuse_address: Optional[bool] = ...,
+            reuse_port: Optional[bool] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+            start_serving: bool = ...,
+        ) -> asyncio.AbstractServer: ...
+        @overload
+        async def create_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: None = ...,
+            port: None = ...,
+            *,
+            family: int = ...,
+            flags: int = ...,
+            sock: socket = ...,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+            reuse_address: Optional[bool] = ...,
+            reuse_port: Optional[bool] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+            start_serving: bool = ...,
+        ) -> asyncio.AbstractServer: ...
+        async def create_unix_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            path: str,
+            *,
+            ssl: _SSLContext = ...,
+            sock: Optional[socket] = ...,
+            server_hostname: str = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+        ) -> _TransProtPair: ...
+        async def create_unix_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            path: str,
+            *,
+            sock: Optional[socket] = ...,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+            start_serving: bool = ...,
+        ) -> asyncio.AbstractServer: ...
+        async def connect_accepted_socket(
+            self,
+            protocol_factory: _ProtocolFactory,
+            sock: socket,
+            *,
+            ssl: _SSLContext = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+        ) -> _TransProtPair: ...
+        async def start_tls(
+            self,
+            transport: asyncio.BaseTransport,
+            protocol: asyncio.BaseProtocol,
+            sslcontext: ssl.SSLContext,
+            *,
+            server_side: bool = ...,
+            server_hostname: Optional[str] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+        ) -> asyncio.BaseTransport: ...
+    else:
+        @overload
+        async def create_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: Optional[Union[str, Sequence[str]]] = ...,
+            port: int = ...,
+            *,
+            family: int = ...,
+            flags: int = ...,
+            sock: None = ...,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+            reuse_address: Optional[bool] = ...,
+            reuse_port: Optional[bool] = ...,
+        ) -> asyncio.AbstractServer: ...
+        @overload
+        async def create_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: None = ...,
+            port: None = ...,
+            *,
+            family: int = ...,
+            flags: int = ...,
+            sock: socket,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+            reuse_address: Optional[bool] = ...,
+            reuse_port: Optional[bool] = ...,
+        ) -> asyncio.AbstractServer: ...
+        async def create_unix_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            path: str,
+            *,
+            ssl: _SSLContext = ...,
+            sock: Optional[socket] = ...,
+            server_hostname: str = ...,
+        ) -> _TransProtPair: ...
+        async def create_unix_server(
+            self,
+            protocol_factory: _ProtocolFactory,
+            path: str,
+            *,
+            sock: Optional[socket] = ...,
+            backlog: int = ...,
+            ssl: _SSLContext = ...,
+        ) -> asyncio.AbstractServer: ...
+        async def connect_accepted_socket(
+            self,
+            protocol_factory: _ProtocolFactory,
+            sock: socket,
+            *,
+            ssl: _SSLContext = ...,
+        ) -> _TransProtPair: ...
+    if sys.version_info >= (3, 8):
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: str = ...,
+            port: int = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: None = ...,
+            local_addr: Optional[str] = ...,
+            server_hostname: Optional[str] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+            happy_eyeballs_delay: Optional[float] = ...,
+            interleave: Optional[int] = ...,
+        ) -> _TransProtPair: ...
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: None = ...,
+            port: None = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: socket,
+            local_addr: None = ...,
+            server_hostname: Optional[str] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+            happy_eyeballs_delay: Optional[float] = ...,
+            interleave: Optional[int] = ...,
+        ) -> _TransProtPair: ...
+    elif sys.version_info >= (3, 7):
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: str = ...,
+            port: int = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: None = ...,
+            local_addr: Optional[str] = ...,
+            server_hostname: Optional[str] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+        ) -> _TransProtPair: ...
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: None = ...,
+            port: None = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: socket,
+            local_addr: None = ...,
+            server_hostname: Optional[str] = ...,
+            ssl_handshake_timeout: Optional[float] = ...,
+        ) -> _TransProtPair: ...
+    else:
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: str = ...,
+            port: int = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: None = ...,
+            local_addr: Optional[str] = ...,
+            server_hostname: Optional[str] = ...,
+        ) -> _TransProtPair: ...
+        @overload
+        async def create_connection(
+            self,
+            protocol_factory: _ProtocolFactory,
+            host: None = ...,
+            port: None = ...,
+            *,
+            ssl: _SSLContext = ...,
+            family: int = ...,
+            proto: int = ...,
+            flags: int = ...,
+            sock: socket,
+            local_addr: None = ...,
+            server_hostname: Optional[str] = ...,
+        ) -> _TransProtPair: ...
     def default_exception_handler(self, context: _Context) -> None: ...
     def get_exception_handler(self) -> Optional[_ExceptionHandler]: ...
     def set_exception_handler(self, handler: Optional[_ExceptionHandler]) -> None: ...
@@ -144,31 +325,26 @@ class Loop:
         self, fd: selectors._FileObject, callback: Callable[..., Any], *args: Any
     ) -> None: ...
     def remove_writer(self, fd: selectors._FileObject) -> None: ...
-    @asyncio.coroutine
-    def sock_recv(self, sock: socket, nbytes: int) -> Generator[Any, None, bytes]: ...
-    @asyncio.coroutine
-    def sock_sendall(self, sock: socket, data: bytes) -> Generator[Any, None, None]: ...
-    @asyncio.coroutine
-    def sock_accept(self, sock: socket) -> Generator[Any, None, Tuple[socket, Any]]: ...
-    @asyncio.coroutine
-    def sock_connect(
-        self, sock: socket, address: str
-    ) -> Generator[Any, None, None]: ...
-    @asyncio.coroutine
-    def connect_accepted_socket(
-        self,
-        protocol_factory: _ProtocolFactory,
-        sock: socket,
-        *,
-        ssl: _SSLContext = ...,
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def run_in_executor(
+    if sys.version_info >= (3, 7):
+        async def sock_recv(self, sock: socket, nbytes: int) -> bytes: ...
+        async def sock_recv_into(self, sock: socket, buf: bytearray) -> int: ...
+        async def sock_sendall(self, sock: socket, data: bytes) -> None: ...
+        async def sock_connect(self, sock: socket, address: _Address) -> None: ...
+        async def sock_accept(self, sock: socket) -> Tuple[socket, _RetAddress]: ...
+    else:
+        def sock_recv(self, sock: socket, nbytes: int) -> asyncio.Future[bytes]: ...
+        def sock_sendall(self, sock: socket, data: bytes) -> asyncio.Future[None]: ...
+        def sock_connect(
+            self, sock: socket, address: _Address
+        ) -> asyncio.Future[None]: ...
+        def sock_accept(
+            self, sock: socket
+        ) -> asyncio.Future[Tuple[socket, _RetAddress]]: ...
+    async def run_in_executor(
         self, executor: Any, func: Callable[..., _T], *args: Any
-    ) -> Generator[Any, None, _T]: ...
+    ) -> _T: ...
     def set_default_executor(self, executor: Any) -> None: ...
-    @asyncio.coroutine
-    def subprocess_shell(
+    async def subprocess_shell(
         self,
         protocol_factory: _ProtocolFactory,
         cmd: Union[bytes, str],
@@ -177,9 +353,8 @@ class Loop:
         stdout: Any = ...,
         stderr: Any = ...,
         **kwargs: Any,
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def subprocess_exec(
+    ) -> _TransProtPair: ...
+    async def subprocess_exec(
         self,
         protocol_factory: _ProtocolFactory,
         *args: Any,
@@ -187,21 +362,18 @@ class Loop:
         stdout: Any = ...,
         stderr: Any = ...,
         **kwargs: Any,
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def connect_read_pipe(
+    ) -> _TransProtPair: ...
+    async def connect_read_pipe(
         self, protocol_factory: _ProtocolFactory, pipe: Any
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def connect_write_pipe(
+    ) -> _TransProtPair: ...
+    async def connect_write_pipe(
         self, protocol_factory: _ProtocolFactory, pipe: Any
-    ) -> Generator[Any, None, _TransProtPair]: ...
+    ) -> _TransProtPair: ...
     def add_signal_handler(
         self, sig: int, callback: Callable[..., Any], *args: Any
     ) -> None: ...
     def remove_signal_handler(self, sig: int) -> None: ...
-    @asyncio.coroutine
-    def create_datagram_endpoint(
+    async def create_datagram_endpoint(
         self,
         protocol_factory: _ProtocolFactory,
         local_addr: Optional[Tuple[str, int]] = ...,
@@ -214,6 +386,25 @@ class Loop:
         reuse_port: Optional[bool] = ...,
         allow_broadcast: Optional[bool] = ...,
         sock: Optional[socket] = ...,
-    ) -> Generator[Any, None, _TransProtPair]: ...
-    @asyncio.coroutine
-    def shutdown_asyncgens(self) -> Generator[Any, None, None]: ...
+    ) -> _TransProtPair: ...
+    if sys.version_info >= (3, 6):
+        async def shutdown_asyncgens(self) -> None: ...
+    if sys.version_info >= (3, 7):
+        async def sock_sendfile(
+            self,
+            sock: socket,
+            file: IO[bytes],
+            offset: int = ...,
+            count: Optional[int] = ...,
+            *,
+            fallback: bool = ...,
+        ) -> int: ...
+        async def sendfile(
+            self,
+            transport: asyncio.BaseTransport,
+            file: IO[bytes],
+            offset: int = ...,
+            count: Optional[int] = ...,
+            *,
+            fallback: bool = ...,
+        ) -> int: ...

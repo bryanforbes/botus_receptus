@@ -20,9 +20,9 @@ from typing import (
     Coroutine,
     AsyncIterable,
     Tuple,
+    NamedTuple,
     overload,
 )
-from typing_extensions import NamedTuple
 from os import PathLike
 from asyncio import AbstractEventLoop
 from ssl import SSLContext
@@ -181,9 +181,8 @@ def connect(
     max_cacheable_statement_size: int = ...,
     command_timeout: Optional[int] = ...,
     ssl: Optional[Union[bool, SSLContext]] = ...,
-    connection_class: Type[_C] = ...,
     server_settings: Optional[Any] = ...,
-) -> _C: ...
+) -> Connection: ...
 @overload
 def connect(
     dsn: Optional[str] = ...,
@@ -201,8 +200,9 @@ def connect(
     max_cacheable_statement_size: int = ...,
     command_timeout: Optional[int] = ...,
     ssl: Optional[Union[bool, SSLContext]] = ...,
+    connection_class: Type[_C] = ...,
     server_settings: Optional[Any] = ...,
-) -> Connection: ...
+) -> _C: ...
 
 class _ConnectionProxy: ...
 

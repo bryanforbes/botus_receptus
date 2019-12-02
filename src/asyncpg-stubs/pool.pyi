@@ -5,7 +5,7 @@ from typing import (
     Optional,
     Union,
     Type,
-    TypeArg,
+    TypeVar,
     Generic,
     Callable,
     Iterable,
@@ -18,8 +18,8 @@ from typing import (
 )
 from asyncio import AbstractEventLoop, Future
 
-_C = TypeArg('_C', bound=connection.Connection)
-_P = TypeArg('_P', bound=Pool)
+_C = TypeVar('_C', bound=connection.Connection)
+_P = TypeVar('_P', bound=Pool)
 
 class PoolConnectionProxyMeta(type):
     def __new__(metacls: Any, name: Any, bases: Any, dct: Any, *, wrap: bool = ...): ...

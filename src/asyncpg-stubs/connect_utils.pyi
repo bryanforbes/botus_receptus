@@ -1,5 +1,4 @@
-from typing import Any, Dict
-from typing_extensions import NamedTuple
+from typing import Any, Dict, NamedTuple
 
 PGPASSFILE: str
 

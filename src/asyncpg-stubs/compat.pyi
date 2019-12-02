@@ -1,4 +1,5 @@
-from typing import Any, PathLike, overload
+from typing import Any, overload
+from os import PathLike
 from pathlib import Path
 from asyncio import AbstractEventLoop, Task
 

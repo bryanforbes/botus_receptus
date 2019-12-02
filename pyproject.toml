@@ -8,14 +8,12 @@ packages = [
 	{ include = "botus_receptus", from = "src" },
 	{ include = "asyncpg-stubs", from = "src" },
 	{ include = "uvloop-stubs", from = "src" },
-	{ include = "more_itertools-stubs", from = "src" }
 ]
 
 include = [
 	"botus_receptus/py.typed",
 	"asyncpg-stubs/**/*.pyi",
-	"uvloop-stubs/**/*.pyi",
-	"more_itertools-stubs/**/*.pyi"
+	"uvloop-stubs/**/*.pyi"
 ]
 
 [tool.poetry.dependencies]
@@ -31,9 +29,9 @@ pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "updat
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "9bf7387c42b61c263d51ba53387c9561235c7ef5", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "3f1a3f26aa5a56d9fc58859d7ff140ca6cefe2fb", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
-more-itertools = {version = "~7.2.0", optional = true}
+more-itertools = {version = "~8.0.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
@@ -48,7 +46,7 @@ black = "^19.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.2"
-mypy = "^0.740"
+mypy = "^0.750"
 pre-commit = "^1.12"
 pytest = "^5.0.0"
 pytest-asyncio = "^0.10.0"
