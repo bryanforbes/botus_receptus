@@ -28,12 +28,12 @@ jobs:
       run: |
         poetry run flake8 src
         poetry run mypy src/botus_receptus
-		mkdir tmp
-		cd tmp
-		ln -s ../src/asyncpg-stubs asyncpg
-		ln -s ../src/uvloop-stubs uvloop
-		poetry run mypy asyncpg uvloop
-		cd ..
+        mkdir tmp
+        cd tmp
+        ln -s ../src/asyncpg-stubs asyncpg
+        ln -s ../src/uvloop-stubs uvloop
+        poetry run mypy asyncpg uvloop
+        cd ..
     - name: Test with pytest
       run: |
         poetry run py.test -- -p no:sugar --cov-report=xml:.coverage.xml
