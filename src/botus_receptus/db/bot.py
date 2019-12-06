@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, TypeVar, Type, ClassVar, Dict, cast
+import asyncio
+from typing import Any, ClassVar, Dict, Type, TypeVar, cast
 
 import discord
-import asyncio
+
+from ..bot import Bot as BaseBot
+from ..config import Config
+from .context import Context
 
 try:
     from asyncpg import create_pool
@@ -12,10 +16,6 @@ try:
     has_asyncpg = True
 except ImportError:
     has_asyncpg = False
-
-from ..bot import Bot as BaseBot
-from ..config import Config
-from .context import Context
 
 
 CT = TypeVar('CT', bound=Context)

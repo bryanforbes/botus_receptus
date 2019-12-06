@@ -1,7 +1,7 @@
-from typing import Any, overload
+from asyncio import AbstractEventLoop, Task
 from os import PathLike
 from pathlib import Path
-from asyncio import AbstractEventLoop, Task
+from typing import Any, overload
 
 PY_36: bool
 PY_37: bool

@@ -1,23 +1,23 @@
+import asyncio
+import selectors
+import ssl
+import sys
+from socket import _Address, _RetAddress, socket
 from typing import (
-    Any,
-    Optional,
-    Union,
-    Callable,
-    Awaitable,
-    Generator,
-    TypeVar,
-    List,
-    Tuple,
-    Sequence,
-    Dict,
     IO,
+    Any,
+    Awaitable,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    TypeVar,
+    Union,
     overload,
 )
-import asyncio
-import ssl
-from socket import socket, _Address, _RetAddress
-import selectors
-import sys
 
 _T = TypeVar('_T')
 _Context = Dict[str, Any]

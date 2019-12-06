@@ -1,9 +1,10 @@
-import pytest  # type: ignore
-import pendulum  # type: ignore
 import asyncio
-
 from typing import List
-from attr import dataclass, attrib
+
+import pendulum  # type: ignore
+import pytest  # type: ignore
+from attr import attrib, dataclass
+
 from botus_receptus.util import has_any_role, has_any_role_id, parse_duration, race
 
 

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from attr import dataclass, attrib
 import asyncio
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
 
-from typing import Any, Optional, Dict, List, Tuple, Callable, Awaitable
+from attr import attrib, dataclass
 
 
 @dataclass(slots=True)

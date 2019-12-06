@@ -1,9 +1,11 @@
-import pytest  # typing: ignore
-import discord
 from typing import Any, Optional
+
+import discord
+import pytest  # typing: ignore
 from attr import dataclass
+from pendulum import UTC, now
+
 from botus_receptus.context import EmbedContext, PaginatedContext
-from pendulum import now, UTC
 
 
 @dataclass(slots=True)

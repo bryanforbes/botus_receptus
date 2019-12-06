@@ -1,7 +1,8 @@
-import pytest
 import discord
+import pytest
 from discord.ext import commands
-from botus_receptus import checks, OnlyDirectMessage, NotGuildOwner
+
+from botus_receptus import NotGuildOwner, OnlyDirectMessage, checks
 
 
 class MockContext:

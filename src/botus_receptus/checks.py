@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Callable, Any, TypeVar, Union
-from discord.ext import commands
-import discord
+from typing import Any, Callable, TypeVar, Union
 
-from .exceptions import OnlyDirectMessage, NotGuildOwner
+import discord
+from discord.ext import commands
+
+from .exceptions import NotGuildOwner, OnlyDirectMessage
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=Union[FuncType, commands.Command])

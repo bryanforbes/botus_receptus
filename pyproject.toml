@@ -54,6 +54,7 @@ pytest-cov = "^2.6"
 pytest-mock = "^1.10"
 pytest-sugar = "^0.9.1"
 pytest-xdist = "^1.24"
+isort = "^4.3.21"
 
 [tool.black]
 line-length = 88
@@ -71,6 +72,14 @@ exclude = '''
   | htmlcov
 )/
 '''
+
+[tool.isort]
+known_standard_library = ["typing_extensions"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
 
 [build-system]
 requires = ["poetry>=1.0.0b6"]

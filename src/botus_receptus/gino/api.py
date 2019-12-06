@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from gino import Gino as _Gino
+
 from .model import ModelMixin
 
 

@@ -2,20 +2,21 @@ from __future__ import annotations
 
 from typing import (
     Any,
-    Optional,
-    Union,
-    TypeVar,
-    Type,
-    Sequence,
-    Mapping,
-    List,
     Dict,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Type,
+    TypeVar,
+    Union,
     cast,
 )
 from typing_extensions import Final
-from sqlalchemy.dialects.postgresql import insert
+
 from gino.declarative import ModelType
 from gino.engine import GinoEngine
+from sqlalchemy.dialects.postgresql import insert
 
 _M = TypeVar('_M', bound='ModelMixin')
 

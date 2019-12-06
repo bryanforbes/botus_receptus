@@ -1,30 +1,31 @@
 from __future__ import annotations
 
+import asyncio
+import enum
+from abc import abstractmethod
 from typing import (
     Any,
-    Optional,
-    Union,
-    List,
-    Tuple,
-    Callable,
-    Awaitable,
-    TypeVar,
-    Type,
-    Generic,
     AsyncIterable,
+    Awaitable,
+    Callable,
+    Generic,
+    List,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
     cast,
 )
 from typing_extensions import TypedDict
-from abc import abstractmethod
-from attr import dataclass, attrib
-import discord
-import asyncio
-import enum
-from discord.ext import commands
 
-from aioitertools import enumerate as aenumerate, starmap
-from aioitertools.types import AnyIterable
+import discord
+from aioitertools import enumerate as aenumerate
+from aioitertools import starmap
 from aioitertools.helpers import maybe_await
+from aioitertools.types import AnyIterable
+from attr import attrib, dataclass
+from discord.ext import commands
 
 from .formatting import warning
 from .util import race

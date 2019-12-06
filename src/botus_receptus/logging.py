@@ -1,22 +1,20 @@
 from __future__ import annotations
 
 import contextlib
-
-from typing import Dict, Iterator
 from logging import (
-    getLogger,
-    Formatter,
-    FileHandler,
-    StreamHandler,
     CRITICAL,
-    ERROR,
-    WARNING,
-    INFO,
     DEBUG,
+    ERROR,
+    INFO,
+    WARNING,
+    FileHandler,
+    Formatter,
+    StreamHandler,
+    getLogger,
 )
+from typing import Dict, Iterator
 
 from .config import Config
-
 
 log_levels: Dict[str, int] = {
     'critical': CRITICAL,

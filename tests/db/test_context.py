@@ -1,7 +1,9 @@
-import pytest  # type: ignore
-import discord
 from typing import Any, Optional
+
+import discord
+import pytest  # type: ignore
 from attr import dataclass
+
 from botus_receptus.db.context import Context
 
 

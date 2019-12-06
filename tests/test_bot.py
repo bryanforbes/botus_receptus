@@ -1,8 +1,8 @@
-import pytest  # type: ignore
-from botus_receptus import Bot, DblBot
-
 import discord
+import pytest  # type: ignore
 from discord.ext import commands
+
+from botus_receptus import Bot, DblBot
 
 OriginalBot = commands.Bot
 

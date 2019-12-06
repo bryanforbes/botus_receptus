@@ -187,10 +187,6 @@ version = "1.3.0a2276+g07db03a"
 aiohttp = ">=3.3.0,<3.6.0"
 websockets = ">=6.0,<7.0"
 
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.7.4"
-
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.0)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -200,6 +196,7 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "07db03a9ab22dc4fee959667900190ce37a552b1"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Discover and load entry points from installed packages."
@@ -291,6 +288,7 @@ typing-extensions = ">=3.7.4"
 reference = "3f1a3f26aa5a56d9fc58859d7ff140ca6cefe2fb"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -325,6 +323,20 @@ zipp = ">=0.5"
 [package.extras]
 docs = ["sphinx", "rst.linker"]
 testing = ["packaging", "importlib-resources"]
+
+[[package]]
+category = "dev"
+description = "A Python utility / library to sort Python imports."
+name = "isort"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "4.3.21"
+
+[package.extras]
+pipfile = ["pipreqs", "requirementslib"]
+pyproject = ["toml"]
+requirements = ["pipreqs", "pip-api"]
+xdg_home = ["appdirs (>=1.4.0)"]
 
 [[package]]
 category = "dev"
@@ -418,6 +430,7 @@ pytzdata = ">=2018.3"
 reference = "c42734f2ab4b91ad9211ac7ce54c88cbc409f5ff"
 type = "git"
 url = "https://github.com/bryanforbes/pendulum.git"
+
 [[package]]
 category = "dev"
 description = "plugin and hook calling mechanisms for python"
@@ -775,7 +788,7 @@ more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "a0fd83e7bcb30dbd37558c719b2b8156a960444a80032d8a35081f235cedaff8"
+content-hash = "5352437f62c512ede57eb2fedb606c779258097846a5a7d633b2911beee27669"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -953,6 +966,10 @@ idna = [
 importlib-metadata = [
     {file = "importlib_metadata-1.1.0-py2.py3-none-any.whl", hash = "sha256:e6ac600a142cf2db707b1998382cc7fc3b02befb7273876e01b8ad10b9652742"},
     {file = "importlib_metadata-1.1.0.tar.gz", hash = "sha256:b044f07694ef14a6683b097ba56bd081dbc7cdc7c7fe46011e499dfecc082f21"},
+]
+isort = [
+    {file = "isort-4.3.21-py2.py3-none-any.whl", hash = "sha256:6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"},
+    {file = "isort-4.3.21.tar.gz", hash = "sha256:54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import toml
-
-from typing import Any, Optional, Dict, cast
+from typing import Any, Dict, Optional, cast
 from typing_extensions import TypedDict
+
+import toml
 
 
 class ConfigException(Exception):

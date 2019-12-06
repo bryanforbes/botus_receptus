@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import Generic, TypeVar, Union, List
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta, abstractmethod
 from datetime import datetime
+from typing import Generic, List, TypeVar, Union
+
 import discord
 
 CT_contra = TypeVar('CT_contra', contravariant=True)

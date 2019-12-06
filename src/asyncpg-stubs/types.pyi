@@ -1,26 +1,25 @@
-from asyncpg.pgproto.types import (
-    BitString as BitString,
-    Box as Box,
-    Circle as Circle,
-    Line as Line,
-    LineSegment as LineSegment,
-    Path as Path,
-    Point as Point,
-    Polygon as Polygon,
-)
 from typing import (
     Any,
-    Optional,
-    NamedTuple,
-    Hashable,
-    Sized,
-    Sequence,
-    Iterable,
-    Tuple,
-    Iterator,
-    TypeVar,
     Generic,
+    Hashable,
+    Iterable,
+    Iterator,
+    NamedTuple,
+    Optional,
+    Sequence,
+    Sized,
+    Tuple,
+    TypeVar,
 )
+
+from asyncpg.pgproto.types import BitString as BitString
+from asyncpg.pgproto.types import Box as Box
+from asyncpg.pgproto.types import Circle as Circle
+from asyncpg.pgproto.types import Line as Line
+from asyncpg.pgproto.types import LineSegment as LineSegment
+from asyncpg.pgproto.types import Path as Path
+from asyncpg.pgproto.types import Point as Point
+from asyncpg.pgproto.types import Polygon as Polygon
 
 _T = TypeVar('_T')
 

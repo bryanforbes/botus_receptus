@@ -2,25 +2,26 @@ from __future__ import annotations
 
 from typing import (
     TYPE_CHECKING,
+    Any,
     AsyncContextManager,
     Awaitable,
-    Coroutine,
-    Any,
-    Generator,
-    Optional,
     Callable,
+    Coroutine,
+    Dict,
+    Generator,
     List,
+    Optional,
     Sequence,
     Tuple,
-    Dict,
     TypeVar,
     cast,
 )
+
 from asyncpg import Connection
 from attr import dataclass
 from discord.ext import commands
 
-from .util import select_all, select_one, search, insert_into, delete_from, update
+from .util import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
     from .bot import Bot

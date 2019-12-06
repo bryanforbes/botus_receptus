@@ -1,8 +1,8 @@
 import asyncio
 from asyncio.events import BaseDefaultEventLoopPolicy as __BasePolicy
-from .loop import Loop as __BaseLoop
-
 from typing import Any, Tuple
+
+from .loop import Loop as __BaseLoop
 
 __version__: str = ...
 __all__: Tuple[str, str, str] = ...

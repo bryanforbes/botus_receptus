@@ -1,8 +1,8 @@
-from typing import Any
-import decimal
-import uuid
 import datetime
+import decimal
 import ipaddress
+import uuid
+from typing import Any
 
 infinity_date: datetime.date
 infinity_datetime: datetime.datetime

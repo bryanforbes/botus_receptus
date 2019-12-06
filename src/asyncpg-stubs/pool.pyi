@@ -1,22 +1,23 @@
-from . import connection
-from .protocol import Record
+from asyncio import AbstractEventLoop, Future
 from typing import (
     Any,
-    Optional,
-    Union,
-    Type,
-    TypeVar,
-    Generic,
-    Callable,
-    Iterable,
-    Sequence,
-    List,
     AsyncContextManager,
     Awaitable,
+    Callable,
     Generator,
+    Generic,
+    Iterable,
+    List,
+    Optional,
+    Sequence,
+    Type,
+    TypeVar,
+    Union,
     overload,
 )
-from asyncio import AbstractEventLoop, Future
+
+from . import connection
+from .protocol import Record
 
 _C = TypeVar('_C', bound=connection.Connection)
 _P = TypeVar('_P', bound=Pool)

@@ -1,22 +1,23 @@
 from __future__ import annotations
 
-import pytest
 import asyncio
-import discord
-
 from typing import Any, List
+
+import discord
+import pytest
 from aioitertools import list as alist
 from attr import dataclass
+
 from botus_receptus.interactive_pager import (
-    PageSource,
-    ListPageSource,
+    CannotPaginate,
+    CannotPaginateReason,
     FieldPageSource,
     InteractivePager,
-    CannotPaginateReason,
-    CannotPaginate,
+    ListPageSource,
+    PageSource,
 )
 
-from .mocks import MockUser, MockPermissions, MockGuild, MockContext
+from .mocks import MockContext, MockGuild, MockPermissions, MockUser
 
 
 @dataclass(slots=True)

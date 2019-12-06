@@ -1,7 +1,8 @@
 import enum
+from typing import Any, Set, TypeVar
+
 from . import connresource
 from .connection import Connection
-from typing import Any, Set, TypeVar
 
 _C = TypeVar('_C', bound=Connection)
 

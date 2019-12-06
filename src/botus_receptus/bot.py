@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import Any, cast, TypeVar, Type, ClassVar, overload, Optional, Union
+import json
+from typing import Any, ClassVar, Optional, Type, TypeVar, Union, cast, overload
 
 import aiohttp
 import async_timeout
 import discord
-import json
-
 from discord.ext import commands
 
 from . import abc
 from .config import Config
-
 
 CT = TypeVar('CT', bound=commands.Context)
 OT = TypeVar('OT', bound=commands.Context)

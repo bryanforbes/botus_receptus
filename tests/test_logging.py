@@ -1,6 +1,7 @@
+import logging
+
 import pytest
 
-import logging
 from botus_receptus.logging import setup_logging
 
 

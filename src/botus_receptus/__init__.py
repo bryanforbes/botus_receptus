@@ -1,14 +1,12 @@
-from . import formatting
-from . import re
-from . import checks
-from . import abc
-from . import util
-from .config import Config
-from .logging import setup_logging
-from .cli import cli
+from __future__ import annotations
+
+from . import abc, checks, formatting, re, util
 from .bot import Bot, DblBot
+from .cli import cli
+from .config import Config
 from .context import EmbedContext, PaginatedContext
-from .exceptions import OnlyDirectMessage, NotGuildOwner
+from .exceptions import NotGuildOwner, OnlyDirectMessage
+from .logging import setup_logging
 
 __title__ = 'botus_receptus'
 __author__ = 'Bryan Forbes'

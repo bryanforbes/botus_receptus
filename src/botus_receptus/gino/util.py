@@ -1,4 +1,7 @@
-from typing import Any, Union, TypeVar, Type, Sequence, Mapping, List, Dict, cast
+from __future__ import annotations
+
+from typing import Any, Dict, List, Mapping, Sequence, Type, TypeVar, Union, cast
+
 from gino.crud import CRUDModel
 from sqlalchemy.dialects.postgresql import insert
 

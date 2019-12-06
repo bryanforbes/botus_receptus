@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Union, Dict, Type, cast
+from typing import Any, Dict, Type, Union, cast
 
 import click
 import toml
 
+from . import config, logging
 from .bot import Bot
-from . import logging, config
 
 
 def config_callback(

@@ -1,5 +1,5 @@
-from ._base import *
 from . import _base
+from ._base import *
 
 class PostgresWarning(_base.PostgresLogMessage, Warning):
     sqlstate: str = ...

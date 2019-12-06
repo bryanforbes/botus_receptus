@@ -1,19 +1,20 @@
 import pytest
+
 from botus_receptus.formatting import (
-    pluralizer,
+    EmbedPaginator,
     Paginator,
-    remove_mass_mentions,
-    error,
-    warning,
-    info,
     bold,
+    code_block,
+    error,
+    escape,
+    info,
+    inline_code,
     italics,
+    pluralizer,
+    remove_mass_mentions,
     strikethrough,
     underline,
-    inline_code,
-    code_block,
-    escape,
-    EmbedPaginator,
+    warning,
 )
 
 

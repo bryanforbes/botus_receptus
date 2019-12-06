@@ -1,17 +1,18 @@
-from . import connresource
-from .connection import Connection
-from .protocol import Record
 from typing import (
-    Optional,
+    Any,
     AsyncIterable,
     AsyncIterator,
     Awaitable,
-    List,
     Generator,
-    Any,
-    TypeVar,
     Generic,
+    List,
+    Optional,
+    TypeVar,
 )
+
+from . import connresource
+from .connection import Connection
+from .protocol import Record
 
 _C = TypeVar('_C', bound=Connection)
 

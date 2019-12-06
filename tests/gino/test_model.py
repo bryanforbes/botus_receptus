@@ -1,8 +1,9 @@
 import pytest  # type: ignore
+from gino.crud import CRUDModel
+from gino.declarative import declarative_base
+
 from botus_receptus.gino import Gino
 from botus_receptus.gino.model import ModelMixin
-from gino.declarative import declarative_base
-from gino.crud import CRUDModel
 
 
 @pytest.fixture

@@ -1,16 +1,16 @@
+import builtins
 from typing import (
     Any,
-    Optional,
     Hashable,
-    Sized,
-    Sequence,
-    Tuple,
     Iterable,
     Iterator,
+    Optional,
+    Sequence,
+    Sized,
+    Tuple,
     Type,
     TypeVar,
 )
-import builtins
 
 _BS = TypeVar('_BS', bound=BitString)
 

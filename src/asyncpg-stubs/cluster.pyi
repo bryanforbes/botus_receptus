@@ -1,7 +1,8 @@
-from typing import Any, Optional, Union, TypeVar, Type, Tuple, Callable, overload
-from typing_extensions import TypedDict
 from asyncio import AbstractEventLoop
 from ssl import SSLContext
+from typing import Any, Callable, Optional, Tuple, Type, TypeVar, Union, overload
+from typing_extensions import TypedDict
+
 from .connection import Connection
 
 class _ConnectionSpec(TypedDict):

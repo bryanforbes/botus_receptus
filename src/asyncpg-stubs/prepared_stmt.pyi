@@ -1,8 +1,9 @@
+from typing import Any, List, Optional, Tuple, TypeVar
+
 from . import connresource, cursor
 from .connection import Connection
 from .protocol import Record
 from .types import Attribute, Type
-from typing import Any, Optional, List, Tuple, TypeVar
 
 _C = TypeVar('_C', bound=Connection)
 

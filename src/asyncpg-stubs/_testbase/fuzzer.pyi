@@ -1,7 +1,7 @@
 import socket
-from typing import Any, Optional, Dict
-from asyncio import AbstractEventLoop, Event, Task, Future
+from asyncio import AbstractEventLoop, Event, Future, Task
 from threading import Thread
+from typing import Any, Dict, Optional
 
 class StopServer(Exception): ...
 

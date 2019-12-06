@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Sequence, List, Any, Optional, Tuple, Dict
+from typing import Any, Dict, List, Optional, Sequence, Tuple
+
 from asyncpg import Connection
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')

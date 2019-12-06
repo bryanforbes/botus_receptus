@@ -1,4 +1,5 @@
-from typing import Any, TypeVar, Generic, Callable
+from typing import Any, Callable, Generic, TypeVar
+
 from .connection import Connection
 
 _F = TypeVar('_F', bound=Callable[..., Any])

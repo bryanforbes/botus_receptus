@@ -1,31 +1,32 @@
-from . import connect_utils
-from .exceptions import PostgresLogMessage
-from .types import ServerVersion
-from .protocol import Record
-from .protocol.protocol import ConnectionSettings
-from .cursor import CursorFactory
-from .prepared_stmt import PreparedStatement
-from .transaction import Transaction
+from asyncio import AbstractEventLoop
+from os import PathLike
+from ssl import SSLContext
 from typing import (
+    IO,
     Any,
+    AsyncIterable,
+    Callable,
+    Coroutine,
+    Iterable,
+    List,
+    NamedTuple,
     Optional,
-    Union,
+    Sequence,
+    Tuple,
     Type,
     TypeVar,
-    Callable,
-    List,
-    Iterable,
-    Sequence,
-    IO,
-    Coroutine,
-    AsyncIterable,
-    Tuple,
-    NamedTuple,
+    Union,
     overload,
 )
-from os import PathLike
-from asyncio import AbstractEventLoop
-from ssl import SSLContext
+
+from . import connect_utils
+from .cursor import CursorFactory
+from .exceptions import PostgresLogMessage
+from .prepared_stmt import PreparedStatement
+from .protocol import Record
+from .protocol.protocol import ConnectionSettings
+from .transaction import Transaction
+from .types import ServerVersion
 
 class ConnectionMeta(type):
     def __instancecheck__(cls, instance: Any): ...

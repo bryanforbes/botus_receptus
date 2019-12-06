@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import re
+from functools import partial
+from typing import AnyStr, Iterable, Iterator, Pattern, Union, cast
+from typing_extensions import Protocol
+
 # Inspired by https://github.com/TehShrike/regex-fun
 
-from typing import Pattern, AnyStr, cast, Union, Iterator, Iterable
-from typing_extensions import Protocol
-from functools import partial
-import re
 
 _ReOrStrType = Union[str, Pattern[AnyStr]]
 

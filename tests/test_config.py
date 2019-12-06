@@ -1,4 +1,5 @@
 import pytest
+
 from botus_receptus import config
 
 

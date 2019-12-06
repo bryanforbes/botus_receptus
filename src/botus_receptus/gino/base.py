@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional
-from sqlalchemy.types import TypeDecorator, String
+
+from sqlalchemy.types import String, TypeDecorator
 
 if TYPE_CHECKING:
     IntBase = TypeDecorator[int]

@@ -1,17 +1,18 @@
 from __future__ import annotations
 
+import asyncio
 from typing import (
     Any,
+    Awaitable,
+    Container,
+    Dict,
+    Generator,
+    Iterable,
     Optional,
     TypeVar,
     Union,
-    Container,
-    Dict,
-    Iterable,
-    Generator,
-    Awaitable,
 )
-import asyncio
+
 import discord
 import pendulum
 

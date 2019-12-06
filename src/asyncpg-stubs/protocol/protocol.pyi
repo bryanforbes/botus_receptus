@@ -1,31 +1,29 @@
+import asyncio
+import asyncio.protocols
 from typing import (
     Any,
-    Iterator,
-    Tuple,
-    Union,
-    TypeVar,
     Collection,
-    Optional,
-    Hashable,
     Dict,
+    Hashable,
+    Iterator,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
     overload,
 )
 from typing_extensions import Protocol as _TEProtocol
-import asyncio
-import asyncio.protocols
+
 import asyncpg.pgproto.pgproto
 
-from ..types import (
-    BitString as BitString,
-    Point as Point,
-    Box as Box,
-    Line as Line,
-    LineSegment as LineSegment,
-    Path as Path,
-    Point as Point,
-    Polygon as Polygon,
-    Circle as Circle,
-)
+from ..types import BitString as BitString
+from ..types import Box as Box
+from ..types import Circle as Circle
+from ..types import Line as Line
+from ..types import LineSegment as LineSegment
+from ..types import Path as Path
+from ..types import Point as Point
+from ..types import Polygon as Polygon
 
 BUILTIN_TYPE_NAME_MAP: Dict[str, int]
 BUILTIN_TYPE_OID_MAP: Dict[int, str]
