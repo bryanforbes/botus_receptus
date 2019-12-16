@@ -5,15 +5,15 @@ description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
 packages = [
-	{ include = "botus_receptus", from = "src" },
-	{ include = "asyncpg-stubs", from = "src" },
-	{ include = "uvloop-stubs", from = "src" },
+  { include = "botus_receptus", from = "src" },
+  { include = "asyncpg-stubs", from = "src" },
+  { include = "uvloop-stubs", from = "src" },
 ]
 
 include = [
-	"botus_receptus/py.typed",
-	"asyncpg-stubs/**/*.pyi",
-	"uvloop-stubs/**/*.pyi"
+  "botus_receptus/py.typed",
+  "asyncpg-stubs/**/*.pyi",
+  "uvloop-stubs/**/*.pyi"
 ]
 
 [tool.poetry.dependencies]
@@ -29,7 +29,7 @@ pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "updat
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "3f1a3f26aa5a56d9fc58859d7ff140ca6cefe2fb", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "a73fce8bdfa674251ab78de5d9b9681465c0506b", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 more-itertools = {version = "~8.0.0", optional = true}
 
@@ -43,9 +43,11 @@ uvloop = ["uvloop"]
 [tool.poetry.dev-dependencies]
 asynctest = "~0.13.0"
 black = "^19.3b0"
+coverage = {extras = ["toml"], version = "^5.0"}
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.2"
+isort = "^4.3.21"
 mypy = "^0.750"
 pre-commit = "^1.12"
 pytest = "^5.0.0"
@@ -54,7 +56,6 @@ pytest-cov = "^2.6"
 pytest-mock = "^1.10"
 pytest-sugar = "^0.9.1"
 pytest-xdist = "^1.24"
-isort = "^4.3.21"
 
 [tool.black]
 line-length = 88
@@ -73,8 +74,19 @@ exclude = '''
 )/
 '''
 
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "^\\s+pass$",
+  "^\\s*if TYPE_CHECKING:",
+  "^\\s*\\.\\.\\.\\s*$"
+]
+
 [tool.isort]
 known_standard_library = ["typing_extensions"]
+known_first_party = ["botus_receptus"]
+virtual_env = ".venv"
 multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0
@@ -82,5 +94,5 @@ use_parentheses = true
 line_length = 88
 
 [build-system]
-requires = ["poetry>=1.0.0b6"]
+requires = ["poetry>=1.0.0"]
 build-backend = "poetry.masonry.api"
