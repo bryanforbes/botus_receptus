@@ -27,12 +27,10 @@ jobs:
     - name: Lint with flake8 and mypy
       run: |
         poetry run flake8 src
-        poetry run mypy src/botus_receptus
         mkdir tmp
-        cd tmp
-        ln -s ../src/asyncpg-stubs asyncpg
-        ln -s ../src/uvloop-stubs uvloop
-        poetry run mypy asyncpg uvloop
+        ln -s "../src/asyncpg-stubs" tmp/asyncpg
+        ln -s "../src/uvloop-stubs" tmp/uvloop
+        poetry run mypy src/botus_receptus tmp/asyncpg tmp/uvloop
         cd ..
     - name: Test with pytest
       run: |
