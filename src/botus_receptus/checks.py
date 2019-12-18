@@ -1,17 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Callable, TypeVar, Union
-
 import discord
 from discord.ext import commands
 
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 
-FuncType = Callable[..., Any]
-F = TypeVar('F', bound=Union[FuncType, commands.Command])
 
-
-def dm_only() -> Callable[[F], F]:
+def dm_only() -> 'commands._CheckDecorator':
     def predicate(ctx: commands.Context) -> bool:
         if not isinstance(ctx.channel, discord.DMChannel):
             raise OnlyDirectMessage('This command can only be used in private messags.')
@@ -20,7 +15,7 @@ def dm_only() -> Callable[[F], F]:
     return commands.check(predicate)
 
 
-def is_guild_owner() -> Callable[[F], F]:
+def is_guild_owner() -> 'commands._CheckDecorator':
     def predicate(ctx: commands.Context) -> bool:
         if ctx.guild is None:
             raise commands.NoPrivateMessage(
