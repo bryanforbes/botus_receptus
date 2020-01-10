@@ -387,7 +387,8 @@ class InteractivePager(Generic[T]):
 
                 try:
                     await self.message.clear_reactions()
-                finally:
+                    break
+                except Exception:
                     break
 
             try:
