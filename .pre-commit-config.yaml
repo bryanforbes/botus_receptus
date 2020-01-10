@@ -1,8 +1,7 @@
 repos:
 -   repo: local
     hooks:
-    -
-        id: isort
+    -   id: isort
         name: isort
         language: system
         entry: poetry run isort --check-only
