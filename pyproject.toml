@@ -29,13 +29,11 @@ gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
 gino-stubs = {rev = "5ca1b3a2bb539323bd1f21f556082c21255191f5", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
-more-itertools = {version = "~8.0.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
 gino = ["gino", "sqlalchemy"]
 gino_typed = ["gino", "sqlalchemy", "gino-stubs"]
-more_itertools = ["more-itertools"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
