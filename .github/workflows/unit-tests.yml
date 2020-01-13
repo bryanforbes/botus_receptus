@@ -23,7 +23,7 @@ jobs:
         version: 1.0.0b3
     - name: Install dependencies
       run: |
-        poetry install -v --extras "db gino_typed more_itertools uvloop"
+        poetry install -v --extras "db gino_typed uvloop"
     - name: Lint with flake8 and mypy
       run: |
         poetry run flake8 src
