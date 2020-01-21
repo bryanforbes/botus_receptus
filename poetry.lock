@@ -586,7 +586,7 @@ description = "Thin-wrapper around the mock package for easier use with py.test"
 name = "pytest-mock"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.13.0"
+version = "2.0.0"
 
 [package.dependencies]
 pytest = ">=2.7"
@@ -801,7 +801,7 @@ gino_typed = ["gino", "sqlalchemy", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "93706b846abe6ccae48c9d0c4e2b82dad3a2f2785101ac0d3d5ad6d6c0956b59"
+content-hash = "e06654dd49bcbf80d497c8a89e03489c26872653c2102b7a2cf90dd0bf8dd206"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1073,8 +1073,8 @@ pytest-forked = [
     {file = "pytest_forked-1.1.3-py2.py3-none-any.whl", hash = "sha256:1ae25dba8ee2e56fb47311c9638f9e58552691da87e82d25b0ce0e4bf52b7d87"},
 ]
 pytest-mock = [
-    {file = "pytest-mock-1.13.0.tar.gz", hash = "sha256:e24a911ec96773022ebcc7030059b57cd3480b56d4f5d19b7c370ec635e6aed5"},
-    {file = "pytest_mock-1.13.0-py2.py3-none-any.whl", hash = "sha256:67e414b3caef7bff6fc6bd83b22b5bc39147e4493f483c2679bc9d4dc485a94d"},
+    {file = "pytest-mock-2.0.0.tar.gz", hash = "sha256:b35eb281e93aafed138db25c8772b95d3756108b601947f89af503f8c629413f"},
+    {file = "pytest_mock-2.0.0-py2.py3-none-any.whl", hash = "sha256:cb67402d87d5f53c579263d37971a164743dc33c159dfb4fb4a86f37c5552307"},
 ]
 pytest-sugar = [
     {file = "pytest-sugar-0.9.2.tar.gz", hash = "sha256:fcd87a74b2bce5386d244b49ad60549bfbc4602527797fac167da147983f58ab"},
