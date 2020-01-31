@@ -27,7 +27,7 @@ pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "updat
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "921a283633b9e7678db6407cea3b33d5f8b76357", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "b121dfee82f0074dfa5588e5c9d4a03ec36ee674", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -45,7 +45,7 @@ flake8-bugbear = ">=19.3"
 flake8-pyi = "^19.2"
 isort = "^4.3.21"
 mypy = "^0.761"
-pre-commit = "^1.12"
+pre-commit = "^2.0"
 pytest = "^5.0.0"
 pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
