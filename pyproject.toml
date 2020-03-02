@@ -27,7 +27,7 @@ pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "updat
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "b121dfee82f0074dfa5588e5c9d4a03ec36ee674", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "985792d74d4360461cc16fceec031c9e44f25714", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
