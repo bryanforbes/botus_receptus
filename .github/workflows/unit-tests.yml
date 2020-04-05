@@ -20,7 +20,7 @@ jobs:
     - name: Install Poetry
       uses: dschep/install-poetry-action@v1.2
       with:
-        version: 1.0.2
+        version: 1.0.5
     - name: Install dependencies
       run: |
         poetry install -v --extras "db gino_typed uvloop"
@@ -36,7 +36,6 @@ jobs:
       run: |
         poetry run py.test -p no:sugar --cov-report=xml:.coverage.xml
     - name: Upload coverage to codecov
-      uses: codecov/codecov-action@v1.0.3
+      uses: codecov/codecov-action@v1.0.6
       with:
-        token: ${{secrets.CODECOV_TOKEN}}
         file: ./.coverage.xml
