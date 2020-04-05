@@ -20,14 +20,14 @@ aioitertools = "^0.5.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {git = "https://github.com/bryanforbes/discord.py.git", branch = "typings", extras = ["typings"]}
+"discord.py" = {git = "https://github.com/bryanforbes/discord.py.git", rev = "30fb1617eac467b1a82babbfedeb465daa6f5dfa", extras = ["typings"]}
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.0"
-pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
+pendulum = "~2.1.0"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "~0.8.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-gino-stubs = {rev = "985792d74d4360461cc16fceec031c9e44f25714", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "9fd077ba66ca5ad53592ff43ad326ccb9d673dc2", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -44,12 +44,12 @@ flake8 = "^3.6"
 flake8-bugbear = ">=19.3"
 flake8-pyi = "^19.2"
 isort = "^4.3.21"
-mypy = "^0.761"
+mypy = "^0.770"
 pre-commit = "^2.0"
 pytest = "^5.0.0"
 pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
-pytest-mock = "^2.0.0"
+pytest-mock = "^3.0.0"
 pytest-sugar = "^0.9.1"
 pytest-xdist = "^1.24"
 
@@ -80,7 +80,7 @@ exclude_lines = [
 ]
 
 [tool.isort]
-known_standard_library = ["typing_extensions"]
+known_standard_library = ["typing_extensions", "_types"]
 known_first_party = ["botus_receptus"]
 virtual_env = ".venv"
 multi_line_output = 3

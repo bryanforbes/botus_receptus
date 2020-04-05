@@ -1,5 +1,4 @@
 import asyncio
-import selectors
 import ssl
 import sys
 from socket import _Address, _RetAddress, socket
@@ -225,7 +224,7 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[str] = ...,
+            local_addr: Optional[Tuple[str, int]] = ...,
             server_hostname: Optional[str] = ...,
             ssl_handshake_timeout: Optional[float] = ...,
             happy_eyeballs_delay: Optional[float] = ...,
@@ -262,7 +261,7 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[str] = ...,
+            local_addr: Optional[Tuple[str, int]] = ...,
             server_hostname: Optional[str] = ...,
             ssl_handshake_timeout: Optional[float] = ...,
         ) -> _TransProtPair: ...
@@ -295,7 +294,7 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[str] = ...,
+            local_addr: Optional[Tuple[str, int]] = ...,
             server_hostname: Optional[str] = ...,
         ) -> _TransProtPair: ...
         @overload
@@ -317,14 +316,10 @@ class Loop:
     def get_exception_handler(self) -> Optional[_ExceptionHandler]: ...
     def set_exception_handler(self, handler: Optional[_ExceptionHandler]) -> None: ...
     def call_exception_handler(self, context: _Context) -> None: ...
-    def add_reader(
-        self, fd: selectors._FileObject, callback: Callable[..., Any], *args: Any
-    ) -> None: ...
-    def remove_reader(self, fd: selectors._FileObject) -> None: ...
-    def add_writer(
-        self, fd: selectors._FileObject, callback: Callable[..., Any], *args: Any
-    ) -> None: ...
-    def remove_writer(self, fd: selectors._FileObject) -> None: ...
+    def add_reader(self, fd: Any, callback: Callable[..., Any], *args: Any) -> None: ...
+    def remove_reader(self, fd: Any) -> None: ...
+    def add_writer(self, fd: Any, callback: Callable[..., Any], *args: Any) -> None: ...
+    def remove_writer(self, fd: Any) -> None: ...
     if sys.version_info >= (3, 7):
         async def sock_recv(self, sock: socket, nbytes: int) -> bytes: ...
         async def sock_recv_into(self, sock: socket, buf: bytearray) -> int: ...
