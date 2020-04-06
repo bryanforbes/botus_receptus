@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import core
 
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 
 
-def dm_only() -> 'commands._CheckDecorator':
+def dm_only() -> 'core._CheckDecorator':
     def predicate(ctx: commands.Context) -> bool:
         if not isinstance(ctx.channel, discord.DMChannel):
             raise OnlyDirectMessage('This command can only be used in private messags.')
@@ -15,7 +16,7 @@ def dm_only() -> 'commands._CheckDecorator':
     return commands.check(predicate)
 
 
-def is_guild_owner() -> 'commands._CheckDecorator':
+def is_guild_owner() -> 'core._CheckDecorator':
     def predicate(ctx: commands.Context) -> bool:
         if ctx.guild is None:
             raise commands.NoPrivateMessage(
