@@ -22,7 +22,7 @@ CT = TypeVar('CT', bound=Context)
 
 
 class Bot(BaseBot[CT]):
-    pool: Pool
+    pool: Pool[Any]
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], Context)
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:

@@ -59,7 +59,7 @@ def ensure_db(func: F) -> F:
 
 
 class Context(commands.Context):
-    bot: Bot
+    bot: Bot[Any]
     db: Connection
 
     async def _acquire(self, timeout: Optional[float]) -> Connection:

@@ -49,8 +49,8 @@ class CannotPaginate(Exception):
         self.reason = reason
 
 
-IP = TypeVar('IP', bound='InteractivePager')
-IFP = TypeVar('IFP', bound='InteractiveFieldPager')
+IP = TypeVar('IP', bound='InteractivePager[Any]')
+IFP = TypeVar('IFP', bound='InteractiveFieldPager[Any]')
 T = TypeVar('T')
 
 
@@ -112,7 +112,7 @@ class PageSource(Generic[T]):
         return {'entry_text': '\n'.join(lines).strip(), 'footer_text': footer_text}
 
 
-LPS = TypeVar('LPS', bound='ListPageSource')
+LPS = TypeVar('LPS', bound='ListPageSource[Any]')
 
 
 @dataclass(slots=True)
@@ -141,7 +141,7 @@ class ListPageSource(PageSource[T]):
 
 @dataclass(slots=True)
 class InteractivePager(Generic[T]):
-    bot: commands.Bot
+    bot: commands.Bot[Any]
     message: discord.Message
     channel: Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]
     author: Union[discord.User, discord.Member]
@@ -155,7 +155,7 @@ class InteractivePager(Generic[T]):
         init=False
     )
     match: Optional[Callable[[], Awaitable[None]]] = attrib(init=False, default=None)
-    help_task: Optional[asyncio.Task] = attrib(init=False, default=None)
+    help_task: Optional[asyncio.Task[None]] = attrib(init=False, default=None)
 
     def __attrs_post_init__(self) -> None:
         self.embed = discord.Embed()

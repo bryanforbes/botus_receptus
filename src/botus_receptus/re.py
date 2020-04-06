@@ -12,17 +12,17 @@ _ReOrStrType = Union[str, Pattern[AnyStr]]
 
 
 class _ReOrStrFuncType(Protocol):
-    def __call__(self, *__args: _ReOrStrType) -> str:
+    def __call__(self, *__args: _ReOrStrType[AnyStr]) -> str:
         ...
 
 
 class _ReOrStrGreedyFuncType(Protocol):
-    def __call__(self, *__args: _ReOrStrType, greedy: bool = True) -> str:
+    def __call__(self, *__args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
         ...
 
 
 class _GrouperType(Protocol):
-    def __call__(self, *__args: _ReOrStrType, joiner: str = '') -> str:
+    def __call__(self, *__args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
         ...
 
 
@@ -41,22 +41,22 @@ X = re.X
 VERBOSE = re.VERBOSE
 
 
-def compile(*args: _ReOrStrType, flags: int = 0) -> Pattern[AnyStr]:
+def compile(*args: _ReOrStrType[AnyStr], flags: int = 0) -> Pattern[AnyStr]:
     return re.compile(combine(*args), flags=flags)  # type: ignore
 
 
-def _to_str(reOrStr: _ReOrStrType) -> str:
+def _to_str(reOrStr: _ReOrStrType[AnyStr]) -> str:
     if isinstance(reOrStr, str):
         return reOrStr
     else:
         return str(reOrStr.pattern)
 
 
-def combine(*args: _ReOrStrType, joiner: str = '') -> str:
+def combine(*args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
     return joiner.join(map(_to_str, args))
 
 
-def group(*args: _ReOrStrType, start: str = '(?:', joiner: str = '') -> str:
+def group(*args: _ReOrStrType[AnyStr], start: str = '(?:', joiner: str = '') -> str:
     return start + combine(*args, joiner=joiner) + ')'
 
 
@@ -65,7 +65,7 @@ either = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
 def named_group(name: str) -> _GrouperType:
-    def grouper(*args: _ReOrStrType, joiner: str = '') -> str:
+    def grouper(*args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
         return group(*args, start=f'(?P<{name}>', joiner=joiner)
 
     return grouper
@@ -83,7 +83,7 @@ def atomic(string: str) -> str:
     return group(string)
 
 
-def _suffix(*args: _ReOrStrType, suffix: str, greedy: bool = True) -> str:
+def _suffix(*args: _ReOrStrType[AnyStr], suffix: str, greedy: bool = True) -> str:
     return f'{atomic(combine(*args))}{suffix}{"" if greedy else "?"}'
 
 
@@ -92,15 +92,15 @@ one_or_more = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='+'))
 any_number_of = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
 
 
-def exactly(n: int, *args: _ReOrStrType, greedy: bool = True) -> str:
+def exactly(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{n}}', greedy=greedy)
 
 
-def at_least(n: int, *args: _ReOrStrType, greedy: bool = True) -> str:
+def at_least(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n},}}', greedy=greedy)
 
 
-def between(n: int, m: int, *args: _ReOrStrType, greedy: bool = True) -> str:
+def between(n: int, m: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n},{m}}}', greedy=greedy)
 
 
