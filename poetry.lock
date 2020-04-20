@@ -30,7 +30,7 @@ description = "asyncio version of the standard multiprocessing module"
 name = "aioitertools"
 optional = false
 python-versions = ">=3.6"
-version = "0.5.1"
+version = "0.6.0"
 
 [[package]]
 category = "dev"
@@ -802,7 +802,7 @@ gino_typed = ["gino", "sqlalchemy", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "307a5f8c5843f4d668afa56008ebb1e2761be293656789263555868ec9b55412"
+content-hash = "6bac81fb9aecee07372c4bf362e088d8af0b08f1b143a8efbf5119ab95f1a87f"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -825,8 +825,8 @@ aiohttp = [
     {file = "aiohttp-3.6.2.tar.gz", hash = "sha256:259ab809ff0727d0e834ac5e8a283dc5e3e0ecc30c4d80b3cd17a4139ce1f326"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.5.1-py3-none-any.whl", hash = "sha256:4906089fceeab0c4e3e9784de36eae253012ed9d5a8da1a1c376bbcf1b5f9a69"},
-    {file = "aioitertools-0.5.1.tar.gz", hash = "sha256:1609c66e6ab1a98c3bb1b1e4acb7bf632a4d78818042cf827f73d31e6caf0d39"},
+    {file = "aioitertools-0.6.0-py3-none-any.whl", hash = "sha256:dd7232299dccb0650b1b5489aa9a7a7c40824bd40daec5afd47260c3b943790a"},
+    {file = "aioitertools-0.6.0.tar.gz", hash = "sha256:3684a9e5626664169ee31bc6e40d30d1ad86d9a1832d251652fda2cf3e3e74ae"},
 ]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
