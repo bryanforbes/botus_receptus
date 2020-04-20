@@ -274,7 +274,7 @@ description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 name = "gino"
 optional = true
 python-versions = ">=3.5"
-version = "0.8.6"
+version = "0.8.7"
 
 [package.dependencies]
 SQLAlchemy = ">=1.2,<2.0"
@@ -802,7 +802,7 @@ gino_typed = ["gino", "sqlalchemy", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "6bac81fb9aecee07372c4bf362e088d8af0b08f1b143a8efbf5119ab95f1a87f"
+content-hash = "7d111e75a691e1899d877348c84bcdee4860456bfbb74d9053fff1047d6bf9d0"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -957,8 +957,8 @@ flake8-pyi = [
     {file = "flake8_pyi-19.3.0-py2.py3-none-any.whl", hash = "sha256:a93a47ac78b6d363545885e9254d0eccac8a88c3806ab8af27e30dd8c058654f"},
 ]
 gino = [
-    {file = "gino-0.8.6-py3-none-any.whl", hash = "sha256:1727e4d1e19571e99dd72cd558e94d93f883f8b0aade207450924639578f2120"},
-    {file = "gino-0.8.6.tar.gz", hash = "sha256:5c4b70783198c89c138a49c2921ecea894003de54d02c7bc3542e45d506d198b"},
+    {file = "gino-0.8.7-py3-none-any.whl", hash = "sha256:e48fff4cca84ce27074e17e000adc81545bde201f6caa6607ef037ed42792a3d"},
+    {file = "gino-0.8.7.tar.gz", hash = "sha256:88c94d0ec5e2ad5700d56313bc187d30a2dcba856c128d3f98aa25417d86b92c"},
 ]
 gino-stubs = []
 identify = [
