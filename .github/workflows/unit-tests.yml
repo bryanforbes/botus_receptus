@@ -28,9 +28,8 @@ jobs:
       run: |
         poetry run flake8 src
         mkdir tmp
-        ln -s "../src/asyncpg-stubs" tmp/asyncpg
         ln -s "../src/uvloop-stubs" tmp/uvloop
-        poetry run mypy src/botus_receptus tmp/asyncpg tmp/uvloop
+        poetry run mypy src/botus_receptus tmp/uvloop
         cd ..
     - name: Test with pytest
       run: |
