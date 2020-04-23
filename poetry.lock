@@ -18,11 +18,11 @@ speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
 category = "main"
-description = "asyncio version of the standard multiprocessing module"
+description = "itertools and builtins for AsyncIO and mixed iterables"
 name = "aioitertools"
 optional = false
 python-versions = ">=3.6"
-version = "0.6.0"
+version = "0.6.1"
 
 [[package]]
 category = "dev"
@@ -819,7 +819,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "8d0d545b8cafaee1c8151d44cdd8bce38f3c706dec0111fc55714bf926cebd0e"
+content-hash = "4a89b2f3cda45ad83e648c264e8b5438e4090e6f3dac9fe6afb93ed512335dc4"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -838,8 +838,8 @@ aiohttp = [
     {file = "aiohttp-3.6.2.tar.gz", hash = "sha256:259ab809ff0727d0e834ac5e8a283dc5e3e0ecc30c4d80b3cd17a4139ce1f326"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.6.0-py3-none-any.whl", hash = "sha256:dd7232299dccb0650b1b5489aa9a7a7c40824bd40daec5afd47260c3b943790a"},
-    {file = "aioitertools-0.6.0.tar.gz", hash = "sha256:3684a9e5626664169ee31bc6e40d30d1ad86d9a1832d251652fda2cf3e3e74ae"},
+    {file = "aioitertools-0.6.1-py3-none-any.whl", hash = "sha256:34155556df490ae1afb63b6393f80111cd3afdd32a5e6fe7c6fb897ace3277d3"},
+    {file = "aioitertools-0.6.1.tar.gz", hash = "sha256:27411653e28c391f2caa79476cc719591da88540278c53e7d6925d5b2fafa162"},
 ]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
