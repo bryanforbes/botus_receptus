@@ -65,7 +65,7 @@ test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.
 category = "main"
 description = ""
 name = "asyncpg-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -77,6 +77,7 @@ typing-extensions = "^3.7.4"
 reference = "5c9837e771fe49d144a322de3091de702f9a4ef8"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -189,10 +190,6 @@ version = "1.4.0a2478+g69cf8c3"
 aiohttp = ">=3.6.0,<3.7.0"
 websockets = ">=6.0,<7.0 || >7.0,<8.0 || >8.0,<8.0.1 || >8.0.1,<9.0"
 
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.7.4"
-
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -202,6 +199,7 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "69cf8c3493e34bdeac848423d377b6023b8ad3a8"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -302,7 +300,7 @@ starlette = ["gino-starlette (>=0.1.1,<0.2.0)"]
 category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "1.0.0-rc4+0"
 
@@ -320,6 +318,7 @@ version = "^1.3.0"
 reference = "45718309f0f6c079ff943b44c00d2b8c3260a310"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -479,7 +478,7 @@ description = "A framework for managing and maintaining multi-language pre-commi
 name = "pre-commit"
 optional = false
 python-versions = ">=3.6.1"
-version = "2.2.0"
+version = "2.3.0"
 
 [package.dependencies]
 cfgv = ">=2.0.0"
@@ -701,7 +700,7 @@ pymysql = ["pymysql"]
 category = "main"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.3"
 
@@ -820,7 +819,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "3c570f1d02ce43f480410e0aa783227915268c9aee52744e23d67beb27fee7b0"
+content-hash = "8d0d545b8cafaee1c8151d44cdd8bce38f3c706dec0111fc55714bf926cebd0e"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1076,8 +1075,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.2.0-py2.py3-none-any.whl", hash = "sha256:487c675916e6f99d355ec5595ad77b325689d423ef4839db1ed2f02f639c9522"},
-    {file = "pre_commit-2.2.0.tar.gz", hash = "sha256:c0aa11bce04a7b46c5544723aedf4e81a4d5f64ad1205a30a9ea12d5e81969e1"},
+    {file = "pre_commit-2.3.0-py2.py3-none-any.whl", hash = "sha256:979b53dab1af35063a483bfe13b0fcbbf1a2cf8c46b60e0a9a8d08e8269647a1"},
+    {file = "pre_commit-2.3.0.tar.gz", hash = "sha256:f3e85e68c6d1cbe7828d3471896f1b192cfcf1c4d83bf26e26beeb5941855257"},
 ]
 py = [
     {file = "py-1.8.1-py2.py3-none-any.whl", hash = "sha256:c20fdd83a5dbc0af9efd622bee9a5564e278f6380fffcacc43ba6f43db2813b0"},
