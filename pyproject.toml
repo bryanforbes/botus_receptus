@@ -25,10 +25,10 @@ click = ">=6.7"
 toml = "^0.10.0"
 pendulum = "~2.1.0"
 asyncpg = {version = ">=0.18.2", optional = true}
-gino = {version = ">=1.0.0-rc4", allow-prereleases = true, optional = true}
+gino = {version = "^1.0.0", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
 asyncpg-stubs = {rev = "5c9837e771fe49d144a322de3091de702f9a4ef8", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "45718309f0f6c079ff943b44c00d2b8c3260a310", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "8bc31e0994a57d1723809fe5e634f482ed43149e", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
