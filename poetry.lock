@@ -22,7 +22,10 @@ description = "itertools and builtins for AsyncIO and mixed iterables"
 name = "aioitertools"
 optional = false
 python-versions = ">=3.6"
-version = "0.6.1"
+version = "0.7.0"
+
+[package.dependencies]
+typing_extensions = ">=3.7"
 
 [[package]]
 category = "dev"
@@ -824,7 +827,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "09c1fed0e8908092b0d562617c6bb4e8564f0b6c50991c9ca89b6d18998fd7fd"
+content-hash = "92d32cfcd5d0646599149eca6ffd95d4caa013af6bcb62c04ec25df173e6230f"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -843,8 +846,8 @@ aiohttp = [
     {file = "aiohttp-3.6.2.tar.gz", hash = "sha256:259ab809ff0727d0e834ac5e8a283dc5e3e0ecc30c4d80b3cd17a4139ce1f326"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.6.1-py3-none-any.whl", hash = "sha256:34155556df490ae1afb63b6393f80111cd3afdd32a5e6fe7c6fb897ace3277d3"},
-    {file = "aioitertools-0.6.1.tar.gz", hash = "sha256:27411653e28c391f2caa79476cc719591da88540278c53e7d6925d5b2fafa162"},
+    {file = "aioitertools-0.7.0-py3-none-any.whl", hash = "sha256:e931a2f0dcabd4a8446b5cc2fc71b8bb14716e6adf37728a70869213f1f741cd"},
+    {file = "aioitertools-0.7.0.tar.gz", hash = "sha256:341cb05a0903177ef1b73d4cc12c92aee18e81c364e0138f4efc7ec3c47b8177"},
 ]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
