@@ -93,7 +93,7 @@ any_number_of = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
 
 
 def exactly(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
-    return _suffix(*args, suffix=f'{{n}}', greedy=greedy)
+    return _suffix(*args, suffix=f'{{{n}}}', greedy=greedy)
 
 
 def at_least(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
