@@ -4,8 +4,8 @@ from typing import Any, Tuple
 
 from .loop import Loop as __BaseLoop
 
-__version__: str = ...
-__all__: Tuple[str, str, str] = ...
+__version__: str
+__all__: Tuple[str, str, str]
 
 class Loop(__BaseLoop, asyncio.AbstractEventLoop): ...
 
