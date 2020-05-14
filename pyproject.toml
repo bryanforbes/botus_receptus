@@ -22,7 +22,7 @@ attrs = ">=18.2.0"
 click = ">=6.7"
 "discord.py" = {git = "https://github.com/bryanforbes/discord.py.git", branch = "typings", extras = ["typings"]}
 "typing-extensions" = ">=3.7.4"
-toml = "^0.10.0"
+toml = "^0.10.1"
 pendulum = "~2.1.0"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.0", optional = true}
