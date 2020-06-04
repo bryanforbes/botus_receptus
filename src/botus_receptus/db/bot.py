@@ -22,7 +22,7 @@ CT = TypeVar('CT', bound=Context)
 
 
 class Bot(BaseBot[CT]):
-    pool: Pool[Any]
+    pool: Pool
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], Context)
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
@@ -42,10 +42,16 @@ class Bot(BaseBot[CT]):
         ):
             pool_kwargs['setup'] = cast(Any, self).__setup_connection__
 
-        self.pool = self.loop.run_until_complete(
-            create_pool(
-                self.config.get('db_url', ''), min_size=1, max_size=10, **pool_kwargs
-            )
+        self.pool = cast(
+            Pool,
+            self.loop.run_until_complete(
+                create_pool(
+                    self.config.get('db_url', ''),
+                    min_size=1,
+                    max_size=10,
+                    **pool_kwargs,
+                )
+            ),
         )
 
     async def close(self) -> None:

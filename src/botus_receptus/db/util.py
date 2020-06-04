@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 from asyncpg import Connection
+from asyncpg.pool import PoolConnectionProxy
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
@@ -36,7 +37,7 @@ def _get_group_by_string(group_by: Optional[Sequence[str]]) -> str:
 
 
 async def select_all(
-    db: Connection,
+    db: Union[Connection, PoolConnectionProxy],
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -59,7 +60,7 @@ async def select_all(
 
 
 async def select_one(
-    db: Connection,
+    db: Union[Connection, PoolConnectionProxy],
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -78,7 +79,7 @@ async def select_one(
 
 
 async def search(
-    db: Connection,
+    db: Union[Connection, PoolConnectionProxy],
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -111,7 +112,7 @@ async def search(
 
 
 async def update(
-    db: Connection,
+    db: Union[Connection, PoolConnectionProxy],
     *args: Any,
     table: str,
     values: Dict[str, Any],
@@ -124,7 +125,11 @@ async def update(
 
 
 async def insert_into(
-    db: Connection, *, table: str, values: Dict[str, Any], extra: str = ''
+    db: Union[Connection, PoolConnectionProxy],
+    *,
+    table: str,
+    values: Dict[str, Any],
+    extra: str = '',
 ) -> None:
     columns: List[str] = []
     data: List[Any] = []
@@ -144,7 +149,10 @@ async def insert_into(
 
 
 async def delete_from(
-    db: Connection, *args: Any, table: str, where: Sequence[str]
+    db: Union[Connection, PoolConnectionProxy],
+    *args: Any,
+    table: str,
+    where: Sequence[str],
 ) -> None:
     where_str = _get_where_string(where)
     await db.execute(f'DELETE FROM {table}{where_str}', *args)

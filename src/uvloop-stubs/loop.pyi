@@ -116,27 +116,47 @@ class Loop:
             ssl_handshake_timeout: Optional[float] = ...,
             start_serving: bool = ...,
         ) -> asyncio.AbstractServer: ...
-        async def create_unix_connection(
-            self,
-            protocol_factory: _ProtocolFactory,
-            path: str,
-            *,
-            ssl: _SSLContext = ...,
-            sock: Optional[socket] = ...,
-            server_hostname: str = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
-        ) -> _TransProtPair: ...
-        async def create_unix_server(
-            self,
-            protocol_factory: _ProtocolFactory,
-            path: str,
-            *,
-            sock: Optional[socket] = ...,
-            backlog: int = ...,
-            ssl: _SSLContext = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
-            start_serving: bool = ...,
-        ) -> asyncio.AbstractServer: ...
+        if sys.version_info >= (3, 7):
+            async def create_unix_connection(
+                self,
+                protocol_factory: _ProtocolFactory,
+                path: Optional[str] = ...,
+                *,
+                ssl: _SSLContext = ...,
+                sock: Optional[socket] = ...,
+                server_hostname: Optional[str] = ...,
+                ssl_handshake_timeout: Optional[float] = ...,
+            ) -> _TransProtPair: ...
+            async def create_unix_server(
+                self,
+                protocol_factory: _ProtocolFactory,
+                path: Optional[str] = ...,
+                *,
+                sock: Optional[socket] = ...,
+                backlog: int = ...,
+                ssl: _SSLContext = ...,
+                ssl_handshake_timeout: Optional[float] = ...,
+                start_serving: bool = ...,
+            ) -> asyncio.AbstractServer: ...
+        else:
+            async def create_unix_connection(
+                self,
+                protocol_factory: _ProtocolFactory,
+                path: str,
+                *,
+                ssl: _SSLContext = ...,
+                sock: Optional[socket] = ...,
+                server_hostname: Optional[str] = ...,
+            ) -> _TransProtPair: ...
+            async def create_unix_server(
+                self,
+                protocol_factory: _ProtocolFactory,
+                path: str,
+                *,
+                sock: Optional[socket] = ...,
+                backlog: int = ...,
+                ssl: _SSLContext = ...,
+            ) -> asyncio.AbstractServer: ...
         async def connect_accepted_socket(
             self,
             protocol_factory: _ProtocolFactory,

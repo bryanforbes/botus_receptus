@@ -17,7 +17,7 @@ from typing import (
     cast,
 )
 
-from asyncpg import Connection
+from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
 from discord.ext import commands
 
@@ -28,14 +28,16 @@ if TYPE_CHECKING:
 
 
 @dataclass(slots=True)
-class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
+class AquireContextManager(
+    AsyncContextManager[PoolConnectionProxy], Awaitable[PoolConnectionProxy]
+):
     ctx: Context
     timeout: Optional[float] = None
 
-    def __await__(self) -> Generator[Any, None, Connection]:
+    def __await__(self) -> Generator[Any, None, PoolConnectionProxy]:
         return self.ctx._acquire(self.timeout).__await__()
 
-    async def __aenter__(self) -> Connection:
+    async def __aenter__(self) -> PoolConnectionProxy:
         return await self.ctx._acquire(self.timeout)
 
     async def __aexit__(self, *args: Any) -> None:
@@ -60,9 +62,9 @@ def ensure_db(func: F) -> F:
 
 class Context(commands.Context):
     bot: Bot[Any]
-    db: Connection
+    db: PoolConnectionProxy
 
-    async def _acquire(self, timeout: Optional[float]) -> Connection:
+    async def _acquire(self, timeout: Optional[float]) -> PoolConnectionProxy:
         if not hasattr(self, 'db'):
             self.db = await self.bot.pool.acquire(timeout=timeout)
 
