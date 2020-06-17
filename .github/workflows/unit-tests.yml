@@ -37,7 +37,7 @@ jobs:
       run: |
         poetry run py.test -p no:sugar --cov-report=xml:.coverage.xml
     - name: Upload coverage to codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v1.0.7
       with:
         env_vars: PYTHON
         file: ./.coverage.xml
