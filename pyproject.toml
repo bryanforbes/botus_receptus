@@ -41,7 +41,7 @@ uvloop = ["uvloop"]
 [tool.poetry.dev-dependencies]
 asynctest = "~0.13.0"
 black = "^19.3b0"
-coverage = {extras = ["toml"], version = "^5.0"}
+coverage = {extras = ["toml"], version = "^5.2"}
 flake8 = "~3.8"
 flake8-bugbear = ">=19.3"
 flake8-pyi = "^20.5"
