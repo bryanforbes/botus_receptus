@@ -68,7 +68,7 @@ test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.
 category = "main"
 description = ""
 name = "asyncpg-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -80,6 +80,7 @@ typing-extensions = "^3.7.4"
 reference = "5945ce6534796ce6983e0fc4e9f3ed658e90fe18"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -192,10 +193,6 @@ version = "1.4.0a2557+gd690f98"
 aiohttp = ">=3.6.0,<3.7.0"
 websockets = ">=6.0,<7.0 || >7.0,<8.0 || >8.0,<8.0.1 || >8.0.1,<9.0"
 
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.7.4"
-
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -205,6 +202,7 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "d690f98bf94ebb66ef537cdbf6c9954014eb6c77"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -304,7 +302,7 @@ tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "1.0.1+0"
 
@@ -322,6 +320,7 @@ version = "^1.7.0"
 reference = "e78b7735f6f6beb09da36e385e3f9d359f084a4c"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -363,7 +362,7 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.0.5"
+version = "5.0.6"
 
 [package.extras]
 pipfile_deprecated_finder = ["pipreqs", "requirementslib", "tomlkit (>=0.5.3)"]
@@ -701,7 +700,7 @@ pymysql = ["pymysql"]
 category = "main"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.3"
 
@@ -820,7 +819,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "04a6807beb16253680d8e8818286c20cb1c67c173154f9aba9cdf601165bb791"
+content-hash = "9e9b3d0726d9de41dc81a261873bfd5bb0ac4a179095721aa69801ff0355eafd"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -989,8 +988,8 @@ importlib-metadata = [
     {file = "importlib_metadata-1.7.0.tar.gz", hash = "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83"},
 ]
 isort = [
-    {file = "isort-5.0.5-py3-none-any.whl", hash = "sha256:e7b11f4317c0668bd2a25f924c14338ca39b92723f24bdaef37452af0dd5a87b"},
-    {file = "isort-5.0.5.tar.gz", hash = "sha256:cb76a2fac5ac08eae0020f7e56bab895cf3d8982034aa16f3cd67984edf26223"},
+    {file = "isort-5.0.6-py3-none-any.whl", hash = "sha256:76a97d9acdb3a376c48fafddbe9177192d4ac35b0b2c21a0c965b9604a412af1"},
+    {file = "isort-5.0.6.tar.gz", hash = "sha256:af3ac4524d1256e3f32d155da8fb43b2a94201644fa6b45813c8783fc51c3841"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
