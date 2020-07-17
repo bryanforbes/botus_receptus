@@ -27,8 +27,8 @@ pendulum = "~2.1.0"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "e2c29879d00f69501e1e44100ad7b566beb7a5b9", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "8d8111a366c496ba49d45d9ae6243a1bb69f3878", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "2c94df4cd0120e0c551de71d3b370d6ec29d2ef8", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "e8c911adb514e6cca2acbe8616e5defdac36c5a0", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -45,7 +45,7 @@ coverage = {extras = ["toml"], version = "^5.2"}
 flake8 = "~3.8"
 flake8-bugbear = ">=19.3"
 flake8-pyi = "^20.5"
-isort = "^5.0.9"
+isort = "^5.1.1"
 mypy = "^0.782"
 pre-commit = "^2.6"
 pytest = "^5.4.3"
