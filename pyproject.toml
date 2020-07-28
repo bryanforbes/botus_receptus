@@ -48,7 +48,7 @@ flake8-pyi = "^20.5"
 isort = "^5.2.0"
 mypy = "^0.782"
 pre-commit = "^2.6"
-pytest = "^5.4.3"
+pytest = "^6.0"
 pytest-asyncio = "^0.14.0"
 pytest-cov = "^2.10"
 pytest-mock = "^3.2.0"
@@ -86,6 +86,15 @@ extra_standard_library = ["typing_extensions", "_types"]
 known_first_party = ["botus_receptus"]
 virtual_env = ".venv"
 profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts ="--cov=botus_receptus --cov-branch --cov-report=term -nauto --dist=loadscope"
+testpaths = ["tests"]
+filterwarnings = [
+  "ignore",
+  "always:::botus_receptus[.*]"
+]
 
 [build-system]
 requires = ["poetry>=1.0.0"]
