@@ -816,6 +816,7 @@ uvloop = ["uvloop"]
 
 [metadata]
 content-hash = "4d225bbc59285c60326f80125c24a8e9fe1680af1ee0341da7ac7986bd536b4b"
+lock-version = "1.0"
 python-versions = "^3.7"
 
 [metadata.files]
