@@ -7,7 +7,7 @@ import toml
 
 
 class ConfigException(Exception):
-    pass
+    ...
 
 
 class LoggingBase(TypedDict):

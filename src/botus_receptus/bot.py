@@ -29,13 +29,13 @@ OT = TypeVar('OT', bound=commands.Context)
 if TYPE_CHECKING:
 
     class _BotBase(commands.Bot[CT]):
-        pass
+        ...
 
 
 else:
 
     class _BotBase(commands.Bot, Generic[CT]):
-        pass
+        ...
 
 
 class Bot(_BotBase[CT]):
@@ -58,11 +58,11 @@ class Bot(_BotBase[CT]):
 
     @overload
     async def get_context(self, message: discord.Message) -> CT:
-        pass
+        ...
 
     @overload
     async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT:
-        pass
+        ...
 
     async def get_context(
         self, message: discord.Message, *, cls: Optional[Type[OT]] = None
