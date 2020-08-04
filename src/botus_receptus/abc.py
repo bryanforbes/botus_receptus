@@ -10,7 +10,12 @@ CT_contra = TypeVar('CT_contra', contravariant=True)
 
 
 TextChannel = Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]
-GuildChannel = Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel]
+GuildChannel = Union[
+    discord.TextChannel,
+    discord.VoiceChannel,
+    discord.CategoryChannel,
+    discord.StoreChannel,
+]
 PrivateChannel = Union[discord.DMChannel, discord.GroupChannel]
 User = Union[discord.User, discord.Member]
 
