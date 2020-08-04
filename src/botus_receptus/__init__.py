@@ -3,7 +3,8 @@ from __future__ import annotations
 from . import abc, checks, formatting, re, util
 from .bot import Bot, DblBot
 from .cli import cli
-from .config import Config
+from .cog import Cog
+from .config import Config, ConfigException
 from .context import EmbedContext, PaginatedContext
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 from .logging import setup_logging
@@ -22,7 +23,9 @@ __all__ = (
     'util',
     'setup_logging',
     'cli',
+    'Cog',
     'Config',
+    'ConfigException',
     'Bot',
     'DblBot',
     'EmbedContext',
