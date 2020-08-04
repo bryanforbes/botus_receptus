@@ -1,10 +1,13 @@
 from typing import Any, Optional
 
 import discord
-import pytest  # type: ignore
+import pytest
 from attr import dataclass
+from discord.ext import commands
 
-from botus_receptus.db.context import Context
+from botus_receptus.db import Context
+
+from ..types import Mocker
 
 
 @dataclass(slots=True)
@@ -27,9 +30,14 @@ class MockMessage(object):
     _state: Any = None
 
 
+@dataclass(slots=True)
+class MockCommand(object):
+    ...
+
+
 class TestContext(object):
     @pytest.fixture
-    def mock_bot(self, mocker):
+    def mock_bot(self, mocker: Mocker) -> MockBot:
         class MockPool:
             acquire = mocker.CoroutineMock()
             release = mocker.CoroutineMock()
@@ -37,44 +45,60 @@ class TestContext(object):
         return MockBot(pool=MockPool())
 
     @pytest.fixture
-    def mock_select_all(self, mocker):
+    def mock_mesage(self) -> MockMessage:
+        return MockMessage()
+
+    @pytest.fixture
+    def mock_command(self) -> MockCommand:
+        return MockCommand()
+
+    @pytest.fixture
+    def mock_select_all(self, mocker: Mocker) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.select_all', new_callable=mocker.CoroutineMock
         )
 
     @pytest.fixture
-    def mock_select_one(self, mocker):
+    def mock_select_one(self, mocker: Mocker) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.select_one', new_callable=mocker.CoroutineMock
         )
 
     @pytest.fixture
-    def mock_search(self, mocker):
+    def mock_search(self, mocker: Mocker) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.search', new_callable=mocker.CoroutineMock
         )
 
     @pytest.fixture
-    def mock_update(self, mocker):
+    def mock_update(self, mocker: Mocker) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.update', new_callable=mocker.CoroutineMock
         )
 
     @pytest.fixture
-    def mock_insert_into(self, mocker):
+    def mock_insert_into(self, mocker: Any) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.insert_into', new_callable=mocker.CoroutineMock
         )
 
     @pytest.fixture
-    def mock_delete_from(self, mocker):
+    def mock_delete_from(self, mocker: Any) -> Any:
         return mocker.patch(
             'botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock
         )
 
     @pytest.mark.asyncio
-    async def test_acquire(self, mocker, mock_bot):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_acquire(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         async with ctx.acquire():
             assert hasattr(ctx, 'db')
@@ -85,8 +109,17 @@ class TestContext(object):
         await ctx.release()
 
     @pytest.mark.asyncio
-    async def test_select_all(self, mocker, mock_bot, mock_select_all):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_select_all(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_select_all: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.select_all(table='foo', columns=['col1'])
@@ -104,8 +137,17 @@ class TestContext(object):
             )
 
     @pytest.mark.asyncio
-    async def test_select_one(self, mocker, mock_bot, mock_select_one):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_select_one(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_select_one: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.select_one(table='foo', columns=['col1'])
@@ -122,8 +164,17 @@ class TestContext(object):
             )
 
     @pytest.mark.asyncio
-    async def test_search(self, mocker, mock_bot, mock_search):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_search(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_search: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.search(
@@ -147,8 +198,17 @@ class TestContext(object):
             )
 
     @pytest.mark.asyncio
-    async def test_update(self, mocker, mock_bot, mock_update):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_update(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_update: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.update(table='foo', values={'bar': 'baz'}, where=['spam = "ham"'])
@@ -160,8 +220,17 @@ class TestContext(object):
             )
 
     @pytest.mark.asyncio
-    async def test_insert_into(self, mocker, mock_bot, mock_insert_into):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_insert_into(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_insert_into: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.insert_into(table='foo', values={'bar': 'baz'})
@@ -173,8 +242,17 @@ class TestContext(object):
             )
 
     @pytest.mark.asyncio
-    async def test_delete_from(self, mocker, mock_bot, mock_delete_from):
-        ctx = Context(prefix='~', message=MockMessage(), bot=mock_bot)
+    async def test_delete_from(
+        self,
+        mocker: Any,
+        mock_bot: Any,
+        mock_delete_from: Any,
+        mock_mesage: discord.Message,
+        mock_command: 'commands.Command[Context]',
+    ) -> None:
+        ctx = Context(
+            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+        )
 
         with pytest.raises(RuntimeError):
             await ctx.delete_from(table='foo', where='bar')

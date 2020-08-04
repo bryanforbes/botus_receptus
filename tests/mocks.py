@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import asyncio
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
+from unittest.mock import Mock
 
 from attr import attrib, dataclass
+
+from .types import CoroutineMock, Mocker
 
 
 @dataclass(slots=True)
@@ -30,27 +33,22 @@ class MockGuild(object):
 
 @dataclass
 class MockChannel(object):
-    def permissions_for(self, thing):
-        pass
-
-    async def send(self, *args, **kwargs):
-        pass
-
-    async def delete_messages(self, *args, **kwargs):
-        pass
+    permissions_for: Mock = attrib(init=False)
+    send: CoroutineMock = attrib(init=False)
+    delete_messages: CoroutineMock = attrib(init=False)
 
     @staticmethod
     def create(
-        mocker: Any, permissions: MockPermissions, bot_user: MockUser
+        mocker: Mocker, permissions: MockPermissions, bot_user: MockUser
     ) -> MockChannel:
         channel = MockChannel()
 
-        def send_side_effect(*args, **kwargs):
+        def send_side_effect(*args: Any, **kwargs: Any) -> Any:
             return MockMessage.create(mocker, 11, bot_user, channel, '')
 
-        mocker.patch.object(channel, 'send', side_effect=send_side_effect)
-        mocker.patch.object(channel, 'delete_messages')
-        mocker.patch.object(channel, 'permissions_for', return_value=permissions)
+        channel.permissions_for = mocker.Mock(return_value=permissions)
+        channel.send = mocker.CoroutineMock(side_effect=send_side_effect)
+        channel.delete_messages = mocker.CoroutineMock()
 
         return channel
 
@@ -103,12 +101,12 @@ class MockBot(object):
         *,
         check: Optional[Callable[..., Any]] = None,
         timeout: Optional[float] = None,
-    ):
+    ) -> 'asyncio.Future[Any]':
         future = self.loop.create_future()
 
         if check is None:
 
-            def _check(*args):
+            def _check(*args: Any) -> bool:
                 return True
 
             check = _check
@@ -121,7 +119,7 @@ class MockBot(object):
 
     @staticmethod
     def create(
-        mocker: Any,
+        mocker: Mocker,
         user: MockUser,
         loop: Any,
         advance_time: Callable[[float], Awaitable[None]],
@@ -138,19 +136,19 @@ class MockMessage(object):
     add_reaction: Any
     clear_reactions: Any
 
-    async def edit(self, *args, **kwargs):
+    async def edit(self, *args: Any, **kwargs: Any) -> None:
         pass
 
-    async def remove_reaction(self, *args, **kwargs):
+    async def remove_reaction(self, *args: Any, **kwargs: Any) -> None:
         pass
 
-    async def delete(self, *args, **kwargs):
+    async def delete(self, *args: Any, **kwargs: Any) -> None:
         pass
 
     @staticmethod
     def create(
-        mocker: Any, id: int, author: MockUser, channel: MockChannel, content: str
-    ):
+        mocker: Mocker, id: int, author: MockUser, channel: MockChannel, content: str
+    ) -> MockMessage:
         message = MockMessage(
             id=id,
             author=author,
@@ -171,11 +169,11 @@ class MockContext(object):
     author: MockUser
     message: MockMessage
     channel: MockChannel
-    guild: MockGuild
+    guild: Optional[MockGuild]
 
     @staticmethod
     def create(
-        mocker: Any,
+        mocker: Mocker,
         event_loop: Any,
         advance_time: Callable[[float], Awaitable[None]],
         bot_user: MockUser,

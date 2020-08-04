@@ -1,8 +1,7 @@
 import pytest
 from click.testing import CliRunner
 
-from botus_receptus.cli import cli
-from botus_receptus.config import ConfigException
+from botus_receptus import ConfigException, cli
 
 
 @pytest.fixture
