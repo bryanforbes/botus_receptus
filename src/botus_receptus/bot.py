@@ -83,7 +83,9 @@ class Bot(_BotBase[CT]):
         await self.session.close()
 
 
-class DblBot(Bot[CT], abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove):
+class DblBot(
+    Bot[CT], abc.OnReady, abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove
+):
     async def __report_guilds(self) -> None:
         token = self.config.get('dbl_token', '')
         if not token:

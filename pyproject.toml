@@ -80,7 +80,8 @@ exclude_lines = [
   "^\\s+pass$",
   "^\\s*if TYPE_CHECKING:",
   "^\\s*\\.\\.\\.\\s*$",
-  "@overload"
+  "@overload",
+  "@abstractmethod",
 ]
 
 [tool.isort]
