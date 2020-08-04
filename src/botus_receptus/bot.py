@@ -1,7 +1,18 @@
 from __future__ import annotations
 
 import json
-from typing import Any, ClassVar, Optional, Type, TypeVar, Union, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Generic,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    cast,
+    overload,
+)
 
 import aiohttp
 import async_timeout
@@ -15,7 +26,19 @@ CT = TypeVar('CT', bound=commands.Context)
 OT = TypeVar('OT', bound=commands.Context)
 
 
-class Bot(commands.Bot[CT]):
+if TYPE_CHECKING:
+
+    class _BotBase(commands.Bot[CT]):
+        pass
+
+
+else:
+
+    class _BotBase(commands.Bot, Generic[CT]):
+        pass
+
+
+class Bot(_BotBase[CT]):
     bot_name: str
     config: Config
     default_prefix: str
@@ -35,13 +58,13 @@ class Bot(commands.Bot[CT]):
 
     @overload
     async def get_context(self, message: discord.Message) -> CT:
-        pass  # pragma: no cover
+        pass
 
-    @overload  # noqa: F811
+    @overload
     async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT:
-        pass  # pragma: no cover
+        pass
 
-    async def get_context(  # noqa: F811
+    async def get_context(
         self, message: discord.Message, *, cls: Optional[Type[OT]] = None
     ) -> Union[CT, OT]:
         context_cls: Union[Type[CT], Type[OT]]
