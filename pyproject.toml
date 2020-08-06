@@ -20,8 +20,8 @@ aioitertools = "^0.7.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = {git = "https://github.com/Rapptz/discord.py.git", rev = "ae1ec8072f9ef26acec107824eed42fdbb897cc2"}
-"discord.py-stubs" = {git = "https://github.com/bryanforbes/discord.py-stubs.git", branch = "master"}
+"discord.py" = "^1.4.0"
+"discord.py-stubs" = "^1.4.0.0"
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.1"
 pendulum = "~2.1.2"
