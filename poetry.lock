@@ -201,7 +201,7 @@ description = "discord.py stubs"
 name = "discord.py-stubs"
 optional = false
 python-versions = ">=3.6.1,<4.0.0"
-version = "1.4.0.0"
+version = "1.4.0.1"
 
 [package.dependencies]
 mypy = ">=0.782,<0.783"
@@ -821,7 +821,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "ad3d590311772df660e6842bb6205f928423206d99b31652917bdecae39d8267"
+content-hash = "a66f42197ea51960f026312a2e4a4fd96b8893cc5ebaf6563ae644581f7fb64a"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -953,8 +953,8 @@ coverage = [
     {file = "discord.py-1.4.0.tar.gz", hash = "sha256:f3db9531fccc391f51de65cfa46133106a9ba12ff2927aca6c14bffd3b7f17b5"},
 ]
 "discord.py-stubs" = [
-    {file = "discord.py-stubs-1.4.0.0.tar.gz", hash = "sha256:30533818d108af6ed6aee14b740dab5af785ef76caa36eda74e6e978a45d31c0"},
-    {file = "discord.py_stubs-1.4.0.0-py3-none-any.whl", hash = "sha256:638f3763059362e66f53b59f98bc270c6578f22e4a82c7c2265228425f373843"},
+    {file = "discord.py-stubs-1.4.0.1.tar.gz", hash = "sha256:4cc6b1eb6ee150b680078c01850ee811c6c55075e7f68ddf0c7c288c76b00253"},
+    {file = "discord.py_stubs-1.4.0.1-py3-none-any.whl", hash = "sha256:6580ce4b3e18108dc0f2c73baa5300f1abde1464dbf3427b7b8ec2bced77dcb7"},
 ]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
