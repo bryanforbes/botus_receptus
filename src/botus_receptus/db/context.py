@@ -19,7 +19,7 @@ from typing import (
 
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
-from discord.ext import commands
+from discord.ext import typed_commands
 
 from .util import delete_from, insert_into, search, select_all, select_one, update
 
@@ -60,7 +60,7 @@ def ensure_db(func: F) -> F:
     return cast(F, wrapper)
 
 
-class Context(commands.Context):
+class Context(typed_commands.Context):
     bot: Bot[Any]
     db: PoolConnectionProxy
 

@@ -20,7 +20,7 @@ aioitertools = "^0.7.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = "^1.4.0"
+"discord-ext-typed-commands" = {rev = "8cdb54e4516335c87cab4a53d37f753b2205605e", git = "https://github.com/bryanforbes/discord-ext-typed-commands.git"}
 "discord.py-stubs" = "^1.4.0.1"
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.1"

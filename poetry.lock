@@ -182,6 +182,26 @@ toml = ["toml"]
 
 [[package]]
 category = "main"
+description = ""
+name = "discord-ext-typed-commands"
+optional = false
+python-versions = "^3.6.1"
+version = "1.0.0dev0"
+
+[package.dependencies]
+"discord.py" = "rev d7aa18beed456fcda35fa12678fcd6ab97e52c30"
+typing-extensions = "^3.7.4"
+
+[package.dependencies.importlib_metadata]
+python = "<3.8"
+version = "^1.7.0"
+
+[package.source]
+reference = "8cdb54e4516335c87cab4a53d37f753b2205605e"
+type = "git"
+url = "https://github.com/bryanforbes/discord-ext-typed-commands.git"
+[[package]]
+category = "main"
 description = "A Python wrapper for the Discord API"
 name = "discord.py"
 optional = false
@@ -192,9 +212,13 @@ version = "1.4.0"
 aiohttp = ">=3.6.0,<3.7.0"
 
 [package.extras]
-docs = ["sphinx (1.8.5)", "sphinxcontrib-trio (1.1.1)", "sphinxcontrib-websupport"]
+docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 voice = ["PyNaCl (1.3.0)"]
 
+[package.source]
+reference = "d7aa18beed456fcda35fa12678fcd6ab97e52c30"
+type = "git"
+url = "https://github.com/Rapptz/discord.py.git"
 [[package]]
 category = "main"
 description = "discord.py stubs"
@@ -373,7 +397,7 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.3.0"
+version = "5.3.2"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
@@ -821,7 +845,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "a66f42197ea51960f026312a2e4a4fd96b8893cc5ebaf6563ae644581f7fb64a"
+content-hash = "f870cee985f67bcb98d7487f854b50d78ac6ced847bad88eb6aafb38323b68be"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -948,10 +972,8 @@ coverage = [
     {file = "coverage-5.2.1-cp39-cp39-win_amd64.whl", hash = "sha256:b8f58c7db64d8f27078cbf2a4391af6aa4e4767cc08b37555c4ae064b8558d9b"},
     {file = "coverage-5.2.1.tar.gz", hash = "sha256:a34cb28e0747ea15e82d13e14de606747e9e484fb28d63c999483f5d5188e89b"},
 ]
-"discord.py" = [
-    {file = "discord.py-1.4.0-py3-none-any.whl", hash = "sha256:2b1846bfa382b54f4eace8e437a9f59f185388c5b08749ac0e1bbd98e05bfde5"},
-    {file = "discord.py-1.4.0.tar.gz", hash = "sha256:f3db9531fccc391f51de65cfa46133106a9ba12ff2927aca6c14bffd3b7f17b5"},
-]
+discord-ext-typed-commands = []
+"discord.py" = []
 "discord.py-stubs" = [
     {file = "discord.py-stubs-1.4.0.1.tar.gz", hash = "sha256:4cc6b1eb6ee150b680078c01850ee811c6c55075e7f68ddf0c7c288c76b00253"},
     {file = "discord.py_stubs-1.4.0.1-py3-none-any.whl", hash = "sha256:6580ce4b3e18108dc0f2c73baa5300f1abde1464dbf3427b7b8ec2bced77dcb7"},
@@ -1002,8 +1024,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 isort = [
-    {file = "isort-5.3.0-py3-none-any.whl", hash = "sha256:723de131d9ae9d2561844f0ee525ce33a396a11bcda57174f036ed5ab3d6a122"},
-    {file = "isort-5.3.0.tar.gz", hash = "sha256:cdca22530d093ed16983ba52c41560fa0219d1b958e44fd2ae2995dcc7b785be"},
+    {file = "isort-5.3.2-py3-none-any.whl", hash = "sha256:5196bd2f5b23dc91215734b1c96c6d28390061d69860a948094c12635d6d64e6"},
+    {file = "isort-5.3.2.tar.gz", hash = "sha256:ba83762132a8661d3525f87a86549712fb7d8da79eeb452e01f327ada9e87920"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},

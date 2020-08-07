@@ -25,7 +25,7 @@ from aioitertools import starmap
 from aioitertools.helpers import maybe_await
 from aioitertools.types import AnyIterable
 from attr import attrib, dataclass
-from discord.ext import commands
+from discord.ext import typed_commands
 
 from .formatting import warning
 from .util import race
@@ -141,7 +141,7 @@ class ListPageSource(PageSource[T]):
 
 @dataclass(slots=True)
 class InteractivePager(Generic[T]):
-    bot: commands.Bot[Any]
+    bot: typed_commands.Bot[Any]
     message: discord.Message
     channel: Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]
     author: Union[discord.User, discord.Member]
@@ -401,7 +401,7 @@ class InteractivePager(Generic[T]):
             await self.match()
 
     @classmethod
-    def create(cls: Type[IP], ctx: commands.Context, source: PageSource[T]) -> IP:
+    def create(cls: Type[IP], ctx: typed_commands.Context, source: PageSource[T]) -> IP:
         if ctx.guild is not None:
             permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
                 ctx.guild.me
@@ -474,6 +474,6 @@ class InteractiveFieldPager(InteractivePager[T]):
 
     @classmethod
     def create(  # type: ignore
-        cls: Type[IFP], ctx: commands.Context, source: FieldPageSource[T]
+        cls: Type[IFP], ctx: typed_commands.Context, source: FieldPageSource[T]
     ) -> IFP:
         return super().create(ctx, source)

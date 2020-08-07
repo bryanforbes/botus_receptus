@@ -1,49 +1,26 @@
 from __future__ import annotations
 
 import json
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    ClassVar,
-    Generic,
-    Optional,
-    Type,
-    TypeVar,
-    Union,
-    cast,
-    overload,
-)
+from typing import Any, ClassVar, Optional, Type, TypeVar, Union, cast, overload
 
 import aiohttp
 import async_timeout
 import discord
-from discord.ext import commands
+from discord.ext import typed_commands
 
 from . import abc
 from .config import Config
 
-CT = TypeVar('CT', bound=commands.Context)
-OT = TypeVar('OT', bound=commands.Context)
+CT = TypeVar('CT', bound=typed_commands.Context)
+OT = TypeVar('OT', bound=typed_commands.Context)
 
 
-if TYPE_CHECKING:
-
-    class _BotBase(commands.Bot[CT]):
-        ...
-
-
-else:
-
-    class _BotBase(commands.Bot, Generic[CT]):
-        ...
-
-
-class Bot(_BotBase[CT]):
+class Bot(typed_commands.Bot[CT]):
     bot_name: str
     config: Config
     default_prefix: str
     session: aiohttp.ClientSession
-    context_cls: ClassVar[Type[CT]] = cast(Type[CT], commands.Context)
+    context_cls: ClassVar[Type[CT]] = cast(Type[CT], typed_commands.Context)
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         self.config = config

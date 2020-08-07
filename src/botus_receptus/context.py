@@ -5,10 +5,10 @@ from typing import Iterable, List, Optional, Union
 from typing_extensions import TypedDict
 
 import discord
-from discord.ext import commands
+from discord.ext import typed_commands
 
 
-class GuildContext(commands.Context):
+class GuildContext(typed_commands.Context):
     @discord.utils.cached_property
     def guild(self) -> discord.Guild:  # type: ignore
         return self.message.guild  # type: ignore
@@ -48,7 +48,7 @@ class FieldData(FieldDataBase, total=False):
     inline: bool
 
 
-class EmbedContext(commands.Context):
+class EmbedContext(typed_commands.Context):
     async def send_embed(
         self,
         description: str,
@@ -102,7 +102,7 @@ class EmbedContext(commands.Context):
         )
 
 
-class PaginatedContext(commands.Context):
+class PaginatedContext(typed_commands.Context):
     async def send_pages(
         self,
         pages: Iterable[str],

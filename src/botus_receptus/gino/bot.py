@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import Any, ClassVar, TypeVar
 
-from discord.ext import commands
+from discord.ext import typed_commands
 from gino import Gino
 
 from ..bot import Bot as BaseBot
 from ..config import Config
 
-CT = TypeVar('CT', bound=commands.Context)
+CT = TypeVar('CT', bound=typed_commands.Context)
 
 
 class Bot(BaseBot[CT]):

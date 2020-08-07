@@ -31,7 +31,7 @@ class MockDMChannel(discord.DMChannel):
 
 @pytest.fixture
 def mock_commands_check(mocker):
-    return mocker.patch('discord.ext.commands.check', wraps=commands.check)
+    return mocker.patch('discord.ext.typed_commands.check', wraps=commands.check)
 
 
 def test_dm_only(mock_commands_check):
