@@ -845,7 +845,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "f870cee985f67bcb98d7487f854b50d78ac6ced847bad88eb6aafb38323b68be"
+content-hash = "9006b91a43f6f22ca1c346cc8a8dd4e81a4c5650e173a0531f41f4e1a09df6f4"
 lock-version = "1.0"
 python-versions = "^3.7"
 
