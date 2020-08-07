@@ -37,13 +37,12 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install -v --extras "db gino_typed uvloop"
-    - name: Lint with flake8, mypy, and isort
+    - name: Pre-commit checks
       run: |
-        poetry run flake8 src tests
+        poetry run pre-commit --all-files
         mkdir tmp
         ln -s "../src/uvloop-stubs" tmp/uvloop
-        poetry run mypy src/botus_receptus tmp/uvloop tests
-        poetry run isort --check-only src/botus_receptus src/uvloop-stubs tests
+        poetry run mypy tmp/uvloop
     - name: Test with pytest
       run: |
         poetry run py.test -p no:sugar --cov-report=xml:.coverage.xml
