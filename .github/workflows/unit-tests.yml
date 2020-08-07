@@ -39,7 +39,7 @@ jobs:
         poetry install -v --extras "db gino_typed uvloop"
     - name: Pre-commit checks
       run: |
-        poetry run pre-commit --all-files
+        poetry run pre-commit run --all-files
         mkdir tmp
         ln -s "../src/uvloop-stubs" tmp/uvloop
         poetry run mypy tmp/uvloop
