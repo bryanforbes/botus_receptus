@@ -20,7 +20,7 @@ aioitertools = "^0.7.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord-ext-typed-commands" = {rev = "462a26242ff06f519f650027534ecf504792a449", git = "https://github.com/bryanforbes/discord-ext-typed-commands.git"}
+"discord-ext-typed-commands" = {rev = "d9b84eb29fb5d65a186440d8270f41e2739cca65", git = "https://github.com/bryanforbes/discord-ext-typed-commands.git"}
 "discord.py-stubs" = "^1.4.0.1"
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.1"
@@ -28,8 +28,8 @@ pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "cf515de6d104554bdd6051fc350fb6c5b49d241c", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "ceb0b9ec5ddf91bf5423ed2c27eee2c19de2a25d", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "29ee4dfcd1847cd1f1a232b65c106b4abb44e2d6", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "6fdeecd5fc319ccb60030dd4af525ef3c02dfb7e", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -46,7 +46,7 @@ coverage = {extras = ["toml"], version = "^5.2"}
 flake8 = "~3.8"
 flake8-bugbear = ">=19.3"
 flake8-pyi = "^20.5"
-isort = "^5.3.0"
+isort = "^5.4.2"
 mypy = "^0.782"
 pre-commit = "^2.6"
 pytest = "^6.0"
@@ -54,7 +54,7 @@ pytest-asyncio = "^0.14.0"
 pytest-cov = "^2.10"
 pytest-mock = "^3.2.0"
 pytest-sugar = "^0.9.4"
-pytest-xdist = "^1.34"
+pytest-xdist = "^2.0"
 
 [tool.black]
 line-length = 88
