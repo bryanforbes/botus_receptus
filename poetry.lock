@@ -68,7 +68,7 @@ test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.
 category = "main"
 description = ""
 name = "asyncpg-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -80,6 +80,7 @@ typing-extensions = "^3.7.4"
 reference = "29ee4dfcd1847cd1f1a232b65c106b4abb44e2d6"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -199,6 +200,7 @@ version = "^1.7.0"
 reference = "d9b84eb29fb5d65a186440d8270f41e2739cca65"
 type = "git"
 url = "https://github.com/bryanforbes/discord-ext-typed-commands.git"
+
 [[package]]
 category = "main"
 description = "A Python wrapper for the Discord API"
@@ -325,7 +327,7 @@ tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "1.0.1+0"
 
@@ -343,6 +345,7 @@ version = "^1.7.0"
 reference = "6fdeecd5fc319ccb60030dd4af525ef3c02dfb7e"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -744,7 +747,7 @@ pymysql = ["pymysql"]
 category = "main"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.3"
 
@@ -782,7 +785,7 @@ description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
 python-versions = "*"
-version = "3.7.4.2"
+version = "3.7.4.3"
 
 [[package]]
 category = "main"
@@ -852,7 +855,6 @@ uvloop = ["uvloop"]
 
 [metadata]
 content-hash = "579df901e79270aebd4fdaaaa0e121ff5906346a593e62d92d0d438eb150ee9b"
-lock-version = "1.0"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1089,6 +1091,7 @@ mypy-extensions = [
 ]
 nodeenv = [
     {file = "nodeenv-1.4.0-py2.py3-none-any.whl", hash = "sha256:4b0b77afa3ba9b54f4b6396e60b0c83f59eaeb2d63dc3cc7a70f7f4af96c82bc"},
+    {file = "nodeenv-1.4.0.tar.gz", hash = "sha256:26941644654d8dd5378720e38f62a3bac5f9240811fb3b8913d2663a17baa91c"},
 ]
 packaging = [
     {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},
@@ -1271,9 +1274,9 @@ typed-ast = [
     {file = "typed_ast-1.4.1.tar.gz", hash = "sha256:8c8aaad94455178e3187ab22c8b01a3837f8ee50e09cf31f1ba129eb293ec30b"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-3.7.4.2-py2-none-any.whl", hash = "sha256:f8d2bd89d25bc39dabe7d23df520442fa1d8969b82544370e03d88b5a591c392"},
-    {file = "typing_extensions-3.7.4.2-py3-none-any.whl", hash = "sha256:6e95524d8a547a91e08f404ae485bbb71962de46967e1b71a0cb89af24e761c5"},
-    {file = "typing_extensions-3.7.4.2.tar.gz", hash = "sha256:79ee589a3caca649a9bfd2a8de4709837400dfa00b6cc81962a1e6a1815969ae"},
+    {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
+    {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
+    {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
 ]
 uvloop = [
     {file = "uvloop-0.14.0-cp35-cp35m-macosx_10_11_x86_64.whl", hash = "sha256:08b109f0213af392150e2fe6f81d33261bb5ce968a288eb698aad4f46eb711bd"},
