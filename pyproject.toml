@@ -28,8 +28,8 @@ pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "29ee4dfcd1847cd1f1a232b65c106b4abb44e2d6", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "6fdeecd5fc319ccb60030dd4af525ef3c02dfb7e", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "f4fa1758009712c822a86ef8b43357187bb134e2", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "a2b65af0b712e082c8696a3babc083c5fda058ad", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
