@@ -21,7 +21,7 @@ aioitertools = "^0.7.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
 "discord-ext-typed-commands" = {rev = "d9b84eb29fb5d65a186440d8270f41e2739cca65", git = "https://github.com/bryanforbes/discord-ext-typed-commands.git"}
-"discord.py-stubs" = "^1.4.0.1"
+"discord.py-stubs" = "^1.4.0.2"
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.1"
 pendulum = "~2.1.2"
@@ -54,7 +54,7 @@ pytest-asyncio = "^0.14.0"
 pytest-cov = "^2.10"
 pytest-mock = "^3.3.0"
 pytest-sugar = "^0.9.4"
-pytest-xdist = "^2.0"
+pytest-xdist = "^2.1"
 
 [tool.black]
 line-length = 88
