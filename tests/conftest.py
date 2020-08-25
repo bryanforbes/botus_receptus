@@ -5,9 +5,9 @@ from typing import Any
 
 import asynctest.mock  # type: ignore
 import pytest  # type: ignore
-import pytest_mock  # type: ignore
+import pytest_mock.plugin  # type: ignore
 
-pytest_mock._get_mock_module._module = asynctest.mock
+pytest_mock.plugin._get_mock_module._module = asynctest.mock
 
 
 class EventLoopClockAdvancer:
