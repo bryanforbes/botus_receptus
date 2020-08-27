@@ -71,7 +71,10 @@ class OnResumed(metaclass=ABCMeta):
 class OnTyping(metaclass=ABCMeta):
     @abstractmethod
     async def on_typing(
-        self, channels: TextChannel, users: User, when: datetime,
+        self,
+        channels: TextChannel,
+        users: User,
+        when: datetime,
     ) -> None:
         ...
 

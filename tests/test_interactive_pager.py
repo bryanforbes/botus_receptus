@@ -203,7 +203,10 @@ class TestInteractivePager(object):
 
     @pytest.mark.parametrize('guild', [None])
     def test_create_no_guild(
-        self, context: MockContext, fetcher: ListPageSource[int], guild: discord.Guild,
+        self,
+        context: MockContext,
+        fetcher: ListPageSource[int],
+        guild: discord.Guild,
     ) -> None:
         InteractivePager.create(cast(Any, context), fetcher)
 
