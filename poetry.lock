@@ -68,7 +68,7 @@ test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.
 category = "main"
 description = ""
 name = "asyncpg-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -80,6 +80,7 @@ typing-extensions = "^3.7.4"
 reference = "94d3a63dd9048dd3afcde4aed622aa8e3b44003d"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -201,6 +202,7 @@ version = "^1.7.0"
 reference = "73666a7bc2e69364bc9fcbe595ca724663940c8b"
 type = "git"
 url = "https://github.com/bryanforbes/discord-ext-typed-commands.git"
+
 [[package]]
 category = "main"
 description = "A Python wrapper for the Discord API"
@@ -327,7 +329,7 @@ tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "1.0.1+0"
 
@@ -345,6 +347,7 @@ version = "^1.7.0"
 reference = "3c4d77316db18badaaf46d97de498c32b8a1c007"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -394,7 +397,7 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.5.1"
+version = "5.5.2"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
@@ -735,7 +738,7 @@ pymysql = ["pymysql"]
 category = "main"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.3"
 
@@ -842,7 +845,7 @@ gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
-content-hash = "7260b11fced691383c0434906a05fb8d3304645e7aa40907f9d05af740fcebf5"
+content-hash = "6125136d299dc40c5014e937299ed4eda001b1de9fc0b307c8c9be11f3b15309"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1028,8 +1031,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 isort = [
-    {file = "isort-5.5.1-py3-none-any.whl", hash = "sha256:a200d47b7ee8b7f7d0a9646650160c4a51b6a91a9413fd31b1da2c4de789f5d3"},
-    {file = "isort-5.5.1.tar.gz", hash = "sha256:92533892058de0306e51c88f22ece002a209dc8e80288aa3cec6d443060d584f"},
+    {file = "isort-5.5.2-py3-none-any.whl", hash = "sha256:ba91218eee31f1e300ecc079ef0c524cea3fc41bfbb979cbdf5fd3a889e3cfed"},
+    {file = "isort-5.5.2.tar.gz", hash = "sha256:171c5f365791073426b5ed3a156c2081a47f88c329161fd28228ff2da4c97ddb"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
