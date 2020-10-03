@@ -4,8 +4,9 @@ import asyncio
 from typing import Any, ClassVar, Dict, Type, TypeVar, cast
 
 import discord
+from discord.ext import typed_commands
 
-from ..bot import Bot as BaseBot
+from ..bot import BotBase as _BotBase
 from ..config import Config
 from .context import Context
 
@@ -21,7 +22,7 @@ except ImportError:
 CT = TypeVar('CT', bound=Context)
 
 
-class Bot(BaseBot[CT]):
+class BotBase(_BotBase[CT]):
     pool: Pool
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], Context)
 
@@ -63,3 +64,11 @@ class Bot(BaseBot[CT]):
 
         async with ctx.acquire():
             await self.invoke(ctx)
+
+
+class Bot(BotBase[CT], typed_commands.Bot[CT]):
+    ...
+
+
+class AutoShardedBot(BotBase[CT], typed_commands.AutoShardedBot[CT]):
+    ...

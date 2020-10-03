@@ -1,12 +1,25 @@
 from __future__ import annotations
 
+import asyncio
 import json
-from typing import Any, ClassVar, Optional, Type, TypeVar, Union, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Generic,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    cast,
+    overload,
+)
 
 import aiohttp
 import async_timeout
 import discord
 from discord.ext import typed_commands
+from discord.ext.commands import bot
 
 from . import abc
 from .config import Config
@@ -15,12 +28,25 @@ CT = TypeVar('CT', bound=typed_commands.Context)
 OT = TypeVar('OT', bound=typed_commands.Context)
 
 
-class Bot(typed_commands.Bot[CT]):
+if TYPE_CHECKING:
+
+    class _BotBase(bot.BotBase[CT]):
+        ...
+
+
+else:
+
+    class _BotBase(bot.BotBase, Generic[CT]):
+        ...
+
+
+class BotBase(_BotBase[CT]):
     bot_name: str
     config: Config
     default_prefix: str
     session: aiohttp.ClientSession
     context_cls: ClassVar[Type[CT]] = cast(Type[CT], typed_commands.Context)
+    loop: asyncio.AbstractEventLoop
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         self.config = config
@@ -53,15 +79,23 @@ class Bot(typed_commands.Bot[CT]):
         return await super().get_context(message, cls=context_cls)
 
     def run_with_config(self) -> None:
-        self.run(self.config['discord_api_key'])
+        cast(Any, self).run(self.config['discord_api_key'])
 
     async def close(self) -> None:
         await super().close()
         await self.session.close()
 
 
-class DblBot(
-    Bot[CT], abc.OnReady, abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove
+class Bot(BotBase[CT], typed_commands.Bot[CT]):
+    ...
+
+
+class AutoShardedBot(BotBase[CT], typed_commands.AutoShardedBot[CT]):
+    ...
+
+
+class DblBotBase(
+    BotBase[CT], abc.OnReady, abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove
 ):
     async def __report_guilds(self) -> None:
         token = self.config.get('dbl_token', '')
@@ -69,11 +103,11 @@ class DblBot(
             return
 
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        payload = {'server_count': len(self.guilds)}
+        payload = {'server_count': len(cast(Any, self).guilds)}
 
         with async_timeout.timeout(10):
             await self.session.post(
-                f'https://discordbots.org/api/bots/{self.user.id}/stats',
+                f'https://discordbots.org/api/bots/{cast(Any, self).user.id}/stats',
                 data=json.dumps(payload, ensure_ascii=True),
                 headers=headers,
             )
@@ -89,3 +123,11 @@ class DblBot(
 
     async def on_guild_remove(self, guild: discord.Guild) -> None:
         await self.__report_guilds()
+
+
+class DblBot(DblBotBase[CT], typed_commands.Bot[CT]):
+    ...
+
+
+class AutoShardedDblBot(DblBotBase[CT], typed_commands.AutoShardedBot[CT]):
+    ...
