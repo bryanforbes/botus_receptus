@@ -6,7 +6,7 @@ import click
 import toml
 
 from . import config, logging
-from .bot import Bot
+from .bot import BotBase
 
 
 def config_callback(
@@ -41,7 +41,7 @@ def config_callback(
     return bot_config
 
 
-def cli(bot_class: Type[Bot[Any]], default_config_path: str) -> click.Command:
+def cli(bot_class: Type[BotBase[Any]], default_config_path: str) -> click.Command:
     @click.command()
     @click.option(
         '-c',
