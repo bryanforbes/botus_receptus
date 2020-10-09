@@ -20,8 +20,8 @@ aioitertools = "^0.7.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord-ext-typed-commands" = "^1.0.1"
-"discord.py-stubs" = "^1.5.0.0"
+"discord-ext-typed-commands" = "^1.0.2"
+"discord.py-stubs" = "^1.5.0.1"
 "discord.py" = "^1.5.0"
 "typing-extensions" = ">=3.7.4"
 toml = "^0.10.1"
@@ -29,8 +29,8 @@ pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "7dccdba357163ba2309ebe866bf64dc5e759ffce", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "9474f5f58c2f00df2ccde9113f1410669a630816", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "c32712a2a6c67a0b14176fffccccf5a8d20e3b70", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "70942b52345cdac74906322f6a4d0ae3bbad8945", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -47,8 +47,8 @@ coverage = {extras = ["toml"], version = "^5.3"}
 flake8 = "~3.8"
 flake8-bugbear = ">=19.3"
 flake8-pyi = "^20.5"
-isort = "^5.5.4"
-mypy = "^0.782"
+isort = "^5.6.1"
+mypy = ">=0.790"
 pre-commit = "^2.7"
 pytest = "^6.1"
 pytest-asyncio = "^0.14.0"
@@ -101,5 +101,5 @@ filterwarnings = [
 ]
 
 [build-system]
-requires = ["poetry>=1.0.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
