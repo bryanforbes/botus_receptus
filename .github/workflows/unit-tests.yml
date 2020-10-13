@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install -v --extras "db gino_typed uvloop"
-        ./fix-poetry.sh
+        ./fix-site-packages.sh
     - name: Pre-commit checks
       run: |
         poetry run pre-commit run --all-files
