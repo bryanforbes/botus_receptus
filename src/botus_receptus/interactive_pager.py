@@ -402,7 +402,7 @@ class InteractivePager(Generic[T]):
 
     @classmethod
     def create(cls: Type[IP], ctx: typed_commands.Context, source: PageSource[T]) -> IP:
-        if ctx.guild is not None:
+        if ctx.guild is not None and ctx.guild.me is not None:
             permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
                 ctx.guild.me
             )
