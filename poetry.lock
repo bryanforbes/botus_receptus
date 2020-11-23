@@ -18,7 +18,7 @@ speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
 name = "aioitertools"
-version = "0.7.0"
+version = "0.7.1"
 description = "itertools and builtins for AsyncIO and mixed iterables"
 category = "main"
 optional = false
@@ -69,7 +69,7 @@ name = "asyncpg-stubs"
 version = "0.20.1+0"
 description = "asyncpg stubs"
 category = "main"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 develop = false
 
@@ -315,7 +315,7 @@ name = "gino-stubs"
 version = "1.0.1+0"
 description = "Gino stubs and mypy plugin"
 category = "main"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 develop = false
 
@@ -483,7 +483,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "pre-commit"
-version = "2.8.2"
+version = "2.9.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
@@ -705,7 +705,7 @@ name = "sqlalchemy-stubs"
 version = "0.3"
 description = "SQLAlchemy stubs and mypy plugin"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -806,7 +806,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "a6ab2a7f85a16325c233d650afaf76d90e64ea18b60870cac7255f04fede49a4"
+content-hash = "dfb390abd64606f40d1dc1685759c99484531538a720c6460c3b8d94d936ebed"
 
 [metadata.files]
 aiohttp = [
@@ -825,8 +825,8 @@ aiohttp = [
     {file = "aiohttp-3.6.3.tar.gz", hash = "sha256:698cd7bc3c7d1b82bb728bae835724a486a8c376647aec336aa21a60113c3645"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.7.0-py3-none-any.whl", hash = "sha256:e931a2f0dcabd4a8446b5cc2fc71b8bb14716e6adf37728a70869213f1f741cd"},
-    {file = "aioitertools-0.7.0.tar.gz", hash = "sha256:341cb05a0903177ef1b73d4cc12c92aee18e81c364e0138f4efc7ec3c47b8177"},
+    {file = "aioitertools-0.7.1-py3-none-any.whl", hash = "sha256:8972308474c41ed5e0636819f948ebff32f2318e70f7e7d23cd208c4357cc773"},
+    {file = "aioitertools-0.7.1.tar.gz", hash = "sha256:54a56c7cf3b5290d1cb5e8974353c9f52c677612b5d69a859369a020c53414a3"},
 ]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
@@ -1079,8 +1079,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.8.2-py2.py3-none-any.whl", hash = "sha256:22e6aa3bd571debb01eb7d34483f11c01b65237be4eebbf30c3d4fb65762d315"},
-    {file = "pre_commit-2.8.2.tar.gz", hash = "sha256:905ebc9b534b991baec87e934431f2d0606ba27f2b90f7f652985f5a5b8b6ae6"},
+    {file = "pre_commit-2.9.0-py2.py3-none-any.whl", hash = "sha256:4aee0db4808fa48d2458cedd5b9a084ef24dda1a0fa504432a11977a4d1cfd0a"},
+    {file = "pre_commit-2.9.0.tar.gz", hash = "sha256:b2d106d51c6ba6217e859d81774aae33fd825fe7de0dcf0c46e2586333d7a92e"},
 ]
 py = [
     {file = "py-1.9.0-py2.py3-none-any.whl", hash = "sha256:366389d1db726cd2fcfc79732e75410e5fe4d31db13692115529d34069a043c2"},
