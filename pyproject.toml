@@ -29,8 +29,8 @@ pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "c4aa979077e05dd025219488430da88772b8be4e", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "c996c30235884bb4fd182fc3cd569e0e23fc23a3", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "387549840fb72e47588e3bf3c8ca83449dedffec", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
@@ -47,15 +47,15 @@ coverage = {extras = ["toml"], version = "^5.3"}
 flake8 = "~3.8"
 flake8-bugbear = ">=20.11.1"
 flake8-pyi = "^20.10"
-isort = "^5.6.4"
+isort = "^5.7"
 mypy = ">=0.790"
 pre-commit = "^2.9"
-pytest = "^6.1"
+pytest = "^6.2"
 pytest-asyncio = "^0.14.0"
 pytest-cov = "^2.10"
-pytest-mock = "^3.3.1"
+pytest-mock = "^3.4"
 pytest-sugar = "^0.9.4"
-pytest-xdist = "^2.1"
+pytest-xdist = "^2.2"
 
 [tool.black]
 line-length = 88
