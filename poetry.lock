@@ -183,7 +183,7 @@ toml = ["toml"]
 
 [[package]]
 name = "discord-ext-typed-commands"
-version = "1.0.2"
+version = "1.0.3"
 description = "Typed commands for discord.py"
 category = "main"
 optional = false
@@ -191,8 +191,8 @@ python-versions = ">=3.6.1,<4.0.0"
 
 [package.dependencies]
 "discord.py" = ">=1.4.1,<2.0.0"
-importlib_metadata = {version = ">=1.7,<3.0", markers = "python_version < \"3.8\""}
-typing-extensions = ">=3.7.4,<4.0.0"
+importlib_metadata = {version = ">=1.7,<4.0", markers = "python_version < \"3.8\""}
+typing-extensions = {version = ">=3.7.4,<4.0.0", markers = "python_version < \"3.8\""}
 
 [[package]]
 name = "discord.py"
@@ -808,7 +808,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "269f6761f74959990b5f17a33372266d5899e79dc6211417ba8f944742bfcb1b"
+content-hash = "5400b644e7ad4eb91b1641dcb2c4e695dfc502e3803f0ffc6b5287834e57c7a5"
 
 [metadata.files]
 aiohttp = [
@@ -953,8 +953,8 @@ coverage = [
     {file = "coverage-5.3.1.tar.gz", hash = "sha256:38f16b1317b8dd82df67ed5daa5f5e7c959e46579840d77a67a4ceb9cef0a50b"},
 ]
 discord-ext-typed-commands = [
-    {file = "discord-ext-typed-commands-1.0.2.tar.gz", hash = "sha256:6e5ea78ffe3666261a817b36cab153e94ab311c24cc10fcdaab740f90a9d1f2a"},
-    {file = "discord_ext_typed_commands-1.0.2-py3-none-any.whl", hash = "sha256:ec6b6972ab5f24bdb870ca27ee4156afba67c5f22aa4be748ce04ca0c0defe44"},
+    {file = "discord-ext-typed-commands-1.0.3.tar.gz", hash = "sha256:9bffb46dfc93b50356624bfe7756a4f0dad3a8933ffc160c9a44babaa7bc194d"},
+    {file = "discord_ext_typed_commands-1.0.3-py3-none-any.whl", hash = "sha256:8d19e01bef9b256df7506d735ca7a42e4ecb49f8a68fc4536d4221e1921d8c5c"},
 ]
 "discord.py" = [
     {file = "discord.py-1.5.1-py3-none-any.whl", hash = "sha256:2367359e31f6527f8a936751fc20b09d7495dd6a76b28c8fb13d4ca6c55b7563"},

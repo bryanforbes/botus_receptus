@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from . import abc, checks, formatting, re, util
+from . import abc, checks, compat, formatting, re, util
 from .bot import Bot, DblBot
 from .cli import cli
 from .cog import Cog
@@ -15,11 +15,12 @@ __license__ = 'BSD 3-clause'
 __version__ = '0.0.1a'
 
 __all__ = (
+    'abc',
+    'checks',
+    'compat',
+    'db',
     'formatting',
     're',
-    'db',
-    'checks',
-    'abc',
     'util',
     'setup_logging',
     'cli',

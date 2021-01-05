@@ -20,10 +20,10 @@ aioitertools = "^0.7.1"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord-ext-typed-commands" = "^1.0.2"
+"discord-ext-typed-commands" = "^1.0.3"
 "discord.py-stubs" = "^1.5.1.0"
 "discord.py" = "^1.5.1"
-"typing-extensions" = ">=3.7.4"
+"typing-extensions" = {version = ">=3.7.4", python = "<3.8"}
 toml = "^0.10.2"
 pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}

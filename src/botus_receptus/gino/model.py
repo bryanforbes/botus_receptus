@@ -12,11 +12,12 @@ from typing import (
     Union,
     cast,
 )
-from typing_extensions import Final
 
 from gino.declarative import ModelType
 from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
+
+from ..compat import Final
 
 _M = TypeVar('_M', bound='ModelMixin')
 

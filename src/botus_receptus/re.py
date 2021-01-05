@@ -3,7 +3,8 @@ from __future__ import annotations
 import re
 from functools import partial
 from typing import AnyStr, Iterable, Iterator, Pattern, Union, cast
-from typing_extensions import Protocol
+
+from .compat import Protocol
 
 # Inspired by https://github.com/TehShrike/regex-fun
 

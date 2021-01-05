@@ -17,7 +17,6 @@ from typing import (
     Union,
     cast,
 )
-from typing_extensions import TypedDict
 
 import discord
 from aioitertools import enumerate as aenumerate
@@ -27,6 +26,7 @@ from aioitertools.types import AnyIterable
 from attr import attrib, dataclass
 from discord.ext import typed_commands
 
+from .compat import TypedDict
 from .formatting import warning
 from .util import race
 
