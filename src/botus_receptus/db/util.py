@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from asyncpg import Connection
 from asyncpg.pool import PoolConnectionProxy
+
+from ..compat import Sequence
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 

@@ -1,26 +1,19 @@
 from __future__ import annotations
 
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    AsyncContextManager,
-    Awaitable,
-    Callable,
-    Coroutine,
-    Dict,
-    Generator,
-    List,
-    Optional,
-    Sequence,
-    Tuple,
-    TypeVar,
-    cast,
-)
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, TypeVar, cast
 
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
 from discord.ext import typed_commands
 
+from ..compat import (
+    AbstractAsyncContextManager,
+    Awaitable,
+    Callable,
+    Coroutine,
+    Generator,
+    Sequence,
+)
 from .util import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
@@ -29,7 +22,7 @@ if TYPE_CHECKING:
 
 @dataclass(slots=True)
 class AquireContextManager(
-    AsyncContextManager[PoolConnectionProxy], Awaitable[PoolConnectionProxy]
+    AbstractAsyncContextManager[PoolConnectionProxy], Awaitable[PoolConnectionProxy]
 ):
     ctx: Context
     timeout: Optional[float] = None

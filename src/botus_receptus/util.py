@@ -1,20 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-from typing import (
-    Any,
-    Awaitable,
-    Container,
-    Dict,
-    Generator,
-    Iterable,
-    Optional,
-    TypeVar,
-    Union,
-)
+from typing import Any, Dict, Optional, TypeVar, Union
 
 import discord
 import pendulum
+
+from .compat import Awaitable, Container, Generator, Iterable
 
 T = TypeVar('T')
 FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]

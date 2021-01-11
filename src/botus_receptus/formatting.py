@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import Iterable, Iterator, List, Optional
+from typing import List, Optional
 
 from attr import attrib, dataclass
 
 from . import re
-from .compat import Protocol
+from .compat import Iterable, Iterator, Protocol
 
 
 @dataclass(slots=True)
