@@ -326,14 +326,14 @@ develop = false
 asyncpg-stubs = "rev 387549840fb72e47588e3bf3c8ca83449dedffec"
 importlib_metadata = {version = "^1.7.0", markers = "python_version < \"3.8\""}
 mypy = ">=0.782"
-sqlalchemy-stubs = "^0.3"
+sqlalchemy-stubs = "^0.4"
 typing-extensions = ">=3.7.4"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c"
-resolved_reference = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c"
+reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
+resolved_reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
 
 [[package]]
 name = "identify"
@@ -704,14 +704,14 @@ pymysql = ["pymysql"]
 
 [[package]]
 name = "sqlalchemy-stubs"
-version = "0.3"
+version = "0.4"
 description = "SQLAlchemy stubs and mypy plugin"
 category = "main"
 optional = true
 python-versions = "*"
 
 [package.dependencies]
-mypy = ">=0.720"
+mypy = ">=0.790"
 typing-extensions = ">=3.7.4"
 
 [[package]]
@@ -808,7 +808,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "9cdede7c0ef5fe06abb2cb87b3ba074c34e4a98a7ef43c79f9f2eac12cdf4335"
+content-hash = "70be9a04dd761523be25140712518865a658947760c447763a2248e104cfb7fa"
 
 [metadata.files]
 aiohttp = [
@@ -1216,8 +1216,8 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.2.19.tar.gz", hash = "sha256:5bb2c4fc2bcc3447ad45716c66581eab982c007dcf925482498d8733f86f17c7"},
 ]
 sqlalchemy-stubs = [
-    {file = "sqlalchemy-stubs-0.3.tar.gz", hash = "sha256:a3318c810697164e8c818aa2d90bac570c1a0e752ced3ec25455b309c0bee8fd"},
-    {file = "sqlalchemy_stubs-0.3-py3-none-any.whl", hash = "sha256:ca1250605a39648cc433f5c70cb1a6f9fe0b60bdda4c51e1f9a2ab3651daadc8"},
+    {file = "sqlalchemy-stubs-0.4.tar.gz", hash = "sha256:c665d6dd4482ef642f01027fa06c3d5e91befabb219dc71fc2a09e7d7695f7ae"},
+    {file = "sqlalchemy_stubs-0.4-py3-none-any.whl", hash = "sha256:5eec7aa110adf9b957b631799a72fef396b23ff99fe296df726645d01e312aa5"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},

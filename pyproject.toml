@@ -30,7 +30,7 @@ asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
 asyncpg-stubs = {rev = "387549840fb72e47588e3bf3c8ca83449dedffec", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+gino-stubs = {rev = "35681f605a5488c94845efa9657ebaf720eae1b9", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
