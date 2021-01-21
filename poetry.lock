@@ -332,8 +332,8 @@ typing-extensions = ">=3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
-resolved_reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
+reference = "567ae9b428157995d509926bcfb1aa80d36aaf2c"
+resolved_reference = "567ae9b428157995d509926bcfb1aa80d36aaf2c"
 
 [[package]]
 name = "identify"
@@ -808,7 +808,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "c5ca8707d5c02f8d814c123b5a09be7e0d2640315df406f4a67e2253f97808c0"
+content-hash = "190d03a29cd200ab4c2de50dced4fafd2d7975d358ae7cccf25cef8cfa292c13"
 
 [metadata.files]
 aiohttp = [
