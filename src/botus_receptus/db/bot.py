@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, ClassVar, Dict, Type, TypeVar, cast
+from typing import Any, ClassVar, TypeVar, cast
 
 import discord
 from discord.ext import typed_commands
 
 from ..bot import BotBase as _BotBase
+from ..compat import dict, type
 from ..config import Config
 from .context import Context
 
@@ -24,7 +25,7 @@ CT = TypeVar('CT', bound=Context)
 
 class BotBase(_BotBase[CT]):
     pool: Pool
-    context_cls: ClassVar[Type[CT]] = cast(Type[CT], Context)
+    context_cls: ClassVar[type[CT]] = cast(type[CT], Context)
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         if not has_asyncpg:
@@ -32,7 +33,7 @@ class BotBase(_BotBase[CT]):
 
         super().__init__(config, *args, **kwargs)
 
-        pool_kwargs: Dict[str, Any] = {}
+        pool_kwargs: dict[str, Any] = {}
 
         if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(
             cast(Any, self).__init_connection__

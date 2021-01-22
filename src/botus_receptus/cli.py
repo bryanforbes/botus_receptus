@@ -1,16 +1,17 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Type, Union, cast
+from typing import Any, cast
 
 import click
 import toml
 
 from . import config, logging
 from .bot import BotBase
+from .compat import dict, type
 
 
 def config_callback(
-    ctx: click.Context, param: click.Parameter, value: Union[str, int, bool, None]
+    ctx: click.Context, param: click.Parameter, value: str | int | bool | None
 ) -> Any:
     assert (
         not isinstance(value, (int, bool)) and value is not None
@@ -29,7 +30,7 @@ def config_callback(
         ctx.default_map = {}
 
     try:
-        cast(Dict[str, Any], ctx.default_map).update(
+        cast(dict[str, Any], ctx.default_map).update(
             {
                 k.replace("--", "").replace("-", "_"): v
                 for k, v in bot_config['logging'].items()
@@ -41,7 +42,7 @@ def config_callback(
     return bot_config
 
 
-def cli(bot_class: Type[BotBase[Any]], default_config_path: str) -> click.Command:
+def cli(bot_class: type[BotBase[Any]], default_config_path: str) -> click.Command:
     @click.command()
     @click.option(
         '-c',
@@ -60,7 +61,7 @@ def cli(bot_class: Type[BotBase[Any]], default_config_path: str) -> click.Comman
         default='info',
     )
     def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
-        cast(Dict[str, Any], bot_config['logging']).update(
+        cast(dict[str, Any], bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )
 

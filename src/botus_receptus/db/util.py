@@ -1,37 +1,38 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 from asyncpg import Connection
 from asyncpg.pool import PoolConnectionProxy
 
-from ..compat import Sequence
+from ..compat import Sequence, dict, list
+from ..compat import tuple as Tuple
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-def _get_join_string(joins: Optional[Sequence[Tuple[str, str]]]) -> str:
+def _get_join_string(joins: Sequence[Tuple[str, str]] | None) -> str:
     if joins is None or len(joins) == 0:
         return ''
 
     return ' ' + ' '.join(map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins))
 
 
-def _get_where_string(conditions: Optional[Sequence[str]]) -> str:
+def _get_where_string(conditions: Sequence[str] | None) -> str:
     if conditions is None or len(conditions) == 0:
         return ''
 
     return ' WHERE ' + ' AND '.join(conditions)
 
 
-def _get_order_by_string(order_by: Optional[str]) -> str:
+def _get_order_by_string(order_by: str | None) -> str:
     if order_by is None:
         return ''
 
     return f' ORDER BY {order_by} ASC'
 
 
-def _get_group_by_string(group_by: Optional[Sequence[str]]) -> str:
+def _get_group_by_string(group_by: Sequence[str] | None) -> str:
     if group_by is None:
         return ''
 
@@ -39,15 +40,15 @@ def _get_group_by_string(group_by: Optional[Sequence[str]]) -> str:
 
 
 async def select_all(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *args: Any,
     table: str,
     columns: Sequence[str],
-    where: Optional[Sequence[str]] = None,
-    group_by: Optional[Sequence[str]] = None,
-    order_by: Optional[str] = None,
-    joins: Optional[Sequence[Tuple[str, str]]] = None,
-) -> List[Any]:
+    where: Sequence[str] | None = None,
+    group_by: Sequence[str] | None = None,
+    order_by: str | None = None,
+    joins: Sequence[Tuple[str, str]] | None = None,
+) -> list[Any]:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
@@ -62,14 +63,14 @@ async def select_all(
 
 
 async def select_one(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *args: Any,
     table: str,
     columns: Sequence[str],
-    where: Optional[Sequence[str]] = None,
-    group_by: Optional[Sequence[str]] = None,
-    joins: Optional[Sequence[Tuple[str, str]]] = None,
-) -> Optional[Any]:
+    where: Sequence[str] | None = None,
+    group_by: Sequence[str] | None = None,
+    joins: Sequence[Tuple[str, str]] | None = None,
+) -> Any | None:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
@@ -81,17 +82,17 @@ async def select_one(
 
 
 async def search(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *args: Any,
     table: str,
     columns: Sequence[str],
     search_columns: Sequence[str],
     terms: Sequence[str],
-    where: Optional[Sequence[str]] = None,
-    group_by: Optional[Sequence[str]] = None,
-    order_by: Optional[str] = None,
-    joins: Optional[Sequence[Tuple[str, str]]] = None,
-) -> List[Any]:
+    where: Sequence[str] | None = None,
+    group_by: Sequence[str] | None = None,
+    order_by: str | None = None,
+    joins: Sequence[Tuple[str, str]] | None = None,
+) -> list[Any]:
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
     search_columns_str = " || ' ' || ".join(search_columns)
@@ -114,11 +115,11 @@ async def search(
 
 
 async def update(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *args: Any,
     table: str,
-    values: Dict[str, Any],
-    where: Optional[Sequence[str]] = None,
+    values: dict[str, Any],
+    where: Sequence[str] | None = None,
 ) -> None:
     set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
     where_str = _get_where_string(where if where is not None else [])
@@ -127,14 +128,14 @@ async def update(
 
 
 async def insert_into(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *,
     table: str,
-    values: Dict[str, Any],
+    values: dict[str, Any],
     extra: str = '',
 ) -> None:
-    columns: List[str] = []
-    data: List[Any] = []
+    columns: list[str] = []
+    data: list[Any] = []
 
     for column, value in values.items():
         columns.append(column)
@@ -151,7 +152,7 @@ async def insert_into(
 
 
 async def delete_from(
-    db: Union[Connection, PoolConnectionProxy],
+    db: Connection | PoolConnectionProxy,
     *args: Any,
     table: str,
     where: Sequence[str],

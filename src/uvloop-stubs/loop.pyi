@@ -10,7 +10,6 @@ from typing import (
     Dict,
     Generator,
     List,
-    Optional,
     Sequence,
     Tuple,
     TypeVar,
@@ -48,38 +47,35 @@ class Loop:
     if sys.version_info >= (3, 8):
         def create_task(
             self,
-            coro: Union[Awaitable[_T], Generator[Any, None, _T]],
+            coro: Awaitable[_T] | Generator[Any, None, _T],
             *,
-            name: Optional[str] = ...,
+            name: str | None = ...,
         ) -> asyncio.Task[_T]: ...
     else:
         def create_task(
-            self, coro: Union[Awaitable[_T], Generator[Any, None, _T]]
+            self, coro: Awaitable[_T] | Generator[Any, None, _T]
         ) -> asyncio.Task[_T]: ...
     def set_task_factory(
         self,
-        factory: Optional[
-            Callable[
-                [asyncio.AbstractEventLoop, Generator[Any, None, _T]],
-                asyncio.Future[_T],
-            ]
-        ],
+        factory: Callable[
+            [asyncio.AbstractEventLoop, Generator[Any, None, _T]],
+            asyncio.Future[_T],
+        ]
+        | None,
     ) -> None: ...
     def get_task_factory(
         self,
-    ) -> Optional[
-        Callable[
-            [asyncio.AbstractEventLoop, Generator[Any, None, _T]], asyncio.Future[_T]
-        ]
-    ]: ...
+    ) -> Callable[
+        [asyncio.AbstractEventLoop, Generator[Any, None, _T]], asyncio.Future[_T]
+    ] | None: ...
     @overload
     def run_until_complete(self, future: Generator[Any, None, _T]) -> _T: ...
     @overload
     def run_until_complete(self, future: Awaitable[_T]) -> _T: ...
     async def getaddrinfo(
         self,
-        host: Optional[str],
-        port: Union[str, int, None],
+        host: str | None,
+        port: str | int | None,
         *,
         family: int = ...,
         type: int = ...,
@@ -91,12 +87,12 @@ class Loop:
             SocketKind,
             int,
             str,
-            Union[Tuple[str, int], Tuple[str, int, int, int]],
+            Tuple[str, int] | Tuple[str, int, int, int],
         ]
     ]: ...
     async def getnameinfo(
         self,
-        sockaddr: Union[Tuple[str, int], Tuple[str, int, int, int]],
+        sockaddr: Tuple[str, int] | Tuple[str, int, int, int],
         flags: int = ...,
     ) -> Tuple[str, str]: ...
     if sys.version_info >= (3, 7):
@@ -104,7 +100,7 @@ class Loop:
         async def create_server(
             self,
             protocol_factory: _ProtocolFactory,
-            host: Optional[Union[str, Sequence[str]]] = ...,
+            host: str | Sequence[str] | None = ...,
             port: int = ...,
             *,
             family: int = ...,
@@ -112,9 +108,9 @@ class Loop:
             sock: None = ...,
             backlog: int = ...,
             ssl: _SSLContext = ...,
-            reuse_address: Optional[bool] = ...,
-            reuse_port: Optional[bool] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            reuse_address: bool | None = ...,
+            reuse_port: bool | None = ...,
+            ssl_handshake_timeout: float | None = ...,
             start_serving: bool = ...,
         ) -> asyncio.AbstractServer: ...
         @overload
@@ -129,30 +125,30 @@ class Loop:
             sock: socket = ...,
             backlog: int = ...,
             ssl: _SSLContext = ...,
-            reuse_address: Optional[bool] = ...,
-            reuse_port: Optional[bool] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            reuse_address: bool | None = ...,
+            reuse_port: bool | None = ...,
+            ssl_handshake_timeout: float | None = ...,
             start_serving: bool = ...,
         ) -> asyncio.AbstractServer: ...
         async def create_unix_connection(
             self,
             protocol_factory: _ProtocolFactory,
-            path: Optional[str] = ...,
+            path: str | None = ...,
             *,
             ssl: _SSLContext = ...,
-            sock: Optional[socket] = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            sock: socket | None = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
         ) -> _TransProtPair: ...
         async def create_unix_server(
             self,
             protocol_factory: _ProtocolFactory,
-            path: Optional[str] = ...,
+            path: str | None = ...,
             *,
-            sock: Optional[socket] = ...,
+            sock: socket | None = ...,
             backlog: int = ...,
             ssl: _SSLContext = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            ssl_handshake_timeout: float | None = ...,
             start_serving: bool = ...,
         ) -> asyncio.AbstractServer: ...
         async def connect_accepted_socket(
@@ -161,7 +157,7 @@ class Loop:
             sock: socket,
             *,
             ssl: _SSLContext = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            ssl_handshake_timeout: float | None = ...,
         ) -> _TransProtPair: ...
         async def start_tls(
             self,
@@ -170,15 +166,15 @@ class Loop:
             sslcontext: ssl.SSLContext,
             *,
             server_side: bool = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
         ) -> asyncio.BaseTransport: ...
     else:
         @overload
         async def create_server(
             self,
             protocol_factory: _ProtocolFactory,
-            host: Optional[Union[str, Sequence[str]]] = ...,
+            host: str | Sequence[str] | None = ...,
             port: int = ...,
             *,
             family: int = ...,
@@ -186,8 +182,8 @@ class Loop:
             sock: None = ...,
             backlog: int = ...,
             ssl: _SSLContext = ...,
-            reuse_address: Optional[bool] = ...,
-            reuse_port: Optional[bool] = ...,
+            reuse_address: bool | None = ...,
+            reuse_port: bool | None = ...,
         ) -> asyncio.AbstractServer: ...
         @overload
         async def create_server(
@@ -201,8 +197,8 @@ class Loop:
             sock: socket,
             backlog: int = ...,
             ssl: _SSLContext = ...,
-            reuse_address: Optional[bool] = ...,
-            reuse_port: Optional[bool] = ...,
+            reuse_address: bool | None = ...,
+            reuse_port: bool | None = ...,
         ) -> asyncio.AbstractServer: ...
         async def create_unix_connection(
             self,
@@ -210,15 +206,15 @@ class Loop:
             path: str,
             *,
             ssl: _SSLContext = ...,
-            sock: Optional[socket] = ...,
-            server_hostname: Optional[str] = ...,
+            sock: socket | None = ...,
+            server_hostname: str | None = ...,
         ) -> _TransProtPair: ...
         async def create_unix_server(
             self,
             protocol_factory: _ProtocolFactory,
             path: str,
             *,
-            sock: Optional[socket] = ...,
+            sock: socket | None = ...,
             backlog: int = ...,
             ssl: _SSLContext = ...,
         ) -> asyncio.AbstractServer: ...
@@ -242,11 +238,11 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[Tuple[str, int]] = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
-            happy_eyeballs_delay: Optional[float] = ...,
-            interleave: Optional[int] = ...,
+            local_addr: Tuple[str, int] | None = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
+            happy_eyeballs_delay: float | None = ...,
+            interleave: int | None = ...,
         ) -> _TransProtPair: ...
         @overload
         async def create_connection(
@@ -261,10 +257,10 @@ class Loop:
             flags: int = ...,
             sock: socket,
             local_addr: None = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
-            happy_eyeballs_delay: Optional[float] = ...,
-            interleave: Optional[int] = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
+            happy_eyeballs_delay: float | None = ...,
+            interleave: int | None = ...,
         ) -> _TransProtPair: ...
     elif sys.version_info >= (3, 7):
         @overload
@@ -279,9 +275,9 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[Tuple[str, int]] = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            local_addr: Tuple[str, int] | None = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
         ) -> _TransProtPair: ...
         @overload
         async def create_connection(
@@ -296,8 +292,8 @@ class Loop:
             flags: int = ...,
             sock: socket,
             local_addr: None = ...,
-            server_hostname: Optional[str] = ...,
-            ssl_handshake_timeout: Optional[float] = ...,
+            server_hostname: str | None = ...,
+            ssl_handshake_timeout: float | None = ...,
         ) -> _TransProtPair: ...
     else:
         @overload
@@ -312,8 +308,8 @@ class Loop:
             proto: int = ...,
             flags: int = ...,
             sock: None = ...,
-            local_addr: Optional[Tuple[str, int]] = ...,
-            server_hostname: Optional[str] = ...,
+            local_addr: Tuple[str, int] | None = ...,
+            server_hostname: str | None = ...,
         ) -> _TransProtPair: ...
         @overload
         async def create_connection(
@@ -328,11 +324,11 @@ class Loop:
             flags: int = ...,
             sock: socket,
             local_addr: None = ...,
-            server_hostname: Optional[str] = ...,
+            server_hostname: str | None = ...,
         ) -> _TransProtPair: ...
     def default_exception_handler(self, context: _Context) -> None: ...
-    def get_exception_handler(self) -> Optional[_ExceptionHandler]: ...
-    def set_exception_handler(self, handler: Optional[_ExceptionHandler]) -> None: ...
+    def get_exception_handler(self) -> _ExceptionHandler | None: ...
+    def set_exception_handler(self, handler: _ExceptionHandler | None) -> None: ...
     def call_exception_handler(self, context: _Context) -> None: ...
     def add_reader(self, fd: Any, callback: Callable[..., Any], *args: Any) -> None: ...
     def remove_reader(self, fd: Any) -> None: ...
@@ -360,7 +356,7 @@ class Loop:
     async def subprocess_shell(
         self,
         protocol_factory: _ProtocolFactory,
-        cmd: Union[bytes, str],
+        cmd: bytes | str,
         *,
         stdin: Any = ...,
         stdout: Any = ...,
@@ -389,16 +385,16 @@ class Loop:
     async def create_datagram_endpoint(
         self,
         protocol_factory: _ProtocolFactory,
-        local_addr: Optional[Tuple[str, int]] = ...,
-        remote_addr: Optional[Tuple[str, int]] = ...,
+        local_addr: Tuple[str, int] | None = ...,
+        remote_addr: Tuple[str, int] | None = ...,
         *,
         family: int = ...,
         proto: int = ...,
         flags: int = ...,
-        reuse_address: Optional[bool] = ...,
-        reuse_port: Optional[bool] = ...,
-        allow_broadcast: Optional[bool] = ...,
-        sock: Optional[socket] = ...,
+        reuse_address: bool | None = ...,
+        reuse_port: bool | None = ...,
+        allow_broadcast: bool | None = ...,
+        sock: socket | None = ...,
     ) -> _TransProtPair: ...
     if sys.version_info >= (3, 6):
         async def shutdown_asyncgens(self) -> None: ...
@@ -408,7 +404,7 @@ class Loop:
             sock: socket,
             file: IO[bytes],
             offset: int = ...,
-            count: Optional[int] = ...,
+            count: int | None = ...,
             *,
             fallback: bool = ...,
         ) -> int: ...
@@ -417,7 +413,7 @@ class Loop:
             transport: asyncio.BaseTransport,
             file: IO[bytes],
             offset: int = ...,
-            count: Optional[int] = ...,
+            count: int | None = ...,
             *,
             fallback: bool = ...,
         ) -> int: ...

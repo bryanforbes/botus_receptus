@@ -108,7 +108,7 @@ def between(n: int, m: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) ->
 escape = re.escape
 
 
-def escape_all(patterns: Iterable[Union[str, Pattern[AnyStr]]]) -> Iterator[str]:
+def escape_all(patterns: Iterable[str | Pattern[AnyStr]]) -> Iterator[str]:
     for pattern in patterns:
         if isinstance(pattern, str):
             yield re.escape(pattern)

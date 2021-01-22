@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
@@ -13,6 +13,9 @@ from ..compat import (
     Coroutine,
     Generator,
     Sequence,
+    dict,
+    list,
+    tuple,
 )
 from .util import delete_from, insert_into, search, select_all, select_one, update
 
@@ -25,7 +28,7 @@ class AquireContextManager(
     AbstractAsyncContextManager[PoolConnectionProxy], Awaitable[PoolConnectionProxy]
 ):
     ctx: Context
-    timeout: Optional[float] = None
+    timeout: float | None = None
 
     def __await__(self) -> Generator[Any, None, PoolConnectionProxy]:
         return self.ctx._acquire(self.timeout).__await__()
@@ -57,13 +60,13 @@ class Context(typed_commands.Context):
     bot: Bot[Any]
     db: PoolConnectionProxy
 
-    async def _acquire(self, timeout: Optional[float]) -> PoolConnectionProxy:
+    async def _acquire(self, timeout: float | None) -> PoolConnectionProxy:
         if not hasattr(self, 'db'):
             self.db = await self.bot.pool.acquire(timeout=timeout)
 
         return self.db
 
-    def acquire(self, *, timeout: Optional[float] = None) -> AquireContextManager:
+    def acquire(self, *, timeout: float | None = None) -> AquireContextManager:
         return AquireContextManager(self, timeout)
 
     async def release(self) -> None:
@@ -77,11 +80,11 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Optional[Sequence[str]] = None,
-        group_by: Optional[Sequence[str]] = None,
-        order_by: Optional[str] = None,
-        joins: Optional[Sequence[Tuple[str, str]]] = None,
-    ) -> List[Any]:
+        where: Sequence[str] | None = None,
+        group_by: Sequence[str] | None = None,
+        order_by: str | None = None,
+        joins: Sequence[tuple[str, str]] | None = None,
+    ) -> list[Any]:
         return await select_all(
             self.db,
             *args,
@@ -99,10 +102,10 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Optional[Sequence[str]] = None,
-        group_by: Optional[Sequence[str]] = None,
-        joins: Optional[Sequence[Tuple[str, str]]] = None,
-    ) -> Optional[Any]:
+        where: Sequence[str] | None = None,
+        group_by: Sequence[str] | None = None,
+        joins: Sequence[tuple[str, str]] | None = None,
+    ) -> Any | None:
         return await select_one(
             self.db,
             *args,
@@ -121,11 +124,11 @@ class Context(typed_commands.Context):
         columns: Sequence[str],
         search_columns: Sequence[str],
         terms: Sequence[str],
-        where: Optional[Sequence[str]] = None,
-        group_by: Optional[Sequence[str]] = None,
-        order_by: Optional[str] = None,
-        joins: Optional[Sequence[Tuple[str, str]]] = None,
-    ) -> List[Any]:
+        where: Sequence[str] | None = None,
+        group_by: Sequence[str] | None = None,
+        order_by: str | None = None,
+        joins: Sequence[tuple[str, str]] | None = None,
+    ) -> list[Any]:
         return await search(
             self.db,
             *args,
@@ -144,14 +147,14 @@ class Context(typed_commands.Context):
         self,
         *args: Any,
         table: str,
-        values: Dict[str, Any],
-        where: Optional[Sequence[str]] = None,
+        values: dict[str, Any],
+        where: Sequence[str] | None = None,
     ) -> None:
         return await update(self.db, *args, table=table, values=values, where=where)
 
     @ensure_db
     async def insert_into(
-        self, *, table: str, values: Dict[str, Any], extra: str = ''
+        self, *, table: str, values: dict[str, Any], extra: str = ''
     ) -> None:
         return await insert_into(self.db, table=table, values=values, extra=extra)
 
