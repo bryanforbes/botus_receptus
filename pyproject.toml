@@ -6,11 +6,11 @@ authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
 packages = [
   { include = "botus_receptus", from = "src" },
+  { include = "uvloop-stubs", from = "src" },
 ]
 
 include = [
   "botus_receptus/py.typed",
-  "asyncpg-stubs/**/*.pyi",
   "uvloop-stubs/**/*.pyi"
 ]
 
