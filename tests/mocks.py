@@ -59,7 +59,7 @@ class MockBot(object):
     loop: Any
     advance_time: Callable[[float], Awaitable[None]]
     _listeners: Dict[
-        str, List[Tuple['asyncio.Future[Any]', Callable[..., Any]]]
+        str, List[Tuple[asyncio.Future[Any], Callable[..., Any]]]
     ] = attrib(factory=dict)
 
     async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
@@ -101,7 +101,7 @@ class MockBot(object):
         *,
         check: Optional[Callable[..., Any]] = None,
         timeout: Optional[float] = None,
-    ) -> 'asyncio.Future[Any]':
+    ) -> asyncio.Future[Any]:
         future = self.loop.create_future()
 
         if check is None:

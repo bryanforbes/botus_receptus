@@ -343,14 +343,14 @@ class InteractivePager(Generic[T]):
 
         if self.can_manage_messages:
 
-            def wait_for_reaction() -> 'asyncio.Future[WaitResult]':
+            def wait_for_reaction() -> asyncio.Future[WaitResult]:
                 return self.bot.wait_for(
                     'reaction_add', check=self.__react_check, timeout=120.0
                 )
 
         else:
 
-            def wait_for_reaction() -> 'asyncio.Future[WaitResult]':
+            def wait_for_reaction() -> asyncio.Future[WaitResult]:
                 return self.bot.loop.create_task(
                     race(
                         [

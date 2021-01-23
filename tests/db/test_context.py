@@ -3,7 +3,7 @@ from typing import Any, Optional
 import discord
 import pytest
 from attr import dataclass
-from discord.ext import commands
+from discord.ext import typed_commands
 
 from botus_receptus.db import Context
 
@@ -94,7 +94,7 @@ class TestContext(object):
         mocker: Any,
         mock_bot: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -115,7 +115,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_select_all: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -143,7 +143,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_select_one: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -170,7 +170,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_search: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -204,7 +204,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_update: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -226,7 +226,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_insert_into: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
@@ -248,7 +248,7 @@ class TestContext(object):
         mock_bot: Any,
         mock_delete_from: Any,
         mock_mesage: discord.Message,
-        mock_command: 'commands.Command[Context]',
+        mock_command: typed_commands.Command[Context],
     ) -> None:
         ctx = Context(
             prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
