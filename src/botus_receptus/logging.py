@@ -12,12 +12,11 @@ from logging import (
     StreamHandler,
     getLogger,
 )
-from typing import Dict
 
-from .compat import Iterator
+from .compat import Iterator, dict
 from .config import Config
 
-log_levels: Dict[str, int] = {
+log_levels: dict[str, int] = {
     'critical': CRITICAL,
     'error': ERROR,
     'warning': WARNING,

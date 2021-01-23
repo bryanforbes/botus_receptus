@@ -2,18 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    ClassVar,
-    Generic,
-    Optional,
-    Type,
-    TypeVar,
-    Union,
-    cast,
-    overload,
-)
+from typing import TYPE_CHECKING, Any, ClassVar, Generic, TypeVar, cast, overload
 
 import aiohttp
 import async_timeout
@@ -22,6 +11,7 @@ from discord.ext import typed_commands
 from discord.ext.commands import bot
 
 from . import abc
+from .compat import type
 from .config import Config
 
 CT = TypeVar('CT', bound=typed_commands.Context)
@@ -45,7 +35,7 @@ class BotBase(_BotBase[CT]):
     config: Config
     default_prefix: str
     session: aiohttp.ClientSession
-    context_cls: ClassVar[Type[CT]] = cast(Type[CT], typed_commands.Context)
+    context_cls: ClassVar[type[CT]] = cast(type[CT], typed_commands.Context)
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
@@ -64,13 +54,13 @@ class BotBase(_BotBase[CT]):
         ...
 
     @overload
-    async def get_context(self, message: discord.Message, *, cls: Type[OT]) -> OT:
+    async def get_context(self, message: discord.Message, *, cls: type[OT]) -> OT:
         ...
 
     async def get_context(
-        self, message: discord.Message, *, cls: Optional[Type[OT]] = None
-    ) -> Union[CT, OT]:
-        context_cls: Union[Type[CT], Type[OT]]
+        self, message: discord.Message, *, cls: type[OT] | None = None
+    ) -> CT | OT:
+        context_cls: type[CT] | type[OT]
         if cls is None:
             context_cls = self.context_cls
         else:

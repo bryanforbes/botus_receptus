@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, cast
 
 from gino.declarative import ModelType
 from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
 
 from ..compat import Final, Mapping, Sequence
+from ..compat import dict as Dict
+from ..compat import list, type
 
 _M = TypeVar('_M', bound='ModelMixin')
 
@@ -17,10 +19,10 @@ DEFAULT: Final = cast(int, object())
 class ModelMixin:
     @classmethod
     async def create_or_update(
-        cls: Type[_M],
+        cls: type[_M],
         *,
-        set_: Union[Sequence[str], Mapping[str, str]],
-        bind: Optional[GinoEngine] = None,
+        set_: Sequence[str] | Mapping[str, str],
+        bind: GinoEngine | None = None,
         timeout: int = DEFAULT,
         **values: Any,
     ) -> _M:
@@ -29,7 +31,7 @@ class ModelMixin:
         cls._check_abstract()
 
         column_name_map = cls._column_name_map
-        index_elements: List[str] = [
+        index_elements: list[str] = [
             column_name_map[k] for k in cls.__table__.primary_key.columns.keys()
         ]
         insert_values: Dict[str, Any] = {

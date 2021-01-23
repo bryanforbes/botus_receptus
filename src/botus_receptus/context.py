@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Optional, Union
 
 import discord
 from discord.ext import typed_commands
 
-from .compat import Iterable, TypedDict
+from .compat import Iterable, TypedDict, list
 
 
 class GuildContext(typed_commands.Context):
@@ -54,19 +53,19 @@ class EmbedContext(typed_commands.Context):
         self,
         description: str,
         *,
-        title: Optional[str] = None,
-        color: Optional[Union[discord.Color, int]] = None,
-        footer: Optional[Union[str, FooterData]] = None,
-        thumbnail: Optional[str] = None,
-        author: Optional[Union[str, AuthorData]] = None,
-        image: Optional[str] = None,
-        timestamp: Optional[datetime] = None,
-        fields: Optional[List[FieldData]] = None,
+        title: str | None = None,
+        color: discord.Color | int | None = None,
+        footer: str | FooterData | None = None,
+        thumbnail: str | None = None,
+        author: str | AuthorData | None = None,
+        image: str | None = None,
+        timestamp: datetime | None = None,
+        fields: list[FieldData] | None = None,
         tts: bool = False,
-        file: Optional[discord.File] = None,
-        files: Optional[List[discord.File]] = None,
-        delete_after: Optional[float] = None,
-        nonce: Optional[int] = None,
+        file: discord.File | None = None,
+        files: list[discord.File] | None = None,
+        delete_after: float | None = None,
+        nonce: int | None = None,
     ) -> discord.Message:
         embed = discord.Embed(description=description)
 
@@ -109,9 +108,9 @@ class PaginatedContext(typed_commands.Context):
         pages: Iterable[str],
         *,
         tts: bool = False,
-        delete_after: Optional[float] = None,
-        nonce: Optional[int] = None,
-    ) -> List[discord.Message]:
+        delete_after: float | None = None,
+        nonce: int | None = None,
+    ) -> list[discord.Message]:
         return [
             await self.send(page, tts=tts, delete_after=delete_after, nonce=nonce)
             for page in pages

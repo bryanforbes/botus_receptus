@@ -1,22 +1,20 @@
 from __future__ import annotations
 
-from typing import List, Optional
-
 from attr import attrib, dataclass
 
 from . import re
-from .compat import Iterable, Iterator, Protocol
+from .compat import Iterable, Iterator, Protocol, list
 
 
 @dataclass(slots=True)
 class Paginator(Iterable[str]):
-    prefix: Optional[str] = '```'
-    suffix: Optional[str] = '```'
+    prefix: str | None = '```'
+    suffix: str | None = '```'
     max_size: int = 2000
     _real_max_size: int = attrib(init=False)
-    _current_page: List[str] = attrib(init=False)
+    _current_page: list[str] = attrib(init=False)
     _count: int = attrib(init=False)
-    _pages: List[str] = attrib(init=False)
+    _pages: list[str] = attrib(init=False)
 
     def __attrs_post_init__(self) -> None:
         self.clear()
@@ -90,7 +88,7 @@ class Paginator(Iterable[str]):
         return total + self._count + prefix_length
 
     @property
-    def pages(self) -> List[str]:
+    def pages(self) -> list[str]:
         if self.prefix is not None:
             if len(self._current_page) > 1:
                 self.close_page()
@@ -106,8 +104,8 @@ class Paginator(Iterable[str]):
 
 @dataclass(slots=True)
 class EmbedPaginator(Paginator):
-    prefix: Optional[str] = None
-    suffix: Optional[str] = None
+    prefix: str | None = None
+    suffix: str | None = None
     max_size: int = 2048
 
 

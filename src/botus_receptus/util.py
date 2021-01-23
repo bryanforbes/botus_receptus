@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict, Optional, TypeVar, Union
+from typing import Any, TypeVar, Union
 
 import discord
 import pendulum
 
-from .compat import Awaitable, Container, Generator, Iterable
+from .compat import Awaitable, Container, Generator, Iterable, dict
 
 T = TypeVar('T')
 FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]
@@ -37,7 +37,7 @@ def parse_duration(duration: str) -> pendulum.Duration:
     if not duration:
         raise ValueError('No duration provided.')
 
-    args: Dict[str, int] = {}
+    args: dict[str, int] = {}
     digits = ''
 
     for char in duration:
@@ -63,8 +63,8 @@ def parse_duration(duration: str) -> pendulum.Duration:
 async def race(
     futures: Iterable[FutureT[T]],
     *,
-    timeout: Optional[float] = None,
-    loop: Optional[asyncio.AbstractEventLoop] = None,
+    timeout: float | None = None,
+    loop: asyncio.AbstractEventLoop | None = None,
 ) -> T:
     if loop is None:
         loop = asyncio.get_running_loop()

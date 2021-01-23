@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import Generic, List, Optional, TypeVar, Union
+from typing import Generic, TypeVar, Union
 
 import discord
+
+from .compat import list
 
 CT_contra = TypeVar('CT_contra', contravariant=True)
 
@@ -93,7 +95,7 @@ class OnMessageDelete(metaclass=ABCMeta):
 
 class OnBulkMessageDelete(metaclass=ABCMeta):
     @abstractmethod
-    async def on_bulk_message_delete(self, messages: List[discord.Message]) -> None:
+    async def on_bulk_message_delete(self, messages: list[discord.Message]) -> None:
         ...
 
 
@@ -158,7 +160,7 @@ class OnRawReactionRemove(metaclass=ABCMeta):
 class OnReactionClear(metaclass=ABCMeta):
     @abstractmethod
     async def on_reaction_clear(
-        self, message: discord.Message, reactions: List[discord.Reaction]
+        self, message: discord.Message, reactions: list[discord.Reaction]
     ) -> None:
         ...
 
@@ -208,7 +210,7 @@ class OnPrivateChannelUpdate(metaclass=ABCMeta):
 class OnPrivateChannelPinsUpdate(metaclass=ABCMeta):
     @abstractmethod
     async def on_private_channel_pins_update(
-        self, channel: PrivateChannel, last_pin: Optional[datetime]
+        self, channel: PrivateChannel, last_pin: datetime | None
     ) -> None:
         ...
 
@@ -236,7 +238,7 @@ class OnGuildChannelUpdate(metaclass=ABCMeta):
 class OnGuildChannelPinsUpdate(metaclass=ABCMeta):
     @abstractmethod
     async def on_guild_channel_pins_update(
-        self, channel: GuildChannel, last_pin: Optional[datetime]
+        self, channel: GuildChannel, last_pin: datetime | None
     ) -> None:
         ...
 
@@ -336,8 +338,8 @@ class OnGuildEmojisUpdate(metaclass=ABCMeta):
     async def on_guild_emojis_update(
         self,
         guild: discord.Guild,
-        before: List[discord.Emoji],
-        after: List[discord.Emoji],
+        before: list[discord.Emoji],
+        after: list[discord.Emoji],
     ) -> None:
         ...
 

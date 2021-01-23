@@ -1,24 +1,24 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, TypeVar, cast
 
 from gino.crud import CRUDModel
 from sqlalchemy.dialects.postgresql import insert
 
-from ..compat import Mapping, Sequence
+from ..compat import Mapping, Sequence, dict, list, type
 
 _CM = TypeVar('_CM', bound=CRUDModel)
 
 
 async def create_or_update(
-    cls: Type[_CM], *, set_: Union[Sequence[str], Mapping[str, str]], **values: Any
+    cls: type[_CM], *, set_: Sequence[str] | Mapping[str, str], **values: Any
 ) -> _CM:
     column_name_map = cls._column_name_map
 
-    index_elements: List[str] = [
+    index_elements: list[str] = [
         column_name_map[k] for k in cls.__table__.primary_key.columns.keys()
     ]
-    insert_values: Dict[str, Any] = {column_name_map[k]: v for k, v in values.items()}
+    insert_values: dict[str, Any] = {column_name_map[k]: v for k, v in values.items()}
 
     set_values: Mapping[str, str]
     if hasattr(set_, 'get'):

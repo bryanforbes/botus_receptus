@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, cast
 
 import toml
 
-from .compat import TypedDict
+from .compat import TypedDict, dict
 
 
 class ConfigException(Exception):
@@ -18,7 +18,7 @@ class LoggingBase(TypedDict):
 
 
 class Logging(LoggingBase, total=False):
-    loggers: Dict[str, str]
+    loggers: dict[str, str]
 
 
 class ConfigBase(TypedDict):
@@ -35,7 +35,7 @@ class Config(ConfigBase, total=False):
 
 def load(path: str) -> Config:
     config_toml = toml.load(path)
-    config: Optional[Config] = config_toml.get('bot')
+    config: Config | None = config_toml.get('bot')
 
     if config is None:
         raise ConfigException('"bot" section not in config file')
