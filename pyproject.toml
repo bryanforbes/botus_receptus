@@ -30,9 +30,9 @@ uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
-db_typed = ["asyncpg", "asyncpg-stubs"]
+db-typed = ["asyncpg", "asyncpg-stubs"]
 gino = ["gino", "sqlalchemy"]
-gino_typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
+gino-typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
