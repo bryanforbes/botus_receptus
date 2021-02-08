@@ -16,7 +16,7 @@ aioitertools = "^0.7.1"
 attrs = ">=18.2.0"
 click = ">=6.7"
 "discord-ext-typed-commands" = "^1.0.3"
-"discord.py-stubs" = "^1.6.0.0"
+"discord.py-stubs" = {version = "^1.6.0.0", optional = true}
 "discord.py" = "^1.6.0"
 "typing-extensions" = {version = ">=3.7.4", python = "<3.8"}
 toml = "^0.10.2"
@@ -24,15 +24,17 @@ pendulum = "~2.1.2"
 asyncpg = {version = ">=0.18.2", optional = true}
 gino = {version = "^1.0.1", optional = true}
 sqlalchemy = {version = "~1.2.18", optional = true}
-asyncpg-stubs = {rev = "11e06c4dc088bee3715dca62f0019c5edfc4d275", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
-gino-stubs = {rev = "49fde3ab26951675394769ee238cfa8625d40960", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
+asyncpg-stubs = {rev = "ecec5efc851bcdd6995a1c468acf40187fa0028d", git = "https://github.com/bryanforbes/asyncpg-stubs.git", optional = true}
+gino-stubs = {rev = "e480c360932593c24af9a43ca8862a432e081266", git = "https://github.com/bryanforbes/gino-stubs.git", optional = true}
 uvloop = {version = "~0.14.0", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
-dbtyped = ["asyncpg", "asyncpg-stubs"]
+dbtyped = ["asyncpg", "asyncpg-stubs", "discord.py-stubs"]
+dev = ["asyncpg", "gino", "sqlalchemy", "uvloop", "asyncpg-stubs", "discord.py-stubs", "gino-stubs"]
 gino = ["gino", "sqlalchemy"]
-ginotyped = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
+ginotyped = ["gino", "sqlalchemy", "asyncpg-stubs", "discord.py-stubs", "gino-stubs"]
+typed = ["discord.py-stubs"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
