@@ -800,15 +800,15 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 
 [extras]
 db = ["asyncpg"]
-db-typed = ["asyncpg", "asyncpg-stubs"]
+dbtyped = ["asyncpg", "asyncpg-stubs"]
 gino = ["gino", "sqlalchemy"]
-gino-typed = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
+ginotyped = ["gino", "sqlalchemy", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "ecffeca701c0521584be2787326f8c932b50946d6c98cf0103e967f95d0f391b"
+content-hash = "aee7de87459bb8eb999aee67be7877e30d52ab2e478b0e89923793d5b878fd14"
 
 [metadata.files]
 aiohttp = [

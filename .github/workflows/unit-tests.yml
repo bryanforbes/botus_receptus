@@ -38,7 +38,7 @@ jobs:
           venv-${{ matrix.python-version }}-
     - name: Install dependencies
       run: |
-        poetry install -v --extras "db gino_typed uvloop"
+        poetry install -v --extras "db ginotyped uvloop"
     - name: Pre-commit checks
       run: |
         poetry run pre-commit run --all-files
