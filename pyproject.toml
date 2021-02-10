@@ -6,7 +6,6 @@ authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
 packages = [
   { include = "botus_receptus", from = "src" },
-  { include = "uvloop-stubs/**/*.pyi", from = "src" },
 ]
 
 [tool.poetry.dependencies]
