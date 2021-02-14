@@ -71,7 +71,7 @@ class TestDbUtil(object):
     async def test_select_all(self, mock_db, args, kwargs, expected_query):
         await util.select_all(mock_db, *args, **kwargs)
 
-        mock_db.fetch.assert_called_once_with(expected_query, *args)
+        mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
@@ -133,7 +133,9 @@ class TestDbUtil(object):
     )
     async def test_select_one(self, mock_db, args, kwargs, expected_query):
         await util.select_one(mock_db, *args, **kwargs)
-        mock_db.fetchrow.assert_called_once_with(expected_query, *args)
+        mock_db.fetchrow.assert_called_once_with(
+            expected_query, *args, record_class=None
+        )
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
@@ -250,7 +252,7 @@ class TestDbUtil(object):
     async def test_search(self, mock_db, args, kwargs, expected_query):
         await util.search(mock_db, *args, **kwargs)
 
-        mock_db.fetch.assert_called_once_with(expected_query, *args)
+        mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(

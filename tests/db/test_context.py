@@ -134,6 +134,7 @@ class TestContext(object):
                 where=None,
                 joins=None,
                 group_by=None,
+                record_class=None,
             )
 
     @pytest.mark.asyncio
@@ -161,6 +162,7 @@ class TestContext(object):
                 where=None,
                 joins=None,
                 group_by=None,
+                record_class=None,
             )
 
     @pytest.mark.asyncio
@@ -195,6 +197,7 @@ class TestContext(object):
                 order_by=None,
                 joins=None,
                 group_by=None,
+                record_class=None,
             )
 
     @pytest.mark.asyncio

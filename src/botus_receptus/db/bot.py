@@ -12,7 +12,7 @@ from ..config import Config
 from .context import Context
 
 try:
-    from asyncpg import create_pool
+    from asyncpg import Record, create_pool
     from asyncpg.pool import Pool
 
     has_asyncpg = True
@@ -24,7 +24,7 @@ CT = TypeVar('CT', bound=Context)
 
 
 class BotBase(_BotBase[CT]):
-    pool: Pool
+    pool: Pool[Record]
     context_cls: ClassVar[type[CT]] = cast(type[CT], Context)
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
@@ -45,7 +45,7 @@ class BotBase(_BotBase[CT]):
             pool_kwargs['setup'] = cast(Any, self).__setup_connection__
 
         self.pool = cast(
-            Pool,
+            Pool[Record],
             self.loop.run_until_complete(
                 create_pool(
                     self.config.get('db_url', ''),

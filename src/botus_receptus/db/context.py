@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Type, TypeVar, cast, overload
 
+from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
 from discord.ext import typed_commands
@@ -22,18 +23,21 @@ from .util import delete_from, insert_into, search, select_all, select_one, upda
 if TYPE_CHECKING:
     from .bot import Bot
 
+_Record = TypeVar('_Record', bound=Record)
+
 
 @dataclass(slots=True)
 class AquireContextManager(
-    AbstractAsyncContextManager[PoolConnectionProxy], Awaitable[PoolConnectionProxy]
+    AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
+    Awaitable['PoolConnectionProxy[Record]'],
 ):
     ctx: Context
     timeout: float | None = None
 
-    def __await__(self) -> Generator[Any, None, PoolConnectionProxy]:
+    def __await__(self) -> Generator[Any, None, PoolConnectionProxy[Record]]:
         return self.ctx._acquire(self.timeout).__await__()
 
-    async def __aenter__(self) -> PoolConnectionProxy:
+    async def __aenter__(self) -> PoolConnectionProxy[Record]:
         return await self.ctx._acquire(self.timeout)
 
     async def __aexit__(self, *args: Any) -> None:
@@ -58,9 +62,9 @@ def ensure_db(func: F) -> F:
 
 class Context(typed_commands.Context):
     bot: Bot[Any]
-    db: PoolConnectionProxy
+    db: PoolConnectionProxy[Record]
 
-    async def _acquire(self, timeout: float | None) -> PoolConnectionProxy:
+    async def _acquire(self, timeout: float | None) -> PoolConnectionProxy[Record]:
         if not hasattr(self, 'db'):
             self.db = await self.bot.pool.acquire(timeout=timeout)
 
@@ -74,6 +78,34 @@ class Context(typed_commands.Context):
             await self.bot.pool.release(self.db)
             del self.db
 
+    @overload
+    async def select_all(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        where: Sequence[str] | None = ...,
+        group_by: Sequence[str] | None = ...,
+        order_by: str | None = ...,
+        joins: Sequence[tuple[str, str]] | None = ...,
+        record_class: None = ...,
+    ) -> list[Record]:
+        ...
+
+    @overload
+    async def select_all(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        where: Sequence[str] | None = ...,
+        group_by: Sequence[str] | None = ...,
+        order_by: str | None = ...,
+        joins: Sequence[tuple[str, str]] | None = ...,
+        record_class: Type[_Record],
+    ) -> list[_Record]:
+        ...
+
     @ensure_db
     async def select_all(
         self,
@@ -84,6 +116,7 @@ class Context(typed_commands.Context):
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
+        record_class: Any | None = None,
     ) -> list[Any]:
         return await select_all(
             self.db,
@@ -94,7 +127,34 @@ class Context(typed_commands.Context):
             where=where,
             group_by=group_by,
             joins=joins,
+            record_class=record_class,
         )
+
+    @overload
+    async def select_one(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        where: Sequence[str] | None = ...,
+        group_by: Sequence[str] | None = ...,
+        joins: Sequence[tuple[str, str]] | None = ...,
+        record_class: None = ...,
+    ) -> Record | None:
+        ...
+
+    @overload
+    async def select_one(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        where: Sequence[str] | None = ...,
+        group_by: Sequence[str] | None = ...,
+        joins: Sequence[tuple[str, str]] | None = ...,
+        record_class: Type[_Record],
+    ) -> _Record | None:
+        ...
 
     @ensure_db
     async def select_one(
@@ -105,6 +165,7 @@ class Context(typed_commands.Context):
         where: Sequence[str] | None = None,
         group_by: Sequence[str] | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
+        record_class: Any | None = None,
     ) -> Any | None:
         return await select_one(
             self.db,
@@ -114,7 +175,40 @@ class Context(typed_commands.Context):
             where=where,
             group_by=group_by,
             joins=joins,
+            record_class=record_class,
         )
+
+    @overload
+    async def search(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        search_columns: Sequence[str],
+        terms: Sequence[str],
+        where: Sequence[str] | None = None,
+        group_by: Sequence[str] | None = None,
+        order_by: str | None = None,
+        joins: Sequence[tuple[str, str]] | None = None,
+        record_class: None = ...,
+    ) -> list[Record]:
+        ...
+
+    @overload
+    async def search(
+        self,
+        *args: Any,
+        table: str,
+        columns: Sequence[str],
+        search_columns: Sequence[str],
+        terms: Sequence[str],
+        where: Sequence[str] | None = None,
+        group_by: Sequence[str] | None = None,
+        order_by: str | None = None,
+        joins: Sequence[tuple[str, str]] | None = None,
+        record_class: Type[_Record],
+    ) -> list[_Record]:
+        ...
 
     @ensure_db
     async def search(
@@ -128,6 +222,7 @@ class Context(typed_commands.Context):
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
+        record_class: Any | None = None,
     ) -> list[Any]:
         return await search(
             self.db,
@@ -140,6 +235,7 @@ class Context(typed_commands.Context):
             group_by=group_by,
             order_by=order_by,
             joins=joins,
+            record_class=record_class,
         )
 
     @ensure_db
