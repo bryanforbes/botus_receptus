@@ -12,8 +12,9 @@ from logging import (
     StreamHandler,
     getLogger,
 )
+from typing import Final
 
-from .compat import Final, Iterator, dict
+from .compat import Iterator, dict
 from .config import Config
 
 log_levels: Final[dict[str, int]] = {

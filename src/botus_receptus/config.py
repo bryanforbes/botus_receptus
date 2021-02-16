@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import Any, TypedDict, cast
 
 import toml
 
-from .compat import TypedDict, dict
+from .compat import dict
 
 
 class ConfigException(Exception):

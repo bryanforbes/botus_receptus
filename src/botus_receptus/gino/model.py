@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, TypeVar, cast
+from typing import Any, Final, TypeVar, cast
 
 from gino.declarative import ModelType
 from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
 
-from ..compat import Final, Mapping, Sequence
+from ..compat import Mapping, Sequence
 from ..compat import dict as Dict
 from ..compat import list, type
 

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from importlib.metadata import version
+from typing import Final
+
 from . import abc, checks, compat, formatting, re, util
 from .bot import Bot, DblBot
 from .cli import cli
@@ -9,10 +12,10 @@ from .context import EmbedContext, PaginatedContext
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 from .logging import setup_logging
 
-__title__ = 'botus_receptus'
-__author__ = 'Bryan Forbes'
-__license__ = 'BSD 3-clause'
-__version__ = '0.0.1a'
+__title__: Final = 'botus_receptus'
+__author__: Final = 'Bryan Forbes'
+__license__: Final = 'BSD 3-clause'
+__version__: Final = version('botus_receptus')
 
 __all__ = (
     'abc',

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TypedDict
 
 import discord
 from discord.ext import typed_commands
 
-from .compat import Iterable, TypedDict, list
+from .compat import Iterable, list
 
 
 class GuildContext(typed_commands.Context):

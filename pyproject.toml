@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "botus_receptus"
-version = "0.0.1a"
+version = "1.0.0dev0"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -9,14 +9,13 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 aioitertools = "^0.7.1"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
 "discord-ext-typed-commands" = "^1.0.3"
 "discord.py" = "^1.6.0"
-"typing-extensions" = {version = ">=3.7.4", python = "<3.8"}
 toml = "^0.10.2"
 pendulum = "~2.1.2"
 asyncpg = {version = ">=0.22.0", optional = true}

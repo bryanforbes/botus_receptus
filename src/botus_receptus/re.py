@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import re
 from functools import partial
-from typing import AnyStr, Union, cast
+from typing import AnyStr, Final, Protocol, Union, cast
 
-from .compat import Final, Iterable, Iterator, Pattern, Protocol
+from .compat import Iterable, Iterator, Pattern
 
 # Inspired by https://github.com/TehShrike/regex-fun
 

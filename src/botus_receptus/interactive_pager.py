@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import enum
 from abc import abstractmethod
-from typing import Any, Generic, TypeVar, Union, cast
+from typing import Any, Generic, TypedDict, TypeVar, Union, cast
 
 import discord
 from aioitertools import enumerate as aenumerate
@@ -13,7 +13,7 @@ from aioitertools.types import AnyIterable
 from attr import attrib, dataclass
 from discord.ext import typed_commands
 
-from .compat import AsyncIterable, Awaitable, Callable, TypedDict, list, tuple, type
+from .compat import AsyncIterable, Awaitable, Callable, list, tuple, type
 from .formatting import warning
 from .util import race
 

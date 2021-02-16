@@ -1,11 +1,7 @@
 from __future__ import annotations
 
 import sys
-
-if sys.version_info >= (3, 8):
-    from typing import Final, Literal, Protocol, TypedDict
-else:
-    from typing_extensions import Final, Literal, Protocol, TypedDict
+from typing import Final
 
 if sys.version_info >= (3, 9):
     from builtins import dict, list, tuple, type
@@ -40,16 +36,12 @@ __all__: Final = (
     'Callable',
     'Container',
     'Coroutine',
-    'Final',
     'Generator',
     'Iterable',
     'Iterator',
-    'Literal',
     'Mapping',
     'Pattern',
-    'Protocol',
     'Sequence',
-    'TypedDict',
     'dict',
     'list',
     'tuple',
