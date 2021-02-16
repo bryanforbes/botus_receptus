@@ -6,7 +6,7 @@ from typing import Any, TypeVar, Union
 import discord
 import pendulum
 
-from .compat import Awaitable, Container, Generator, Iterable, dict
+from .compat import Awaitable, Container, Final, Generator, Iterable, dict
 
 T = TypeVar('T')
 FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]
@@ -20,7 +20,7 @@ def has_any_role_id(member: discord.Member, ids: Container[int]) -> bool:
     return discord.utils.find(lambda role: role.id in ids, member.roles) is not None
 
 
-UNITS = {
+UNITS: Final = {
     'h': 'hours',
     'm': 'minutes',
     's': 'seconds',

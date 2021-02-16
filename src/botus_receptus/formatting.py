@@ -3,7 +3,7 @@ from __future__ import annotations
 from attr import attrib, dataclass
 
 from . import re
-from .compat import Iterable, Iterator, Protocol, list
+from .compat import Final, Iterable, Iterator, Protocol, list
 
 
 @dataclass(slots=True)
@@ -129,11 +129,11 @@ def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
     return pluralize
 
 
-_mass_mention_pattern_re = re.compile(
+_mass_mention_pattern_re: Final = re.compile(
     '@', re.named_group('target')(re.either('everyone', 'here'))
 )
 
-_formatting_re = re.compile(re.named_group('target')('[`*_~]'))
+_formatting_re: Final = re.compile(re.named_group('target')('[`*_~]'))
 
 
 def remove_mass_mentions(string: str) -> str:

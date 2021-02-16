@@ -11,7 +11,9 @@ from .compat import dict, type
 
 
 def config_callback(
-    ctx: click.Context, param: click.Parameter, value: str | int | bool | None
+    ctx: click.Context,
+    param: click.Parameter,
+    value: str | int | bool | None,
 ) -> Any:
     assert (
         not isinstance(value, (int, bool)) and value is not None

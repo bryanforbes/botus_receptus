@@ -4,7 +4,7 @@ import re
 from functools import partial
 from typing import AnyStr, Union, cast
 
-from .compat import Iterable, Iterator, Pattern, Protocol
+from .compat import Final, Iterable, Iterator, Pattern, Protocol
 
 # Inspired by https://github.com/TehShrike/regex-fun
 
@@ -27,19 +27,19 @@ class _GrouperType(Protocol):
         ...
 
 
-A = re.A
-ASCII = re.ASCII
-DEBUG = re.DEBUG
-I = re.I  # noqa: E741
-IGNORECASE = re.IGNORECASE
-L = re.L
-LOCALE = re.LOCALE
-M = re.M
-MULTILINE = re.MULTILINE
-S = re.S
-DOTALL = re.DOTALL
-X = re.X
-VERBOSE = re.VERBOSE
+A: Final = re.A
+ASCII: Final = re.ASCII
+DEBUG: Final = re.DEBUG
+I: Final = re.I  # noqa: E741
+IGNORECASE: Final = re.IGNORECASE
+L: Final = re.L
+LOCALE: Final = re.LOCALE
+M: Final = re.M
+MULTILINE: Final = re.MULTILINE
+S: Final = re.S
+DOTALL: Final = re.DOTALL
+X: Final = re.X
+VERBOSE: Final = re.VERBOSE
 
 
 def compile(*args: _ReOrStrType[AnyStr], flags: int = 0) -> Pattern[AnyStr]:
@@ -61,8 +61,8 @@ def group(*args: _ReOrStrType[AnyStr], start: str = '(?:', joiner: str = '') -> 
     return start + combine(*args, joiner=joiner) + ')'
 
 
-capture = cast(_ReOrStrFuncType, partial(group, start='('))
-either = cast(_ReOrStrFuncType, partial(group, joiner='|'))
+capture: Final = cast(_ReOrStrFuncType, partial(group, start='('))
+either: Final = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
 def named_group(name: str) -> _GrouperType:
@@ -88,9 +88,9 @@ def _suffix(*args: _ReOrStrType[AnyStr], suffix: str, greedy: bool = True) -> st
     return f'{atomic(combine(*args))}{suffix}{"" if greedy else "?"}'
 
 
-optional = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='?'))
-one_or_more = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='+'))
-any_number_of = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
+optional: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='?'))
+one_or_more: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='+'))
+any_number_of: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
 
 
 def exactly(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
@@ -105,7 +105,7 @@ def between(n: int, m: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) ->
     return _suffix(*args, suffix=f'{{{n},{m}}}', greedy=greedy)
 
 
-escape = re.escape
+escape: Final = re.escape
 
 
 def escape_all(patterns: Iterable[str | Pattern[AnyStr]]) -> Iterator[str]:
@@ -116,22 +116,26 @@ def escape_all(patterns: Iterable[str | Pattern[AnyStr]]) -> Iterator[str]:
             yield pattern.pattern  # type: ignore
 
 
-START = '^'
-END = '$'
-BACKSLASH = '\\'
-METACHARACTERS = r'.^$*+?{}[]\|()-'
-DIGIT = DIGITS = r'\d'
-WHITESPACE = r'\s'
-ALPHANUMERIC = ALPHANUMERICS = r'\w'
-ALPHA = ALPHAS = A_TO_Z = r'[a-zA-Z]'
-IDENTIFIER = r'[a-zA-Z_][\w_]*'
-WORD_BOUNDARY = r'\b'
-DOT = r'\.'
-UNDERSCORE = r'_'
-DASH = r'\-'
-ANYTHING = r'.*'
-ANY_CHARACTER = r'.'
-NEWLINE = r'\\n'
-TAB = r'\\t'
-LEFT_BRACKET = r'\['
-RIGHT_BRACKET = r'\]'
+START: Final = '^'
+END: Final = '$'
+BACKSLASH: Final = '\\'
+METACHARACTERS: Final = r'.^$*+?{}[]\|()-'
+DIGIT: Final = r'\d'
+DIGITS: Final = DIGIT
+WHITESPACE: Final = r'\s'
+ALPHANUMERIC = r'\w'
+ALPHANUMERICS: Final = ALPHANUMERIC
+ALPHA: Final = r'[a-zA-Z]'
+ALPHAS: Final = ALPHA
+A_TO_Z: Final = ALPHA
+IDENTIFIER: Final = r'[a-zA-Z_][\w_]*'
+WORD_BOUNDARY: Final = r'\b'
+DOT: Final = r'\.'
+UNDERSCORE: Final = r'_'
+DASH: Final = r'\-'
+ANYTHING: Final = r'.*'
+ANY_CHARACTER: Final = r'.'
+NEWLINE: Final = r'\\n'
+TAB: Final = r'\\t'
+LEFT_BRACKET: Final = r'\['
+RIGHT_BRACKET: Final = r'\]'

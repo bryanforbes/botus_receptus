@@ -13,10 +13,10 @@ from logging import (
     getLogger,
 )
 
-from .compat import Iterator, dict
+from .compat import Final, Iterator, dict
 from .config import Config
 
-log_levels: dict[str, int] = {
+log_levels: Final[dict[str, int]] = {
     'critical': CRITICAL,
     'error': ERROR,
     'warning': WARNING,

@@ -17,6 +17,10 @@ from .compat import AsyncIterable, Awaitable, Callable, TypedDict, list, tuple, 
 from .formatting import warning
 from .util import race
 
+IP = TypeVar('IP', bound='InteractivePager[Any]')
+IFP = TypeVar('IFP', bound='InteractiveFieldPager[Any]')
+LPS = TypeVar('LPS', bound='ListPageSource[Any]')
+T = TypeVar('T')
 WaitResult = tuple[discord.Reaction, Union[discord.User, discord.Member, None]]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
@@ -34,11 +38,6 @@ class CannotPaginate(Exception):
 
     def __init__(self, reason: CannotPaginateReason) -> None:
         self.reason = reason
-
-
-IP = TypeVar('IP', bound='InteractivePager[Any]')
-IFP = TypeVar('IFP', bound='InteractiveFieldPager[Any]')
-T = TypeVar('T')
 
 
 class Page(TypedDict):
@@ -95,9 +94,6 @@ class PageSource(Generic[T]):
         footer_text = self.get_footer_text(page)
 
         return {'entry_text': '\n'.join(lines).strip(), 'footer_text': footer_text}
-
-
-LPS = TypeVar('LPS', bound='ListPageSource[Any]')
 
 
 @dataclass(slots=True)
