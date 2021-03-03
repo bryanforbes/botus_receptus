@@ -34,13 +34,13 @@ class AquireContextManager(
     ctx: Context
     timeout: float | None = None
 
-    def __await__(self) -> Generator[Any, None, PoolConnectionProxy[Record]]:
+    def __await__(self, /) -> Generator[Any, None, PoolConnectionProxy[Record]]:
         return self.ctx._acquire(self.timeout).__await__()
 
-    async def __aenter__(self) -> PoolConnectionProxy[Record]:
+    async def __aenter__(self, /) -> PoolConnectionProxy[Record]:
         return await self.ctx._acquire(self.timeout)
 
-    async def __aexit__(self, *args: Any) -> None:
+    async def __aexit__(self, /, *args: Any) -> None:
         await self.ctx.release()
 
 
@@ -48,8 +48,8 @@ FunctionType = Callable[..., Coroutine[Any, Any, Any]]
 F = TypeVar('F', bound=FunctionType)
 
 
-def ensure_db(func: F) -> F:
-    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+def ensure_db(func: F, /) -> F:
+    def wrapper(self: Any, /, *args: Any, **kwargs: Any) -> Any:
         if not hasattr(self, 'db'):
             raise RuntimeError(
                 'No database object available; ensure acquire() was called'
@@ -64,16 +64,16 @@ class Context(typed_commands.Context):
     bot: Bot[Any]
     db: PoolConnectionProxy[Record]
 
-    async def _acquire(self, timeout: float | None) -> PoolConnectionProxy[Record]:
+    async def _acquire(self, timeout: float | None, /) -> PoolConnectionProxy[Record]:
         if not hasattr(self, 'db'):
             self.db = await self.bot.pool.acquire(timeout=timeout)
 
         return self.db
 
-    def acquire(self, *, timeout: float | None = None) -> AquireContextManager:
+    def acquire(self, /, *, timeout: float | None = None) -> AquireContextManager:
         return AquireContextManager(self, timeout)
 
-    async def release(self) -> None:
+    async def release(self, /) -> None:
         if hasattr(self, 'db'):
             await self.bot.pool.release(self.db)
             del self.db
@@ -81,6 +81,7 @@ class Context(typed_commands.Context):
     @overload
     async def select_all(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -95,6 +96,7 @@ class Context(typed_commands.Context):
     @overload
     async def select_all(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -109,6 +111,7 @@ class Context(typed_commands.Context):
     @ensure_db
     async def select_all(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -133,6 +136,7 @@ class Context(typed_commands.Context):
     @overload
     async def select_one(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -146,6 +150,7 @@ class Context(typed_commands.Context):
     @overload
     async def select_one(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -159,6 +164,7 @@ class Context(typed_commands.Context):
     @ensure_db
     async def select_one(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -181,6 +187,7 @@ class Context(typed_commands.Context):
     @overload
     async def search(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -197,6 +204,7 @@ class Context(typed_commands.Context):
     @overload
     async def search(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -213,6 +221,7 @@ class Context(typed_commands.Context):
     @ensure_db
     async def search(
         self,
+        /,
         *args: Any,
         table: str,
         columns: Sequence[str],
@@ -241,6 +250,7 @@ class Context(typed_commands.Context):
     @ensure_db
     async def update(
         self,
+        /,
         *args: Any,
         table: str,
         values: dict[str, Any],
@@ -250,10 +260,12 @@ class Context(typed_commands.Context):
 
     @ensure_db
     async def insert_into(
-        self, *, table: str, values: dict[str, Any], extra: str = ''
+        self, /, *, table: str, values: dict[str, Any], extra: str = ''
     ) -> None:
         return await insert_into(self.db, table=table, values=values, extra=extra)
 
     @ensure_db
-    async def delete_from(self, *args: Any, table: str, where: Sequence[str]) -> None:
+    async def delete_from(
+        self, /, *args: Any, table: str, where: Sequence[str]
+    ) -> None:
         return await delete_from(self.db, *args, table=table, where=where)

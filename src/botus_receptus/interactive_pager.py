@@ -36,7 +36,7 @@ class CannotPaginateReason(enum.IntEnum):
 class CannotPaginate(Exception):
     reason: CannotPaginateReason
 
-    def __init__(self, reason: CannotPaginateReason) -> None:
+    def __init__(self, reason: CannotPaginateReason, /) -> None:
         self.reason = reason
 
 
@@ -52,7 +52,7 @@ class PageSource(Generic[T]):
     show_entry_count: bool
     max_pages: int = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         max_pages, left_over = divmod(self.total, self.per_page)
 
         if left_over:
@@ -61,17 +61,21 @@ class PageSource(Generic[T]):
         self.max_pages = max_pages
 
     @property
-    def paginated(self) -> bool:
+    def paginated(self, /) -> bool:
         return self.total > self.per_page
 
     @abstractmethod
-    def get_page_items(self, page: int) -> Awaitable[AnyIterable[T]] | AnyIterable[T]:
+    def get_page_items(
+        self,
+        page: int,
+        /,
+    ) -> Awaitable[AnyIterable[T]] | AnyIterable[T]:
         ...
 
-    def format_line(self, index: int, entry: T) -> str:
+    def format_line(self, index: int, entry: T, /) -> str:
         return f'{index}. {entry}'
 
-    def get_footer_text(self, page: int) -> str | None:
+    def get_footer_text(self, page: int, /) -> str | None:
         if self.max_pages < 2:
             return None
 
@@ -82,7 +86,7 @@ class PageSource(Generic[T]):
 
         return text
 
-    async def get_page(self, page: int) -> Page:
+    async def get_page(self, page: int, /) -> Page:
         entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         lines = [
             self.format_line(index, entry)
@@ -100,7 +104,7 @@ class PageSource(Generic[T]):
 class ListPageSource(PageSource[T]):
     entries: list[T]
 
-    def get_page_items(self, page: int) -> list[T]:
+    def get_page_items(self, page: int, /) -> list[T]:
         base = (page - 1) * self.per_page
         return self.entries[base : base + self.per_page]
 
@@ -109,6 +113,7 @@ class ListPageSource(PageSource[T]):
         cls: type[LPS],
         entries: list[T],
         per_page: int,
+        /,
         *,
         show_entry_count: bool = True,
     ) -> LPS:
@@ -138,7 +143,7 @@ class InteractivePager(Generic[T]):
     match: Callable[[], Awaitable[None]] | None = attrib(init=False, default=None)
     help_task: asyncio.Task[None] | None = attrib(init=False, default=None)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self.embed = discord.Embed()
         self.paginating = self.source.paginated
         self.reaction_emojis = [
@@ -163,6 +168,7 @@ class InteractivePager(Generic[T]):
         self,
         reaction: discord.Reaction,
         user: discord.User | discord.Member | None,
+        /,
     ) -> bool:
         if user is None or user.id != self.author.id:
             return False
@@ -188,7 +194,7 @@ class InteractivePager(Generic[T]):
 
         return False
 
-    def __message_check(self, message: discord.Message) -> bool:
+    def __message_check(self, message: discord.Message, /) -> bool:
         return (
             message.author == self.author
             and message.channel == self.channel
@@ -196,7 +202,7 @@ class InteractivePager(Generic[T]):
         )
 
     async def modify_embed(
-        self, page: Page, page_num: int, *, first: bool = False
+        self, page: Page, page_num: int, /, *, first: bool = False
     ) -> None:
         lines = [page['entry_text']]
 
@@ -209,7 +215,7 @@ class InteractivePager(Generic[T]):
 
         self.embed.description = '\n'.join(lines)
 
-    async def __show_page(self, page_num: int, *, first: bool = False) -> None:
+    async def __show_page(self, page_num: int, /, *, first: bool = False) -> None:
         self.current_page = page_num
         page = await self.source.get_page(page_num)
         await self.modify_embed(page, page_num, first=first)
@@ -230,27 +236,27 @@ class InteractivePager(Generic[T]):
 
             await self.message.add_reaction(reaction)
 
-    async def __checked_show_page(self, page: int) -> None:
+    async def __checked_show_page(self, page: int, /) -> None:
         if page > 0 and page <= self.source.max_pages:
             await self.__show_page(page)
 
-    async def __first_page(self) -> None:
+    async def __first_page(self, /) -> None:
         '''goes to the first page'''
         await self.__show_page(1)
 
-    async def __last_page(self) -> None:
+    async def __last_page(self, /) -> None:
         '''goes to the last page'''
         await self.__show_page(self.source.max_pages)
 
-    async def __previous_page(self) -> None:
+    async def __previous_page(self, /) -> None:
         '''goes to the previous page'''
         await self.__checked_show_page(self.current_page - 1)
 
-    async def __next_page(self) -> None:
+    async def __next_page(self, /) -> None:
         '''goes to the next page'''
         await self.__checked_show_page(self.current_page + 1)
 
-    async def __numbered_page(self) -> None:
+    async def __numbered_page(self, /) -> None:
         '''lets you type a page number to go to'''
         to_delete: list[discord.Message] = []
         to_delete.append(await self.channel.send('What page do you want to go to?'))
@@ -280,7 +286,7 @@ class InteractivePager(Generic[T]):
         except Exception:
             pass
 
-    async def __stop_pages(self) -> None:
+    async def __stop_pages(self, /) -> None:
         '''stops the interactive pagination session'''
         await self.message.delete()
         self.paginating = False
@@ -288,11 +294,11 @@ class InteractivePager(Generic[T]):
             self.help_task.cancel()
             self.help_task = None
 
-    async def __show_current_page(self) -> None:
+    async def __show_current_page(self, /) -> None:
         if self.paginating:
             await self.__show_page(self.current_page)
 
-    async def __show_help(self) -> None:
+    async def __show_help(self, /) -> None:
         '''shows this message'''
         messages = [
             'Welcome to the interactive pager!\n',
@@ -329,7 +335,7 @@ class InteractivePager(Generic[T]):
 
         self.help_task = self.bot.loop.create_task(go_back_to_current_page())
 
-    async def paginate(self) -> None:
+    async def paginate(self, /) -> None:
         first_page = self.__show_page(1, first=True)
         if not self.paginating:
             await first_page
@@ -382,7 +388,12 @@ class InteractivePager(Generic[T]):
             await self.match()
 
     @classmethod
-    def create(cls: type[IP], ctx: typed_commands.Context, source: PageSource[T]) -> IP:
+    def create(
+        cls: type[IP],
+        ctx: typed_commands.Context,
+        source: PageSource[T],
+        /,
+    ) -> IP:
         if ctx.guild is not None and ctx.guild.me is not None:
             permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
                 ctx.guild.me
@@ -422,10 +433,10 @@ class FieldPage(Page):
 
 @dataclass(slots=True)
 class FieldPageSource(PageSource[T]):
-    def format_field(self, index: int, entry: T) -> tuple[Any, Any]:
+    def format_field(self, index: int, entry: T, /) -> tuple[Any, Any]:
         return (index, entry)
 
-    async def get_page(self, page: int) -> FieldPage:
+    async def get_page(self, page: int, /) -> FieldPage:
         entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
             self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
@@ -442,7 +453,7 @@ class InteractiveFieldPager(InteractivePager[T]):
     source: FieldPageSource[T]
 
     async def modify_embed(  # type: ignore
-        self, page: FieldPage, page_num: int, *, first: bool = False
+        self, page: FieldPage, page_num: int, /, *, first: bool = False
     ) -> None:
         self.embed.clear_fields()
         self.embed.description = discord.Embed.Empty
@@ -455,6 +466,9 @@ class InteractiveFieldPager(InteractivePager[T]):
 
     @classmethod
     def create(  # type: ignore
-        cls: type[IFP], ctx: typed_commands.Context, source: FieldPageSource[T]
+        cls: type[IFP],
+        ctx: typed_commands.Context,
+        source: FieldPageSource[T],
+        /,
     ) -> IFP:
         return super().create(ctx, source)

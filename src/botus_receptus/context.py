@@ -11,15 +11,15 @@ from .compat import Iterable, list
 
 class GuildContext(typed_commands.Context):
     @discord.utils.cached_property
-    def guild(self) -> discord.Guild:  # type: ignore
+    def guild(self, /) -> discord.Guild:  # type: ignore
         return self.message.guild  # type: ignore
 
     @discord.utils.cached_property
-    def channel(self) -> discord.TextChannel:  # type: ignore
+    def channel(self, /) -> discord.TextChannel:  # type: ignore
         return self.message.channel  # type: ignore
 
     @discord.utils.cached_property
-    def author(self) -> discord.Member:  # type: ignore
+    def author(self, /) -> discord.Member:  # type: ignore
         return self.message.author  # type: ignore
 
 

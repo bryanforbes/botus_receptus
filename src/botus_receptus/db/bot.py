@@ -27,7 +27,7 @@ class BotBase(_BotBase[CT]):
     pool: Pool[Record]
     context_cls: ClassVar[type[CT]] = cast(type[CT], Context)
 
-    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         if not has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')
 
@@ -56,11 +56,11 @@ class BotBase(_BotBase[CT]):
             ),
         )
 
-    async def close(self) -> None:
+    async def close(self, /) -> None:
         await self.pool.close()
         await super().close()
 
-    async def process_commands(self, message: discord.Message) -> None:
+    async def process_commands(self, message: discord.Message, /) -> None:
         ctx = await self.get_context(message)
 
         async with ctx.acquire():

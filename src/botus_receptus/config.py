@@ -33,7 +33,7 @@ class Config(ConfigBase, total=False):
     dbl_token: str
 
 
-def load(path: str) -> Config:
+def load(path: str, /) -> Config:
     config_toml = toml.load(path)
     config: Config | None = config_toml.get('bot')
 

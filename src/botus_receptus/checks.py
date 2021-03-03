@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 def dm_only() -> core._CheckDecorator:
-    def predicate(ctx: core._CT) -> bool:
+    def predicate(ctx: core._CT, /) -> bool:
         if not isinstance(ctx.channel, discord.DMChannel):
             raise OnlyDirectMessage('This command can only be used in private messags.')
         return True
@@ -21,7 +21,7 @@ def dm_only() -> core._CheckDecorator:
 
 
 def is_guild_owner() -> core._CheckDecorator:
-    def predicate(ctx: core._CT) -> bool:
+    def predicate(ctx: core._CT, /) -> bool:
         if ctx.guild is None:
             raise typed_commands.NoPrivateMessage(
                 'This command cannot be used in private messages.'

@@ -13,17 +13,17 @@ _ReOrStrType = Union[str, Pattern[AnyStr]]
 
 
 class _ReOrStrFuncType(Protocol):
-    def __call__(self, *__args: _ReOrStrType[AnyStr]) -> str:
+    def __call__(self, /, *args: _ReOrStrType[AnyStr]) -> str:
         ...
 
 
 class _ReOrStrGreedyFuncType(Protocol):
-    def __call__(self, *__args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
+    def __call__(self, /, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
         ...
 
 
 class _GrouperType(Protocol):
-    def __call__(self, *__args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
+    def __call__(self, /, *args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
         ...
 
 
@@ -46,7 +46,7 @@ def compile(*args: _ReOrStrType[AnyStr], flags: int = 0) -> Pattern[AnyStr]:
     return re.compile(combine(*args), flags=flags)  # type: ignore
 
 
-def _to_str(reOrStr: _ReOrStrType[AnyStr]) -> str:
+def _to_str(reOrStr: _ReOrStrType[AnyStr], /) -> str:
     if isinstance(reOrStr, str):
         return reOrStr
     else:
@@ -65,14 +65,14 @@ capture: Final = cast(_ReOrStrFuncType, partial(group, start='('))
 either: Final = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
-def named_group(name: str) -> _GrouperType:
+def named_group(name: str, /) -> _GrouperType:
     def grouper(*args: _ReOrStrType[AnyStr], joiner: str = '') -> str:
         return group(*args, start=f'(?P<{name}>', joiner=joiner)
 
     return grouper
 
 
-def atomic(string: str) -> str:
+def atomic(string: str, /) -> str:
     if len(string) == 2 and string[0] == '\\':
         return string
 
@@ -93,22 +93,22 @@ one_or_more: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='+'))
 any_number_of: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
 
 
-def exactly(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
+def exactly(n: int, /, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n}}}', greedy=greedy)
 
 
-def at_least(n: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
+def at_least(n: int, /, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n},}}', greedy=greedy)
 
 
-def between(n: int, m: int, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
+def between(n: int, m: int, /, *args: _ReOrStrType[AnyStr], greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n},{m}}}', greedy=greedy)
 
 
 escape: Final = re.escape
 
 
-def escape_all(patterns: Iterable[str | Pattern[AnyStr]]) -> Iterator[str]:
+def escape_all(patterns: Iterable[str | Pattern[AnyStr]], /) -> Iterator[str]:
     for pattern in patterns:
         if isinstance(pattern, str):
             yield re.escape(pattern)

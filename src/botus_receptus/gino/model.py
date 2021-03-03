@@ -20,6 +20,7 @@ class ModelMixin:
     @classmethod
     async def create_or_update(
         cls: type[_M],
+        /,
         *,
         set_: Sequence[str] | Mapping[str, str],
         bind: GinoEngine | None = None,

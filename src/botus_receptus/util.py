@@ -12,11 +12,11 @@ T = TypeVar('T')
 FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]
 
 
-def has_any_role(member: discord.Member, roles: Container[str]) -> bool:
+def has_any_role(member: discord.Member, roles: Container[str], /) -> bool:
     return discord.utils.find(lambda role: role.name in roles, member.roles) is not None
 
 
-def has_any_role_id(member: discord.Member, ids: Container[int]) -> bool:
+def has_any_role_id(member: discord.Member, ids: Container[int], /) -> bool:
     return discord.utils.find(lambda role: role.id in ids, member.roles) is not None
 
 
@@ -31,7 +31,7 @@ UNITS: Final = {
 
 
 # Adapted from https://github.com/python-discord/site/blob/master/pysite/utils/time.py
-def parse_duration(duration: str) -> pendulum.Duration:
+def parse_duration(duration: str, /) -> pendulum.Duration:
     duration = duration.strip()
 
     if not duration:
@@ -62,6 +62,7 @@ def parse_duration(duration: str) -> pendulum.Duration:
 
 async def race(
     futures: Iterable[FutureT[T]],
+    /,
     *,
     timeout: float | None = None,
     loop: asyncio.AbstractEventLoop | None = None,

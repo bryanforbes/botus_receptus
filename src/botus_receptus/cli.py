@@ -14,6 +14,7 @@ def config_callback(
     ctx: click.Context,
     param: click.Parameter,
     value: str | int | bool | None,
+    /,
 ) -> Any:
     assert (
         not isinstance(value, (int, bool)) and value is not None
@@ -44,7 +45,7 @@ def config_callback(
     return bot_config
 
 
-def cli(bot_class: type[BotBase[Any]], default_config_path: str) -> click.Command:
+def cli(bot_class: type[BotBase[Any]], default_config_path: str, /) -> click.Command:
     @click.command()
     @click.option(
         '-c',

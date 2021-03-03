@@ -13,11 +13,11 @@ else:
 class Snowflake(IntBase):
     impl = String
 
-    def process_bind_param(self, value: Any, dialect: Any) -> str | None:
+    def process_bind_param(self, value: Any, dialect: Any, /) -> str | None:
         return str(value) if value is not None else value
 
-    def process_result_value(self, value: Any, dialect: Any) -> int | None:
+    def process_result_value(self, value: Any, dialect: Any, /) -> int | None:
         return int(value) if value is not None else value
 
-    def copy(self, **kwargs: Any) -> Snowflake:
+    def copy(self, /, **kwargs: Any) -> Snowflake:
         return Snowflake(self.impl.length)

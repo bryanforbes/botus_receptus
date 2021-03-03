@@ -13,28 +13,28 @@ _Record = TypeVar('_Record', bound=Record)
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-def _get_join_string(joins: Sequence[Tuple[str, str]] | None) -> str:
+def _get_join_string(joins: Sequence[Tuple[str, str]] | None, /) -> str:
     if joins is None or len(joins) == 0:
         return ''
 
     return ' ' + ' '.join(map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins))
 
 
-def _get_where_string(conditions: Sequence[str] | None) -> str:
+def _get_where_string(conditions: Sequence[str] | None, /) -> str:
     if conditions is None or len(conditions) == 0:
         return ''
 
     return ' WHERE ' + ' AND '.join(conditions)
 
 
-def _get_order_by_string(order_by: str | None) -> str:
+def _get_order_by_string(order_by: str | None, /) -> str:
     if order_by is None:
         return ''
 
     return f' ORDER BY {order_by} ASC'
 
 
-def _get_group_by_string(group_by: Sequence[str] | None) -> str:
+def _get_group_by_string(group_by: Sequence[str] | None, /) -> str:
     if group_by is None:
         return ''
 
@@ -44,6 +44,7 @@ def _get_group_by_string(group_by: Sequence[str] | None) -> str:
 @overload
 async def select_all(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -59,6 +60,7 @@ async def select_all(
 @overload
 async def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -73,6 +75,7 @@ async def select_all(
 
 async def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -99,6 +102,7 @@ async def select_all(
 @overload
 async def select_one(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -113,6 +117,7 @@ async def select_one(
 @overload
 async def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -126,6 +131,7 @@ async def select_one(
 
 async def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -149,6 +155,7 @@ async def select_one(
 @overload
 async def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -166,6 +173,7 @@ async def search(
 @overload
 async def search(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -182,6 +190,7 @@ async def search(
 
 async def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
+    /,
     *args: Any,
     table: str,
     columns: Sequence[str],
@@ -217,6 +226,7 @@ async def search(
 
 async def update(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     values: dict[str, Any],
@@ -230,6 +240,7 @@ async def update(
 
 async def insert_into(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *,
     table: str,
     values: dict[str, Any],
@@ -254,6 +265,7 @@ async def insert_into(
 
 async def delete_from(
     db: Connection[Any] | PoolConnectionProxy[Any],
+    /,
     *args: Any,
     table: str,
     where: Sequence[str],

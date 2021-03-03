@@ -14,12 +14,12 @@ CT = TypeVar('CT', bound=typed_commands.Context)
 class BotBase(_BotBase[CT]):
     db: ClassVar[Gino]
 
-    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         super().__init__(config, *args, **kwargs)
 
         self.loop.run_until_complete(self.db.set_bind(self.config.get('db_url', '')))
 
-    async def close(self) -> None:
+    async def close(self, /) -> None:
         bind = self.db.pop_bind()
 
         if bind is not None:

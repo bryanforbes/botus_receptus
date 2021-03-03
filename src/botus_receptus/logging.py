@@ -27,7 +27,7 @@ log_levels: Final[dict[str, int]] = {
 
 
 @contextlib.contextmanager
-def setup_logging(config: Config) -> Iterator[None]:
+def setup_logging(config: Config, /) -> Iterator[None]:
     try:
         bot_name = config['bot_name']
         log_file = config['logging']['log_file']

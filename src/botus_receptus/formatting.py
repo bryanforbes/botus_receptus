@@ -18,7 +18,7 @@ class Paginator(Iterable[str]):
     _count: int = attrib(init=False)
     _pages: list[str] = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self.clear()
 
         if self.prefix is not None:
@@ -33,7 +33,7 @@ class Paginator(Iterable[str]):
 
         self._real_max_size = self.max_size - (prefix_size + suffix_size)
 
-    def clear(self) -> None:
+    def clear(self, /) -> None:
         if self.prefix is not None:
             self._current_page = [self.prefix]
         else:
@@ -42,7 +42,7 @@ class Paginator(Iterable[str]):
         self._count = 0
         self._pages = []
 
-    def _add_line(self, line: str = '', *, empty: bool = False) -> None:
+    def _add_line(self, line: str = '', /, *, empty: bool = False) -> None:
         if self._count + len(line) > self._real_max_size:
             self.close_page()
 
@@ -53,7 +53,7 @@ class Paginator(Iterable[str]):
             self._current_page.append('')
             self._count += 1
 
-    def add_line(self, line: str = '', *, empty: bool = False) -> None:
+    def add_line(self, line: str = '', /, *, empty: bool = False) -> None:
         if len(line) == 0:
             self._add_line(line, empty=empty)
             return None
@@ -72,7 +72,7 @@ class Paginator(Iterable[str]):
 
             self._add_line(sub_line, empty=sub_empty)
 
-    def close_page(self) -> None:
+    def close_page(self, /) -> None:
         if self.suffix is not None:
             self._current_page.append(self.suffix)
         self._pages.append('\n'.join(self._current_page))
@@ -84,13 +84,13 @@ class Paginator(Iterable[str]):
 
         self._count = 0
 
-    def __len__(self) -> int:
+    def __len__(self, /) -> int:
         total = sum(len(p) for p in self._pages)
         prefix_length = (len(self.prefix) + 1) if self.prefix is not None else 0
         return total + self._count + prefix_length
 
     @property
-    def pages(self) -> list[str]:
+    def pages(self, /) -> list[str]:
         if self.prefix is not None:
             if len(self._current_page) > 1:
                 self.close_page()
@@ -100,7 +100,7 @@ class Paginator(Iterable[str]):
 
         return self._pages
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self, /) -> Iterator[str]:
         return self.pages.__iter__()
 
 
@@ -112,12 +112,12 @@ class EmbedPaginator(Paginator):
 
 
 class PluralizerType(Protocol):
-    def __call__(self, value: int, *, include_number: bool = True) -> str:
+    def __call__(self, value: int, /, *, include_number: bool = True) -> str:
         ...
 
 
 def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
-    def pluralize(value: int, *, include_number: bool = True) -> str:
+    def pluralize(value: int, /, *, include_number: bool = True) -> str:
         if include_number:
             result = f'{value} {word}'
         else:
@@ -138,47 +138,49 @@ _mass_mention_pattern_re: Final = re.compile(
 _formatting_re: Final = re.compile(re.named_group('target')('[`*_~]'))
 
 
-def remove_mass_mentions(string: str) -> str:
+def remove_mass_mentions(string: str, /) -> str:
     return _mass_mention_pattern_re.sub('@\u200b' r'\g<target>', string)
 
 
-def error(text: str) -> str:
+def error(text: str, /) -> str:
     return f'\N{NO ENTRY} {text}'
 
 
-def warning(text: str) -> str:
+def warning(text: str, /) -> str:
     return f'\N{WARNING SIGN} {text}'
 
 
-def info(text: str) -> str:
+def info(text: str, /) -> str:
     return f'\N{INFORMATION SOURCE} {text}'
 
 
-def bold(text: str) -> str:
+def bold(text: str, /) -> str:
     return f'**{text}**'
 
 
-def italics(text: str) -> str:
+def italics(text: str, /) -> str:
     return f'*{text}*'
 
 
-def strikethrough(text: str) -> str:
+def strikethrough(text: str, /) -> str:
     return f'~~{text}~~'
 
 
-def underline(text: str) -> str:
+def underline(text: str, /) -> str:
     return f'__{text}__'
 
 
-def inline_code(text: str) -> str:
+def inline_code(text: str, /) -> str:
     return f'`{text}`'
 
 
-def code_block(text: str, language: str = '') -> str:
+def code_block(text: str, language: str = '', /) -> str:
     return f'```{language}\n{text}\n```'
 
 
-def escape(text: str, *, mass_mentions: bool = False, formatting: bool = False) -> str:
+def escape(
+    text: str, /, *, mass_mentions: bool = False, formatting: bool = False
+) -> str:
     if mass_mentions:
         text = remove_mass_mentions(text)
     if formatting:

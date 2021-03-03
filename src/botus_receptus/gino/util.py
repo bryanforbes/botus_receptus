@@ -11,7 +11,7 @@ _CM = TypeVar('_CM', bound=CRUDModel)
 
 
 async def create_or_update(
-    cls: type[_CM], *, set_: Sequence[str] | Mapping[str, str], **values: Any
+    cls: type[_CM], /, *, set_: Sequence[str] | Mapping[str, str], **values: Any
 ) -> _CM:
     column_name_map = cls._column_name_map
 
