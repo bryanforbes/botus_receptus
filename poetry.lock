@@ -209,13 +209,14 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 name = "discord.py-stubs"
-version = "1.6.0.1"
+version = "1.6.2"
 description = "discord.py stubs"
 category = "dev"
 optional = false
 python-versions = ">=3.6.1,<4.0.0"
 
 [package.dependencies]
+"discord.py" = ">=1.6.0,<1.7.0"
 mypy = ">=0.782"
 typing-extensions = ">=3.7.4,<4.0.0"
 
@@ -802,7 +803,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b62586ac4335d9d15fcd0e31df71bdbdd33a40565e858f5e10b6beb0e0e0c129"
+content-hash = "50a7856b8996d788331cbb9b7dd37607f189db65ddc1d51d6f84416321017ba1"
 
 [metadata.files]
 aiohttp = [
@@ -948,8 +949,8 @@ discord-ext-typed-commands = [
     {file = "discord.py-1.6.0.tar.gz", hash = "sha256:ba8be99ff1b8c616f7b6dcb700460d0222b29d4c11048e74366954c465fdd05f"},
 ]
 "discord.py-stubs" = [
-    {file = "discord.py-stubs-1.6.0.1.tar.gz", hash = "sha256:1a9960998cd17cfe1d447d7ac3133982010b7a20913c5c0e17b4fa1be94c5233"},
-    {file = "discord.py_stubs-1.6.0.1-py3-none-any.whl", hash = "sha256:43956bf7d6a28769bf854318b395dfd39dcac53f41c293b3b32de0bd7bf02ac7"},
+    {file = "discord.py-stubs-1.6.2.tar.gz", hash = "sha256:c334ba6790f6b5873ccde22cf433b9f38161bd0e882115f2f1fadcf03ca22fa1"},
+    {file = "discord.py_stubs-1.6.2-py3-none-any.whl", hash = "sha256:1c33afbbce2fbdd95781a87e7872e554e1c67b0c9b7af4c966c52d24dbbacf68"},
 ]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
@@ -1156,8 +1157,6 @@ pyyaml = [
     {file = "PyYAML-5.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:73f099454b799e05e5ab51423c7bcf361c58d3206fa7b0d555426b1f4d9a3eaf"},
     {file = "PyYAML-5.3.1-cp38-cp38-win32.whl", hash = "sha256:06a0d7ba600ce0b2d2fe2e78453a470b5a6e000a985dd4a4e54e436cc36b0e97"},
     {file = "PyYAML-5.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:95f71d2af0ff4227885f7a6605c37fd53d3a106fcab511b8860ecca9fcf400ee"},
-    {file = "PyYAML-5.3.1-cp39-cp39-win32.whl", hash = "sha256:ad9c67312c84def58f3c04504727ca879cb0013b2517c85a9a253f0cb6380c0a"},
-    {file = "PyYAML-5.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:6034f55dab5fea9e53f436aa68fa3ace2634918e8b5994d82f3621c04ff5ed2e"},
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 regex = [
