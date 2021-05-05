@@ -34,7 +34,7 @@ asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev =
 "discord.py-stubs" = {version = "~1.6.0"}
 gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "75898850765a9d6da64a1409e44603312afdd398"}
 asynctest = "~0.13.0"
-black = "^20.8b1"
+black = "^21.5b0"
 coverage = {extras = ["toml"], version = "^5.5"}
 flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
