@@ -36,7 +36,7 @@ gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "7589
 asynctest = "~0.13.0"
 black = "^20.8b1"
 coverage = {extras = ["toml"], version = "^5.5"}
-flake8 = "~3.8"
+flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
 flake8-pyi = "^20.10"
 isort = "^5.8"
