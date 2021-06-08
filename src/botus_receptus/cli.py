@@ -20,6 +20,8 @@ def config_callback(
         not isinstance(value, (int, bool)) and value is not None
     ), "Invalid parameter type passed"
 
+    assert param.name is not None, "Invalid parameter name passed"
+
     try:
         bot_config = config.load(value)
     except (toml.TomlDecodeError, OSError) as e:
@@ -33,7 +35,7 @@ def config_callback(
         ctx.default_map = {}
 
     try:
-        cast(dict[str, Any], ctx.default_map).update(
+        ctx.default_map.update(
             {
                 k.replace("--", "").replace("-", "_"): v
                 for k, v in bot_config['logging'].items()
