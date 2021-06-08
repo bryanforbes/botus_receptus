@@ -30,9 +30,9 @@ gino = ["gino"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "9431f5814ac8aae10c74008fa02f61fa9630c999"}
+asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "ef8c5726dd4f51dd3e7ca0a7f4c13446e27453b9"}
 "discord.py-stubs" = {version = "~1.7.2"}
-gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "0edf0376ba02b1cf942bd2a9ae29f294cc76331f"}
+gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "63fe5bac7b5a780781472ca39f9b585615547e05"}
 asynctest = "~0.13.0"
 black = "^21.5b1"
 coverage = {extras = ["toml"], version = "^5.5"}
