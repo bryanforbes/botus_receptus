@@ -56,7 +56,7 @@ name = "asyncpg"
 version = "0.23.0"
 description = "An asyncio PostgreSQL driver"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5.0"
 
 [package.extras]
@@ -70,18 +70,19 @@ version = "0.22.0"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
-python-versions = "^3.6.1"
+python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
+asyncpg = "^0.23.0"
 mypy = ">=0.800"
-typing-extensions = "^3.7.4"
+typing-extensions = "^3.10.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "65acd45aa552071d0a96468511ada409668c42ab"
-resolved_reference = "65acd45aa552071d0a96468511ada409668c42ab"
+reference = "9431f5814ac8aae10c74008fa02f61fa9630c999"
+resolved_reference = "9431f5814ac8aae10c74008fa02f61fa9630c999"
 
 [[package]]
 name = "asynctest"
@@ -208,11 +209,11 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 name = "discord.py-stubs"
-version = "1.7.1"
+version = "1.7.2"
 description = "discord.py stubs"
 category = "dev"
 optional = false
-python-versions = ">=3.6.1,<4.0.0"
+python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
 "discord.py" = ">=1.7.0,<1.8.0"
@@ -295,7 +296,7 @@ name = "gino"
 version = "1.0.1"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5,<4.0"
 
 [package.dependencies]
@@ -315,12 +316,12 @@ version = "1.0.1+0"
 description = "Gino stubs and mypy plugin"
 category = "dev"
 optional = false
-python-versions = "^3.6.1"
+python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
-asyncpg-stubs = "rev 65acd45aa552071d0a96468511ada409668c42ab"
-importlib_metadata = {version = "^1.7.0", markers = "python_version < \"3.8\""}
+asyncpg-stubs = "rev 9431f5814ac8aae10c74008fa02f61fa9630c999"
+gino = "~1.0.1"
 mypy = ">=0.800"
 sqlalchemy-stubs = "^0.4"
 typing-extensions = ">=3.7.4"
@@ -328,8 +329,8 @@ typing-extensions = ">=3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "75898850765a9d6da64a1409e44603312afdd398"
-resolved_reference = "75898850765a9d6da64a1409e44603312afdd398"
+reference = "0edf0376ba02b1cf942bd2a9ae29f294cc76331f"
+resolved_reference = "0edf0376ba02b1cf942bd2a9ae29f294cc76331f"
 
 [[package]]
 name = "identify"
@@ -349,21 +350,6 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-
-[[package]]
-name = "importlib-metadata"
-version = "1.7.0"
-description = "Read metadata from Python packages"
-category = "dev"
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-
-[package.dependencies]
-zipp = ">=0.5"
-
-[package.extras]
-docs = ["sphinx", "rst.linker"]
-testing = ["packaging", "pep517", "importlib-resources (>=1.3)"]
 
 [[package]]
 name = "iniconfig"
@@ -679,7 +665,7 @@ name = "sqlalchemy"
 version = "1.3.24"
 description = "Database Abstraction Library"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
@@ -732,7 +718,7 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "3.7.4.3"
+version = "3.10.0.0"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 category = "main"
 optional = false
@@ -781,18 +767,6 @@ python-versions = ">=3.5"
 idna = ">=2.0"
 multidict = ">=4.0"
 
-[[package]]
-name = "zipp"
-version = "3.4.0"
-description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.extras]
-docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
-
 [extras]
 db = ["asyncpg"]
 dev = ["asyncpg", "gino", "uvloop"]
@@ -802,7 +776,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c40afd9a1e665d0c8e9998ae1f9d73563989017fa056e195244405bf327fca55"
+content-hash = "66c297f2feea874cd7f5ee7e526a303093f6921a9aa823fbaa429f3ffc5ef1da"
 
 [metadata.files]
 aiohttp = [
@@ -949,8 +923,8 @@ discord-ext-typed-commands = [
     {file = "discord.py-1.7.2.tar.gz", hash = "sha256:114e76cd27362fb919abf7f001a2dbdc77c9a67cff74ed6a89aecd6582ee298e"},
 ]
 "discord.py-stubs" = [
-    {file = "discord.py-stubs-1.7.1.tar.gz", hash = "sha256:2de6d4e923f121cda62d506089d52c478bd1768d27480fe1eaab9206af5ac2a0"},
-    {file = "discord.py_stubs-1.7.1-py3-none-any.whl", hash = "sha256:9752ca1ca43a20988ab0ed95ec607a323fab9859b1c03fa1be46ceb5a291eed2"},
+    {file = "discord.py-stubs-1.7.2.tar.gz", hash = "sha256:1282385b93ed15dccc3fc072c9f6d8acaeb961197349500044e08f14c8a7a89f"},
+    {file = "discord.py_stubs-1.7.2-py3-none-any.whl", hash = "sha256:20577a31e231383bbafaedf23996c58ca079deb75e41b0a7c60c98300a0fd425"},
 ]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
@@ -988,10 +962,6 @@ identify = [
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
-]
-importlib-metadata = [
-    {file = "importlib_metadata-1.7.0-py2.py3-none-any.whl", hash = "sha256:dc15b2969b4ce36305c51eebe62d418ac7791e9a157911d58bfb1f9ccd8e2070"},
-    {file = "importlib_metadata-1.7.0.tar.gz", hash = "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -1157,8 +1127,6 @@ pyyaml = [
     {file = "PyYAML-5.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:73f099454b799e05e5ab51423c7bcf361c58d3206fa7b0d555426b1f4d9a3eaf"},
     {file = "PyYAML-5.3.1-cp38-cp38-win32.whl", hash = "sha256:06a0d7ba600ce0b2d2fe2e78453a470b5a6e000a985dd4a4e54e436cc36b0e97"},
     {file = "PyYAML-5.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:95f71d2af0ff4227885f7a6605c37fd53d3a106fcab511b8860ecca9fcf400ee"},
-    {file = "PyYAML-5.3.1-cp39-cp39-win32.whl", hash = "sha256:ad9c67312c84def58f3c04504727ca879cb0013b2517c85a9a253f0cb6380c0a"},
-    {file = "PyYAML-5.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:6034f55dab5fea9e53f436aa68fa3ace2634918e8b5994d82f3621c04ff5ed2e"},
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 regex = [
@@ -1290,9 +1258,9 @@ typed-ast = [
     {file = "typed_ast-1.4.2.tar.gz", hash = "sha256:9fc0b3cb5d1720e7141d103cf4819aea239f7d136acf9ee4a69b047b7986175a"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
-    {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
-    {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
+    {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
+    {file = "typing_extensions-3.10.0.0-py3-none-any.whl", hash = "sha256:779383f6086d90c99ae41cf0ff39aac8a7937a9283ce0a414e5dd782f4c94a84"},
+    {file = "typing_extensions-3.10.0.0.tar.gz", hash = "sha256:50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"},
 ]
 uvloop = [
     {file = "uvloop-0.15.2-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:19fa1d56c91341318ac5d417e7b61c56e9a41183946cc70c411341173de02c69"},
@@ -1328,8 +1296,4 @@ yarl = [
     {file = "yarl-1.5.1-cp38-cp38-win32.whl", hash = "sha256:f379b7f83f23fe12823085cd6b906edc49df969eb99757f58ff382349a3303c6"},
     {file = "yarl-1.5.1-cp38-cp38-win_amd64.whl", hash = "sha256:9102b59e8337f9874638fcfc9ac3734a0cfadb100e47d55c20d0dc6087fb4692"},
     {file = "yarl-1.5.1.tar.gz", hash = "sha256:c22c75b5f394f3d47105045ea551e08a3e804dc7e01b37800ca35b58f856c3d6"},
-]
-zipp = [
-    {file = "zipp-3.4.0-py3-none-any.whl", hash = "sha256:102c24ef8f171fd729d46599845e95c7ab894a4cf45f5de11a44cc7444fb1108"},
-    {file = "zipp-3.4.0.tar.gz", hash = "sha256:ed5eee1974372595f9e416cc7bbeeb12335201d8081ca8a0743c954d4446e5cb"},
 ]
