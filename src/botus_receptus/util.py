@@ -1,15 +1,14 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Final, TypeVar, Union
+from typing import Final, TypeVar
 
 import discord
 import pendulum
 
-from .compat import Awaitable, Container, Generator, Iterable, dict
+from .compat import Awaitable, Container, Iterable, dict
 
 T = TypeVar('T')
-FutureT = Union['asyncio.Future[T]', Generator[Any, None, T], Awaitable[T]]
 
 
 def has_any_role(member: discord.Member, roles: Container[str], /) -> bool:
@@ -61,7 +60,7 @@ def parse_duration(duration: str, /) -> pendulum.Duration:
 
 
 async def race(
-    futures: Iterable[FutureT[T]],
+    futures: Iterable[asyncio.Future[T] | Awaitable[T]],
     /,
     *,
     timeout: float | None = None,

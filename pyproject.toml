@@ -40,7 +40,7 @@ flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
 flake8-pyi = "^20.10"
 isort = "^5.8"
-mypy = ">=0.800"
+mypy = ">=0.900"
 pre-commit = "^2.13"
 pytest = "^6.2"
 pytest-asyncio = "^0.15.1"
@@ -48,6 +48,8 @@ pytest-cov = "^2.12"
 pytest-mock = "^3.6"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.2"
+types-click = "0.1.12"
+types-toml = "^0.1.1"
 
 [tool.black]
 line-length = 88
