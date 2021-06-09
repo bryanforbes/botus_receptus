@@ -31,7 +31,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "ef8c5726dd4f51dd3e7ca0a7f4c13446e27453b9"}
-"discord.py-stubs" = {version = "~1.7.2"}
+"discord.py-stubs" = {version = "~1.7.3"}
 gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "63fe5bac7b5a780781472ca39f9b585615547e05"}
 asynctest = "~0.13.0"
 black = "^21.5b2"
@@ -40,7 +40,7 @@ flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
 flake8-pyi = "^20.10"
 isort = "^5.8"
-mypy = ">=0.900"
+mypy = ">=0.901"
 pre-commit = "^2.13"
 pytest = "^6.2"
 pytest-asyncio = "^0.15.1"
