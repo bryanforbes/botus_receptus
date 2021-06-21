@@ -81,8 +81,8 @@ typing-extensions = "^3.10.0"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "ef8c5726dd4f51dd3e7ca0a7f4c13446e27453b9"
-resolved_reference = "ef8c5726dd4f51dd3e7ca0a7f4c13446e27453b9"
+reference = "0894bcb5f773d413f54bc956b83880f225258337"
+resolved_reference = "0894bcb5f773d413f54bc956b83880f225258337"
 
 [[package]]
 name = "asynctest"
@@ -324,7 +324,7 @@ python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
-asyncpg-stubs = "rev ef8c5726dd4f51dd3e7ca0a7f4c13446e27453b9"
+asyncpg-stubs = "rev 0894bcb5f773d413f54bc956b83880f225258337"
 gino = "~1.0.1"
 mypy = ">=0.800"
 sqlalchemy-stubs = "^0.4"
@@ -333,8 +333,8 @@ typing-extensions = ">=3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "63fe5bac7b5a780781472ca39f9b585615547e05"
-resolved_reference = "63fe5bac7b5a780781472ca39f9b585615547e05"
+reference = "5914eaf2c5c9624cc457faa3a3fef629f027f830"
+resolved_reference = "5914eaf2c5c9624cc457faa3a3fef629f027f830"
 
 [[package]]
 name = "identify"
@@ -782,7 +782,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3aed4ffa9ff1bae86fef428cd8e98413cff29bdf0f476d9e0e1b93c55dc2fa9a"
+content-hash = "f9808d27a17a8f1dbb2f2f38e620c2c189798c192e0be1f1826cb0ebf18e34ce"
 
 [metadata.files]
 aiohttp = [
