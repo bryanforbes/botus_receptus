@@ -10,7 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-aioitertools = "^0.7.1"
+aioitertools = "^0.8.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=8.0"
