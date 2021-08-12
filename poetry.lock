@@ -18,14 +18,11 @@ speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
 name = "aioitertools"
-version = "0.7.1"
+version = "0.8.0"
 description = "itertools and builtins for AsyncIO and mixed iterables"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[package.dependencies]
-typing_extensions = ">=3.7"
 
 [[package]]
 name = "apipkg"
@@ -735,7 +732,7 @@ python-versions = "*"
 name = "typing-extensions"
 version = "3.10.0.0"
 description = "Backported and Experimental Type Hints for Python 3.5+"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -791,7 +788,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b520a156849329657c44ed6f79b87e3787d2017a43bc3fa79e599bb34d27aa1d"
+content-hash = "077a01ab9d759ce051c0cbc47a851a97801218045eea8de62ad5ec13f9216896"
 
 [metadata.files]
 aiohttp = [
@@ -810,8 +807,8 @@ aiohttp = [
     {file = "aiohttp-3.6.3.tar.gz", hash = "sha256:698cd7bc3c7d1b82bb728bae835724a486a8c376647aec336aa21a60113c3645"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.7.1-py3-none-any.whl", hash = "sha256:8972308474c41ed5e0636819f948ebff32f2318e70f7e7d23cd208c4357cc773"},
-    {file = "aioitertools-0.7.1.tar.gz", hash = "sha256:54a56c7cf3b5290d1cb5e8974353c9f52c677612b5d69a859369a020c53414a3"},
+    {file = "aioitertools-0.8.0-py3-none-any.whl", hash = "sha256:3a141f01d1050ac8c01917aee248d262736dab875ce0471f0dba5f619346b452"},
+    {file = "aioitertools-0.8.0.tar.gz", hash = "sha256:8b02facfbc9b0f1867739949a223f3d3267ed8663691cc95abd94e2c1d8c2b46"},
 ]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
