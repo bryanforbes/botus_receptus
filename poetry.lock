@@ -722,7 +722,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "types-toml"
-version = "0.1.5"
+version = "0.10.0"
 description = "Typing stubs for toml"
 category = "dev"
 optional = false
@@ -788,7 +788,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "7795af3f9f65471d5252eff526b4b654d9464ced0d25e76362155f609bc12632"
+content-hash = "74b3792f43388af01d07a5f730d369b28a24cd06616b2141bab22b4b45cf33ac"
 
 [metadata.files]
 aiohttp = [
@@ -1245,8 +1245,8 @@ tomli = [
     {file = "tomli-1.2.1.tar.gz", hash = "sha256:a5b75cb6f3968abb47af1b40c1819dc519ea82bcc065776a866e8d74c5ca9442"},
 ]
 types-toml = [
-    {file = "types-toml-0.1.5.tar.gz", hash = "sha256:fc5e1df92c245404e4360c63568e9f0e732b0cabea7a220a4788d52b78f5dc59"},
-    {file = "types_toml-0.1.5-py3-none-any.whl", hash = "sha256:dd00526680595aad0eade682bd8a9e9513e9b4b8932daed159925fe446fc90a9"},
+    {file = "types-toml-0.10.0.tar.gz", hash = "sha256:64f88a257dd62465b01fcf0d1ed4ffcaf19e320ee3e731c26a2e9dcc5090fdbb"},
+    {file = "types_toml-0.10.0-py3-none-any.whl", hash = "sha256:c1bbb97ebe59593378769447343f78187017458cce8c3f1e76c80b9a930eef01"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
