@@ -27,9 +27,9 @@ def config_callback(
     except (toml.TomlDecodeError, OSError) as e:
         raise click.BadOptionUsage(
             param.name, f'Error reading configuration file: {e}', ctx=ctx
-        )
+        ) from e
     except config.ConfigException as e:
-        raise click.BadOptionUsage(param.name, e.args[0], ctx=ctx)
+        raise click.BadOptionUsage(param.name, e.args[0], ctx=ctx) from e
 
     if ctx.default_map is None:
         ctx.default_map = {}
