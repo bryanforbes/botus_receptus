@@ -23,7 +23,6 @@ if TYPE_CHECKING:
     class _BotBase(bot.BotBase[CT]):
         ...
 
-
 else:
 
     class _BotBase(bot.BotBase, Generic[CT]):
