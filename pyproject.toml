@@ -48,7 +48,7 @@ pytest-cov = "^3.0"
 pytest-mock = "^3.6"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.5"
-types-toml = "^0.10.1"
+types-toml = "^0.10.3"
 
 [tool.black]
 line-length = 88
