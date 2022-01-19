@@ -35,7 +35,7 @@ class BotBase(_BotBase[CT]):
     config: Config
     default_prefix: str
     session: aiohttp.ClientSession
-    context_cls: ClassVar[type[CT]] = cast(type[CT], typed_commands.Context)
+    context_cls: ClassVar = cast(type[CT], typed_commands.Context)
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:

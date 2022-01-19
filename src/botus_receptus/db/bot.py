@@ -25,7 +25,7 @@ CT = TypeVar('CT', bound=Context)
 
 class BotBase(_BotBase[CT]):
     pool: Pool[Record]
-    context_cls: ClassVar[type[CT]] = cast(type[CT], Context)
+    context_cls: ClassVar = cast(type[CT], Context)
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         if not has_asyncpg:
