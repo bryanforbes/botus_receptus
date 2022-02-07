@@ -92,6 +92,7 @@ filterwarnings = [
   "ignore",
   "always:::botus_receptus[.*]"
 ]
+asyncio_mode = "auto"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

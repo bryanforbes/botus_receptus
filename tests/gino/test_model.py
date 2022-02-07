@@ -42,7 +42,6 @@ def test_model(Base: Any) -> None:
         Base.create_or_update()
 
 
-@pytest.mark.asyncio
 async def test_model_inherit(db: Gino, Base: Any, row: Any, bind: Any) -> None:
     row.items.return_value = [('id', 0)]
 

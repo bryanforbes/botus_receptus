@@ -69,7 +69,6 @@ class TestPageSource(object):
 
     @pytest.mark.parametrize('show_entry_count', [False, True])
     @pytest.mark.parametrize('per_page,max_pages', [(2, 4), (3, 3), (4, 2), (10, 1)])
-    @pytest.mark.asyncio
     async def test_get_page(
         self, per_page: int, max_pages: int, show_entry_count: bool
     ) -> None:
@@ -108,7 +107,6 @@ class TestListPageSource(object):
 
     @pytest.mark.parametrize('show_entry_count', [False, True])
     @pytest.mark.parametrize('per_page', [2, 3, 4, 10])
-    @pytest.mark.asyncio
     async def test_get_page(self, per_page: int, show_entry_count: bool) -> None:
         strings = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         source = ListPageSource.create(
@@ -130,7 +128,6 @@ class TestListPageSource(object):
 class TestFieldPageSource(object):
     @pytest.mark.parametrize('show_entry_count', [False, True])
     @pytest.mark.parametrize('per_page,max_pages', [(2, 4), (3, 3), (4, 2), (10, 1)])
-    @pytest.mark.asyncio
     async def test_get_page(
         self, per_page: int, max_pages: int, show_entry_count: bool
     ) -> None:
@@ -236,7 +233,6 @@ class TestInteractivePager(object):
 
         assert excinfo.value.reason == reason
 
-    @pytest.mark.asyncio
     async def test_paginate_timeout(
         self,
         context: MockContext,
@@ -270,7 +266,6 @@ class TestInteractivePager(object):
         assert p.match is None
 
     @pytest.mark.parametrize('fetcher', [[[1, 2, 3, 4, 5, 6], 3]], indirect=['fetcher'])
-    @pytest.mark.asyncio
     async def test_paginate_two_pages_timeout(
         self,
         context: MockContext,
@@ -296,7 +291,6 @@ class TestInteractivePager(object):
     @pytest.mark.parametrize(
         'permissions', [dict(manage_messages=False)], indirect=['permissions']
     )
-    @pytest.mark.asyncio
     async def test_paginate_timeout_no_manage_messages(
         self,
         mocker: Mocker,
@@ -320,7 +314,6 @@ class TestInteractivePager(object):
         assert p.match is None
 
     @pytest.mark.parametrize('fetcher', [[[1, 2, 3, 4, 5], 10]], indirect=['fetcher'])
-    @pytest.mark.asyncio
     async def test_paginate_not_paginated(
         self,
         context: MockContext,
@@ -345,7 +338,6 @@ class TestInteractivePager(object):
         p.message.remove_reaction.assert_not_awaited()
         assert p.match is None
 
-    @pytest.mark.asyncio
     async def test_react_stop(
         self,
         context: MockContext,
@@ -372,7 +364,6 @@ class TestInteractivePager(object):
         ],
         ids=['next', 'last'],
     )
-    @pytest.mark.asyncio
     async def test_react_once(
         self,
         context: MockContext,
@@ -411,7 +402,6 @@ class TestInteractivePager(object):
         ],
         ids=['previous', 'first'],
     )
-    @pytest.mark.asyncio
     async def test_react_twice(
         self,
         context: MockContext,
@@ -436,7 +426,6 @@ class TestInteractivePager(object):
         p.message.edit.assert_awaited_with(embed=p.embed)
         await advance_time(125)
 
-    @pytest.mark.asyncio
     async def test_paginate_previous_checked(
         self,
         context: MockContext,
@@ -456,7 +445,6 @@ class TestInteractivePager(object):
         assert p.message.edit.await_count == 0
         await advance_time(125)
 
-    @pytest.mark.asyncio
     async def test_paginate_next_checked(
         self,
         context: MockContext,
@@ -485,7 +473,6 @@ class TestInteractivePager(object):
         await advance_time(125)
 
     @pytest.mark.parametrize('fetcher', [[[1, 2, 3, 4, 5, 6], 3]], indirect=['fetcher'])
-    @pytest.mark.asyncio
     async def test_paginate_react_check_fails(
         self,
         context: MockContext,

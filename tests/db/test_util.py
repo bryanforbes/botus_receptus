@@ -13,7 +13,6 @@ class TestDbUtil(object):
 
         return MockDb()
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
         [
@@ -73,7 +72,6 @@ class TestDbUtil(object):
 
         mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
         [
@@ -137,7 +135,6 @@ class TestDbUtil(object):
             expected_query, *args, record_class=None
         )
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
         [
@@ -254,7 +251,6 @@ class TestDbUtil(object):
 
         mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
         [
@@ -284,7 +280,6 @@ class TestDbUtil(object):
 
         mock_db.execute.assert_called_once_with(expected_query, *args)
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'kwargs,expected_query',
         [
@@ -309,7 +304,6 @@ class TestDbUtil(object):
         args = [value for value in kwargs['values'].values()]
         mock_db.execute.assert_called_once_with(expected_query, *args)
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
         [

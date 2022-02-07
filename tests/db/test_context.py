@@ -88,7 +88,6 @@ class TestContext(object):
             'botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock
         )
 
-    @pytest.mark.asyncio
     async def test_acquire(
         self,
         mocker: Any,
@@ -108,7 +107,6 @@ class TestContext(object):
 
         await ctx.release()
 
-    @pytest.mark.asyncio
     async def test_select_all(
         self,
         mocker: Any,
@@ -137,7 +135,6 @@ class TestContext(object):
                 record_class=None,
             )
 
-    @pytest.mark.asyncio
     async def test_select_one(
         self,
         mocker: Any,
@@ -165,7 +162,6 @@ class TestContext(object):
                 record_class=None,
             )
 
-    @pytest.mark.asyncio
     async def test_search(
         self,
         mocker: Any,
@@ -200,7 +196,6 @@ class TestContext(object):
                 record_class=None,
             )
 
-    @pytest.mark.asyncio
     async def test_update(
         self,
         mocker: Any,
@@ -222,7 +217,6 @@ class TestContext(object):
                 ctx.db, table='foo', values={'bar': 'baz'}, where=['spam = "ham"']
             )
 
-    @pytest.mark.asyncio
     async def test_insert_into(
         self,
         mocker: Any,
@@ -244,7 +238,6 @@ class TestContext(object):
                 ctx.db, table='foo', values={'bar': 'baz'}, extra=''
             )
 
-    @pytest.mark.asyncio
     async def test_delete_from(
         self,
         mocker: Any,

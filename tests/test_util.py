@@ -78,7 +78,6 @@ def test_parse_duration_failures(duration: str, message: str) -> None:
         util.parse_duration(duration)
 
 
-@pytest.mark.asyncio
 async def test_race(
     event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
 ) -> None:
@@ -101,7 +100,6 @@ async def test_race(
     assert task.result() == 3
 
 
-@pytest.mark.asyncio
 async def test_race_timeout(
     event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
 ) -> None:

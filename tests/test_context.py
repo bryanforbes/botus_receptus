@@ -29,7 +29,6 @@ def mock_context_send(mocker):
 
 
 class TestEmbedContext(object):
-    @pytest.mark.asyncio
     async def test_send_embed_description_only(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
@@ -49,7 +48,6 @@ class TestEmbedContext(object):
             nonce=None,
         )
 
-    @pytest.mark.asyncio
     async def test_send_embed_args(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
@@ -88,7 +86,6 @@ class TestEmbedContext(object):
             tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
         )
 
-    @pytest.mark.asyncio
     async def test_send_embed_other_args(self, mocker, mock_context_send):
         ctx = EmbedContext(prefix='~', message=MockMessage())
 
@@ -120,7 +117,6 @@ class TestPaginatedContext(object):
     def mock_paginator(self, mocker):
         return ['```\nasdf\n```', '```\nqwerty foo\n```']
 
-    @pytest.mark.asyncio
     async def test_send_pages(self, mocker, mock_context_send, mock_paginator):
         ctx = PaginatedContext(prefix='~', message=MockMessage())
 
@@ -135,7 +131,6 @@ class TestPaginatedContext(object):
             ]
         )
 
-    @pytest.mark.asyncio
     async def test_send_pages_args(self, mocker, mock_context_send, mock_paginator):
         ctx = PaginatedContext(prefix='~', message=MockMessage())
 

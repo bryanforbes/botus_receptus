@@ -43,7 +43,6 @@ class TestBot(object):
         assert bot.session is not None
 
     @pytest.mark.parametrize('context_cls', [None, MockContext])
-    @pytest.mark.asyncio
     async def test_get_context(self, mocker, config, context_cls) -> None:
         get_context = mocker.patch(
             'discord.ext.commands.bot.BotBase.get_context',
@@ -69,7 +68,6 @@ class TestBot(object):
         bot.run_with_config()
         bot.run.assert_called_once_with('API_KEY')
 
-    @pytest.mark.asyncio
     async def test_close(self, mocker, config) -> None:
         close = mocker.patch(
             'discord.ext.commands.bot.BotBase.close', new_callable=mocker.CoroutineMock
@@ -112,7 +110,6 @@ class TestDblBot(object):
             ('on_guild_remove', [None]),
         ],
     )
-    @pytest.mark.asyncio
     async def test_report_guilds(self, method, args, mocker, config) -> None:
         bot = DblBot(config)
         bot._connection = MockConnection()
