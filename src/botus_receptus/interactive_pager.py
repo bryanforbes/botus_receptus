@@ -3,25 +3,29 @@ from __future__ import annotations
 import asyncio
 import enum
 from abc import abstractmethod
-from typing import Any, Generic, TypedDict, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Generic, TypedDict, TypeVar, Union, cast
 
 import discord
-from aioitertools import enumerate as aenumerate
-from aioitertools import starmap
+import discord.abc
+from aioitertools.builtins import enumerate as aenumerate
 from aioitertools.helpers import maybe_await
+from aioitertools.itertools import starmap
 from aioitertools.types import AnyIterable
 from attr import attrib, dataclass
-from discord.ext import typed_commands
+from discord.ext import commands
 
-from .compat import AsyncIterable, Awaitable, Callable, list, tuple, type
+from .compat import AsyncIterable, Awaitable, Callable, list, tuple
 from .formatting import warning
 from .util import race
 
-IP = TypeVar('IP', bound='InteractivePager[Any]')
-IFP = TypeVar('IFP', bound='InteractiveFieldPager[Any]')
-LPS = TypeVar('LPS', bound='ListPageSource[Any]')
+if TYPE_CHECKING:
+    from typing_extensions import Self, TypeAlias
+
+
 T = TypeVar('T')
-WaitResult = tuple[discord.Reaction, Union[discord.User, discord.Member, None]]
+WaitResult: TypeAlias = tuple[
+    discord.Reaction, Union[discord.User, discord.Member, None]
+]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -110,13 +114,13 @@ class ListPageSource(PageSource[T]):
 
     @classmethod
     def create(
-        cls: type[LPS],
+        cls,
         entries: list[T],
         per_page: int,
         /,
         *,
         show_entry_count: bool = True,
-    ) -> LPS:
+    ) -> Self:
         return cls(
             total=len(entries),
             entries=entries,
@@ -127,9 +131,9 @@ class ListPageSource(PageSource[T]):
 
 @dataclass(slots=True)
 class InteractivePager(Generic[T]):
-    bot: typed_commands.Bot[Any]
+    bot: commands.Bot
     message: discord.Message
-    channel: discord.TextChannel | discord.DMChannel | discord.GroupChannel
+    channel: discord.abc.MessageableChannel
     author: discord.User | discord.Member
     can_manage_messages: bool
     source: PageSource[T]
@@ -267,7 +271,7 @@ class InteractivePager(Generic[T]):
             )
         except asyncio.TimeoutError:
             to_delete.append(await self.channel.send('Took too long.'))
-            await asyncio.sleep(5, loop=self.bot.loop)
+            await asyncio.sleep(5)
         else:
             page = int(message.content)
             to_delete.append(message)
@@ -279,7 +283,7 @@ class InteractivePager(Generic[T]):
                         f'Invalid page given. ({page}/{self.source.max_pages})'
                     )
                 )
-                await asyncio.sleep(5, loop=self.bot.loop)
+                await asyncio.sleep(5)
 
         try:
             await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
@@ -329,7 +333,7 @@ class InteractivePager(Generic[T]):
         await self.message.edit(embed=self.embed)
 
         async def go_back_to_current_page() -> None:
-            await asyncio.sleep(60.0, loop=self.bot.loop)
+            await asyncio.sleep(60.0)
             await self.__show_current_page()
             self.help_task = None
 
@@ -362,7 +366,6 @@ class InteractivePager(Generic[T]):
                             ),
                         ],
                         timeout=120.0,
-                        loop=self.bot.loop,
                     )
                 )
 
@@ -389,11 +392,11 @@ class InteractivePager(Generic[T]):
 
     @classmethod
     def create(
-        cls: type[IP],
-        ctx: typed_commands.Context,
+        cls,
+        ctx: commands.Context[Any],
         source: PageSource[T],
         /,
-    ) -> IP:
+    ) -> Self:
         if ctx.guild is not None and ctx.guild.me is not None:
             permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
                 ctx.guild.me
@@ -466,9 +469,9 @@ class InteractiveFieldPager(InteractivePager[T]):
 
     @classmethod
     def create(  # type: ignore
-        cls: type[IFP],
-        ctx: typed_commands.Context,
+        cls,
+        ctx: commands.Context[Any],
         source: FieldPageSource[T],
         /,
-    ) -> IFP:
+    ) -> Self:
         return super().create(ctx, source)

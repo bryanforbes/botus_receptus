@@ -1,5 +1,10 @@
+from __future__ import annotations
+
+from typing import Any
+
 import pytest
 
+from botus_receptus.compat import dict, list
 from botus_receptus.formatting import (
     EmbedPaginator,
     Paginator,
@@ -32,7 +37,12 @@ from botus_receptus.formatting import (
         (['fish', 'es'], [2], {'include_number': False}, 'fishes'),
     ],
 )
-def test_pluralizer(pluralizer_args, pluralize_args, pluralize_kwargs, expected):
+def test_pluralizer(
+    pluralizer_args: list[str],
+    pluralize_args: list[int],
+    pluralize_kwargs: dict[str, Any],
+    expected: str,
+) -> None:
     pluralize = pluralizer(*pluralizer_args)
 
     assert callable(pluralize) is True

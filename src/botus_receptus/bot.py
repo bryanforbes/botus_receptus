@@ -2,39 +2,25 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, TypeVar, cast, overload
+from typing import Any, TypeVar, cast
 
 import aiohttp
 import async_timeout
 import discord
-from discord.ext import typed_commands
+from discord.ext import commands
 from discord.ext.commands import bot
 
 from . import abc
-from .compat import type
 from .config import Config
 
-CT = TypeVar('CT', bound=typed_commands.Context)
-OT = TypeVar('OT', bound=typed_commands.Context)
+OT = TypeVar('OT', bound=commands.Context)
 
 
-if TYPE_CHECKING:
-
-    class _BotBase(bot.BotBase[CT]):
-        ...
-
-else:
-
-    class _BotBase(bot.BotBase, Generic[CT]):
-        ...
-
-
-class BotBase(_BotBase[CT]):
+class BotBase(bot.BotBase):
     bot_name: str
     config: Config
     default_prefix: str
     session: aiohttp.ClientSession
-    context_cls: ClassVar = cast(type[CT], typed_commands.Context)
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -44,28 +30,9 @@ class BotBase(_BotBase[CT]):
             'command_prefix', '$'
         )
 
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # type: ignore
 
         self.session = aiohttp.ClientSession(loop=self.loop)
-
-    @overload
-    async def get_context(self, message: discord.Message, /) -> CT:
-        ...
-
-    @overload
-    async def get_context(self, message: discord.Message, /, *, cls: type[OT]) -> OT:
-        ...
-
-    async def get_context(
-        self, message: discord.Message, /, *, cls: type[OT] | None = None
-    ) -> CT | OT:
-        context_cls: type[CT] | type[OT]
-        if cls is None:
-            context_cls = self.context_cls
-        else:
-            context_cls = cls
-
-        return await super().get_context(message, cls=context_cls)
 
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
@@ -75,16 +42,16 @@ class BotBase(_BotBase[CT]):
         await self.session.close()
 
 
-class Bot(BotBase[CT], typed_commands.Bot[CT]):
+class Bot(BotBase, commands.Bot):
     ...
 
 
-class AutoShardedBot(BotBase[CT], typed_commands.AutoShardedBot[CT]):
+class AutoShardedBot(BotBase, commands.AutoShardedBot):
     ...
 
 
 class DblBotBase(
-    BotBase[CT], abc.OnReady, abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove
+    BotBase, abc.OnReady, abc.OnGuildAvailable, abc.OnGuildJoin, abc.OnGuildRemove
 ):
     async def __report_guilds(self, /) -> None:
         token = self.config.get('dbl_token', '')
@@ -114,9 +81,9 @@ class DblBotBase(
         await self.__report_guilds()
 
 
-class DblBot(DblBotBase[CT], typed_commands.Bot[CT]):
+class DblBot(DblBotBase, commands.Bot):
     ...
 
 
-class AutoShardedDblBot(DblBotBase[CT], typed_commands.AutoShardedBot[CT]):
+class AutoShardedDblBot(DblBotBase, commands.AutoShardedBot):
     ...

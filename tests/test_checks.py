@@ -1,26 +1,34 @@
+from __future__ import annotations
+
+from typing import Any, cast
+
 import discord
 import pytest
 from discord.ext import commands
 
 from botus_receptus import NotGuildOwner, OnlyDirectMessage, checks
 
+from .types import MockerFixture
+
 
 class MockContext:
-    pass
+    channel: MockDMChannel | None
+    guild: MockGuild | None
+    author: MockUser | None
 
 
 class MockGuild(object):
     __slots__ = ('owner',)
 
-    def __init__(self, owner):
+    def __init__(self, owner: Any):
         self.owner = owner
 
 
 class MockUser:
-    def __init__(self, id):
+    def __init__(self, id: int):
         self.id = id
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any):
         return self.id == other.id
 
 
@@ -30,18 +38,16 @@ class MockDMChannel(discord.DMChannel):
 
 
 @pytest.fixture
-def mock_commands_check(mocker):
-    return mocker.patch('discord.ext.typed_commands.check', wraps=commands.check)
+def mock_commands_check(mocker: MockerFixture):
+    return mocker.patch('discord.ext.commands.check')
 
 
-def test_dm_only(mock_commands_check):
+def test_dm_only() -> None:
     @checks.dm_only()
-    def test() -> None:
+    async def test() -> None:
         pass
 
-    mock_commands_check.assert_called_once()
-
-    predicate = test.__commands_checks__[0]
+    predicate = cast(Any, test).__commands_checks__[0]
 
     ctx = MockContext()
     ctx.channel = MockDMChannel()
@@ -54,14 +60,12 @@ def test_dm_only(mock_commands_check):
         predicate(ctx)
 
 
-def test_is_guild_owner(mock_commands_check):
+def test_is_guild_owner() -> None:
     @checks.is_guild_owner()
-    def test() -> None:
+    async def test() -> None:
         pass
 
-    mock_commands_check.assert_called_once()
-
-    predicate = test.__commands_checks__[0]
+    predicate = cast(Any, test).__commands_checks__[0]
 
     ctx = MockContext()
     ctx.guild = None

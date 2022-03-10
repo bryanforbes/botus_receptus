@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, ClassVar, TypeVar, cast
+from typing import Any, ClassVar, cast
 
 import discord
-from discord.ext import typed_commands
+from discord.ext import commands
 
 from ..bot import BotBase as _BotBase
-from ..compat import dict, type
+from ..compat import dict
 from ..config import Config
 from .context import Context
 
@@ -15,20 +15,17 @@ try:
     from asyncpg import Record, create_pool
     from asyncpg.pool import Pool
 
-    has_asyncpg = True
+    _has_asyncpg = True
 except ImportError:
-    has_asyncpg = False
+    _has_asyncpg = False
 
 
-CT = TypeVar('CT', bound=Context)
-
-
-class BotBase(_BotBase[CT]):
+class BotBase(_BotBase):
     pool: Pool[Record]
-    context_cls: ClassVar = cast(type[CT], Context)
+    context_cls: ClassVar = Context
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
-        if not has_asyncpg:
+        if not _has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')
 
         super().__init__(config, *args, **kwargs)
@@ -61,15 +58,15 @@ class BotBase(_BotBase[CT]):
         await super().close()
 
     async def process_commands(self, message: discord.Message, /) -> None:
-        ctx = await self.get_context(message)
+        ctx = await self.get_context(message, cls=Context[Any])
 
         async with ctx.acquire():
-            await self.invoke(ctx)
+            await self.invoke(ctx)  # type: ignore
 
 
-class Bot(BotBase[CT], typed_commands.Bot[CT]):
+class Bot(BotBase, commands.Bot):
     ...
 
 
-class AutoShardedBot(BotBase[CT], typed_commands.AutoShardedBot[CT]):
+class AutoShardedBot(BotBase, commands.AutoShardedBot):
     ...

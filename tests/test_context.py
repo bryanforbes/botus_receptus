@@ -1,36 +1,74 @@
+from __future__ import annotations
+
 from typing import Any, Optional
+from unittest.mock import AsyncMock
 
 import discord
-import pytest  # typing: ignore
+import pytest
 from attr import dataclass
-from pendulum import UTC, now
+from discord.ext.commands.view import StringView
+from pendulum import now
+from pendulum.tz.timezone import UTC
 
+from botus_receptus.bot import Bot
+from botus_receptus.compat import list
 from botus_receptus.context import EmbedContext, PaginatedContext
+
+from .types import MockerFixture
+
+
+@dataclass(slots=True)
+class MockBot(object):
+    ...
 
 
 @dataclass(slots=True)
 class MockUser(object):
-    bot: bool = None
-    id: int = None
-    mention: str = None
+    bot: bool | None = None
+    id: int | None = None
+    mention: str | None = None
 
 
 @dataclass(slots=True)
 class MockMessage(object):
-    author: MockUser = None
-    content: str = None
+    author: MockUser | None = None
+    content: str | None = None
     channel: Optional[discord.abc.GuildChannel] = None
     _state: Optional[Any] = None
 
 
 @pytest.fixture
-def mock_context_send(mocker):
+def mock_context_send(mocker: MockerFixture) -> AsyncMock:
     return mocker.patch('discord.ext.commands.Context.send')
 
 
+@pytest.fixture
+def mock_bot() -> MockBot:
+    return MockBot()
+
+
+@pytest.fixture
+def mock_message() -> MockMessage:
+    return MockMessage()
+
+
+@pytest.fixture
+def string_view() -> StringView:
+    return StringView('')
+
+
 class TestEmbedContext(object):
-    async def test_send_embed_description_only(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_description_only(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         await ctx.send_embed('baz')
 
@@ -48,8 +86,17 @@ class TestEmbedContext(object):
             nonce=None,
         )
 
-    async def test_send_embed_args(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         obj = mocker.sentinel.TEST_OBJECT
         time = now(UTC)
@@ -86,8 +133,17 @@ class TestEmbedContext(object):
             tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
         )
 
-    async def test_send_embed_other_args(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_other_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         obj = mocker.sentinel.TEST_OBJECT
         await ctx.send_embed(
@@ -114,11 +170,21 @@ class TestEmbedContext(object):
 
 class TestPaginatedContext(object):
     @pytest.fixture
-    def mock_paginator(self, mocker):
+    def mock_paginator(self) -> list[str]:
         return ['```\nasdf\n```', '```\nqwerty foo\n```']
 
-    async def test_send_pages(self, mocker, mock_context_send, mock_paginator):
-        ctx = PaginatedContext(prefix='~', message=MockMessage())
+    async def test_send_pages(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_paginator: list[str],
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = PaginatedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         messages = await ctx.send_pages(mock_paginator)
         assert len(messages) == 2
@@ -131,8 +197,18 @@ class TestPaginatedContext(object):
             ]
         )
 
-    async def test_send_pages_args(self, mocker, mock_context_send, mock_paginator):
-        ctx = PaginatedContext(prefix='~', message=MockMessage())
+    async def test_send_pages_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_paginator: list[str],
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = PaginatedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         messages = await ctx.send_pages(
             mock_paginator, tts=True, delete_after=1.0, nonce=200

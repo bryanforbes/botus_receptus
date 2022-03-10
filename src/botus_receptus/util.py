@@ -5,6 +5,7 @@ from typing import Final, TypeVar
 
 import discord
 import pendulum
+from pendulum.duration import Duration
 
 from .compat import Awaitable, Container, Iterable, dict
 
@@ -30,7 +31,7 @@ UNITS: Final = {
 
 
 # Adapted from https://github.com/python-discord/site/blob/master/pysite/utils/time.py
-def parse_duration(duration: str, /) -> pendulum.Duration:
+def parse_duration(duration: str, /) -> Duration:
     duration = duration.strip()
 
     if not duration:
@@ -64,15 +65,11 @@ async def race(
     /,
     *,
     timeout: float | None = None,
-    loop: asyncio.AbstractEventLoop | None = None,
 ) -> T:
-    if loop is None:
-        loop = asyncio.get_running_loop()
-
     tasks = {future for future in futures}
 
     done, pending = await asyncio.wait(
-        tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED, loop=loop
+        tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED
     )
 
     try:

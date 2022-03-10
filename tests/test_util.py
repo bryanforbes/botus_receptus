@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 from typing import List
 
@@ -5,6 +7,7 @@ import discord
 import pendulum
 import pytest
 from attr import attrib, dataclass
+from pendulum.duration import Duration
 
 from botus_receptus import util
 
@@ -59,7 +62,7 @@ def test_has_any_role_id(mock_member: discord.Member) -> None:
         (' 2m  1y ', pendulum.duration(years=1, seconds=120)),
     ],
 )
-def test_parse_duration(duration: str, expected: pendulum.Duration) -> None:
+def test_parse_duration(duration: str, expected: Duration) -> None:
     assert util.parse_duration(duration) == expected
 
 
@@ -82,18 +85,18 @@ async def test_race(
     event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
 ) -> None:
     async def one() -> int:
-        await asyncio.sleep(100, loop=event_loop)
+        await asyncio.sleep(100)
         return 1
 
     async def two() -> int:
-        await asyncio.sleep(50, loop=event_loop)
+        await asyncio.sleep(50)
         return 2
 
     async def three() -> int:
-        await asyncio.sleep(25, loop=event_loop)
+        await asyncio.sleep(25)
         return 3
 
-    task = event_loop.create_task(util.race([one(), two(), three()], loop=event_loop))
+    task = event_loop.create_task(util.race([one(), two(), three()]))
     await advance_time(35)
     await advance_time(60)
     await advance_time(110)
@@ -104,15 +107,13 @@ async def test_race_timeout(
     event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
 ) -> None:
     async def one() -> int:
-        await asyncio.sleep(100, loop=event_loop)
+        await asyncio.sleep(100)
         return 1
 
     async def two() -> int:
-        await asyncio.sleep(50, loop=event_loop)
+        await asyncio.sleep(50)
         return 2
 
-    task = event_loop.create_task(
-        util.race([one(), two()], timeout=25, loop=event_loop)
-    )
+    task = event_loop.create_task(util.race([one(), two()], timeout=25))
     await advance_time(30)
     assert isinstance(task.exception(), asyncio.TimeoutError)

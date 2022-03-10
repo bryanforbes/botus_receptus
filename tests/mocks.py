@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
-from unittest.mock import Mock
+import builtins
+from typing import Any, Optional
+from unittest.mock import AsyncMock, Mock
 
 from attr import attrib, dataclass
 
-from .types import CoroutineMock, Mocker
+from botus_receptus.compat import Awaitable, Callable, dict, list, tuple
+
+from .types import MockerFixture
 
 
 @dataclass(slots=True)
@@ -34,21 +37,19 @@ class MockGuild(object):
 @dataclass
 class MockChannel(object):
     permissions_for: Mock = attrib(init=False)
-    send: CoroutineMock = attrib(init=False)
-    delete_messages: CoroutineMock = attrib(init=False)
+    send: AsyncMock = attrib(init=False)
+    delete_messages: AsyncMock = attrib(init=False)
 
     @staticmethod
     def create(
-        mocker: Mocker, permissions: MockPermissions, bot_user: MockUser
+        mocker: MockerFixture,
+        permissions: MockPermissions,
     ) -> MockChannel:
         channel = MockChannel()
 
-        def send_side_effect(*args: Any, **kwargs: Any) -> Any:
-            return MockMessage.create(mocker, 11, bot_user, channel, '')
-
         channel.permissions_for = mocker.Mock(return_value=permissions)
-        channel.send = mocker.CoroutineMock(side_effect=send_side_effect)
-        channel.delete_messages = mocker.CoroutineMock()
+        channel.send = mocker.AsyncMock()
+        channel.delete_messages = mocker.AsyncMock()
 
         return channel
 
@@ -58,15 +59,15 @@ class MockBot(object):
     user: MockUser
     loop: Any
     advance_time: Callable[[float], Awaitable[None]]
-    _listeners: Dict[
-        str, List[Tuple[asyncio.Future[Any], Callable[..., Any]]]
-    ] = attrib(factory=dict)
+    _listeners: dict[
+        str, list[tuple[asyncio.Future[Any], Callable[..., Any]]]
+    ] = attrib(factory=builtins.dict)
 
     async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
         listeners = self._listeners.setdefault(event, [])
 
         if listeners:
-            removed = []
+            removed: list[int] = []
             for i, (future, condition) in enumerate(listeners):
                 if future.cancelled():
                     removed.append(i)
@@ -101,7 +102,7 @@ class MockBot(object):
         *,
         check: Optional[Callable[..., Any]] = None,
         timeout: Optional[float] = None,
-    ) -> asyncio.Future[Any]:
+    ) -> Awaitable[Any]:
         future = self.loop.create_future()
 
         if check is None:
@@ -115,11 +116,11 @@ class MockBot(object):
         listeners = self._listeners.setdefault(ev, [])
         listeners.append((future, check))
 
-        return asyncio.wait_for(future, timeout, loop=self.loop)
+        return asyncio.wait_for(future, timeout)
 
     @staticmethod
     def create(
-        mocker: Mocker,
+        mocker: MockerFixture,
         user: MockUser,
         loop: Any,
         advance_time: Callable[[float], Awaitable[None]],
@@ -136,30 +137,29 @@ class MockMessage(object):
     add_reaction: Any
     clear_reactions: Any
 
-    async def edit(self, *args: Any, **kwargs: Any) -> None:
-        pass
-
-    async def remove_reaction(self, *args: Any, **kwargs: Any) -> None:
-        pass
-
-    async def delete(self, *args: Any, **kwargs: Any) -> None:
-        pass
+    edit: AsyncMock
+    remove_reaction: AsyncMock
+    delete: AsyncMock
 
     @staticmethod
     def create(
-        mocker: Mocker, id: int, author: MockUser, channel: MockChannel, content: str
+        mocker: MockerFixture,
+        id: int,
+        author: MockUser,
+        channel: MockChannel,
+        content: str,
     ) -> MockMessage:
         message = MockMessage(
             id=id,
             author=author,
             channel=channel,
             content=content,
-            add_reaction=mocker.CoroutineMock(return_value=None),
-            clear_reactions=mocker.CoroutineMock(return_value=None),
+            add_reaction=mocker.AsyncMock(return_value=None),
+            clear_reactions=mocker.AsyncMock(return_value=None),
+            edit=mocker.AsyncMock(return_value=None),
+            remove_reaction=mocker.AsyncMock(return_value=None),
+            delete=mocker.AsyncMock(return_value=None),
         )
-        mocker.patch.object(message, 'edit', return_value=None)
-        mocker.patch.object(message, 'remove_reaction', return_value=None)
-        mocker.patch.object(message, 'delete', return_value=None)
         return message
 
 
@@ -173,7 +173,7 @@ class MockContext(object):
 
     @staticmethod
     def create(
-        mocker: Mocker,
+        mocker: MockerFixture,
         event_loop: Any,
         advance_time: Callable[[float], Awaitable[None]],
         bot_user: MockUser,
@@ -181,7 +181,7 @@ class MockContext(object):
         guild: Optional[MockGuild] = None,
     ) -> MockContext:
         author = MockUser(id=1)
-        channel = MockChannel.create(mocker, permissions, bot_user)
+        channel = MockChannel.create(mocker, permissions)
         message = MockMessage.create(mocker, 10, author, channel, 'foo')
 
         return MockContext(

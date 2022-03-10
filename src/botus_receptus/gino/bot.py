@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import Any, ClassVar, TypeVar
+from typing import Any, ClassVar
 
-from discord.ext import typed_commands
+from discord.ext import commands
 from gino import Gino
 
 from ..bot import BotBase as _BotBase
 from ..config import Config
 
-CT = TypeVar('CT', bound=typed_commands.Context)
 
-
-class BotBase(_BotBase[CT]):
+class BotBase(_BotBase):
     db: ClassVar[Gino]
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -28,9 +26,9 @@ class BotBase(_BotBase[CT]):
         await super().close()
 
 
-class Bot(BotBase[CT], typed_commands.Bot[CT]):
+class Bot(BotBase, commands.Bot):
     ...
 
 
-class AutoShardedBot(BotBase[CT], typed_commands.AutoShardedBot[CT]):
+class AutoShardedBot(BotBase, commands.AutoShardedBot):
     ...

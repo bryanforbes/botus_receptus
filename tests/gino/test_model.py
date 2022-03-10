@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 
 import pytest
@@ -7,23 +9,25 @@ from gino.declarative import declarative_base
 from botus_receptus.gino import Gino
 from botus_receptus.gino.model import ModelMixin
 
-from ..types import Mocker
+from ..types import MockerFixture
 
 
 @pytest.fixture
-def row(mocker: Mocker) -> Any:
+def row(mocker: MockerFixture) -> Any:
     class MockRow:
         items = mocker.Mock()
 
     return MockRow()
 
 
-@pytest.fixture
-def bind(mocker: Mocker, row: Any) -> Any:
-    class MockBind:
-        first = mocker.CoroutineMock(return_value=row)
+class MockBind:
+    def __init__(self, mocker: MockerFixture, row: Any) -> None:
+        self.first = mocker.AsyncMock(return_value=row)
 
-    return MockBind()
+
+@pytest.fixture
+def bind(mocker: MockerFixture, row: Any) -> Any:
+    return MockBind(mocker, row)
 
 
 @pytest.fixture
@@ -42,7 +46,7 @@ def test_model(Base: Any) -> None:
         Base.create_or_update()
 
 
-async def test_model_inherit(db: Gino, Base: Any, row: Any, bind: Any) -> None:
+async def test_model_inherit(db: Gino, Base: Any, row: Any, bind: MockBind) -> None:
     row.items.return_value = [('id', 0)]
 
     class MyModel(Base):  # type: ignore
@@ -52,5 +56,7 @@ async def test_model_inherit(db: Gino, Base: Any, row: Any, bind: Any) -> None:
         name = db.Column(db.String, nullable=False)
 
     assert hasattr(MyModel, 'create_or_update')
-    model = await MyModel.create_or_update(bind=bind, set_=('name',), name='John Doe')
+    model = await MyModel.create_or_update(  # type: ignore
+        bind=bind, set_=('name',), name='John Doe'
+    )
     assert isinstance(model, MyModel)

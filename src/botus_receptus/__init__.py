@@ -21,7 +21,6 @@ __all__ = (
     'abc',
     'checks',
     'compat',
-    'db',
     'formatting',
     're',
     'util',

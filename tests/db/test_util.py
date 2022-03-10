@@ -1,17 +1,26 @@
-import pytest  # type: ignore
+from __future__ import annotations
 
+from typing import Any, cast
+
+import pytest
+
+from botus_receptus.compat import dict, list
 from botus_receptus.db import util
+
+from ..types import MockerFixture
+
+
+class MockDb:
+    def __init__(self, mocker: MockerFixture) -> None:
+        self.fetch = mocker.AsyncMock()
+        self.fetchrow = mocker.AsyncMock()
+        self.execute = mocker.AsyncMock()
 
 
 class TestDbUtil(object):
     @pytest.fixture
-    def mock_db(self, mocker):
-        class MockDb(object):
-            fetch = mocker.CoroutineMock()
-            fetchrow = mocker.CoroutineMock()
-            execute = mocker.CoroutineMock()
-
-        return MockDb()
+    def mock_db(self, mocker: MockerFixture):
+        return MockDb(mocker)
 
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
@@ -67,8 +76,14 @@ class TestDbUtil(object):
             ),
         ],
     )
-    async def test_select_all(self, mock_db, args, kwargs, expected_query):
-        await util.select_all(mock_db, *args, **kwargs)
+    async def test_select_all(
+        self,
+        mock_db: MockDb,
+        args: list[str],
+        kwargs: dict[str, Any],
+        expected_query: str,
+    ) -> None:
+        await util.select_all(cast(Any, mock_db), *args, **kwargs)
 
         mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
@@ -129,8 +144,14 @@ class TestDbUtil(object):
             ),
         ],
     )
-    async def test_select_one(self, mock_db, args, kwargs, expected_query):
-        await util.select_one(mock_db, *args, **kwargs)
+    async def test_select_one(
+        self,
+        mock_db: MockDb,
+        args: list[str],
+        kwargs: dict[str, Any],
+        expected_query: str,
+    ) -> None:
+        await util.select_one(cast(Any, mock_db), *args, **kwargs)
         mock_db.fetchrow.assert_called_once_with(
             expected_query, *args, record_class=None
         )
@@ -246,8 +267,14 @@ class TestDbUtil(object):
             ),
         ],
     )
-    async def test_search(self, mock_db, args, kwargs, expected_query):
-        await util.search(mock_db, *args, **kwargs)
+    async def test_search(
+        self,
+        mock_db: MockDb,
+        args: list[str],
+        kwargs: dict[str, Any],
+        expected_query: str,
+    ):
+        await util.search(cast(Any, mock_db), *args, **kwargs)
 
         mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
@@ -275,8 +302,14 @@ class TestDbUtil(object):
             ),
         ],
     )
-    async def test_update(self, mock_db, args, kwargs, expected_query):
-        await util.update(mock_db, *args, **kwargs)
+    async def test_update(
+        self,
+        mock_db: MockDb,
+        args: list[str],
+        kwargs: dict[str, Any],
+        expected_query: str,
+    ):
+        await util.update(cast(Any, mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)
 
@@ -298,8 +331,10 @@ class TestDbUtil(object):
             ),
         ],
     )
-    async def test_insert_into(self, mock_db, kwargs, expected_query):
-        await util.insert_into(mock_db, **kwargs)
+    async def test_insert_into(
+        self, mock_db: MockDb, kwargs: dict[str, Any], expected_query: str
+    ):
+        await util.insert_into(cast(Any, mock_db), **kwargs)
 
         args = [value for value in kwargs['values'].values()]
         mock_db.execute.assert_called_once_with(expected_query, *args)
@@ -314,7 +349,13 @@ class TestDbUtil(object):
             )
         ],
     )
-    async def test_delete_from(self, mock_db, args, kwargs, expected_query):
-        await util.delete_from(mock_db, *args, **kwargs)
+    async def test_delete_from(
+        self,
+        mock_db: MockDb,
+        args: list[str],
+        kwargs: dict[str, Any],
+        expected_query: str,
+    ):
+        await util.delete_from(cast(Any, mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)

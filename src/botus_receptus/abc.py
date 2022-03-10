@@ -2,24 +2,30 @@ from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import Generic, TypeVar, Union
+from typing import TYPE_CHECKING, Generic, TypeVar, Union
 
 import discord
 
 from .compat import list
 
+if TYPE_CHECKING:
+    from typing_extensions import TypeAlias
+
+
 CT_contra = TypeVar('CT_contra', contravariant=True)
 
 
-TextChannel = Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]
-GuildChannel = Union[
+TextChannel: TypeAlias = Union[
+    discord.TextChannel, discord.DMChannel, discord.GroupChannel
+]
+GuildChannel: TypeAlias = Union[
     discord.TextChannel,
     discord.VoiceChannel,
     discord.CategoryChannel,
     discord.StoreChannel,
 ]
-PrivateChannel = Union[discord.DMChannel, discord.GroupChannel]
-User = Union[discord.User, discord.Member]
+PrivateChannel: TypeAlias = Union[discord.DMChannel, discord.GroupChannel]
+User: TypeAlias = Union[discord.User, discord.Member]
 
 
 class OnCommandError(Generic[CT_contra]):
@@ -462,33 +468,6 @@ class OnGroupRemove(metaclass=ABCMeta):
         self,
         channel: discord.GroupChannel,
         user: discord.User,
-        /,
-    ) -> None:
-        ...
-
-
-class OnRelationshipAdd(metaclass=ABCMeta):
-    @abstractmethod
-    async def on_relationship_add(self, relationship: discord.Relationship, /) -> None:
-        ...
-
-
-class OnRelationshipRemove(metaclass=ABCMeta):
-    @abstractmethod
-    async def on_relationship_remove(
-        self,
-        relationship: discord.Relationship,
-        /,
-    ) -> None:
-        ...
-
-
-class OnRelationshipUpdate(metaclass=ABCMeta):
-    @abstractmethod
-    async def on_relationship_update(
-        self,
-        before: discord.Relationship,
-        after: discord.Relationship,
         /,
     ) -> None:
         ...

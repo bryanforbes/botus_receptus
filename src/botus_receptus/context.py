@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TypedDict
+from typing import TypedDict, TypeVar, cast
 
 import discord
-from discord.ext import typed_commands
+from discord.ext import commands
 
+from .bot import AutoShardedBot, Bot
 from .compat import Iterable, list
 
+BotT = TypeVar('BotT', bound='Bot | AutoShardedBot')
 
-class GuildContext(typed_commands.Context):
+
+class GuildContext(commands.Context[BotT]):
     @discord.utils.cached_property
     def guild(self, /) -> discord.Guild:  # type: ignore
         return self.message.guild  # type: ignore
@@ -49,7 +52,7 @@ class FieldData(FieldDataBase, total=False):
     inline: bool
 
 
-class EmbedContext(typed_commands.Context):
+class EmbedContext(commands.Context[BotT]):
     async def send_embed(
         self,
         description: str,
@@ -93,7 +96,7 @@ class EmbedContext(typed_commands.Context):
         if fields is not None:
             setattr(embed, '_fields', fields)  # noqa: B010
 
-        return await self.send(
+        return await self.send(  # type: ignore
             tts=tts,
             embed=embed,
             file=file,
@@ -103,7 +106,7 @@ class EmbedContext(typed_commands.Context):
         )
 
 
-class PaginatedContext(typed_commands.Context):
+class PaginatedContext(commands.Context[BotT]):
     async def send_pages(
         self,
         pages: Iterable[str],
@@ -113,6 +116,11 @@ class PaginatedContext(typed_commands.Context):
         nonce: int | None = None,
     ) -> list[discord.Message]:
         return [
-            await self.send(page, tts=tts, delete_after=delete_after, nonce=nonce)
+            await self.send(
+                page,
+                tts=tts,
+                delete_after=cast(float, delete_after),
+                nonce=cast(int, nonce),
+            )
             for page in pages
         ]

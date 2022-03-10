@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, TypedDict, cast
+from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import toml
 
 from .compat import dict
+
+if TYPE_CHECKING:
+    from typing_extensions import NotRequired
 
 
 class ConfigException(Exception):
@@ -17,8 +20,8 @@ class LoggingBase(TypedDict):
     log_to_console: bool
 
 
-class Logging(LoggingBase, total=False):
-    loggers: dict[str, str]
+class Logging(LoggingBase):
+    loggers: NotRequired[dict[str, str]]
 
 
 class ConfigBase(TypedDict):
@@ -27,10 +30,10 @@ class ConfigBase(TypedDict):
     logging: Logging
 
 
-class Config(ConfigBase, total=False):
-    command_prefix: str
-    db_url: str
-    dbl_token: str
+class Config(ConfigBase):
+    command_prefix: NotRequired[str]
+    db_url: NotRequired[str]
+    dbl_token: NotRequired[str]
 
 
 def load(path: str, /) -> Config:

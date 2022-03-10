@@ -1,39 +1,50 @@
+from __future__ import annotations
+
 import logging
+from typing import Any
+from unittest.mock import MagicMock
 
 import pytest
 
+from botus_receptus.config import Config
 from botus_receptus.logging import setup_logging
+
+from .types import MockerFixture
 
 
 class MockHandler:
-    def setFormatter(self, formatter):
+    def setFormatter(self, formatter: Any):
         pass
 
 
 @pytest.fixture(autouse=True)
-def mock_get_logger(mocker):
+def mock_get_logger(mocker: MockerFixture) -> MagicMock:
     return mocker.patch('botus_receptus.logging.getLogger')
 
 
 @pytest.fixture(autouse=True)
-def mock_formatter(mocker):
+def mock_formatter(mocker: MockerFixture) -> MagicMock:
     return mocker.patch('botus_receptus.logging.Formatter')
 
 
 @pytest.fixture(autouse=True)
-def mock_file_handler(mocker):
+def mock_file_handler(mocker: MockerFixture) -> MagicMock:
     return mocker.patch('botus_receptus.logging.FileHandler')
 
 
 @pytest.fixture(autouse=True)
-def mock_stream_handler(mocker):
+def mock_stream_handler(mocker: MockerFixture) -> MagicMock:
     return mocker.patch('botus_receptus.logging.StreamHandler')
 
 
 def test_setup_logging(
-    mocker, mock_get_logger, mock_formatter, mock_file_handler, mock_stream_handler
-):
-    config = {
+    mocker: MockerFixture,
+    mock_get_logger: MagicMock,
+    mock_formatter: MagicMock,
+    mock_file_handler: MagicMock,
+    mock_stream_handler: MagicMock,
+) -> None:
+    config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'logging': {
@@ -46,13 +57,13 @@ def test_setup_logging(
     with setup_logging(config):
         mock_get_logger.assert_has_calls(
             [
+                mocker.call(),
                 mocker.call('discord'),
                 mocker.call('discord').setLevel(logging.INFO),
                 mocker.call('discord.http'),
                 mocker.call('discord.http').setLevel(logging.WARNING),
                 mocker.call('botty'),
                 mocker.call('botty').setLevel(logging.INFO),
-                mocker.call(),
                 mocker.call().setLevel(logging.INFO),
             ]
         )
@@ -70,9 +81,11 @@ def test_setup_logging(
 
 
 def test_setup_logging_console(
-    mocker, mock_get_logger, mock_formatter, mock_stream_handler
-):
-    config = {
+    mock_get_logger: MagicMock,
+    mock_formatter: MagicMock,
+    mock_stream_handler: MagicMock,
+) -> None:
+    config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'logging': {
@@ -93,9 +106,9 @@ def test_setup_logging_console(
 
 
 def test_setup_logging_loggers(
-    mocker, mock_get_logger, mock_formatter, mock_file_handler, mock_stream_handler
-):
-    config = {
+    mocker: MockerFixture, mock_get_logger: MagicMock
+) -> None:
+    config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'logging': {
@@ -109,6 +122,7 @@ def test_setup_logging_loggers(
     with setup_logging(config):
         mock_get_logger.assert_has_calls(
             [
+                mocker.call(),
                 mocker.call('discord'),
                 mocker.call('discord').setLevel(logging.INFO),
                 mocker.call('discord.http'),
@@ -119,7 +133,6 @@ def test_setup_logging_loggers(
                 mocker.call('gino').setLevel(logging.ERROR),
                 mocker.call('discord.http'),
                 mocker.call('discord.http').setLevel(logging.ERROR),
-                mocker.call(),
                 mocker.call().setLevel(logging.INFO),
             ]
         )

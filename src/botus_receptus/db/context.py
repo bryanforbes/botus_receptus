@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Type, TypeVar, cast, overload
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
-from discord.ext import typed_commands
+from discord.ext import commands
 
 from ..compat import (
     AbstractAsyncContextManager,
@@ -21,9 +21,10 @@ from ..compat import (
 from .util import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
-    from .bot import Bot
+    from .bot import AutoShardedBot, Bot
 
 _Record = TypeVar('_Record', bound=Record)
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
 
 
 @dataclass(slots=True)
@@ -31,7 +32,7 @@ class AquireContextManager(
     AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
     Awaitable['PoolConnectionProxy[Record]'],
 ):
-    ctx: Context
+    ctx: Context[Any]
     timeout: float | None = None
 
     def __await__(self, /) -> Generator[Any, None, PoolConnectionProxy[Record]]:
@@ -60,8 +61,7 @@ def ensure_db(func: F, /) -> F:
     return cast(F, wrapper)
 
 
-class Context(typed_commands.Context):
-    bot: Bot[Any]
+class Context(commands.Context[_BotT]):
     db: PoolConnectionProxy[Record]
 
     async def _acquire(self, timeout: float | None, /) -> PoolConnectionProxy[Record]:

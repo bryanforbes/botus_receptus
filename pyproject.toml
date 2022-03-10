@@ -10,12 +10,12 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
+typing_extensions = ">=4.1.0"
 aioitertools = "^0.8.0"
 "async-timeout" = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=8.0"
-"discord-ext-typed-commands" = "^1.0.3"
-"discord.py" = "~1.7.0"
+"discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master" }
 toml = "^0.10.2"
 pendulum = "~2.1.2"
 asyncpg = {version = ">=0.22.0", optional = true}
@@ -30,10 +30,8 @@ gino = ["gino"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "0894bcb5f773d413f54bc956b83880f225258337"}
-"discord.py-stubs" = {version = "~1.7.3"}
-gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "5914eaf2c5c9624cc457faa3a3fef629f027f830"}
-asynctest = "~0.13.0"
+asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "bb92f810baaa157c3750610a2ac946dfd903a5b8"}
+gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e"}
 black = "^22.1"
 coverage = {extras = ["toml"], version = "^6.3"}
 flake8 = "~4.0"
@@ -83,6 +81,16 @@ extra_standard_library = ["typing_extensions", "_types"]
 known_first_party = ["botus_receptus"]
 virtual_env = ".venv"
 profile = "black"
+
+[tool.pyright]
+include = ["src", "tests"]
+
+pythonVersion = "3.8"
+typeCheckingMode = "strict"
+reportPrivateUsage = "none"
+reportUnusedImport = "none"
+reportUnusedVariable = "none"
+reportImportCycles = "none"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

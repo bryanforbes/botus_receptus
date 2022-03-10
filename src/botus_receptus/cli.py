@@ -47,7 +47,7 @@ def config_callback(
     return bot_config
 
 
-def cli(bot_class: type[BotBase[Any]], default_config_path: str, /) -> click.Command:
+def cli(bot_class: type[BotBase], default_config_path: str, /) -> click.Command:
     @click.command()
     @click.option(
         '-c',

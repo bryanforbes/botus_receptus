@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from discord.ext import typed_commands
+from discord.ext import commands
 
 
-class OnlyDirectMessage(typed_commands.CheckFailure):
+class OnlyDirectMessage(commands.CheckFailure):
     ...
 
 
-class NotGuildOwner(typed_commands.CheckFailure):
+class NotGuildOwner(commands.CheckFailure):
     ...

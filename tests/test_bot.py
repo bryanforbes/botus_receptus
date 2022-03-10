@@ -1,18 +1,27 @@
+from __future__ import annotations
+
+from typing import Any, cast
+from unittest.mock import AsyncMock
+
 import discord
-import pytest  # type: ignore
+import pytest
 from discord.ext import commands
 
 from botus_receptus import Bot, DblBot
+from botus_receptus.compat import list
+from botus_receptus.config import Config
+
+from .types import MockerFixture
 
 OriginalBot = commands.Bot
 
 
-class MockContext(commands.Context):
+class MockContext(commands.Context[Any]):
     pass
 
 
 class MockConnection:
-    def __init__(self):
+    def __init__(self) -> None:
         self.user = discord.Object(12)
         self.guilds = [1, 2, 3, 4]
 
@@ -20,8 +29,16 @@ class MockConnection:
 @pytest.mark.usefixtures('mock_aiohttp')
 class TestBot(object):
     @pytest.fixture
-    def config(self):
-        return {'bot_name': 'botty', 'discord_api_key': 'API_KEY'}
+    def config(self) -> Config:
+        return {
+            'bot_name': 'botty',
+            'discord_api_key': 'API_KEY',
+            'logging': {
+                'log_file': '',
+                'log_level': '',
+                'log_to_console': False,
+            },
+        }
 
     @pytest.mark.parametrize(
         'config,prefix',
@@ -30,7 +47,7 @@ class TestBot(object):
             ({'bot_name': 'mcbotterson', 'command_prefix': '!'}, '!'),
         ],
     )
-    def test_init(self, mocker, config, prefix) -> None:
+    def test_init(self, mocker: MockerFixture, config: Config, prefix: str) -> None:
         mocker.patch('discord.ext.commands.Bot', autospec=True)
 
         bot = Bot(config)
@@ -42,46 +59,28 @@ class TestBot(object):
         assert isinstance(bot, OriginalBot)
         assert bot.session is not None
 
-    @pytest.mark.parametrize('context_cls', [None, MockContext])
-    async def test_get_context(self, mocker, config, context_cls) -> None:
-        get_context = mocker.patch(
-            'discord.ext.commands.bot.BotBase.get_context',
-            new_callable=mocker.CoroutineMock,
-            return_value=mocker.sentinel.RESULT,
-        )
-
-        bot = Bot(config)
-
-        result = await bot.get_context(mocker.sentinel.MESSAGE, cls=context_cls)
-
-        get_context.assert_awaited_with(
-            mocker.sentinel.MESSAGE,
-            cls=context_cls is None and bot.context_cls or context_cls,
-        )
-        assert result is mocker.sentinel.RESULT
-
-    def test_run_with_config(self, mocker, config) -> None:
-        mocker.patch('discord.ext.commands.Bot.run')
+    def test_run_with_config(self, mocker: MockerFixture, config: Config) -> None:
+        run = mocker.patch('discord.ext.commands.Bot.run')
 
         bot = Bot(config)
 
         bot.run_with_config()
-        bot.run.assert_called_once_with('API_KEY')
+        run.assert_called_once_with('API_KEY')
 
-    async def test_close(self, mocker, config) -> None:
+    async def test_close(self, mocker: MockerFixture, config: Config) -> None:
         close = mocker.patch(
-            'discord.ext.commands.bot.BotBase.close', new_callable=mocker.CoroutineMock
+            'discord.ext.commands.bot.BotBase.close', new_callable=mocker.AsyncMock
         )
 
         bot = Bot(config)
         await bot.close()
 
         close.assert_awaited()
-        bot.session.close.assert_awaited()
+        cast(AsyncMock, bot.session.close).assert_awaited()
 
 
 class MockSession:
-    async def post(self, url, *, data=None, **kwargs):
+    async def post(self, url: str, *, data: Any = None, **kwargs: Any):
         pass
 
     async def close(self):
@@ -90,7 +89,7 @@ class MockSession:
 
 class TestDblBot(object):
     @pytest.fixture(autouse=True)
-    def mock_aiohttp(self, mocker):
+    def mock_aiohttp(self, mocker: MockerFixture):
         mocker.patch('aiohttp.ClientSession', new=mocker.create_autospec(MockSession))
 
     @pytest.fixture
@@ -110,13 +109,15 @@ class TestDblBot(object):
             ('on_guild_remove', [None]),
         ],
     )
-    async def test_report_guilds(self, method, args, mocker, config) -> None:
+    async def test_report_guilds(
+        self, method: str, args: list[Any], config: Config
+    ) -> None:
         bot = DblBot(config)
-        bot._connection = MockConnection()
+        cast(Any, bot)._connection = MockConnection()
 
         await getattr(bot, method)(*args)
 
-        bot.session.post.assert_awaited_with(
+        cast(AsyncMock, bot.session.post).assert_awaited_with(
             'https://discordbots.org/api/bots/12/stats',
             data='{"server_count": 4}',
             headers={'Content-Type': 'application/json', 'Authorization': 'DBL_TOKEN'},

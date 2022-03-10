@@ -28,6 +28,8 @@ log_levels: Final[dict[str, int]] = {
 
 @contextlib.contextmanager
 def setup_logging(config: Config, /) -> Iterator[None]:
+    log = getLogger()
+
     try:
         bot_name = config['bot_name']
         log_file = config['logging']['log_file']
@@ -43,7 +45,6 @@ def setup_logging(config: Config, /) -> Iterator[None]:
             for name, value in config['logging']['loggers'].items():
                 getLogger(name).setLevel(log_levels.get(value, log_levels['info']))
 
-        log = getLogger()
         log.setLevel(log_levels['info'])
 
         dt_fmt = '%Y-%m-%d %H:%M:%S'
