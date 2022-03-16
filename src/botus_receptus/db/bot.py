@@ -61,7 +61,7 @@ class BotBase(_BotBase):
         ctx = await self.get_context(message, cls=Context[Any])
 
         async with ctx.acquire():
-            await self.invoke(ctx)  # type: ignore
+            await self.invoke(ctx)
 
 
 class Bot(BotBase, commands.Bot):

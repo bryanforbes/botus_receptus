@@ -459,7 +459,7 @@ class InteractiveFieldPager(InteractivePager[T]):
         self, page: FieldPage, page_num: int, /, *, first: bool = False
     ) -> None:
         self.embed.clear_fields()
-        self.embed.description = discord.Embed.Empty
+        self.embed.description = None
 
         async for key, value in page['fields']:
             self.embed.add_field(name=key, value=value, inline=False)

@@ -14,15 +14,15 @@ BotT = TypeVar('BotT', bound='Bot | AutoShardedBot')
 
 class GuildContext(commands.Context[BotT]):
     @discord.utils.cached_property
-    def guild(self, /) -> discord.Guild:  # type: ignore
+    def guild(self, /) -> discord.Guild:
         return self.message.guild  # type: ignore
 
     @discord.utils.cached_property
-    def channel(self, /) -> discord.TextChannel:  # type: ignore
+    def channel(self, /) -> discord.TextChannel:
         return self.message.channel  # type: ignore
 
     @discord.utils.cached_property
-    def author(self, /) -> discord.Member:  # type: ignore
+    def author(self, /) -> discord.Member:
         return self.message.author  # type: ignore
 
 

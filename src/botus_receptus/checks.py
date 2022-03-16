@@ -22,7 +22,7 @@ def dm_only() -> Callable[[_F], _F]:
             raise OnlyDirectMessage('This command can only be used in private messags.')
         return True
 
-    return commands.check(predicate)  # type: ignore
+    return commands.check(predicate)
 
 
 def is_guild_owner() -> Callable[[_F], _F]:
@@ -35,4 +35,4 @@ def is_guild_owner() -> Callable[[_F], _F]:
             raise NotGuildOwner('You do not own this guild')
         return True
 
-    return commands.check(predicate)  # type: ignore
+    return commands.check(predicate)
