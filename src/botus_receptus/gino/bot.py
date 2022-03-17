@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import Any, ClassVar
 
-from discord.ext import commands
 from gino import Gino
 
+from ..bot import AutoShardedBot as _AutoShardedBot
+from ..bot import Bot as _Bot
 from ..bot import BotBase as _BotBase
 from ..config import Config
 
@@ -18,6 +19,8 @@ class BotBase(_BotBase):
     async def setup_hook(self) -> None:
         await self.db.set_bind(self.config.get('db_url', ''))
 
+        await super().setup_hook()
+
     async def close(self, /) -> None:
         bind = self.db.pop_bind()
 
@@ -27,9 +30,9 @@ class BotBase(_BotBase):
         await super().close()
 
 
-class Bot(BotBase, commands.Bot):
+class Bot(BotBase, _Bot):
     ...
 
 
-class AutoShardedBot(BotBase, commands.AutoShardedBot):
+class AutoShardedBot(BotBase, _AutoShardedBot):
     ...

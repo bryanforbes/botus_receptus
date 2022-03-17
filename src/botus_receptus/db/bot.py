@@ -4,8 +4,9 @@ import asyncio
 from typing import Any, ClassVar, cast
 
 import discord
-from discord.ext import commands
 
+from ..bot import AutoShardedBot as _AutoShardedBot
+from ..bot import Bot as _Bot
 from ..bot import BotBase as _BotBase
 from ..compat import dict
 from ..config import Config
@@ -53,6 +54,8 @@ class BotBase(_BotBase):
 
         self.pool = pool
 
+        await super().setup_hook()
+
     async def close(self, /) -> None:
         await self.pool.close()
         await super().close()
@@ -64,9 +67,9 @@ class BotBase(_BotBase):
             await self.invoke(ctx)
 
 
-class Bot(BotBase, commands.Bot):
+class Bot(BotBase, _Bot):
     ...
 
 
-class AutoShardedBot(BotBase, commands.AutoShardedBot):
+class AutoShardedBot(BotBase, _AutoShardedBot):
     ...

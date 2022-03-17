@@ -35,6 +35,9 @@ class BotBase(bot.BotBase):
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
 
+    async def setup_hook(self) -> None:
+        ...
+
     async def close(self, /) -> None:
         await super().close()
         await self.session.close()
