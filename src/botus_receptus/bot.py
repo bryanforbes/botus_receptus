@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import Any, TypeVar, cast
+from typing import Any, cast
 
 import aiohttp
 import async_timeout
@@ -12,8 +12,6 @@ from discord.ext.commands import bot
 
 from . import abc
 from .config import Config
-
-OT = TypeVar('OT', bound=commands.Context)
 
 
 class BotBase(bot.BotBase):

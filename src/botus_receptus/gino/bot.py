@@ -15,7 +15,8 @@ class BotBase(_BotBase):
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         super().__init__(config, *args, **kwargs)
 
-        self.loop.run_until_complete(self.db.set_bind(self.config.get('db_url', '')))
+    async def setup_hook(self) -> None:
+        await self.db.set_bind(self.config.get('db_url', ''))
 
     async def close(self, /) -> None:
         bind = self.db.pop_bind()

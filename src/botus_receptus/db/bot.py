@@ -30,6 +30,7 @@ class BotBase(_BotBase):
 
         super().__init__(config, *args, **kwargs)
 
+    async def setup_hook(self) -> None:
         pool_kwargs: dict[str, Any] = {}
 
         if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(
@@ -41,17 +42,16 @@ class BotBase(_BotBase):
         ):
             pool_kwargs['setup'] = cast(Any, self).__setup_connection__
 
-        self.pool = cast(
-            Pool[Record],
-            self.loop.run_until_complete(
-                create_pool(
-                    self.config.get('db_url', ''),
-                    min_size=1,
-                    max_size=10,
-                    **pool_kwargs,
-                )
-            ),
+        pool = await create_pool(
+            self.config.get('db_url', ''),
+            min_size=1,
+            max_size=10,
+            **pool_kwargs,
         )
+
+        assert pool is not None
+
+        self.pool = pool
 
     async def close(self, /) -> None:
         await self.pool.close()
