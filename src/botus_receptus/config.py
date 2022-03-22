@@ -14,23 +14,19 @@ class ConfigException(Exception):
     ...
 
 
-class LoggingBase(TypedDict):
+class Logging(TypedDict):
     log_file: str
     log_level: str
     log_to_console: bool
-
-
-class Logging(LoggingBase):
     loggers: NotRequired[dict[str, str]]
 
 
-class ConfigBase(TypedDict):
+class Config(TypedDict):
     bot_name: str
     discord_api_key: str
+    application_id: int
     logging: Logging
-
-
-class Config(ConfigBase):
+    guild_for_commands: NotRequired[str]
     command_prefix: NotRequired[str]
     db_url: NotRequired[str]
     dbl_token: NotRequired[str]
@@ -46,6 +42,8 @@ def load(path: str, /) -> Config:
         raise ConfigException('"bot_name" not specified in the config file')
     if 'discord_api_key' not in config:
         raise ConfigException('"discord_api_key" not specified in the config file')
+    if 'application_id' not in config:
+        raise ConfigException('"application_id" not specified in the config file')
 
     if 'logging' not in config:
         config['logging'] = cast(Any, {})

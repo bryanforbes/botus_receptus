@@ -28,15 +28,25 @@ class BotBase(bot.BotBase):
             'command_prefix', '$'
         )
 
-        super().__init__(*args, **kwargs)  # type: ignore
+        kwargs['application_id'] = config['application_id']
 
-        self.session = aiohttp.ClientSession(loop=self.loop)
+        super().__init__(*args, **kwargs)  # type: ignore
 
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
 
     async def setup_hook(self) -> None:
-        ...
+        self.session = aiohttp.ClientSession(loop=self.loop)
+
+        guild: discord.Object | None = None
+
+        if (guild_id := self.config.get('guild_for_commands')) is not None:
+            guild = discord.Object(id=guild_id)
+
+        if guild is not None:
+            self.tree.copy_global_to(guild=guild)
+
+        await self.tree.sync(guild=guild)
 
     async def close(self, /) -> None:
         await super().close()

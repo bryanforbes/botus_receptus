@@ -47,6 +47,7 @@ def test_setup_logging(
     config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
+        'application_id': 1,
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': False,
@@ -88,6 +89,7 @@ def test_setup_logging_console(
     config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
+        'application_id': 1,
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': True,
@@ -111,6 +113,7 @@ def test_setup_logging_loggers(
     config: Config = {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
+        'application_id': 1,
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': True,
