@@ -57,6 +57,11 @@ def string_view() -> StringView:
     return StringView('')
 
 
+@pytest.fixture
+async def view() -> discord.ui.View:
+    return discord.ui.View()
+
+
 class TestEmbedContext(object):
     async def test_send_embed_description_only(
         self,
@@ -84,6 +89,8 @@ class TestEmbedContext(object):
             files=None,
             delete_after=None,
             nonce=None,
+            reference=None,
+            view=None,
         )
 
     async def test_send_embed_args(
@@ -93,6 +100,7 @@ class TestEmbedContext(object):
         mock_bot: Bot,
         mock_message: discord.Message,
         string_view: StringView,
+        view: discord.ui.View,
     ) -> None:
         ctx = EmbedContext(
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
@@ -115,6 +123,8 @@ class TestEmbedContext(object):
             files=obj,
             delete_after=1.0,
             nonce=200,
+            reference=mock_message,
+            view=view,
         )
 
         assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
@@ -130,7 +140,14 @@ class TestEmbedContext(object):
             'fields': [{'name': 'one', 'value': 'one', 'inline': True}],
         }
         mock_context_send.assert_called_once_with(
-            tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
+            tts=True,
+            embed=mocker.ANY,
+            file=obj,
+            files=obj,
+            delete_after=1.0,
+            nonce=200,
+            reference=mock_message,
+            view=view,
         )
 
     async def test_send_embed_other_args(
@@ -140,6 +157,7 @@ class TestEmbedContext(object):
         mock_bot: Bot,
         mock_message: discord.Message,
         string_view: StringView,
+        view: discord.ui.View,
     ) -> None:
         ctx = EmbedContext(
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
@@ -155,6 +173,8 @@ class TestEmbedContext(object):
             files=obj,
             delete_after=1.0,
             nonce=200,
+            reference=mock_message,
+            view=view,
         )
 
         assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
@@ -164,7 +184,14 @@ class TestEmbedContext(object):
             'author': {'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
         }
         mock_context_send.assert_called_once_with(
-            tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
+            tts=True,
+            embed=mocker.ANY,
+            file=obj,
+            files=obj,
+            delete_after=1.0,
+            nonce=200,
+            reference=mock_message,
+            view=view,
         )
 
 
@@ -190,9 +217,21 @@ class TestPaginatedContext(object):
         assert len(messages) == 2
         mock_context_send.assert_has_calls(
             [
-                mocker.call('```\nasdf\n```', tts=False, delete_after=None, nonce=None),
                 mocker.call(
-                    '```\nqwerty foo\n```', tts=False, delete_after=None, nonce=None
+                    '```\nasdf\n```',
+                    tts=False,
+                    delete_after=None,
+                    nonce=None,
+                    reference=None,
+                    view=None,
+                ),
+                mocker.call(
+                    '```\nqwerty foo\n```',
+                    tts=False,
+                    delete_after=None,
+                    nonce=None,
+                    reference=None,
+                    view=None,
                 ),
             ]
         )
@@ -205,20 +244,38 @@ class TestPaginatedContext(object):
         mock_bot: Bot,
         mock_message: discord.Message,
         string_view: StringView,
+        view: discord.ui.View,
     ) -> None:
         ctx = PaginatedContext(
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
         )
 
         messages = await ctx.send_pages(
-            mock_paginator, tts=True, delete_after=1.0, nonce=200
+            mock_paginator,
+            tts=True,
+            delete_after=1.0,
+            nonce=200,
+            reference=mock_message,
+            view=view,
         )
         assert len(messages) == 2
         mock_context_send.assert_has_calls(
             [
-                mocker.call('```\nasdf\n```', tts=True, delete_after=1.0, nonce=200),
                 mocker.call(
-                    '```\nqwerty foo\n```', tts=True, delete_after=1.0, nonce=200
+                    '```\nasdf\n```',
+                    tts=True,
+                    delete_after=1.0,
+                    nonce=200,
+                    reference=mock_message,
+                    view=view,
+                ),
+                mocker.call(
+                    '```\nqwerty foo\n```',
+                    tts=True,
+                    delete_after=1.0,
+                    nonce=200,
+                    reference=mock_message,
+                    view=view,
                 ),
             ]
         )

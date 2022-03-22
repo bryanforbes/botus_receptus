@@ -70,6 +70,11 @@ class EmbedContext(commands.Context[BotT]):
         files: list[discord.File] | None = None,
         delete_after: float | None = None,
         nonce: int | None = None,
+        reference: discord.Message
+        | discord.MessageReference
+        | discord.PartialMessage
+        | None = None,
+        view: discord.ui.View | None = None,
     ) -> discord.Message:
         embed = discord.Embed(description=description)
 
@@ -103,6 +108,8 @@ class EmbedContext(commands.Context[BotT]):
             files=files,
             delete_after=delete_after,
             nonce=nonce,
+            reference=reference,
+            view=view,
         )
 
 
@@ -114,6 +121,11 @@ class PaginatedContext(commands.Context[BotT]):
         tts: bool = False,
         delete_after: float | None = None,
         nonce: int | None = None,
+        reference: discord.Message
+        | discord.MessageReference
+        | discord.PartialMessage
+        | None = None,
+        view: discord.ui.View | None = None,
     ) -> list[discord.Message]:
         return [
             await self.send(
@@ -121,6 +133,8 @@ class PaginatedContext(commands.Context[BotT]):
                 tts=tts,
                 delete_after=cast(float, delete_after),
                 nonce=cast(int, nonce),
+                reference=reference,  # type: ignore
+                view=view,  # type: ignore
             )
             for page in pages
         ]
