@@ -35,9 +35,10 @@ class BotBase(bot.BotBase):
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
 
-    async def setup_hook(self) -> None:
+    async def setup_hook(self, /) -> None:
         self.session = aiohttp.ClientSession(loop=self.loop)
 
+    async def sync_app_commands(self, /) -> None:
         guild: discord.Object | None = None
 
         if (guild_id := self.config.get('guild_for_commands')) is not None:
