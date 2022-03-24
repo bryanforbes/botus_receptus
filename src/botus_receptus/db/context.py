@@ -1,23 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Type, TypeVar, cast, overload
+from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
+from contextlib import AbstractAsyncContextManager
+from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
 
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
 from discord.ext import commands
 
-from ..compat import (
-    AbstractAsyncContextManager,
-    Awaitable,
-    Callable,
-    Coroutine,
-    Generator,
-    Sequence,
-    dict,
-    list,
-    tuple,
-)
 from .util import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
@@ -104,7 +95,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[str] | None = ...,
         order_by: str | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> list[_Record]:
         ...
 
@@ -157,7 +148,7 @@ class Context(commands.Context[_BotT]):
         where: Sequence[str] | None = ...,
         group_by: Sequence[str] | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> _Record | None:
         ...
 
@@ -214,7 +205,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> list[_Record]:
         ...
 

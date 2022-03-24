@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+from collections.abc import Iterator
 from logging import (
     CRITICAL,
     DEBUG,
@@ -14,7 +15,6 @@ from logging import (
 )
 from typing import Final
 
-from .compat import Iterator, dict
 from .config import Config
 
 log_levels: Final[dict[str, int]] = {

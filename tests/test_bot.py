@@ -7,8 +7,7 @@ import discord
 import pytest
 from discord.ext import commands
 
-from botus_receptus import Bot, DblBot
-from botus_receptus.compat import list
+from botus_receptus.bot import Bot
 from botus_receptus.config import Config
 
 from .types import MockerFixture
@@ -99,55 +98,3 @@ class TestBot(object):
 
         close.assert_awaited()
         cast(AsyncMock, bot.session.close).assert_awaited()
-
-
-class MockSession:
-    async def post(self, url: str, *, data: Any = None, **kwargs: Any):
-        pass
-
-    async def close(self):
-        pass
-
-
-class TestDblBot(object):
-    @pytest.fixture(autouse=True)
-    def mock_aiohttp(self, mocker: MockerFixture):
-        mocker.patch('aiohttp.ClientSession', new=mocker.create_autospec(MockSession))
-
-    @pytest.fixture
-    def config(self) -> Config:
-        return {
-            'bot_name': 'botty',
-            'discord_api_key': 'API_KEY',
-            'application_id': 1,
-            'dbl_token': 'DBL_TOKEN',
-            'logging': {
-                'log_file': '',
-                'log_level': '',
-                'log_to_console': False,
-            },
-        }
-
-    @pytest.mark.parametrize(
-        'method,args',
-        [
-            ('on_ready', []),
-            ('on_guild_available', [None]),
-            ('on_guild_join', [None]),
-            ('on_guild_remove', [None]),
-        ],
-    )
-    async def test_report_guilds(
-        self, method: str, args: list[Any], config: Config
-    ) -> None:
-        bot = DblBot(config)
-        cast(Any, bot)._connection = MockConnection()
-        await bot.setup_hook()
-
-        await getattr(bot, method)(*args)
-
-        cast(AsyncMock, bot.session.post).assert_awaited_with(
-            'https://discordbots.org/api/bots/12/stats',
-            data='{"server_count": 4}',
-            headers={'Content-Type': 'application/json', 'Authorization': 'DBL_TOKEN'},
-        )

@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 typing_extensions = ">=4.1.0"
 aioitertools = "^0.8.0"
 "async-timeout" = ">=3.0.0"
@@ -50,7 +50,7 @@ types-toml = "^0.10.4"
 
 [tool.black]
 line-length = 88
-target-version = ["py37"]
+target-version = ["py39"]
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
@@ -85,8 +85,9 @@ profile = "black"
 [tool.pyright]
 include = ["src", "tests"]
 
-pythonVersion = "3.8"
+pythonVersion = "3.9"
 typeCheckingMode = "strict"
+reportUnnecessaryTypeIgnoreComment = "warning"
 reportPrivateUsage = "none"
 reportUnusedImport = "none"
 reportUnusedVariable = "none"

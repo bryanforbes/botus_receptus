@@ -42,14 +42,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "ast-decompiler"
-version = "0.4.0"
-description = "Python module to decompile AST to Python code"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "async-timeout"
 version = "3.0.1"
 description = "Timeout context manager for asyncio programs"
@@ -274,7 +266,6 @@ optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-ast-decompiler = {version = ">=0.4.0,<0.5.0", markers = "python_version < \"3.9\""}
 flake8 = ">=3.2.1"
 pyflakes = ">=2.1.1"
 
@@ -778,8 +769,8 @@ uvloop = ["uvloop"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.8"
-content-hash = "9ac584959e047eed1f2a310af69b40e613efb6432b13044d3cc56483a3804e82"
+python-versions = "^3.9"
+content-hash = "93f891f5978023861442f720b9fa80ff6b4b255f6aba182182be6ddcb13b4aca"
 
 [metadata.files]
 aiohttp = [
@@ -832,10 +823,6 @@ apipkg = [
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
-]
-ast-decompiler = [
-    {file = "ast_decompiler-0.4.0-py2.py3-none-any.whl", hash = "sha256:5d2da2a0ab871fade008da92e0dadca95f31779a52c7a7ddc88e3f31051a1ead"},
-    {file = "ast_decompiler-0.4.0.tar.gz", hash = "sha256:20e4cb254382961c63c01e0922207bc5d5d12df2473cb6ca96efd785d450e81a"},
 ]
 async-timeout = [
     {file = "async-timeout-3.0.1.tar.gz", hash = "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f"},

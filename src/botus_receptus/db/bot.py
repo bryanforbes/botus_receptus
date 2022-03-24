@@ -5,10 +5,7 @@ from typing import Any, ClassVar, cast
 
 import discord
 
-from ..bot import AutoShardedBot as _AutoShardedBot
-from ..bot import Bot as _Bot
-from ..bot import BotBase as _BotBase
-from ..compat import dict
+from .. import bot
 from ..config import Config
 from .context import Context
 
@@ -21,7 +18,7 @@ except ImportError:
     _has_asyncpg = False
 
 
-class BotBase(_BotBase):
+class BotBase(bot.BotBase):
     pool: Pool[Record]
     context_cls: ClassVar = Context
 
@@ -67,9 +64,9 @@ class BotBase(_BotBase):
             await self.invoke(ctx)
 
 
-class Bot(BotBase, _Bot):
+class Bot(BotBase, bot.Bot):
     ...
 
 
-class AutoShardedBot(BotBase, _AutoShardedBot):
+class AutoShardedBot(BotBase, bot.AutoShardedBot):
     ...

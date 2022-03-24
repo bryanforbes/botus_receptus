@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Awaitable, Iterable
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -7,10 +8,8 @@ if TYPE_CHECKING:
 
 from discord.abc import Snowflake
 from discord.ext import commands
-from discord.ext.commands import bot
+from discord.ext.commands import bot  # type: ignore
 from discord.utils import maybe_coroutine
-
-from .compat import Awaitable, Iterable, list
 
 
 class Cog(commands.Cog):

@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Awaitable, Container, Iterable
 from typing import Final, TypeVar
 
 import discord
 import pendulum
 from pendulum.duration import Duration
-
-from .compat import Awaitable, Container, Iterable, dict
 
 T = TypeVar('T')
 

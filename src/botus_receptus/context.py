@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import datetime
 from typing import TypedDict, TypeVar, cast
 
@@ -7,7 +8,6 @@ import discord
 from discord.ext import commands
 
 from .bot import AutoShardedBot, Bot
-from .compat import Iterable, list
 
 BotT = TypeVar('BotT', bound='Bot | AutoShardedBot')
 

@@ -6,8 +6,6 @@ from typing import TYPE_CHECKING, Generic, TypeVar, Union
 
 import discord
 
-from .compat import list
-
 if TYPE_CHECKING:
     from typing_extensions import TypeAlias
 

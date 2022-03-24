@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import builtins
+from collections.abc import Mapping, Sequence
 from typing import Any, ClassVar, Final, Protocol, TypeVar, cast
 
 from gino.api import Gino
@@ -8,8 +9,6 @@ from gino.declarative import InvertDict
 from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.sql.schema import Table
-
-from ..compat import Mapping, Sequence, dict, list
 
 DEFAULT: Final = cast(int, object())
 

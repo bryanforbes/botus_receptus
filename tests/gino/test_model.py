@@ -49,7 +49,7 @@ def test_model(Base: Any) -> None:
 async def test_model_inherit(db: Gino, Base: Any, row: Any, bind: MockBind) -> None:
     row.items.return_value = [('id', 0)]
 
-    class MyModel(Base):  # type: ignore
+    class MyModel(Base):
         __tablename__ = 'my_model'
 
         id = db.Column(db.Integer, primary_key=True)

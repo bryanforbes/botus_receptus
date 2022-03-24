@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import enum
 from abc import abstractmethod
+from collections.abc import AsyncIterable, Awaitable, Callable
 from typing import TYPE_CHECKING, Any, Generic, TypedDict, TypeVar, Union, cast
 
 import discord
@@ -14,7 +15,6 @@ from aioitertools.types import AnyIterable
 from attr import attrib, dataclass
 from discord.ext import commands
 
-from .compat import AsyncIterable, Awaitable, Callable, list, tuple
 from .formatting import warning
 from .util import race
 

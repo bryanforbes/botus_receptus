@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import toml
 
-from .compat import dict
-
 if TYPE_CHECKING:
     from typing_extensions import NotRequired
 

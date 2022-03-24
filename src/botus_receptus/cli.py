@@ -7,7 +7,6 @@ import toml
 
 from . import config, logging
 from .bot import BotBase
-from .compat import dict, type
 
 
 def config_callback(

@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Callable, Coroutine
 from typing import TYPE_CHECKING, Any, TypeVar
 
 import discord
 from discord.ext import commands
 
-from .compat import Callable, Coroutine
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 
 if TYPE_CHECKING:

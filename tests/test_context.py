@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock
 import discord
 import pytest
 from attr import dataclass
-from discord.ext.commands.view import StringView
+from discord.ext.commands.view import StringView  # type: ignore
 from pendulum import now
 from pendulum.tz.timezone import UTC
 

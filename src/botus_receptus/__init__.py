@@ -4,7 +4,7 @@ from importlib.metadata import version
 from typing import Final
 
 from . import abc, checks, compat, formatting, re, util
-from .bot import Bot, DblBot
+from .bot import Bot
 from .cli import cli
 from .cog import Cog
 from .config import Config, ConfigException
@@ -30,7 +30,6 @@ __all__ = (
     'Config',
     'ConfigException',
     'Bot',
-    'DblBot',
     'EmbedContext',
     'PaginatedContext',
     'OnlyDirectMessage',

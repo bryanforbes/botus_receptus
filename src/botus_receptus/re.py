@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable, Iterator
 from functools import partial
 from typing import TYPE_CHECKING, Final, Protocol, Union, cast
-
-from .compat import Iterable, Iterator, Pattern
 
 if TYPE_CHECKING:
     from typing_extensions import TypeAlias
@@ -13,7 +12,7 @@ if TYPE_CHECKING:
 # Inspired by https://github.com/TehShrike/regex-fun
 
 
-_ReOrStrType: TypeAlias = Union[str, Pattern[str]]
+_ReOrStrType: TypeAlias = Union[str, re.Pattern[str]]
 
 
 class _ReOrStrFuncType(Protocol):
@@ -46,7 +45,7 @@ X: Final = re.X
 VERBOSE: Final = re.VERBOSE
 
 
-def compile(*args: _ReOrStrType, flags: int = 0) -> Pattern[str]:
+def compile(*args: _ReOrStrType, flags: int = 0) -> re.Pattern[str]:
     return re.compile(combine(*args), flags=flags)
 
 
@@ -112,7 +111,7 @@ def between(n: int, m: int, /, *args: _ReOrStrType, greedy: bool = True) -> str:
 escape: Final = re.escape
 
 
-def escape_all(patterns: Iterable[str | Pattern[str]], /) -> Iterator[str]:
+def escape_all(patterns: Iterable[str | re.Pattern[str]], /) -> Iterator[str]:
     for pattern in patterns:
         if isinstance(pattern, str):
             yield re.escape(pattern)

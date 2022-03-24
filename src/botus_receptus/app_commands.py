@@ -1,11 +1,10 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, Final, TypeVar
 
 import discord
 from discord import app_commands
-
-from .compat import Callable
 
 if TYPE_CHECKING:
     from .bot import AutoShardedBot, Bot

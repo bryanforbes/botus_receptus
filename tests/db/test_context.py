@@ -6,7 +6,7 @@ import discord
 import pytest
 from attr import dataclass
 from discord.ext import commands
-from discord.ext.commands.view import StringView
+from discord.ext.commands.view import StringView  # type: ignore
 
 from botus_receptus.db import Context
 
