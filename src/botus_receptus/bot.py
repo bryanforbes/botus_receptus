@@ -11,6 +11,7 @@ from discord.ext import commands
 from discord.ext.commands import bot
 
 from . import abc
+from .app_commands import CommandTree
 from .config import Config
 
 
@@ -32,6 +33,9 @@ class BotBase(bot.BotBase):
 
         super().__init__(*args, **kwargs)  # type: ignore
 
+        self._connection._command_tree = None  # type: ignore
+        self._BotBase__tree = CommandTree(self)  # type: ignore
+
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
 
@@ -39,15 +43,15 @@ class BotBase(bot.BotBase):
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def sync_app_commands(self, /) -> None:
-        guild: discord.Object | None = None
+        test_guild: discord.Object | None = None
 
-        if (guild_id := self.config.get('guild_for_commands')) is not None:
-            guild = discord.Object(id=guild_id)
+        if (guild_id := self.config.get('test_guild')) is not None:
+            test_guild = discord.Object(id=guild_id)
 
-        if guild is not None:
-            self.tree.copy_global_to(guild=guild)
+        if test_guild is not None:
+            self.tree.copy_global_to(guild=test_guild)
 
-        await self.tree.sync(guild=guild)
+        await self.tree.sync(guild=test_guild)
 
     async def close(self, /) -> None:
         await super().close()

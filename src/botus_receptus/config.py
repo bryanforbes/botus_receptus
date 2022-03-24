@@ -26,7 +26,8 @@ class Config(TypedDict):
     discord_api_key: str
     application_id: int
     logging: Logging
-    guild_for_commands: NotRequired[str]
+    admin_guild: NotRequired[int]
+    test_guild: NotRequired[int]
     command_prefix: NotRequired[str]
     db_url: NotRequired[str]
     dbl_token: NotRequired[str]
