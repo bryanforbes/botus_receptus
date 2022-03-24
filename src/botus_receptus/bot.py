@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import aiohttp
 import async_timeout
@@ -21,6 +21,12 @@ class BotBase(bot.BotBase):
     default_prefix: str
     session: aiohttp.ClientSession
     loop: asyncio.AbstractEventLoop
+
+    if TYPE_CHECKING:
+
+        @property
+        def application_id(self) -> int:
+            ...
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         self.config = config
