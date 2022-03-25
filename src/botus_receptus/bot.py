@@ -48,10 +48,12 @@ class BotBase(bot.BotBase):
         if (guild_ids := self.config.get('test_guilds')) is not None:
             test_guilds = [discord.Object(id=guild_id) for guild_id in guild_ids]
 
-            if test_guilds:
-                for test_guild in test_guilds:
-                    self.tree.copy_global_to(guild=test_guild)
-                    await self.tree.sync(guild=test_guild)
+            if (admin_guild_id := self.config.get('admin_guild', None)) is not None:
+                test_guilds.append(discord.Object(id=admin_guild_id))
+
+            for test_guild in test_guilds:
+                self.tree.copy_global_to(guild=test_guild)
+                await self.tree.sync(guild=test_guild)
 
         await self.tree.sync()
 

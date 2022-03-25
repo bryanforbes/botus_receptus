@@ -4,13 +4,11 @@ from typing import Any, ClassVar
 
 from gino import Gino
 
-from ..bot import AutoShardedBot as _AutoShardedBot
-from ..bot import Bot as _Bot
-from ..bot import BotBase as _BotBase
+from .. import bot
 from ..config import Config
 
 
-class BotBase(_BotBase):
+class BotBase(bot.BotBase):
     db: ClassVar[Gino]
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -30,9 +28,9 @@ class BotBase(_BotBase):
         await super().close()
 
 
-class Bot(BotBase, _Bot):
+class Bot(BotBase, bot.Bot):
     ...
 
 
-class AutoShardedBot(BotBase, _AutoShardedBot):
+class AutoShardedBot(BotBase, bot.AutoShardedBot):
     ...

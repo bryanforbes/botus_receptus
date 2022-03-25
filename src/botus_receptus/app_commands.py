@@ -7,11 +7,11 @@ import discord
 from discord import app_commands
 
 if TYPE_CHECKING:
-    from .bot import AutoShardedBot, Bot
+    from . import bot
 
 
 T = TypeVar('T')
-ClientT = TypeVar('ClientT', bound='Bot | AutoShardedBot')
+ClientT = TypeVar('ClientT', bound='bot.Bot | bot.AutoShardedBot')
 
 
 _ADMIN_ONLY: Final = discord.Object(id=-1)
