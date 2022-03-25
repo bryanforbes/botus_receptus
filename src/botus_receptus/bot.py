@@ -45,15 +45,15 @@ class BotBase(bot.BotBase):
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def sync_app_commands(self, /) -> None:
-        test_guild: discord.Object | None = None
+        if (guild_ids := self.config.get('test_guilds')) is not None:
+            test_guilds = [discord.Object(id=guild_id) for guild_id in guild_ids]
 
-        if (guild_id := self.config.get('test_guild')) is not None:
-            test_guild = discord.Object(id=guild_id)
+            if test_guilds:
+                for test_guild in test_guilds:
+                    self.tree.copy_global_to(guild=test_guild)
+                    await self.tree.sync(guild=test_guild)
 
-        if test_guild is not None:
-            self.tree.copy_global_to(guild=test_guild)
-
-        await self.tree.sync(guild=test_guild)
+        await self.tree.sync()
 
     async def close(self, /) -> None:
         await super().close()

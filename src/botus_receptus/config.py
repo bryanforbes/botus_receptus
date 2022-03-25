@@ -25,7 +25,7 @@ class Config(TypedDict):
     application_id: int
     logging: Logging
     admin_guild: NotRequired[int]
-    test_guild: NotRequired[int]
+    test_guilds: NotRequired[list[int]]
     command_prefix: NotRequired[str]
     db_url: NotRequired[str]
     dbl_token: NotRequired[str]
