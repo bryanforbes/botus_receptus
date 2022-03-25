@@ -28,16 +28,15 @@ class BotBase(bot.BotBase):
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         self.config = config
         self.bot_name = self.config['bot_name']
-        self.default_prefix = kwargs['command_prefix'] = self.config.get(
-            'command_prefix', '$'
+        self.default_prefix = self.config.get('command_prefix', '$')
+
+        super().__init__(  # type: ignore
+            *args,
+            **kwargs,
+            command_prefix=self.default_prefix,
+            application_id=config['application_id'],
+            tree_cls=CommandTree,
         )
-
-        kwargs['application_id'] = config['application_id']
-
-        super().__init__(*args, **kwargs)
-
-        self._connection._command_tree = None  # type: ignore
-        self._BotBase__tree = CommandTree(self)  # type: ignore
 
     def run_with_config(self, /) -> None:
         cast(Any, self).run(self.config['discord_api_key'])
