@@ -9,18 +9,14 @@ import discord
 if TYPE_CHECKING:
     from typing_extensions import TypeAlias
 
+    from discord.guild import GuildChannel as GuildChannel
+
 
 CT_contra = TypeVar('CT_contra', contravariant=True)
 
 
 TextChannel: TypeAlias = Union[
     discord.TextChannel, discord.DMChannel, discord.GroupChannel
-]
-GuildChannel: TypeAlias = Union[
-    discord.TextChannel,
-    discord.VoiceChannel,
-    discord.CategoryChannel,
-    discord.StoreChannel,
 ]
 PrivateChannel: TypeAlias = Union[discord.DMChannel, discord.GroupChannel]
 User: TypeAlias = Union[discord.User, discord.Member]
