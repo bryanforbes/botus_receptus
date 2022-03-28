@@ -290,7 +290,7 @@ dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit"]
 
 [[package]]
 name = "flake8-pyi"
-version = "22.2.0"
+version = "22.3.0"
 description = "A plugin for flake8 to enable linting .pyi files."
 category = "dev"
 optional = false
@@ -802,7 +802,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a9c4b063320ba453cbdfede3e4791e40ce1b7bc84b7eb627e4f6082111ee4dc6"
+content-hash = "793134dd3d3dbcc37ff0f9103c3695b6c2a0ae5f3857ddc4e8caa50a155703f3"
 
 [metadata.files]
 aiohttp = [
@@ -1011,8 +1011,8 @@ flake8-bugbear = [
     {file = "flake8_bugbear-22.3.23-py3-none-any.whl", hash = "sha256:ec5ec92195720cee1589315416b844ffa5e82f73a78e65329e8055322df1e939"},
 ]
 flake8-pyi = [
-    {file = "flake8-pyi-22.2.0.tar.gz", hash = "sha256:eebc20d6b9564cdafa1983914452785dc57f327ddcab99b4c48d6e442965b9b8"},
-    {file = "flake8_pyi-22.2.0-py37-none-any.whl", hash = "sha256:c5b7f8d9785d139913fc5e236f191fc4b1fb638471b2f1cf4c90fdf474c99c45"},
+    {file = "flake8-pyi-22.3.0.tar.gz", hash = "sha256:2603b45d8b4bb3d94eb3e81cce5a676bde12f0499dbaf68a345a7e95b438c21b"},
+    {file = "flake8_pyi-22.3.0-py37-none-any.whl", hash = "sha256:1a3863470d7acad3c328818b5190b2f4d25041d2ce02dabf37205b965fdc5b4e"},
 ]
 gino = [
     {file = "gino-1.0.1-py3-none-any.whl", hash = "sha256:56df57cfdefbaf897a7c4897c265a0e91a8cca80716fb64f7d3cf6d501fdfb3d"},
