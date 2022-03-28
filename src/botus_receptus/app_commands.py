@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Final, TypeVar
+from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
 
 import discord
 from discord import app_commands
@@ -10,18 +10,31 @@ if TYPE_CHECKING:
     from . import bot
 
 
-T = TypeVar('T')
-ClientT = TypeVar('ClientT', bound='bot.Bot | bot.AutoShardedBot')
-
+_T = TypeVar('_T')
+_ClientT = TypeVar('_ClientT', bound='bot.Bot | bot.AutoShardedBot')
 
 _ADMIN_ONLY: Final = discord.Object(id=-1)
+_admin_only_decorator: Final = app_commands.guilds(_ADMIN_ONLY)
 
 
-def admin_guild_only() -> Callable[[T], T]:
-    return app_commands.guilds(_ADMIN_ONLY)
+@overload
+def admin_guild_only(item: _T) -> _T:
+    ...
 
 
-class CommandTree(app_commands.CommandTree[ClientT]):
+@overload
+def admin_guild_only() -> Callable[[_T], _T]:
+    ...
+
+
+def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
+    if item is not None:
+        return _admin_only_decorator(item)
+
+    return _admin_only_decorator
+
+
+class CommandTree(app_commands.CommandTree[_ClientT]):
     def add_command(
         self,
         command: app_commands.Command[Any, ..., Any]
