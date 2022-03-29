@@ -12,6 +12,8 @@ from pendulum.duration import Duration
 
 T = TypeVar('T')
 
+_MISSING: Final = discord.utils.MISSING
+
 
 def has_any_role(member: discord.Member, roles: Container[str], /) -> bool:
     return discord.utils.find(lambda role: role.name in roles, member.roles) is not None
@@ -255,15 +257,15 @@ async def send_interaction(
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
     tts: bool = False,
-    file: discord.File = discord.utils.MISSING,
-    files: Sequence[discord.File] = discord.utils.MISSING,
-    embed: discord.Embed = discord.utils.MISSING,
-    embeds: Sequence[discord.Embed] = discord.utils.MISSING,
-    view: discord.ui.View = discord.utils.MISSING,
-    allowed_mentions: discord.AllowedMentions = discord.utils.MISSING,
-    ephemeral: bool = discord.utils.MISSING,
+    file: discord.File = _MISSING,
+    files: Sequence[discord.File] = _MISSING,
+    embed: discord.Embed = _MISSING,
+    embeds: Sequence[discord.Embed] = _MISSING,
+    view: discord.ui.View = _MISSING,
+    allowed_mentions: discord.AllowedMentions = _MISSING,
+    ephemeral: bool = _MISSING,
 ) -> None:
-    ephemeral = False if ephemeral is discord.utils.MISSING else ephemeral
+    ephemeral = False if ephemeral is _MISSING else ephemeral
     embed = (
         create_embed(
             description=description,
@@ -276,7 +278,7 @@ async def send_interaction(
             timestamp=timestamp,
             fields=fields,
         )
-        if embed is None and embeds is None
+        if embed is _MISSING and embeds is _MISSING
         else embed
     )
     if not interaction.response.is_done():
@@ -317,13 +319,13 @@ async def send_interaction_error(
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
     tts: bool = False,
-    file: discord.File = discord.utils.MISSING,
-    files: Sequence[discord.File] = discord.utils.MISSING,
-    embed: discord.Embed = discord.utils.MISSING,
-    embeds: Sequence[discord.Embed] = discord.utils.MISSING,
-    view: discord.ui.View = discord.utils.MISSING,
-    allowed_mentions: discord.AllowedMentions = discord.utils.MISSING,
-    ephemeral: bool = discord.utils.MISSING,
+    file: discord.File = _MISSING,
+    files: Sequence[discord.File] = _MISSING,
+    embed: discord.Embed = _MISSING,
+    embeds: Sequence[discord.Embed] = _MISSING,
+    view: discord.ui.View = _MISSING,
+    allowed_mentions: discord.AllowedMentions = _MISSING,
+    ephemeral: bool = _MISSING,
 ) -> None:
     return await send_interaction(
         interaction,
@@ -343,5 +345,5 @@ async def send_interaction_error(
         embeds=embeds,
         view=view,
         allowed_mentions=allowed_mentions,
-        ephemeral=True if ephemeral is discord.utils.MISSING else ephemeral,
+        ephemeral=True if ephemeral is _MISSING else ephemeral,
     )
