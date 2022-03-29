@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from datetime import datetime
-from typing import TypedDict, TypeVar, cast
+from typing import TypeVar, cast
 
 import discord
 from discord.ext import commands
 
 from .bot import AutoShardedBot, Bot
+from .util import AuthorData, FieldData, FooterData, send_context
 
 BotT = TypeVar('BotT', bound='Bot | AutoShardedBot')
 
@@ -26,32 +27,6 @@ class GuildContext(commands.Context[BotT]):
         return self.message.author  # type: ignore
 
 
-class FooterData(TypedDict, total=False):
-    text: str
-    icon_url: str
-
-
-class UrlData(TypedDict, total=False):
-    url: str
-
-
-class AuthorDataBase(TypedDict):
-    name: str
-
-
-class AuthorData(AuthorDataBase, UrlData, total=False):
-    icon_url: str
-
-
-class FieldDataBase(TypedDict):
-    name: str
-    value: str
-
-
-class FieldData(FieldDataBase, total=False):
-    inline: bool
-
-
 class EmbedContext(commands.Context[BotT]):
     async def send_embed(
         self,
@@ -64,10 +39,10 @@ class EmbedContext(commands.Context[BotT]):
         author: str | AuthorData | None = None,
         image: str | None = None,
         timestamp: datetime | None = None,
-        fields: list[FieldData] | None = None,
+        fields: Sequence[FieldData] | None = None,
         tts: bool = False,
         file: discord.File | None = None,
-        files: list[discord.File] | None = None,
+        files: Sequence[discord.File] | None = None,
         delete_after: float | None = None,
         nonce: int | None = None,
         reference: discord.Message
@@ -76,34 +51,18 @@ class EmbedContext(commands.Context[BotT]):
         | None = None,
         view: discord.ui.View | None = None,
     ) -> discord.Message:
-        embed = discord.Embed(description=description)
-
-        if title is not None:
-            embed.title = title
-        if color is not None:
-            embed.color = color
-        if footer is not None:
-            if isinstance(footer, str):
-                embed.set_footer(text=footer)
-            else:
-                embed.set_footer(**footer)
-        if thumbnail is not None:
-            embed.set_thumbnail(url=thumbnail)
-        if author is not None:
-            if isinstance(author, str):
-                embed.set_author(name=author)
-            else:
-                embed.set_author(**author)
-        if image is not None:
-            embed.set_image(url=image)
-        if timestamp is not None:
-            embed.timestamp = timestamp
-        if fields is not None:
-            setattr(embed, '_fields', fields)  # noqa: B010
-
-        return await self.send(  # type: ignore
+        return await send_context(
+            self,
+            description=description,
+            title=title,
+            color=color,
+            footer=footer,
+            thumbnail=thumbnail,
+            author=author,
+            image=image,
+            timestamp=timestamp,
+            fields=fields,
             tts=tts,
-            embed=embed,
             file=file,
             files=files,
             delete_after=delete_after,

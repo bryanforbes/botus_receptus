@@ -53,6 +53,11 @@ def mock_message() -> MockMessage:
 
 
 @pytest.fixture
+def mock_message_2() -> MockMessage:
+    return MockMessage()
+
+
+@pytest.fixture
 def string_view() -> StringView:
     return StringView('')
 
@@ -85,11 +90,12 @@ class TestEmbedContext(object):
         mock_context_send.assert_called_once_with(
             tts=False,
             embed=mocker.ANY,
+            embeds=None,
             file=None,
             files=None,
             delete_after=None,
             nonce=None,
-            reference=None,
+            reference=mock_message,
             view=None,
         )
 
@@ -142,6 +148,7 @@ class TestEmbedContext(object):
         mock_context_send.assert_called_once_with(
             tts=True,
             embed=mocker.ANY,
+            embeds=None,
             file=obj,
             files=obj,
             delete_after=1.0,
@@ -156,6 +163,7 @@ class TestEmbedContext(object):
         mock_context_send: AsyncMock,
         mock_bot: Bot,
         mock_message: discord.Message,
+        mock_message_2: discord.Message,
         string_view: StringView,
         view: discord.ui.View,
     ) -> None:
@@ -173,7 +181,7 @@ class TestEmbedContext(object):
             files=obj,
             delete_after=1.0,
             nonce=200,
-            reference=mock_message,
+            reference=mock_message_2,
             view=view,
         )
 
@@ -186,11 +194,12 @@ class TestEmbedContext(object):
         mock_context_send.assert_called_once_with(
             tts=True,
             embed=mocker.ANY,
+            embeds=None,
             file=obj,
             files=obj,
             delete_after=1.0,
             nonce=200,
-            reference=mock_message,
+            reference=mock_message_2,
             view=view,
         )
 
