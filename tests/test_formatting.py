@@ -124,7 +124,7 @@ class TestEmbedPaginator(object):
 
         assert paginator.prefix is None
         assert paginator.suffix is None
-        assert paginator.max_size == 2048
+        assert paginator.max_size == 4096
 
         assert paginator.pages[0] == '123 456 789'
 

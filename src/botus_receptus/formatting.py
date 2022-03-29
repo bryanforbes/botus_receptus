@@ -108,7 +108,7 @@ class Paginator(Iterable[str]):
 class EmbedPaginator(Paginator):
     prefix: str | None = None
     suffix: str | None = None
-    max_size: int = 2048
+    max_size: int = 4096
 
 
 class PluralizerType(Protocol):
