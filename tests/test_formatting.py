@@ -10,6 +10,7 @@ from botus_receptus.formatting import (
     Paginator,
     bold,
     code_block,
+    ellipsize,
     error,
     escape,
     info,
@@ -180,3 +181,15 @@ def test_escape() -> None:
         )
         == r'\*\*\~\~some text @' + '\u200b' + r'here\~\~\*\*'
     )
+
+
+@pytest.mark.parametrize(
+    'text, max_length, expected',
+    [
+        ('asdf asdf asdf', 40, 'asdf asdf asdf'),
+        ('asdf asdf asdf', 10, 'asdf asdf…'),
+        ('asdf asdf asdf', 11, 'asdf asdf…'),
+    ],
+)
+def test_ellipsize(text: str, max_length: int, expected: str) -> None:
+    assert ellipsize(text, max_length=max_length) == expected

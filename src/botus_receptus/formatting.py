@@ -187,3 +187,10 @@ def escape(
         text = _formatting_re.sub(r'\\\g<target>', text)
 
     return text
+
+
+def ellipsize(text: str, /, *, max_length: int) -> str:
+    if len(text) > max_length:
+        return f'{text[:max_length - 1].strip()}…'
+
+    return text
