@@ -46,6 +46,7 @@ pytest-cov = "^3.0"
 pytest-mock = "^3.7"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.5"
+pytest-rerunfailures = "^10.2"
 types-toml = "^0.10.4"
 
 [tool.black]
@@ -64,6 +65,12 @@ exclude = '''
   | htmlcov
 )/
 '''
+
+[tool.coverage.paths]
+source = [
+  "src/",
+  ".tox/**/site-packages/"
+]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -95,13 +102,42 @@ reportImportCycles = "none"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts ="--cov=botus_receptus --cov-branch --cov-report=term -nauto --dist=loadscope"
+addopts ="--cov=botus_receptus --cov-branch --cov-report=term"
 testpaths = ["tests"]
-filterwarnings = [
-  "ignore",
-  "always:::botus_receptus[.*]"
-]
 asyncio_mode = "auto"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py39,py310,report
+isolated_build = True
+
+[testenv]
+deps =
+    pytest
+    pytest-asyncio
+    pytest-cov
+    pytest-mock
+    pytest-sugar
+    pytest-xdist
+    pytest-rerunfailures
+extras =
+    dev
+setenv =
+    py{39,310}: COVERAGE_FILE=.coverage.{envname}
+commands = py.test {posargs:-vv}
+depends =
+    report: py39,py310
+
+[testenv:report]
+deps = coverage[toml]
+skip_install = true
+parallel_show_output = true
+commands =
+    coverage combine
+    coverage report
+    coverage html
+"""
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
