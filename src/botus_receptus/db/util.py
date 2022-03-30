@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Any, Type, TypeVar, overload
+from typing import Any, Type, TypeVar, Union, overload
+from typing_extensions import LiteralString, TypeAlias
 
 from asyncpg import Connection, Record
 from asyncpg.pool import PoolConnectionProxy
@@ -11,6 +12,9 @@ _Record = TypeVar('_Record', bound=Record)
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
+ConditionsType: TypeAlias = Union[Sequence[LiteralString], LiteralString]
+
+
 def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
     if joins is None or len(joins) == 0:
         return ''
@@ -18,11 +22,14 @@ def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
     return ' ' + ' '.join(map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins))
 
 
-def _get_where_string(conditions: Sequence[str] | None, /) -> str:
+def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
+    if conditions and not isinstance(conditions, Sequence):
+        conditions = [conditions]
+
     if conditions is None or len(conditions) == 0:
         return ''
 
-    return ' WHERE ' + ' AND '.join(conditions)
+    return ' WHERE ' + ' AND '.join(conditions)  # type: ignore
 
 
 def _get_order_by_string(order_by: str | None, /) -> str:
@@ -46,7 +53,7 @@ async def select_all(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
@@ -62,7 +69,7 @@ async def select_all(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
@@ -77,7 +84,7 @@ async def select_all(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    where: Sequence[str] | None = None,
+    where: ConditionsType | None = None,
     group_by: Sequence[str] | None = None,
     order_by: str | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
@@ -105,7 +112,7 @@ async def select_one(
     table: str,
     columns: Sequence[str],
     record_class: None = ...,
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
 ) -> _Record | None:
@@ -120,7 +127,7 @@ async def select_one(
     table: str,
     columns: Sequence[str],
     record_class: Type[_Record],
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
 ) -> _Record | None:
@@ -134,7 +141,7 @@ async def select_one(
     table: str,
     columns: Sequence[str],
     record_class: Type[_Record] | None = None,
-    where: Sequence[str] | None = None,
+    where: ConditionsType | None = None,
     group_by: Sequence[str] | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
 ) -> Any | None:
@@ -157,9 +164,9 @@ async def search(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    search_columns: Sequence[str],
+    search_columns: Sequence[LiteralString],
     terms: Sequence[str],
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
@@ -175,9 +182,9 @@ async def search(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    search_columns: Sequence[str],
+    search_columns: Sequence[LiteralString],
     terms: Sequence[str],
-    where: Sequence[str] | None = ...,
+    where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
@@ -192,25 +199,32 @@ async def search(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    search_columns: Sequence[str],
+    search_columns: Sequence[LiteralString],
     terms: Sequence[str],
-    where: Sequence[str] | None = None,
+    where: ConditionsType | None = None,
     group_by: Sequence[str] | None = None,
     order_by: str | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
     record_class: Type[_Record] | None = None,
 ) -> list[_Record]:
+    if where is None:
+        where = []
+    if not isinstance(where, Sequence):
+        where = [where]
+    else:
+        where = list(where)
+
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
     search_columns_str = " || ' ' || ".join(search_columns)
-    search_terms_str = ' & '.join(terms)
-    where_str = _get_where_string(
-        tuple(where if where is not None else [])
-        + (
-            f"to_tsvector('english', {search_columns_str}) @@ to_tsquery('english', "
-            f"'{search_terms_str}')",
-        )
+    args = args + (' & '.join(terms),)
+
+    where.append(
+        f"to_tsvector('english', {search_columns_str}) @@ "  # type: ignore
+        f"to_tsquery('english', ${len(args)})"
     )
+
+    where_str = _get_where_string(where)
     group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
@@ -228,10 +242,10 @@ async def update(
     *args: Any,
     table: str,
     values: dict[str, Any],
-    where: Sequence[str] | None = None,
+    where: ConditionsType | None = None,
 ) -> None:
     set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
-    where_str = _get_where_string(where if where is not None else [])
+    where_str = _get_where_string(where)
 
     await db.execute(f'UPDATE {table} SET {set_str}{where_str}', *args)
 
@@ -266,7 +280,7 @@ async def delete_from(
     /,
     *args: Any,
     table: str,
-    where: Sequence[str],
+    where: ConditionsType,
 ) -> None:
     where_str = _get_where_string(where)
     await db.execute(f'DELETE FROM {table}{where_str}', *args)

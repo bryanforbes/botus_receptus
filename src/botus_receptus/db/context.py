@@ -3,13 +3,22 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
 from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
+from typing_extensions import LiteralString
 
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
 from attr import dataclass
 from discord.ext import commands
 
-from .util import delete_from, insert_into, search, select_all, select_one, update
+from .util import (
+    ConditionsType,
+    delete_from,
+    insert_into,
+    search,
+    select_all,
+    select_one,
+    update,
+)
 
 if TYPE_CHECKING:
     from .bot import AutoShardedBot, Bot
@@ -76,7 +85,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         order_by: str | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
@@ -91,7 +100,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         order_by: str | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
@@ -106,7 +115,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -131,7 +140,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
         record_class: None = ...,
@@ -145,7 +154,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
         record_class: type[_Record],
@@ -159,7 +168,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
         record_class: Any | None = None,
@@ -182,9 +191,9 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -199,9 +208,9 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -216,9 +225,9 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -245,7 +254,7 @@ class Context(commands.Context[_BotT]):
         *args: Any,
         table: str,
         values: dict[str, Any],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
     ) -> None:
         return await update(self.db, *args, table=table, values=values, where=where)
 
@@ -257,6 +266,6 @@ class Context(commands.Context[_BotT]):
 
     @ensure_db
     async def delete_from(
-        self, /, *args: Any, table: str, where: Sequence[str]
+        self, /, *args: Any, table: str, where: ConditionsType
     ) -> None:
         return await delete_from(self.db, *args, table=table, where=where)
