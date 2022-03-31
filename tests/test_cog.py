@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import cast
+from typing import Any, Coroutine, cast
+from typing_extensions import Self
 from unittest.mock import AsyncMock
 
 import discord
 import pytest
+from discord import app_commands
 from pytest_mock import MockerFixture
 
 from botus_receptus import Bot, Cog
@@ -107,3 +109,101 @@ class TestCog(object):
         if async_methods:
             pre_eject_spy.assert_awaited_once()
             post_eject_spy.assert_awaited_once()
+
+    async def test_cog_app_command_error(
+        self, mocker: MockerFixture, mock_bot: Bot
+    ) -> None:
+        on_error = mocker.AsyncMock()
+        on_group_handler_error = mocker.AsyncMock()
+        on_command_error = mocker.AsyncMock()
+
+        class MyGroup(app_commands.Group):
+            @app_commands.command()
+            async def my_group_command(self, interaction: discord.Interaction) -> None:
+                ...
+
+        class MyGroupWithHandler(app_commands.Group):
+            @app_commands.command()
+            async def my_group_command(self, interaction: discord.Interaction) -> None:
+                ...
+
+            def on_error(
+                self,
+                interaction: discord.Interaction,
+                command: app_commands.Command[Any, ..., Any],
+                error: app_commands.AppCommandError,
+            ) -> Coroutine[Any, Any, None]:
+                return on_group_handler_error(self, interaction, command, error)
+
+        class MyCog(Cog[Any]):
+            my_group = MyGroup()
+            my_group_with_handler = MyGroupWithHandler()
+
+            @app_commands.command()
+            async def my_command(self, interaction: discord.Interaction) -> None:
+                ...
+
+            @app_commands.command()
+            async def my_command_with_handler(
+                self, interaction: discord.Interaction
+            ) -> None:
+                ...
+
+            @my_command_with_handler.error
+            async def on_my_command_with_handler_error(
+                self,
+                interaction: discord.Interaction,
+                error: app_commands.AppCommandError,
+            ) -> None:
+                await on_command_error(self, interaction, error)
+
+            def cog_app_command_error(
+                self,
+                interaction: discord.Interaction,
+                command: app_commands.Command[Self, ..., Any],
+                error: app_commands.AppCommandError,
+                /,
+            ) -> Coroutine[Any, Any, None]:
+                return on_error(self, interaction, command, error)
+
+        interaction = cast(discord.Interaction, object())
+        error = app_commands.CheckFailure()
+
+        cog = MyCog(mock_bot)
+
+        assert cog.my_group.on_error is not app_commands.Group.on_error
+        assert cog.my_group_with_handler.on_error is not MyGroupWithHandler.on_error
+        assert cog.my_command.on_error is not None
+
+        await cog.my_group.my_group_command._invoke_error_handler(interaction, error)
+        on_error.assert_awaited_once_with(
+            cog, interaction, cog.my_group.my_group_command, error
+        )
+
+        on_error.reset_mock()
+
+        await cog.my_group_with_handler.my_group_command._invoke_error_handler(
+            interaction, error
+        )
+        on_group_handler_error.assert_awaited_once_with(
+            cog.my_group_with_handler,
+            interaction,
+            cog.my_group_with_handler.my_group_command,
+            error,
+        )
+        on_error.assert_awaited_once_with(
+            cog, interaction, cog.my_group_with_handler.my_group_command, error
+        )
+
+        on_error.reset_mock()
+
+        await cog.my_command._invoke_error_handler(interaction, error)
+        on_error.assert_awaited_once_with(cog, interaction, cog.my_command, error)
+
+        on_error.reset_mock()
+
+        await cog.my_command_with_handler._invoke_error_handler(interaction, error)
+        on_command_error.assert_awaited_once_with(cog, interaction, error)
+        on_error.assert_awaited_once_with(
+            cog, interaction, cog.my_command_with_handler, error
+        )

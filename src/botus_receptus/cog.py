@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Coroutine, Iterable
-from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypeVar
+from collections.abc import Awaitable, Iterable
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 import discord
 from discord import app_commands
@@ -16,9 +16,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
 
-_T = TypeVar('_T')
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
-_Coro: TypeAlias = Coroutine[Any, Any, _T]
 
 
 class Cog(commands.Cog, Generic[_BotT]):
@@ -29,12 +27,9 @@ class Cog(commands.Cog, Generic[_BotT]):
 
         self.bot = bot
 
-        on_error = commands.Cog._get_overridden_method(self.cog_app_command_error)
-
-        if on_error is not None:
+        if commands.Cog._get_overridden_method(self.cog_app_command_error) is not None:
             for command in self.__cog_app_commands__:
-                if command.parent is None:
-                    self._set_command_error_handler(command)
+                self._set_command_error_handler(command)
 
     def _set_command_error_handler(
         self,
@@ -42,13 +37,43 @@ class Cog(commands.Cog, Generic[_BotT]):
         /,
     ) -> None:
         if isinstance(command, app_commands.Group):
-            command.on_error = self.cog_app_command_error  # type: ignore
+            if (
+                hasattr(command.on_error, '__func__')
+                and command.on_error.__func__  # type: ignore
+                is app_commands.Group.on_error
+            ):
+                command.on_error = self.cog_app_command_error  # type: ignore
+            else:
+                old_on_group_error = command.on_error
+
+                async def on_group_error(
+                    interaction: discord.Interaction,
+                    command: app_commands.Command[Any, ..., Any],
+                    error: app_commands.AppCommandError,
+                    /,
+                ) -> Any:
+                    await old_on_group_error(interaction, command, error)
+                    await self.cog_app_command_error(interaction, command, error)
+
+                command.on_error = on_group_error  # type: ignore
             return
 
-        def on_error(interaction: discord.Interaction, error: Exception) -> _Coro[Any]:
-            return self.cog_app_command_error(interaction, command, error)
+        if command.binding is not self:
+            return
 
-        command.on_error = on_error
+        old_on_error = command.on_error
+
+        async def on_command_error_with_binding(
+            binding: Self,
+            interaction: discord.Interaction,
+            error: app_commands.AppCommandError,
+            /,
+        ) -> None:
+            if old_on_error is not None:
+                await old_on_error(binding, interaction, error)  # type: ignore
+            await self.cog_app_command_error(interaction, command, error)
+
+        command.on_error = on_command_error_with_binding
 
     async def _inject(  # type: ignore
         self,
@@ -117,7 +142,7 @@ class Cog(commands.Cog, Generic[_BotT]):
         self,
         interaction: discord.Interaction,
         command: app_commands.Command[Self, ..., Any],
-        error: Exception,
+        error: app_commands.AppCommandError,
         /,
     ) -> None:
         ...
