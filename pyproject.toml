@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 typing_extensions = ">=4.1.0"
 aioitertools = "^0.8.0"
 "async-timeout" = ">=3.0.0"
@@ -51,7 +51,7 @@ types-toml = "^0.10.4"
 
 [tool.black]
 line-length = 88
-target-version = ["py39"]
+target-version = ["py310"]
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
@@ -92,7 +92,7 @@ profile = "black"
 [tool.pyright]
 include = ["src", "tests"]
 
-pythonVersion = "3.9"
+pythonVersion = "3.10"
 typeCheckingMode = "strict"
 reportUnnecessaryTypeIgnoreComment = "warning"
 reportPrivateUsage = "none"
@@ -109,7 +109,7 @@ asyncio_mode = "auto"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py39,py310,report
+envlist = py310,report
 isolated_build = True
 
 [testenv]
@@ -124,10 +124,10 @@ deps =
 extras =
     dev
 setenv =
-    py{39,310}: COVERAGE_FILE=.coverage.{envname}
+    py{310}: COVERAGE_FILE=.coverage.{envname}
 commands = py.test {posargs:-vv}
 depends =
-    report: py39,py310
+    report: py310
 
 [testenv:report]
 deps = coverage[toml]

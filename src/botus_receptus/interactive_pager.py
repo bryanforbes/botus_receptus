@@ -4,7 +4,7 @@ import asyncio
 import enum
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable
-from typing import TYPE_CHECKING, Any, Generic, TypedDict, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, TypeVar, cast
 
 import discord
 import discord.abc
@@ -19,13 +19,11 @@ from .formatting import warning
 from .util import race
 
 if TYPE_CHECKING:
-    from typing_extensions import Self, TypeAlias
+    from typing_extensions import Self
 
 
-T = TypeVar('T')
-WaitResult: TypeAlias = tuple[
-    discord.Reaction, Union[discord.User, discord.Member, None]
-]
+_T = TypeVar('_T')
+_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member | None]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -50,7 +48,7 @@ class Page(TypedDict):
 
 
 @dataclass(slots=True)
-class PageSource(Generic[T]):
+class PageSource(Generic[_T]):
     total: int
     per_page: int
     show_entry_count: bool
@@ -73,10 +71,10 @@ class PageSource(Generic[T]):
         self,
         page: int,
         /,
-    ) -> Awaitable[AnyIterable[T]] | AnyIterable[T]:
+    ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]:
         ...
 
-    def format_line(self, index: int, entry: T, /) -> str:
+    def format_line(self, index: int, entry: _T, /) -> str:
         return f'{index}. {entry}'
 
     def get_footer_text(self, page: int, /) -> str | None:
@@ -91,7 +89,7 @@ class PageSource(Generic[T]):
         return text
 
     async def get_page(self, page: int, /) -> Page:
-        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
         lines = [
             self.format_line(index, entry)
             async for index, entry in aenumerate(
@@ -105,17 +103,17 @@ class PageSource(Generic[T]):
 
 
 @dataclass(slots=True)
-class ListPageSource(PageSource[T]):
-    entries: list[T]
+class ListPageSource(PageSource[_T]):
+    entries: list[_T]
 
-    def get_page_items(self, page: int, /) -> list[T]:
+    def get_page_items(self, page: int, /) -> list[_T]:
         base = (page - 1) * self.per_page
         return self.entries[base : base + self.per_page]
 
     @classmethod
     def create(
         cls,
-        entries: list[T],
+        entries: list[_T],
         per_page: int,
         /,
         *,
@@ -130,13 +128,13 @@ class ListPageSource(PageSource[T]):
 
 
 @dataclass(slots=True)
-class InteractivePager(Generic[T]):
+class InteractivePager(Generic[_T]):
     bot: commands.Bot
     message: discord.Message
     channel: discord.abc.MessageableChannel
     author: discord.User | discord.Member
     can_manage_messages: bool
-    source: PageSource[T]
+    source: PageSource[_T]
 
     embed: discord.Embed = attrib(init=False)
     paginating: bool = attrib(init=False)
@@ -349,14 +347,14 @@ class InteractivePager(Generic[T]):
 
         if self.can_manage_messages:
 
-            def wait_for_reaction() -> asyncio.Future[WaitResult]:
+            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
                 return self.bot.wait_for(
                     'reaction_add', check=self.__react_check, timeout=120.0
                 )
 
         else:
 
-            def wait_for_reaction() -> asyncio.Future[WaitResult]:
+            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
                 return self.bot.loop.create_task(
                     race(
                         [
@@ -394,7 +392,7 @@ class InteractivePager(Generic[T]):
     def create(
         cls,
         ctx: commands.Context[Any],
-        source: PageSource[T],
+        source: PageSource[_T],
         /,
     ) -> Self:
         if ctx.guild is not None and ctx.guild.me is not None:
@@ -435,12 +433,12 @@ class FieldPage(Page):
 
 
 @dataclass(slots=True)
-class FieldPageSource(PageSource[T]):
-    def format_field(self, index: int, entry: T, /) -> tuple[Any, Any]:
+class FieldPageSource(PageSource[_T]):
+    def format_field(self, index: int, entry: _T, /) -> tuple[Any, Any]:
         return (index, entry)
 
     async def get_page(self, page: int, /) -> FieldPage:
-        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
             self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
         )
@@ -452,8 +450,8 @@ class FieldPageSource(PageSource[T]):
 
 
 @dataclass(slots=True)
-class InteractiveFieldPager(InteractivePager[T]):
-    source: FieldPageSource[T]
+class InteractiveFieldPager(InteractivePager[_T]):
+    source: FieldPageSource[_T]
 
     async def modify_embed(  # type: ignore
         self, page: FieldPage, page_num: int, /, *, first: bool = False
@@ -471,7 +469,7 @@ class InteractiveFieldPager(InteractivePager[T]):
     def create(  # type: ignore
         cls,
         ctx: commands.Context[Any],
-        source: FieldPageSource[T],
+        source: FieldPageSource[_T],
         /,
     ) -> Self:
         return super().create(ctx, source)

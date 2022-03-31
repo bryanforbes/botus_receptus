@@ -10,10 +10,10 @@ from discord.ext import commands
 from .bot import AutoShardedBot, Bot
 from .util import AuthorData, FieldData, FooterData, send_context
 
-BotT = TypeVar('BotT', bound='Bot | AutoShardedBot')
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
 
 
-class GuildContext(commands.Context[BotT]):
+class GuildContext(commands.Context[_BotT]):
     @discord.utils.cached_property
     def guild(self, /) -> discord.Guild:
         return self.message.guild  # type: ignore
@@ -27,7 +27,7 @@ class GuildContext(commands.Context[BotT]):
         return self.message.author  # type: ignore
 
 
-class EmbedContext(commands.Context[BotT]):
+class EmbedContext(commands.Context[_BotT]):
     async def send_embed(
         self,
         description: str,
@@ -72,7 +72,7 @@ class EmbedContext(commands.Context[BotT]):
         )
 
 
-class PaginatedContext(commands.Context[BotT]):
+class PaginatedContext(commands.Context[_BotT]):
     async def send_pages(
         self,
         pages: Iterable[str],

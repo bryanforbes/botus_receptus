@@ -2,46 +2,41 @@ from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import TYPE_CHECKING, Generic, TypeVar, Union
+from typing import TYPE_CHECKING, Generic, TypeAlias, TypeVar
 
 import discord
 
 if TYPE_CHECKING:
-    from typing_extensions import TypeAlias
-
     from discord.guild import GuildChannel as GuildChannel
 
 
-CT_contra = TypeVar('CT_contra', contravariant=True)
+_CT_contra = TypeVar('_CT_contra', contravariant=True)
+
+_TextChannel: TypeAlias = discord.TextChannel | discord.DMChannel | discord.GroupChannel
+_PrivateChannel: TypeAlias = discord.DMChannel | discord.GroupChannel
+_User: TypeAlias = discord.User | discord.Member
 
 
-TextChannel: TypeAlias = Union[
-    discord.TextChannel, discord.DMChannel, discord.GroupChannel
-]
-PrivateChannel: TypeAlias = Union[discord.DMChannel, discord.GroupChannel]
-User: TypeAlias = Union[discord.User, discord.Member]
-
-
-class OnCommandError(Generic[CT_contra]):
+class OnCommandError(Generic[_CT_contra]):
     @abstractmethod
     async def on_command_error(
         self,
-        context: CT_contra,
+        context: _CT_contra,
         exception: Exception,
         /,
     ) -> None:
         ...
 
 
-class OnCommand(Generic[CT_contra]):
+class OnCommand(Generic[_CT_contra]):
     @abstractmethod
-    async def on_command(self, context: CT_contra, /) -> None:
+    async def on_command(self, context: _CT_contra, /) -> None:
         ...
 
 
-class OnCommandCompletion(Generic[CT_contra]):
+class OnCommandCompletion(Generic[_CT_contra]):
     @abstractmethod
-    async def on_command_completion(self, context: CT_contra, /) -> None:
+    async def on_command_completion(self, context: _CT_contra, /) -> None:
         ...
 
 
@@ -79,8 +74,8 @@ class OnTyping(metaclass=ABCMeta):
     @abstractmethod
     async def on_typing(
         self,
-        channels: TextChannel,
-        users: User,
+        channels: _TextChannel,
+        users: _User,
         when: datetime,
         /,
     ) -> None:
@@ -148,7 +143,7 @@ class OnRawMessageEdit(metaclass=ABCMeta):
 
 class OnReactionAdd(metaclass=ABCMeta):
     @abstractmethod
-    async def on_reaction_add(self, reaction: discord.Reaction, user: User, /) -> None:
+    async def on_reaction_add(self, reaction: discord.Reaction, user: _User, /) -> None:
         ...
 
 
@@ -167,7 +162,7 @@ class OnReactionRemove(metaclass=ABCMeta):
     async def on_reaction_remove(
         self,
         reaction: discord.Reaction,
-        user: User,
+        user: _User,
         /,
     ) -> None:
         ...
@@ -222,13 +217,13 @@ class OnRawReactionClearEmoji(metaclass=ABCMeta):
 
 class OnPrivateChannelDelete(metaclass=ABCMeta):
     @abstractmethod
-    async def on_private_channel_delete(self, channel: PrivateChannel, /) -> None:
+    async def on_private_channel_delete(self, channel: _PrivateChannel, /) -> None:
         ...
 
 
 class OnPrivateChannelCreate(metaclass=ABCMeta):
     @abstractmethod
-    async def on_private_channel_create(self, channel: PrivateChannel, /) -> None:
+    async def on_private_channel_create(self, channel: _PrivateChannel, /) -> None:
         ...
 
 
@@ -236,8 +231,8 @@ class OnPrivateChannelUpdate(metaclass=ABCMeta):
     @abstractmethod
     async def on_private_channel_update(
         self,
-        before: PrivateChannel,
-        after: PrivateChannel,
+        before: _PrivateChannel,
+        after: _PrivateChannel,
         /,
     ) -> None:
         ...
@@ -247,7 +242,7 @@ class OnPrivateChannelPinsUpdate(metaclass=ABCMeta):
     @abstractmethod
     async def on_private_channel_pins_update(
         self,
-        channel: PrivateChannel,
+        channel: _PrivateChannel,
         last_pin: datetime | None,
         /,
     ) -> None:
@@ -406,7 +401,7 @@ class OnGuildEmojisUpdate(metaclass=ABCMeta):
 
 class OnMemberBan(metaclass=ABCMeta):
     @abstractmethod
-    async def on_member_ban(self, guild: discord.Guild, user: User, /) -> None:
+    async def on_member_ban(self, guild: discord.Guild, user: _User, /) -> None:
         ...
 
 

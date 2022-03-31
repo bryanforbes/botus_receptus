@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import builtins
-from typing import Any, Optional
+from typing import Any
 from unittest.mock import AsyncMock, Mock
 
 from attr import attrib, dataclass
@@ -15,8 +15,8 @@ from .types import MockerFixture
 @dataclass(slots=True)
 class MockUser(object):
     id: int
-    bot: Optional[bool] = None
-    mention: Optional[str] = None
+    bot: bool | None = None
+    mention: str | None = None
 
 
 @dataclass(slots=True)
@@ -30,8 +30,8 @@ class MockPermissions(object):
 
 @dataclass(slots=True)
 class MockGuild(object):
-    me: Optional[MockUser] = None
-    owner: Optional[MockUser] = None
+    me: MockUser | None = None
+    owner: MockUser | None = None
 
 
 @dataclass
@@ -100,8 +100,8 @@ class MockBot(object):
         self,
         event: str,
         *,
-        check: Optional[Callable[..., Any]] = None,
-        timeout: Optional[float] = None,
+        check: Callable[..., Any] | None = None,
+        timeout: float | None = None,
     ) -> Awaitable[Any]:
         future = self.loop.create_future()
 
@@ -169,7 +169,7 @@ class MockContext(object):
     author: MockUser
     message: MockMessage
     channel: MockChannel
-    guild: Optional[MockGuild]
+    guild: MockGuild | None
 
     @staticmethod
     def create(
@@ -178,7 +178,7 @@ class MockContext(object):
         advance_time: Callable[[float], Awaitable[None]],
         bot_user: MockUser,
         permissions: MockPermissions,
-        guild: Optional[MockGuild] = None,
+        guild: MockGuild | None = None,
     ) -> MockContext:
         author = MockUser(id=1)
         channel = MockChannel.create(mocker, permissions)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 import discord
 import pytest
@@ -20,16 +20,16 @@ class MockBot(object):
 
 @dataclass(slots=True)
 class MockUser(object):
-    bot: Optional[bool] = None
-    id: Optional[int] = None
-    mention: Optional[str] = None
+    bot: bool | None = None
+    id: int | None = None
+    mention: str | None = None
 
 
 @dataclass(slots=True)
 class MockMessage(object):
-    author: Optional[MockUser] = None
-    content: Optional[str] = None
-    channel: Optional[discord.abc.GuildChannel] = None
+    author: MockUser | None = None
+    content: str | None = None
+    channel: discord.abc.GuildChannel | None = None
     _state: Any = None
 
 

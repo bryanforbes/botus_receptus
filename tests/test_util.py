@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from typing import List
 
 import discord
 import pendulum
@@ -22,7 +21,7 @@ class MockRole(object):
 
 @dataclass(slots=True)
 class MockMember(object):
-    roles: List[MockRole] = attrib(factory=list)
+    roles: list[MockRole] = attrib(factory=list)
 
 
 @pytest.fixture

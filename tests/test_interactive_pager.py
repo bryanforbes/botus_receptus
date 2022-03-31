@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, List, cast
+from typing import Any, cast
 
 import discord
 import pytest
@@ -41,18 +41,18 @@ class MockReaction(object):
 
 @dataclass(slots=True)
 class SubPageSource(PageSource[str]):
-    strings: List[str]
+    strings: list[str]
 
-    def get_page_items(self, page: int) -> List[str]:
+    def get_page_items(self, page: int) -> list[str]:
         base = (page - 1) * self.per_page
         return self.strings[base : base + self.per_page]
 
 
 @dataclass(slots=True)
 class SubFieldPageSource(FieldPageSource[str]):
-    strings: List[str]
+    strings: list[str]
 
-    def get_page_items(self, page: int) -> List[str]:
+    def get_page_items(self, page: int) -> list[str]:
         base = (page - 1) * self.per_page
         return self.strings[base : base + self.per_page]
 

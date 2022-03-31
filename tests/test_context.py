@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 from unittest.mock import AsyncMock
 
 import discord
@@ -33,8 +33,8 @@ class MockUser(object):
 class MockMessage(object):
     author: MockUser | None = None
     content: str | None = None
-    channel: Optional[discord.abc.GuildChannel] = None
-    _state: Optional[Any] = None
+    channel: discord.abc.GuildChannel | None = None
+    _state: Any | None = None
 
 
 @pytest.fixture

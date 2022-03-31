@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
 from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
-from typing_extensions import LiteralString
 
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
@@ -21,10 +20,14 @@ from .util import (
 )
 
 if TYPE_CHECKING:
+    from typing_extensions import LiteralString
+
     from .bot import AutoShardedBot, Bot
 
 _Record = TypeVar('_Record', bound=Record)
 _BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_FunctionType = Callable[..., Coroutine[Any, Any, Any]]
+_F = TypeVar('_F', bound=_FunctionType)
 
 
 @dataclass(slots=True)
@@ -45,11 +48,7 @@ class AquireContextManager(
         await self.ctx.release()
 
 
-FunctionType = Callable[..., Coroutine[Any, Any, Any]]
-F = TypeVar('F', bound=FunctionType)
-
-
-def ensure_db(func: F, /) -> F:
+def ensure_db(func: _F, /) -> _F:
     def wrapper(self: Any, /, *args: Any, **kwargs: Any) -> Any:
         if not hasattr(self, 'db'):
             raise RuntimeError(
@@ -58,7 +57,7 @@ def ensure_db(func: F, /) -> F:
 
         return func(self, *args, **kwargs)
 
-    return cast(F, wrapper)
+    return cast(_F, wrapper)
 
 
 class Context(commands.Context[_BotT]):

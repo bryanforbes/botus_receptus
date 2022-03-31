@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Any, Type, TypeVar, Union, overload
-from typing_extensions import LiteralString, TypeAlias
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
 
 from asyncpg import Connection, Record
 from asyncpg.pool import PoolConnectionProxy
+
+if TYPE_CHECKING:
+    from typing_extensions import LiteralString
 
 _Record = TypeVar('_Record', bound=Record)
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-ConditionsType: TypeAlias = Union[Sequence[LiteralString], LiteralString]
+ConditionsType: TypeAlias = "Sequence['LiteralString'] | 'LiteralString'"
 
 
 def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
@@ -73,7 +75,7 @@ async def select_all(
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
-    record_class: Type[_Record],
+    record_class: type[_Record],
 ) -> list[_Record]:
     ...
 
@@ -88,7 +90,7 @@ async def select_all(
     group_by: Sequence[str] | None = None,
     order_by: str | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
-    record_class: Type[_Record] | None = None,
+    record_class: type[_Record] | None = None,
 ) -> list[Any]:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
@@ -126,7 +128,7 @@ async def select_one(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    record_class: Type[_Record],
+    record_class: type[_Record],
     where: ConditionsType | None = ...,
     group_by: Sequence[str] | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
@@ -140,7 +142,7 @@ async def select_one(
     *args: Any,
     table: str,
     columns: Sequence[str],
-    record_class: Type[_Record] | None = None,
+    record_class: type[_Record] | None = None,
     where: ConditionsType | None = None,
     group_by: Sequence[str] | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
@@ -188,7 +190,7 @@ async def search(
     group_by: Sequence[str] | None = ...,
     order_by: str | None = ...,
     joins: Sequence[tuple[str, str]] | None = ...,
-    record_class: Type[_Record],
+    record_class: type[_Record],
 ) -> list[_Record]:
     ...
 
@@ -205,7 +207,7 @@ async def search(
     group_by: Sequence[str] | None = None,
     order_by: str | None = None,
     joins: Sequence[tuple[str, str]] | None = None,
-    record_class: Type[_Record] | None = None,
+    record_class: type[_Record] | None = None,
 ) -> list[_Record]:
     if where is None:
         where = []

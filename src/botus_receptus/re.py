@@ -3,16 +3,12 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable, Iterator
 from functools import partial
-from typing import TYPE_CHECKING, Final, Protocol, Union, cast
-
-if TYPE_CHECKING:
-    from typing_extensions import TypeAlias
-
+from typing import Final, Protocol, TypeAlias, cast
 
 # Inspired by https://github.com/TehShrike/regex-fun
 
 
-_ReOrStrType: TypeAlias = Union[str, re.Pattern[str]]
+_ReOrStrType: TypeAlias = str | re.Pattern[str]
 
 
 class _ReOrStrFuncType(Protocol):

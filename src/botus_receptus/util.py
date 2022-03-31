@@ -11,7 +11,7 @@ import pendulum
 from discord.ext import commands
 from pendulum.duration import Duration
 
-T = TypeVar('T')
+_T = TypeVar('_T')
 
 _MISSING: Final = discord.utils.MISSING
 
@@ -65,11 +65,11 @@ def parse_duration(duration: str, /) -> Duration:
 
 
 async def race(
-    futures: Iterable[asyncio.Future[T] | Awaitable[T]],
+    futures: Iterable[asyncio.Future[_T] | Awaitable[_T]],
     /,
     *,
     timeout: float | None = None,
-) -> T:
+) -> _T:
     tasks = {
         asyncio.create_task(future) if inspect.iscoroutine(future) else future
         for future in futures
