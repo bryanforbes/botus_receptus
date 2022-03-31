@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import cast
 from unittest.mock import AsyncMock
 
 import discord
@@ -20,11 +20,15 @@ class TestCog(object):
         return MockBot()
 
     @pytest.fixture
-    def mock_cog(self, mocker: Any) -> Cog:
-        return Cog()
+    def mock_cog(self, mock_bot: Bot) -> Cog[Bot]:
+        return Cog(mock_bot)
+
+    def test_instantiate(self, mock_bot: Bot) -> None:
+        cog = Cog(mock_bot)
+        assert cog.bot is mock_bot
 
     async def test_inject(self, mock_bot: Bot) -> None:
-        cog = Cog()
+        cog = Cog(mock_bot)
         result = await cog._inject(
             mock_bot, override=False, guild=discord.utils.MISSING, guilds=[]
         )
@@ -35,7 +39,7 @@ class TestCog(object):
     async def test_inject_methods(
         self,
         mock_bot: Bot,
-        mock_cog: Cog,
+        mock_cog: Cog[Bot],
         mocker: MockerFixture,
         async_methods: bool,
     ) -> None:
@@ -68,14 +72,14 @@ class TestCog(object):
             post_inject_spy.assert_awaited_once()
 
     async def test_eject(self, mock_bot: Bot) -> None:
-        cog: Cog = Cog()
+        cog = Cog(mock_bot)
         await cog._eject(mock_bot, guild_ids=[])
 
     @pytest.mark.parametrize('async_methods', [True, False])
     async def test_eject_methods(
         self,
         mock_bot: Bot,
-        mock_cog: Cog,
+        mock_cog: Cog[Bot],
         mocker: MockerFixture,
         async_methods: bool,
     ) -> None:

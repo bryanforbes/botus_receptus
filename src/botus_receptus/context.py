@@ -10,7 +10,7 @@ from discord.ext import commands
 from .bot import AutoShardedBot, Bot
 from .util import AuthorData, FieldData, FooterData, send_context
 
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
 
 
 class GuildContext(commands.Context[_BotT]):
