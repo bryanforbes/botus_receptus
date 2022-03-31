@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
+from collections.abc import Callable, Coroutine
+from typing import TYPE_CHECKING, Any, Final, TypeAlias, TypeVar, overload
 
 import discord
 from discord import app_commands
@@ -12,6 +12,12 @@ if TYPE_CHECKING:
 
 _T = TypeVar('_T')
 _ClientT = TypeVar('_ClientT', bound='bot.Bot | bot.AutoShardedBot')
+_CommandT = TypeVar('_CommandT', bound=app_commands.Command[Any, ..., Any])
+
+_Coro: TypeAlias = Coroutine[Any, Any, _T]
+_ErrorHandler: TypeAlias = Callable[
+    [discord.Interaction, _CommandT, Exception], _Coro[Any]
+]
 
 _ADMIN_ONLY: Final = discord.Object(id=-1)
 _admin_only_decorator: Final = app_commands.guilds(_ADMIN_ONLY)
@@ -63,3 +69,14 @@ class CommandTree(app_commands.CommandTree[_ClientT]):
             guilds = discord.utils.MISSING
 
         super().add_command(command, guild=guild, guilds=guilds, override=override)
+
+
+def set_command_error_handler(
+    command: _CommandT,
+    handler: _ErrorHandler[_CommandT],
+    /,
+) -> None:
+    def on_error(interaction: discord.Interaction, error: Exception) -> _Coro[Any]:
+        return handler(interaction, command, error)
+
+    command.on_error = on_error
