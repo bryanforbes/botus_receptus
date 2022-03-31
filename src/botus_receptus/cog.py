@@ -42,7 +42,7 @@ class Cog(commands.Cog, Generic[_BotT]):
         /,
     ) -> None:
         if isinstance(command, app_commands.Group):
-            command.on_error = cog.cog_app_command_error  # type: ignore
+            command.on_error = self.cog_app_command_error  # type: ignore
             return
 
         def on_error(interaction: discord.Interaction, error: Exception) -> _Coro[Any]:
