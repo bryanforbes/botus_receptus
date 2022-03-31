@@ -4,7 +4,7 @@ from typing import Any
 
 import discord
 import pytest
-from attr import dataclass
+from attrs import define
 from discord.ext import commands
 from discord.ext.commands.view import StringView  # type: ignore
 
@@ -13,19 +13,19 @@ from botus_receptus.db import Context
 from ..types import MockerFixture
 
 
-@dataclass(slots=True)
+@define
 class MockBot(object):
     pool: Any
 
 
-@dataclass(slots=True)
+@define
 class MockUser(object):
     bot: bool | None = None
     id: int | None = None
     mention: str | None = None
 
 
-@dataclass(slots=True)
+@define
 class MockMessage(object):
     author: MockUser | None = None
     content: str | None = None
@@ -33,7 +33,7 @@ class MockMessage(object):
     _state: Any = None
 
 
-@dataclass(slots=True)
+@define
 class MockCommand(object):
     ...
 

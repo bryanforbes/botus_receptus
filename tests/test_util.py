@@ -5,7 +5,7 @@ import asyncio
 import discord
 import pendulum
 import pytest
-from attr import attrib, dataclass
+from attrs import define, field
 from pendulum.duration import Duration
 
 from botus_receptus import util
@@ -13,15 +13,15 @@ from botus_receptus import util
 from .types import ClockAdvancer
 
 
-@dataclass(slots=True)
+@define
 class MockRole(object):
     id: int = 0
     name: str = ''
 
 
-@dataclass(slots=True)
+@define
 class MockMember(object):
-    roles: list[MockRole] = attrib(factory=list)
+    roles: list[MockRole] = field(factory=list)
 
 
 @pytest.fixture

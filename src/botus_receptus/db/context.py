@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
 
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
-from attr import dataclass
+from attrs import define
 from discord.ext import commands
 
 from .util import (
@@ -30,7 +30,7 @@ _FunctionType = Callable[..., Coroutine[Any, Any, Any]]
 _F = TypeVar('_F', bound=_FunctionType)
 
 
-@dataclass(slots=True)
+@define
 class AquireContextManager(
     AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
     Awaitable['PoolConnectionProxy[Record]'],

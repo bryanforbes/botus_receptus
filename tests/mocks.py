@@ -1,25 +1,24 @@
 from __future__ import annotations
 
 import asyncio
-import builtins
 from typing import Any
 from unittest.mock import AsyncMock, Mock
 
-from attr import attrib, dataclass
+from attrs import define, field
 
 from botus_receptus.compat import Awaitable, Callable, dict, list, tuple
 
 from .types import MockerFixture
 
 
-@dataclass(slots=True)
+@define
 class MockUser(object):
     id: int
     bot: bool | None = None
     mention: str | None = None
 
 
-@dataclass(slots=True)
+@define
 class MockPermissions(object):
     embed_links: bool = True
     send_messages: bool = True
@@ -28,17 +27,17 @@ class MockPermissions(object):
     manage_messages: bool = True
 
 
-@dataclass(slots=True)
+@define
 class MockGuild(object):
     me: MockUser | None = None
     owner: MockUser | None = None
 
 
-@dataclass
+@define
 class MockChannel(object):
-    permissions_for: Mock = attrib(init=False)
-    send: AsyncMock = attrib(init=False)
-    delete_messages: AsyncMock = attrib(init=False)
+    permissions_for: Mock = field(init=False)
+    send: AsyncMock = field(init=False)
+    delete_messages: AsyncMock = field(init=False)
 
     @staticmethod
     def create(
@@ -54,14 +53,14 @@ class MockChannel(object):
         return channel
 
 
-@dataclass
+@define
 class MockBot(object):
     user: MockUser
     loop: Any
     advance_time: Callable[[float], Awaitable[None]]
-    _listeners: dict[
-        str, list[tuple[asyncio.Future[Any], Callable[..., Any]]]
-    ] = attrib(factory=builtins.dict)
+    _listeners: dict[str, list[tuple[asyncio.Future[Any], Callable[..., Any]]]] = field(
+        factory=dict
+    )
 
     async def _dispatch_wait_for(self, event: str, *args: Any) -> None:
         listeners = self._listeners.setdefault(event, [])
@@ -128,7 +127,7 @@ class MockBot(object):
         return MockBot(user=user, loop=loop, advance_time=advance_time)
 
 
-@dataclass
+@define
 class MockMessage(object):
     id: int
     author: MockUser
@@ -163,7 +162,7 @@ class MockMessage(object):
         return message
 
 
-@dataclass(slots=True)
+@define
 class MockContext(object):
     bot: MockBot
     author: MockUser

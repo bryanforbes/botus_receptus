@@ -7,7 +7,7 @@ import discord
 import pytest
 from _pytest.fixtures import SubRequest
 from aioitertools.builtins import list as alist
-from attr import dataclass
+from attrs import define
 
 from botus_receptus.interactive_pager import (
     CannotPaginate,
@@ -29,7 +29,7 @@ from .mocks import (
 from .types import ClockAdvancer, MockerFixture
 
 
-@dataclass(slots=True)
+@define
 class MockReaction(object):
     message: Any
     emoji: str
@@ -39,7 +39,7 @@ class MockReaction(object):
         return MockReaction(message=discord.Object(message_id), emoji=emoji)
 
 
-@dataclass(slots=True)
+@define
 class SubPageSource(PageSource[str]):
     strings: list[str]
 
@@ -48,7 +48,7 @@ class SubPageSource(PageSource[str]):
         return self.strings[base : base + self.per_page]
 
 
-@dataclass(slots=True)
+@define
 class SubFieldPageSource(FieldPageSource[str]):
     strings: list[str]
 

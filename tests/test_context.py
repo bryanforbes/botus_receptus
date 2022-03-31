@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock
 
 import discord
 import pytest
-from attr import dataclass
+from attrs import define
 from discord.ext.commands.view import StringView  # type: ignore
 from pendulum import now
 from pendulum.tz.timezone import UTC
@@ -17,19 +17,19 @@ from botus_receptus.context import EmbedContext, PaginatedContext
 from .types import MockerFixture
 
 
-@dataclass(slots=True)
+@define
 class MockBot(object):
     ...
 
 
-@dataclass(slots=True)
+@define
 class MockUser(object):
     bot: bool | None = None
     id: int | None = None
     mention: str | None = None
 
 
-@dataclass(slots=True)
+@define
 class MockMessage(object):
     author: MockUser | None = None
     content: str | None = None
