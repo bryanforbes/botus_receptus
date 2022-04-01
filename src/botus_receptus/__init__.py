@@ -4,7 +4,7 @@ from importlib.metadata import version
 from typing import Final
 
 from . import abc, checks, compat, formatting, re, util
-from .bot import Bot
+from .bot import AutoShardedBot, Bot, BotBase
 from .cli import cli
 from .cog import Cog
 from .config import Config, ConfigException
@@ -24,14 +24,16 @@ __all__ = (
     'formatting',
     're',
     'util',
-    'setup_logging',
+    'AutoShardedBot',
+    'Bot',
+    'BotBase',
     'cli',
     'Cog',
     'Config',
     'ConfigException',
-    'Bot',
     'EmbedContext',
     'PaginatedContext',
-    'OnlyDirectMessage',
     'NotGuildOwner',
+    'OnlyDirectMessage',
+    'setup_logging',
 )
