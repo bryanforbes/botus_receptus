@@ -138,7 +138,8 @@ def create_embed(
     if image is not None:
         embed.set_image(url=image)
     if fields is not None:
-        embed._fields = [field for field in fields]  # type: ignore
+        for field in fields:
+            embed.add_field(**field)
 
     return embed
 
