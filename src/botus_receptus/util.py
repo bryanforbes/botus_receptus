@@ -5,6 +5,7 @@ import inspect
 from collections.abc import Awaitable, Container, Iterable, Sequence
 from datetime import datetime
 from typing import Any, Final, TypedDict, TypeVar
+from typing_extensions import NotRequired
 
 import discord
 import pendulum
@@ -89,30 +90,27 @@ async def race(
             future.cancel()
 
 
-class FooterData(TypedDict, total=False):
-    text: str
-    icon_url: str
+class FooterData(TypedDict):
+    text: NotRequired[str]
+    icon_url: NotRequired[str]
 
 
-class UrlData(TypedDict, total=False):
-    url: str
+class UrlData(TypedDict):
+    url: NotRequired[str]
 
 
 class AuthorDataBase(TypedDict):
     name: str
 
 
-class AuthorData(AuthorDataBase, UrlData, total=False):
-    icon_url: str
+class AuthorData(AuthorDataBase, UrlData):
+    icon_url: NotRequired[str]
 
 
-class FieldDataBase(TypedDict):
+class FieldData(TypedDict):
     name: str
     value: str
-
-
-class FieldData(FieldDataBase, total=False):
-    inline: bool
+    inline: NotRequired[bool]
 
 
 def create_embed(
