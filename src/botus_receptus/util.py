@@ -91,20 +91,14 @@ async def race(
 
 
 class FooterData(TypedDict):
-    text: NotRequired[str]
-    icon_url: NotRequired[str]
+    text: NotRequired[str | None]
+    icon_url: NotRequired[str | None]
 
 
-class UrlData(TypedDict):
-    url: NotRequired[str]
-
-
-class AuthorDataBase(TypedDict):
+class AuthorData(TypedDict):
     name: str
-
-
-class AuthorData(AuthorDataBase, UrlData):
-    icon_url: NotRequired[str]
+    url: NotRequired[str | None]
+    icon_url: NotRequired[str | None]
 
 
 class FieldData(TypedDict):
@@ -115,38 +109,34 @@ class FieldData(TypedDict):
 
 def create_embed(
     *,
-    description: str,
+    description: str | None = None,
     title: str | None = None,
     color: discord.Color | int | None = None,
     footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
     author: str | AuthorData | None = None,
+    thumbnail: str | None = None,
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
 ) -> discord.Embed:
-    embed = discord.Embed(description=description)
+    embed = discord.Embed(
+        description=description, title=title, color=color, timestamp=timestamp
+    )
 
-    if title is not None:
-        embed.title = title
-    if color is not None:
-        embed.color = color
     if footer is not None:
         if isinstance(footer, str):
             embed.set_footer(text=footer)
         else:
             embed.set_footer(**footer)
-    if thumbnail is not None:
-        embed.set_thumbnail(url=thumbnail)
     if author is not None:
         if isinstance(author, str):
             embed.set_author(name=author)
         else:
             embed.set_author(**author)
+    if thumbnail is not None:
+        embed.set_thumbnail(url=thumbnail)
     if image is not None:
         embed.set_image(url=image)
-    if timestamp is not None:
-        embed.timestamp = timestamp
     if fields is not None:
         embed._fields = [field for field in fields]  # type: ignore
 
@@ -157,7 +147,7 @@ async def send_context(
     ctx: commands.Context[Any],
     /,
     *,
-    description: str,
+    description: str | None = None,
     title: str | None = None,
     color: discord.Color | int | None = None,
     footer: str | FooterData | None = None,
@@ -208,7 +198,7 @@ async def send_context_error(
     ctx: commands.Context[Any],
     /,
     *,
-    description: str,
+    description: str | None = None,
     title: str | None = None,
     color: discord.Color | int | None = None,
     footer: str | FooterData | None = None,
@@ -249,7 +239,7 @@ async def send_interaction(
     interaction: discord.Interaction,
     /,
     *,
-    description: str,
+    description: str | None = None,
     title: str | None = None,
     color: discord.Color | int | None = None,
     footer: str | FooterData | None = None,
@@ -311,7 +301,7 @@ async def send_interaction_error(
     interaction: discord.Interaction,
     /,
     *,
-    description: str,
+    description: str | None = None,
     title: str | None = None,
     color: discord.Color | int | None = None,
     footer: str | FooterData | None = None,
