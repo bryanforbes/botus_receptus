@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 from unittest.mock import MagicMock
 
 import pytest
@@ -139,3 +139,26 @@ def test_setup_logging_loggers(
                 mocker.call().setLevel(logging.INFO),
             ]
         )
+
+
+def test_setup_logging_handler_cls(
+    mocker: MockerFixture,
+    mock_get_logger: MagicMock,
+) -> None:
+    config: Config = {
+        'bot_name': 'botty',
+        'discord_api_key': 'API_KEY',
+        'application_id': 1,
+        'logging': {
+            'log_file': 'botty.log',
+            'log_to_console': False,
+            'log_level': 'info',
+        },
+    }
+
+    mock_handler = mocker.MagicMock()
+    mock_cls = mocker.MagicMock(return_value=mock_handler)
+
+    with setup_logging(config, handler_cls=cast(Any, mock_cls)):
+        mock_cls.assert_called_with(filename='botty.log', encoding='utf-8', mode='a')
+        mock_get_logger.return_value.addHandler.assert_called_with(mock_handler)

@@ -15,6 +15,8 @@ from logging import (
 )
 from typing import Final
 
+import discord
+
 from .config import Config
 
 log_levels: Final[dict[str, int]] = {
@@ -27,8 +29,13 @@ log_levels: Final[dict[str, int]] = {
 
 
 @contextlib.contextmanager
-def setup_logging(config: Config, /) -> Iterator[None]:
+def setup_logging(
+    config: Config, /, handler_cls: type[FileHandler] = discord.utils.MISSING
+) -> Iterator[None]:
     log = getLogger()
+
+    if handler_cls is discord.utils.MISSING:
+        handler_cls = FileHandler
 
     try:
         bot_name = config['bot_name']
@@ -52,7 +59,7 @@ def setup_logging(config: Config, /) -> Iterator[None]:
             '[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{'
         )
 
-        handler = FileHandler(filename=log_file, encoding='utf-8', mode='a')
+        handler = handler_cls(filename=log_file, encoding='utf-8', mode='a')
         handler.setFormatter(fmt)
         log.addHandler(handler)
 
