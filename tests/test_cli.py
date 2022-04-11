@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import cast
+from typing import Any, cast
 from unittest.mock import MagicMock, Mock
 
+import discord
 import pytest
 from click.testing import CliRunner
 
@@ -79,7 +80,8 @@ def test_run(
                 'log_to_console': False,
                 'log_level': 'info',
             },
-        }
+        },
+        handler_cls=discord.utils.MISSING,
     )
     mock_config_load.assert_called_once()
     mock_config_load.call_args[0][0].endswith('/config.toml')
@@ -102,12 +104,21 @@ def test_run(
     ],
 )
 def test_run_logging_config(
-    cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
+    cli_runner: CliRunner,
+    mocker: MockerFixture,
+    mock_bot_class: Mock,
+    mock_setup_logging: MagicMock,
 ):
     with open('config.toml', 'w') as f:
         f.write('')
 
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    mock_cls = mocker.MagicMock()
+
+    command = cli(
+        cast(type[BotBase], mock_bot_class),
+        './config.toml',
+        handler_cls=cast(Any, mock_cls),
+    )
     cli_runner.invoke(command, [])  # type: ignore
 
     mock_setup_logging.assert_called_once_with(
@@ -119,7 +130,8 @@ def test_run_logging_config(
                 'log_to_console': True,
                 'log_level': 'warning',
             },
-        }
+        },
+        handler_cls=mock_cls,
     )
 
 
@@ -156,7 +168,8 @@ def test_run_log_to_console(
                 'log_to_console': True,
                 'log_level': 'info',
             },
-        }
+        },
+        handler_cls=discord.utils.MISSING,
     )
 
 
@@ -178,7 +191,8 @@ def test_run_log_level(
                 'log_to_console': False,
                 'log_level': 'critical',
             },
-        }
+        },
+        handler_cls=discord.utils.MISSING,
     )
 
 

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+from logging import FileHandler
 from typing import Any, cast
 
 import click
+import discord
 import toml
 
 from . import config, logging
@@ -46,7 +48,12 @@ def config_callback(
     return bot_config
 
 
-def cli(bot_class: type[BotBase], default_config_path: str, /) -> click.Command:
+def cli(
+    bot_class: type[BotBase],
+    default_config_path: str,
+    /,
+    handler_cls: type[FileHandler] = discord.utils.MISSING,
+) -> click.Command:
     @click.command()
     @click.option(
         '-c',
@@ -69,7 +76,7 @@ def cli(bot_class: type[BotBase], default_config_path: str, /) -> click.Command:
             {'log_to_console': log_to_console, 'log_level': log_level}
         )
 
-        with logging.setup_logging(bot_config):
+        with logging.setup_logging(bot_config, handler_cls=handler_cls):
             bot = bot_class(bot_config)
             bot.run_with_config()
 
