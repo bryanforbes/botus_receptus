@@ -16,7 +16,7 @@ from attrs import define, field
 from discord.ext import commands
 
 from .formatting import warning
-from .util import race
+from .utils import race
 
 if TYPE_CHECKING:
     from typing_extensions import Self

@@ -3,7 +3,7 @@ from __future__ import annotations
 from importlib.metadata import version
 from typing import Final
 
-from . import abc, checks, compat, formatting, re, util
+from . import abc, checks, compat, formatting, re, utils
 from .bot import AutoShardedBot, Bot, BotBase
 from .cli import cli
 from .cog import Cog
@@ -23,7 +23,7 @@ __all__ = (
     'compat',
     'formatting',
     're',
-    'util',
+    'utils',
     'AutoShardedBot',
     'Bot',
     'BotBase',

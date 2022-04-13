@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 
 from .bot import AutoShardedBot, Bot
-from .util import AuthorData, FieldData, FooterData, send_context
+from .utils import AuthorData, FieldData, FooterData, send_context
 
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
 

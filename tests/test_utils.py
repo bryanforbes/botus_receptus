@@ -8,7 +8,7 @@ import pytest
 from attrs import define, field
 from pendulum.duration import Duration
 
-from botus_receptus import util
+from botus_receptus import utils
 
 from .types import ClockAdvancer
 
@@ -36,13 +36,13 @@ def mock_member() -> MockMember:
 
 
 def test_has_any_role(mock_member: discord.Member) -> None:
-    assert util.has_any_role(mock_member, ['ham', 'spam', 'bar'])
-    assert not util.has_any_role(mock_member, ['ham', 'spam', 'blah'])
+    assert utils.has_any_role(mock_member, ['ham', 'spam', 'bar'])
+    assert not utils.has_any_role(mock_member, ['ham', 'spam', 'blah'])
 
 
 def test_has_any_role_id(mock_member: discord.Member) -> None:
-    assert util.has_any_role_id(mock_member, [2, 4, 18])
-    assert not util.has_any_role_id(mock_member, {28, 4, 18})
+    assert utils.has_any_role_id(mock_member, [2, 4, 18])
+    assert not utils.has_any_role_id(mock_member, {28, 4, 18})
 
 
 @pytest.mark.parametrize(
@@ -62,7 +62,7 @@ def test_has_any_role_id(mock_member: discord.Member) -> None:
     ],
 )
 def test_parse_duration(duration: str, expected: Duration) -> None:
-    assert util.parse_duration(duration) == expected
+    assert utils.parse_duration(duration) == expected
 
 
 @pytest.mark.parametrize(
@@ -77,7 +77,7 @@ def test_parse_duration(duration: str, expected: Duration) -> None:
 )
 def test_parse_duration_failures(duration: str, message: str) -> None:
     with pytest.raises(ValueError, match=message):
-        util.parse_duration(duration)
+        utils.parse_duration(duration)
 
 
 async def test_race(
@@ -95,7 +95,7 @@ async def test_race(
         await asyncio.sleep(25)
         return 3
 
-    task = event_loop.create_task(util.race([one(), two(), three()]))
+    task = event_loop.create_task(utils.race([one(), two(), three()]))
     await advance_time(35)
     await advance_time(60)
     await advance_time(110)
@@ -113,6 +113,6 @@ async def test_race_timeout(
         await asyncio.sleep(50)
         return 2
 
-    task = event_loop.create_task(util.race([one(), two()], timeout=25))
+    task = event_loop.create_task(utils.race([one(), two()], timeout=25))
     await advance_time(30)
     assert isinstance(task.exception(), asyncio.TimeoutError)

@@ -9,7 +9,7 @@ from asyncpg.pool import PoolConnectionProxy
 from attrs import define
 from discord.ext import commands
 
-from .util import (
+from .utils import (
     ConditionsType,
     delete_from,
     insert_into,

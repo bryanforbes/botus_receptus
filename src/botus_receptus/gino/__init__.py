@@ -4,7 +4,7 @@ from .api import Gino
 from .base import Snowflake
 from .bot import AutoShardedBot, Bot, BotBase
 from .model import ModelMixin
-from .util import create_or_update
+from .utils import create_or_update
 
 __all__ = (
     'Gino',
