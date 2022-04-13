@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Coroutine, cast
+from collections.abc import Coroutine
+from typing import Any, cast
 from typing_extensions import Self
 from unittest.mock import AsyncMock
 
