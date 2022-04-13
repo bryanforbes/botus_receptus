@@ -4,7 +4,7 @@ import asyncio
 import inspect
 from collections.abc import Awaitable, Container, Iterable, Sequence
 from datetime import datetime
-from typing import Any, Final, TypedDict, TypeVar
+from typing import Any, Final, TypedDict, TypeVar, overload
 from typing_extensions import NotRequired
 
 import discord
@@ -257,7 +257,7 @@ async def send_interaction(
     view: discord.ui.View = _MISSING,
     allowed_mentions: discord.AllowedMentions = _MISSING,
     ephemeral: bool = _MISSING,
-) -> None:
+) -> discord.Message:
     ephemeral = False if ephemeral is _MISSING else ephemeral
     embed = (
         create_embed(
@@ -285,8 +285,9 @@ async def send_interaction(
             allowed_mentions=allowed_mentions,
             ephemeral=ephemeral,
         )
+        return await interaction.original_message()
     else:
-        await interaction.followup.send(
+        return await interaction.followup.send(
             tts=tts,
             embed=embed,
             embeds=embeds,
@@ -295,6 +296,7 @@ async def send_interaction(
             view=view,
             allowed_mentions=allowed_mentions,
             ephemeral=ephemeral,
+            wait=True,
         )
 
 
@@ -319,7 +321,7 @@ async def send_interaction_error(
     view: discord.ui.View = _MISSING,
     allowed_mentions: discord.AllowedMentions = _MISSING,
     ephemeral: bool = _MISSING,
-) -> None:
+) -> discord.Message:
     return await send_interaction(
         interaction,
         description=description,
@@ -340,3 +342,129 @@ async def send_interaction_error(
         allowed_mentions=allowed_mentions,
         ephemeral=True if ephemeral is _MISSING else ephemeral,
     )
+
+
+@overload
+async def send(
+    ctx: commands.Context[Any],
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Sequence[FieldData] | None = None,
+    tts: bool = False,
+    file: discord.File | None = None,
+    files: Sequence[discord.File] | None = None,
+    embed: discord.Embed | None = None,
+    embeds: Sequence[discord.Embed] | None = None,
+    delete_after: float | None = None,
+    nonce: int | None = None,
+    reference: discord.Message
+    | discord.MessageReference
+    | discord.PartialMessage
+    | None = None,
+    view: discord.ui.View | None = None,
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send(
+    interaction: discord.Interaction,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Sequence[FieldData] | None = None,
+    tts: bool = False,
+    file: discord.File = _MISSING,
+    files: Sequence[discord.File] = _MISSING,
+    embed: discord.Embed = _MISSING,
+    embeds: Sequence[discord.Embed] = _MISSING,
+    view: discord.ui.View = _MISSING,
+    allowed_mentions: discord.AllowedMentions = _MISSING,
+    ephemeral: bool = _MISSING,
+) -> discord.Message:
+    ...
+
+
+async def send(
+    ctx_or_intx: commands.Context[Any] | discord.Interaction, /, **kwargs: Any
+) -> discord.Message:
+    if isinstance(ctx_or_intx, commands.Context):
+        return await send_context(ctx_or_intx, **kwargs)
+    else:
+        return await send_interaction(ctx_or_intx, **kwargs)
+
+
+@overload
+async def send_error(
+    ctx: commands.Context[Any],
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Sequence[FieldData] | None = None,
+    tts: bool = False,
+    file: discord.File | None = None,
+    files: Sequence[discord.File] | None = None,
+    reference: discord.Message
+    | discord.MessageReference
+    | discord.PartialMessage
+    | None = None,
+    view: discord.ui.View | None = None,
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_error(
+    interaction: discord.Interaction,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Sequence[FieldData] | None = None,
+    tts: bool = False,
+    file: discord.File = _MISSING,
+    files: Sequence[discord.File] = _MISSING,
+    embed: discord.Embed = _MISSING,
+    embeds: Sequence[discord.Embed] = _MISSING,
+    view: discord.ui.View = _MISSING,
+    allowed_mentions: discord.AllowedMentions = _MISSING,
+    ephemeral: bool = _MISSING,
+) -> discord.Message:
+    ...
+
+
+async def send_error(
+    ctx_or_intx: commands.Context[Any] | discord.Interaction, /, **kwargs: Any
+) -> discord.Message:
+    if isinstance(ctx_or_intx, commands.Context):
+        return await send_context_error(ctx_or_intx, **kwargs)
+    else:
+        return await send_interaction_error(ctx_or_intx, **kwargs)
