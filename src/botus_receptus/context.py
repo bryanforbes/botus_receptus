@@ -79,12 +79,13 @@ class PaginatedContext(commands.Context[_BotT]):
         pages: Iterable[str],
         *,
         tts: bool = False,
-        delete_after: float = _MISSING,
-        nonce: int = _MISSING,
+        delete_after: float | None = None,
+        nonce: int | None = None,
         reference: discord.Message
         | discord.MessageReference
-        | discord.PartialMessage = _MISSING,
-        view: discord.ui.View = _MISSING,
+        | discord.PartialMessage
+        | None = None,
+        view: discord.ui.View | None = None,
     ) -> list[discord.Message]:
         return [
             await self.send(

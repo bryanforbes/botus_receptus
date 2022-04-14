@@ -82,20 +82,22 @@ class TestEmbedContext(object):
 
         await ctx.send_embed('baz')
 
-        assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert (
+            type(mock_context_send.call_args_list[0][1]['embeds'][0]) == discord.Embed
+        )
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'description': 'baz',
             'type': 'rich',
         }
         mock_context_send.assert_called_once_with(
             tts=False,
-            embed=mocker.ANY,
-            embeds=None,
+            embeds=[mocker.ANY],
             file=None,
             files=None,
             delete_after=None,
             nonce=None,
             reference=mock_message,
+            allowed_mentions=None,
             view=None,
         )
 
@@ -133,7 +135,7 @@ class TestEmbedContext(object):
             view=view,
         )
 
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
             'description': 'foo',
             'title': 'bar',
@@ -147,13 +149,13 @@ class TestEmbedContext(object):
         }
         mock_context_send.assert_called_once_with(
             tts=True,
-            embed=mocker.ANY,
-            embeds=None,
+            embeds=[mocker.ANY],
             file=obj,
             files=obj,
             delete_after=1.0,
             nonce=200,
             reference=mock_message,
+            allowed_mentions=None,
             view=view,
         )
 
@@ -185,7 +187,7 @@ class TestEmbedContext(object):
             view=view,
         )
 
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
             'description': 'foo',
             'footer': {'text': 'bar', 'icon_url': 'baz'},
@@ -193,13 +195,13 @@ class TestEmbedContext(object):
         }
         mock_context_send.assert_called_once_with(
             tts=True,
-            embed=mocker.ANY,
-            embeds=None,
+            embeds=[mocker.ANY],
             file=obj,
             files=obj,
             delete_after=1.0,
             nonce=200,
             reference=mock_message_2,
+            allowed_mentions=None,
             view=view,
         )
 
