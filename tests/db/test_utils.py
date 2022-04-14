@@ -45,9 +45,9 @@ class TestDbUtil(object):
                 {
                     'table': 'table',
                     'columns': ['one', 'two'],
-                    'where': ['col1 = $1', 'col2 = $2'],
+                    'where': 'col1 = $1',
                 },
-                'SELECT one, two FROM table WHERE col1 = $1 AND col2 = $2',
+                'SELECT one, two FROM table WHERE col1 = $1',
             ),
             (
                 [],
@@ -188,11 +188,11 @@ class TestDbUtil(object):
                 {
                     'table': 'table',
                     'columns': ['col1', 'col2'],
-                    'where': ['col1 = $1', 'col2 = $2'],
+                    'where': 'col1 = $1',
                     'search_columns': ['col3'],
                     'terms': ['term1'],
                 },
-                'SELECT col1, col2 FROM table WHERE col1 = $1 AND col2 = $2 AND '
+                'SELECT col1, col2 FROM table WHERE col1 = $1 AND '
                 "to_tsvector('english', col3) "
                 "@@ to_tsquery('english', $3)",
             ),

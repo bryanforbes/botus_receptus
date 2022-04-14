@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeGuard, TypeVar, overload
 
 from asyncpg import Connection, Record
 from asyncpg.pool import PoolConnectionProxy
@@ -14,7 +14,11 @@ _Record = TypeVar('_Record', bound=Record)
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-ConditionsType: TypeAlias = "Sequence['LiteralString'] | 'LiteralString'"
+ConditionsType: TypeAlias = "Sequence[LiteralString] | LiteralString"
+
+
+def _is_literal_string(obj: Any) -> TypeGuard[LiteralString]:
+    return isinstance(obj, str)
 
 
 def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
@@ -25,13 +29,14 @@ def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
 
 
 def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
-    if conditions and not isinstance(conditions, Sequence):
-        conditions = [conditions]
+    _conditions: Sequence[LiteralString] | None = (
+        [conditions] if _is_literal_string(conditions) else conditions  # type: ignore
+    )
 
-    if conditions is None or len(conditions) == 0:
+    if _conditions is None or len(_conditions) == 0:
         return ''
 
-    return ' WHERE ' + ' AND '.join(conditions)  # type: ignore
+    return ' WHERE ' + ' AND '.join(_conditions)  # type: ignore
 
 
 def _get_order_by_string(order_by: str | None, /) -> str:
@@ -211,10 +216,10 @@ async def search(
 ) -> list[_Record]:
     if where is None:
         where = []
-    if not isinstance(where, Sequence):
+    if _is_literal_string(where):
         where = [where]
     else:
-        where = list(where)
+        where = list(where)  # type: ignore
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
