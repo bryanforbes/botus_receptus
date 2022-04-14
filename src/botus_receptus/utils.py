@@ -158,6 +158,7 @@ async def send(
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
+    content: str = ...,
     tts: bool = ...,
     file: discord.File = ...,
     delete_after: float = ...,
@@ -185,6 +186,7 @@ async def send(
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
+    content: str = ...,
     tts: bool = ...,
     files: Sequence[discord.File] = ...,
     delete_after: float = ...,
@@ -203,6 +205,7 @@ async def send(
     ctx: commands.Context[Any],
     /,
     *,
+    content: str = ...,
     tts: bool = ...,
     file: discord.File = ...,
     embeds: Sequence[discord.Embed],
@@ -222,6 +225,7 @@ async def send(
     ctx: commands.Context[Any],
     /,
     *,
+    content: str = ...,
     tts: bool = ...,
     files: Sequence[discord.File] = ...,
     embeds: Sequence[discord.Embed],
@@ -250,6 +254,7 @@ async def send(
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
+    content: str = ...,
     tts: bool = ...,
     file: discord.File = ...,
     view: discord.ui.View = ...,
@@ -273,6 +278,7 @@ async def send(
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
+    content: str = ...,
     tts: bool = ...,
     files: Sequence[discord.File] = ...,
     view: discord.ui.View = ...,
@@ -287,6 +293,7 @@ async def send(
     interaction: discord.Interaction,
     /,
     *,
+    content: str = ...,
     tts: bool = ...,
     file: discord.File = ...,
     embeds: Sequence[discord.Embed],
@@ -302,6 +309,7 @@ async def send(
     interaction: discord.Interaction,
     /,
     *,
+    content: str = ...,
     tts: bool = ...,
     files: Sequence[discord.File] = ...,
     embeds: Sequence[discord.Embed],
@@ -324,6 +332,7 @@ async def send(
     image: str | None = None,
     timestamp: datetime | None = None,
     fields: Sequence[FieldData] | None = None,
+    content: str = _MISSING,
     tts: bool = False,
     file: discord.File = _MISSING,
     files: Sequence[discord.File] = _MISSING,
@@ -353,26 +362,26 @@ async def send(
         )
 
     if embeds is _MISSING:
-        embeds = [
-            create_embed(
-                description=description,
-                title=title,
-                color=color,
-                footer=footer,
-                thumbnail=thumbnail,
-                author=author,
-                image=image,
-                timestamp=timestamp,
-                fields=fields,
-            )
-        ]
+        embed = create_embed(
+            description=description,
+            title=title,
+            color=color,
+            footer=footer,
+            thumbnail=thumbnail,
+            author=author,
+            image=image,
+            timestamp=timestamp,
+            fields=fields,
+        )
 
-    ephemeral = False if ephemeral is _MISSING else ephemeral
+        if embed:
+            embeds = [embed]
 
     if isinstance(ctx_or_intx, commands.Context):
         return await ctx_or_intx.send(
+            content=None if content is _MISSING else content,
             tts=tts,
-            embeds=embeds,
+            embeds=None if embeds is _MISSING else embeds,
             file=None if file is _MISSING else file,
             files=None if files is _MISSING else files,
             delete_after=None if delete_after is _MISSING else delete_after,
@@ -382,8 +391,11 @@ async def send(
             view=None if view is _MISSING else view,
         )
     else:
+        ephemeral = False if ephemeral is _MISSING else ephemeral
+
         if not ctx_or_intx.response.is_done():
             await ctx_or_intx.response.send_message(
+                content=None if content is _MISSING else content,
                 tts=tts,
                 embeds=embeds,
                 file=file,
@@ -395,6 +407,7 @@ async def send(
             return await ctx_or_intx.original_message()
         else:
             return await ctx_or_intx.followup.send(
+                content=content,
                 tts=tts,
                 embeds=embeds,
                 file=file,
