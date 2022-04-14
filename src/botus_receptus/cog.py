@@ -48,14 +48,12 @@ class Cog(commands.Cog, Generic[_BotT]):
 
                 async def on_group_error(
                     interaction: discord.Interaction,
-                    command: app_commands.Command[Any, ..., Any],
                     error: app_commands.AppCommandError,
-                    /,
-                ) -> Any:
-                    await old_on_group_error(interaction, command, error)
-                    await self.cog_app_command_error(interaction, command, error)
+                ) -> None:
+                    await old_on_group_error(interaction, error)
+                    await self.cog_app_command_error(interaction, error)
 
-                command.on_error = on_group_error  # type: ignore
+                command.on_error = on_group_error
             return
 
         if command.binding is not self:
@@ -71,7 +69,7 @@ class Cog(commands.Cog, Generic[_BotT]):
         ) -> None:
             if old_on_error is not None:
                 await old_on_error(binding, interaction, error)  # type: ignore
-            await self.cog_app_command_error(interaction, command, error)
+            await self.cog_app_command_error(interaction, error)
 
         command.on_error = on_command_error_with_binding
 
@@ -141,7 +139,6 @@ class Cog(commands.Cog, Generic[_BotT]):
     async def cog_app_command_error(
         self,
         interaction: discord.Interaction,
-        command: app_commands.Command[Self, ..., Any],
         error: app_commands.AppCommandError,
         /,
     ) -> None:

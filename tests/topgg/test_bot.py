@@ -58,7 +58,7 @@ class TestTopggBot(object):
     async def test_report_guilds(
         self, method: str, args: list[Any], config: Config
     ) -> None:
-        bot = Bot(config)
+        bot = Bot(config, intents=discord.Intents.all())
         cast(Any, bot)._connection = MockConnection()
         await bot.setup_hook()
 

@@ -30,7 +30,7 @@ class BotBase(bot.BotBase):
         self.bot_name = self.config['bot_name']
         self.default_prefix = self.config.get('command_prefix', '$')
 
-        super().__init__(  # type: ignore
+        super().__init__(
             *args,
             **kwargs,
             command_prefix=self.default_prefix,

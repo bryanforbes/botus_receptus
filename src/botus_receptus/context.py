@@ -92,8 +92,8 @@ class PaginatedContext(commands.Context[_BotT]):
                 tts=tts,
                 delete_after=cast(float, delete_after),
                 nonce=cast(int, nonce),
-                reference=reference,  # type: ignore
-                view=view,  # type: ignore
+                reference=reference,
+                view=view,
             )
             for page in pages
         ]

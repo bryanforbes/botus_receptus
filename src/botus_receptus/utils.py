@@ -170,7 +170,7 @@ async def send_context(
     | None = None,
     view: discord.ui.View | None = None,
 ) -> discord.Message:
-    return await ctx.send(  # type: ignore
+    return await ctx.send(
         tts=tts,
         embed=create_embed(
             description=description,

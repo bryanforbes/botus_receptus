@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Coroutine
 from typing import Any, cast
-from typing_extensions import Self
 from unittest.mock import AsyncMock
 
 import discord
@@ -131,10 +130,9 @@ class TestCog(object):
             def on_error(
                 self,
                 interaction: discord.Interaction,
-                command: app_commands.Command[Any, ..., Any],
                 error: app_commands.AppCommandError,
             ) -> Coroutine[Any, Any, None]:
-                return on_group_handler_error(self, interaction, command, error)
+                return on_group_handler_error(self, interaction, error)
 
         class MyCog(Cog[Any]):
             my_group = MyGroup()
@@ -161,11 +159,10 @@ class TestCog(object):
             def cog_app_command_error(
                 self,
                 interaction: discord.Interaction,
-                command: app_commands.Command[Self, ..., Any],
                 error: app_commands.AppCommandError,
                 /,
             ) -> Coroutine[Any, Any, None]:
-                return on_error(self, interaction, command, error)
+                return on_error(self, interaction, error)
 
         interaction = cast(discord.Interaction, object())
         error = app_commands.CheckFailure()
@@ -177,9 +174,7 @@ class TestCog(object):
         assert cog.my_command.on_error is not None
 
         await cog.my_group.my_group_command._invoke_error_handler(interaction, error)
-        on_error.assert_awaited_once_with(
-            cog, interaction, cog.my_group.my_group_command, error
-        )
+        on_error.assert_awaited_once_with(cog, interaction, error)
 
         on_error.reset_mock()
 
@@ -189,22 +184,17 @@ class TestCog(object):
         on_group_handler_error.assert_awaited_once_with(
             cog.my_group_with_handler,
             interaction,
-            cog.my_group_with_handler.my_group_command,
             error,
         )
-        on_error.assert_awaited_once_with(
-            cog, interaction, cog.my_group_with_handler.my_group_command, error
-        )
+        on_error.assert_awaited_once_with(cog, interaction, error)
 
         on_error.reset_mock()
 
         await cog.my_command._invoke_error_handler(interaction, error)
-        on_error.assert_awaited_once_with(cog, interaction, cog.my_command, error)
+        on_error.assert_awaited_once_with(cog, interaction, error)
 
         on_error.reset_mock()
 
         await cog.my_command_with_handler._invoke_error_handler(interaction, error)
         on_command_error.assert_awaited_once_with(cog, interaction, error)
-        on_error.assert_awaited_once_with(
-            cog, interaction, cog.my_command_with_handler, error
-        )
+        on_error.assert_awaited_once_with(cog, interaction, error)

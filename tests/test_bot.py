@@ -61,9 +61,19 @@ class TestBot(object):
     @pytest.mark.parametrize(
         'config,prefix',
         [
-            ({'bot_name': 'botty', 'application_id': 1}, '$'),
             (
-                {'bot_name': 'mcbotterson', 'command_prefix': '!', 'application_id': 1},
+                {
+                    'bot_name': 'botty',
+                    'application_id': 1,
+                },
+                '$',
+            ),
+            (
+                {
+                    'bot_name': 'mcbotterson',
+                    'command_prefix': '!',
+                    'application_id': 1,
+                },
                 '!',
             ),
         ],
@@ -71,7 +81,7 @@ class TestBot(object):
     def test_init(self, mocker: MockerFixture, config: Config, prefix: str) -> None:
         mocker.patch('discord.ext.commands.Bot', autospec=True)
 
-        bot = Bot(config)
+        bot = Bot(config, intents=discord.Intents.all())
 
         assert bot.config == config
         assert bot.bot_name == config['bot_name']
@@ -82,7 +92,7 @@ class TestBot(object):
     def test_run_with_config(self, mocker: MockerFixture, config: Config) -> None:
         run = mocker.patch('discord.ext.commands.Bot.run')
 
-        bot = Bot(config)
+        bot = Bot(config, intents=discord.Intents.all())
 
         bot.run_with_config()
         run.assert_called_once_with('API_KEY')
@@ -92,7 +102,7 @@ class TestBot(object):
             'discord.ext.commands.bot.BotBase.close', new_callable=mocker.AsyncMock
         )
 
-        bot = Bot(config)
+        bot = Bot(config, intents=discord.Intents.all())
         await bot.setup_hook()
         await bot.close()
 
