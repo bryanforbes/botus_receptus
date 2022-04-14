@@ -2,15 +2,17 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
 from datetime import datetime
-from typing import TypeVar, cast
+from typing import Final, TypeVar
 
 import discord
 from discord.ext import commands
 
+from . import utils
 from .bot import AutoShardedBot, Bot
-from .utils import AuthorData, FieldData, FooterData, send_context
 
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
+
+_MISSING: Final = discord.utils.MISSING
 
 
 class GuildContext(commands.Context[_BotT]):
@@ -34,24 +36,23 @@ class EmbedContext(commands.Context[_BotT]):
         *,
         title: str | None = None,
         color: discord.Color | int | None = None,
-        footer: str | FooterData | None = None,
+        footer: str | utils.FooterData | None = None,
         thumbnail: str | None = None,
-        author: str | AuthorData | None = None,
+        author: str | utils.AuthorData | None = None,
         image: str | None = None,
         timestamp: datetime | None = None,
-        fields: Sequence[FieldData] | None = None,
+        fields: Sequence[utils.FieldData] | None = None,
         tts: bool = False,
-        file: discord.File | None = None,
-        files: Sequence[discord.File] | None = None,
-        delete_after: float | None = None,
-        nonce: int | None = None,
+        file: discord.File = _MISSING,
+        files: Sequence[discord.File] = _MISSING,
+        delete_after: float = _MISSING,
+        nonce: int = _MISSING,
         reference: discord.Message
         | discord.MessageReference
-        | discord.PartialMessage
-        | None = None,
-        view: discord.ui.View | None = None,
+        | discord.PartialMessage = _MISSING,
+        view: discord.ui.View = _MISSING,
     ) -> discord.Message:
-        return await send_context(
+        return await utils.send(  # type: ignore
             self,
             description=description,
             title=title,
@@ -78,20 +79,19 @@ class PaginatedContext(commands.Context[_BotT]):
         pages: Iterable[str],
         *,
         tts: bool = False,
-        delete_after: float | None = None,
-        nonce: int | None = None,
+        delete_after: float = _MISSING,
+        nonce: int = _MISSING,
         reference: discord.Message
         | discord.MessageReference
-        | discord.PartialMessage
-        | None = None,
-        view: discord.ui.View | None = None,
+        | discord.PartialMessage = _MISSING,
+        view: discord.ui.View = _MISSING,
     ) -> list[discord.Message]:
         return [
             await self.send(
                 page,
                 tts=tts,
-                delete_after=cast(float, delete_after),
-                nonce=cast(int, nonce),
+                delete_after=delete_after,
+                nonce=nonce,
                 reference=reference,
                 view=view,
             )
