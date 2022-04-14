@@ -90,6 +90,7 @@ class TestEmbedContext(object):
             'type': 'rich',
         }
         mock_context_send.assert_called_once_with(
+            content=None,
             tts=False,
             embeds=[mocker.ANY],
             file=None,
@@ -148,6 +149,7 @@ class TestEmbedContext(object):
             'fields': [{'name': 'one', 'value': 'one', 'inline': True}],
         }
         mock_context_send.assert_called_once_with(
+            content=None,
             tts=True,
             embeds=[mocker.ANY],
             file=obj,
@@ -194,6 +196,7 @@ class TestEmbedContext(object):
             'author': {'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
         }
         mock_context_send.assert_called_once_with(
+            content=None,
             tts=True,
             embeds=[mocker.ANY],
             file=obj,
