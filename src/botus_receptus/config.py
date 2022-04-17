@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from os import PathLike
 from typing import TYPE_CHECKING, Any, TypedDict, cast
 
-import toml
+import tomli
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired
@@ -31,8 +32,10 @@ class Config(TypedDict):
     dbl_token: NotRequired[str]
 
 
-def load(path: str, /) -> Config:
-    config_toml = toml.load(path)
+def load(path: str | PathLike[str], /) -> Config:
+    with open(path, 'rb') as f:
+        config_toml = tomli.load(f)
+
     config: Config | None = config_toml.get('bot')
 
     if config is None:

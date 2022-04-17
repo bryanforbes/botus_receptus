@@ -5,7 +5,7 @@ from typing import Any, cast
 
 import click
 import discord
-import toml
+import tomli
 
 from . import config, logging
 from .bot import BotBase
@@ -25,7 +25,7 @@ def config_callback(
 
     try:
         bot_config = config.load(value)
-    except (toml.TomlDecodeError, OSError) as e:
+    except (tomli.TOMLDecodeError, OSError) as e:
         raise click.BadOptionUsage(
             param.name, f'Error reading configuration file: {e}', ctx=ctx
         ) from e
