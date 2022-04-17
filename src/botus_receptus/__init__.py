@@ -9,6 +9,7 @@ from .cli import cli
 from .cog import Cog
 from .config import Config, ConfigException
 from .context import EmbedContext, PaginatedContext
+from .embed import Embed
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 from .logging import setup_logging
 
@@ -32,6 +33,7 @@ __all__ = (
     'ConfigException',
     'EmbedContext',
     'PaginatedContext',
+    'Embed',
     'NotGuildOwner',
     'OnlyDirectMessage',
     'setup_logging',
