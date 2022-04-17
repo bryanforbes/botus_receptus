@@ -32,7 +32,7 @@ uvloop = ["uvloop"]
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "bb92f810baaa157c3750610a2ac946dfd903a5b8"}
 gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e"}
-black = "^22.1"
+black = "^22.3"
 coverage = {extras = ["toml"], version = "^6.3"}
 flake8 = "~4.0"
 flake8-bugbear = ">=21.3.1"
