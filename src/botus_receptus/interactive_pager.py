@@ -3,25 +3,27 @@ from __future__ import annotations
 import asyncio
 import enum
 from abc import abstractmethod
-from typing import Any, Generic, TypedDict, TypeVar, Union, cast
+from collections.abc import AsyncIterable, Awaitable, Callable
+from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, TypeVar, cast
 
 import discord
-from aioitertools import enumerate as aenumerate
-from aioitertools import starmap
+import discord.abc
+from aioitertools.builtins import enumerate as aenumerate
 from aioitertools.helpers import maybe_await
+from aioitertools.itertools import starmap
 from aioitertools.types import AnyIterable
-from attr import attrib, dataclass
-from discord.ext import typed_commands
+from attrs import define, field
+from discord.ext import commands
 
-from .compat import AsyncIterable, Awaitable, Callable, list, tuple, type
 from .formatting import warning
-from .util import race
+from .utils import race
 
-IP = TypeVar('IP', bound='InteractivePager[Any]')
-IFP = TypeVar('IFP', bound='InteractiveFieldPager[Any]')
-LPS = TypeVar('LPS', bound='ListPageSource[Any]')
-T = TypeVar('T')
-WaitResult = tuple[discord.Reaction, Union[discord.User, discord.Member, None]]
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
+
+_T = TypeVar('_T')
+_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member | None]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -45,12 +47,12 @@ class Page(TypedDict):
     footer_text: str | None
 
 
-@dataclass(slots=True)
-class PageSource(Generic[T]):
+@define
+class PageSource(Generic[_T]):
     total: int
     per_page: int
     show_entry_count: bool
-    max_pages: int = attrib(init=False)
+    max_pages: int = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         max_pages, left_over = divmod(self.total, self.per_page)
@@ -69,10 +71,10 @@ class PageSource(Generic[T]):
         self,
         page: int,
         /,
-    ) -> Awaitable[AnyIterable[T]] | AnyIterable[T]:
+    ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]:
         ...
 
-    def format_line(self, index: int, entry: T, /) -> str:
+    def format_line(self, index: int, entry: _T, /) -> str:
         return f'{index}. {entry}'
 
     def get_footer_text(self, page: int, /) -> str | None:
@@ -87,7 +89,7 @@ class PageSource(Generic[T]):
         return text
 
     async def get_page(self, page: int, /) -> Page:
-        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
         lines = [
             self.format_line(index, entry)
             async for index, entry in aenumerate(
@@ -100,23 +102,23 @@ class PageSource(Generic[T]):
         return {'entry_text': '\n'.join(lines).strip(), 'footer_text': footer_text}
 
 
-@dataclass(slots=True)
-class ListPageSource(PageSource[T]):
-    entries: list[T]
+@define
+class ListPageSource(PageSource[_T]):
+    entries: list[_T]
 
-    def get_page_items(self, page: int, /) -> list[T]:
+    def get_page_items(self, page: int, /) -> list[_T]:
         base = (page - 1) * self.per_page
         return self.entries[base : base + self.per_page]
 
     @classmethod
     def create(
-        cls: type[LPS],
-        entries: list[T],
+        cls,
+        entries: list[_T],
         per_page: int,
         /,
         *,
         show_entry_count: bool = True,
-    ) -> LPS:
+    ) -> Self:
         return cls(
             total=len(entries),
             entries=entries,
@@ -125,23 +127,23 @@ class ListPageSource(PageSource[T]):
         )
 
 
-@dataclass(slots=True)
-class InteractivePager(Generic[T]):
-    bot: typed_commands.Bot[Any]
+@define
+class InteractivePager(Generic[_T]):
+    bot: commands.Bot
     message: discord.Message
-    channel: discord.TextChannel | discord.DMChannel | discord.GroupChannel
+    channel: discord.abc.MessageableChannel
     author: discord.User | discord.Member
     can_manage_messages: bool
-    source: PageSource[T]
+    source: PageSource[_T]
 
-    embed: discord.Embed = attrib(init=False)
-    paginating: bool = attrib(init=False)
-    current_page: int = attrib(init=False, default=-1)
-    reaction_emojis: list[tuple[str, bool, Callable[[], Awaitable[None]]]] = attrib(
+    embed: discord.Embed = field(init=False)
+    paginating: bool = field(init=False)
+    current_page: int = field(init=False, default=-1)
+    reaction_emojis: list[tuple[str, bool, Callable[[], Awaitable[None]]]] = field(
         init=False
     )
-    match: Callable[[], Awaitable[None]] | None = attrib(init=False, default=None)
-    help_task: asyncio.Task[None] | None = attrib(init=False, default=None)
+    match: Callable[[], Awaitable[None]] | None = field(init=False, default=None)
+    help_task: asyncio.Task[None] | None = field(init=False, default=None)
 
     def __attrs_post_init__(self, /) -> None:
         self.embed = discord.Embed()
@@ -267,7 +269,7 @@ class InteractivePager(Generic[T]):
             )
         except asyncio.TimeoutError:
             to_delete.append(await self.channel.send('Took too long.'))
-            await asyncio.sleep(5, loop=self.bot.loop)
+            await asyncio.sleep(5)
         else:
             page = int(message.content)
             to_delete.append(message)
@@ -279,7 +281,7 @@ class InteractivePager(Generic[T]):
                         f'Invalid page given. ({page}/{self.source.max_pages})'
                     )
                 )
-                await asyncio.sleep(5, loop=self.bot.loop)
+                await asyncio.sleep(5)
 
         try:
             await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
@@ -329,7 +331,7 @@ class InteractivePager(Generic[T]):
         await self.message.edit(embed=self.embed)
 
         async def go_back_to_current_page() -> None:
-            await asyncio.sleep(60.0, loop=self.bot.loop)
+            await asyncio.sleep(60.0)
             await self.__show_current_page()
             self.help_task = None
 
@@ -345,14 +347,14 @@ class InteractivePager(Generic[T]):
 
         if self.can_manage_messages:
 
-            def wait_for_reaction() -> asyncio.Future[WaitResult]:
+            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
                 return self.bot.wait_for(
                     'reaction_add', check=self.__react_check, timeout=120.0
                 )
 
         else:
 
-            def wait_for_reaction() -> asyncio.Future[WaitResult]:
+            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
                 return self.bot.loop.create_task(
                     race(
                         [
@@ -362,7 +364,6 @@ class InteractivePager(Generic[T]):
                             ),
                         ],
                         timeout=120.0,
-                        loop=self.bot.loop,
                     )
                 )
 
@@ -389,11 +390,11 @@ class InteractivePager(Generic[T]):
 
     @classmethod
     def create(
-        cls: type[IP],
-        ctx: typed_commands.Context,
-        source: PageSource[T],
+        cls,
+        ctx: commands.Context[Any],
+        source: PageSource[_T],
         /,
-    ) -> IP:
+    ) -> Self:
         if ctx.guild is not None and ctx.guild.me is not None:
             permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
                 ctx.guild.me
@@ -431,13 +432,13 @@ class FieldPage(Page):
     fields: AsyncIterable[tuple[str, str]]
 
 
-@dataclass(slots=True)
-class FieldPageSource(PageSource[T]):
-    def format_field(self, index: int, entry: T, /) -> tuple[Any, Any]:
+@define
+class FieldPageSource(PageSource[_T]):
+    def format_field(self, index: int, entry: _T, /) -> tuple[Any, Any]:
         return (index, entry)
 
     async def get_page(self, page: int, /) -> FieldPage:
-        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
             self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
         )
@@ -448,15 +449,15 @@ class FieldPageSource(PageSource[T]):
         }
 
 
-@dataclass(slots=True)
-class InteractiveFieldPager(InteractivePager[T]):
-    source: FieldPageSource[T]
+@define
+class InteractiveFieldPager(InteractivePager[_T]):
+    source: FieldPageSource[_T]
 
     async def modify_embed(  # type: ignore
         self, page: FieldPage, page_num: int, /, *, first: bool = False
     ) -> None:
         self.embed.clear_fields()
-        self.embed.description = discord.Embed.Empty
+        self.embed.description = None
 
         async for key, value in page['fields']:
             self.embed.add_field(name=key, value=value, inline=False)
@@ -466,9 +467,9 @@ class InteractiveFieldPager(InteractivePager[T]):
 
     @classmethod
     def create(  # type: ignore
-        cls: type[IFP],
-        ctx: typed_commands.Context,
-        source: FieldPageSource[T],
+        cls,
+        ctx: commands.Context[Any],
+        source: FieldPageSource[_T],
         /,
-    ) -> IFP:
+    ) -> Self:
         return super().create(ctx, source)

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any
+from asyncio.events import AbstractEventLoop
 
-import asynctest.mock  # type: ignore
-import pytest  # type: ignore
-import pytest_mock._util  # type: ignore
+import pytest
 
-pytest_mock._util._mock_module = asynctest.mock
+from .types import MockerFixture
 
 
 class EventLoopClockAdvancer:
@@ -19,7 +17,7 @@ class EventLoopClockAdvancer:
 
     __slots__ = ("offset", "loop", "sleep_duration", "_base_time")
 
-    def __init__(self, loop, sleep_duration=1e-4):
+    def __init__(self, loop: AbstractEventLoop, sleep_duration: float = 1e-4) -> None:
         self.offset = 0.0
         self._base_time = loop.time
         self.loop = loop
@@ -35,7 +33,7 @@ class EventLoopClockAdvancer:
         """
         return self._base_time() + self.offset
 
-    async def __call__(self, seconds):
+    async def __call__(self, seconds: float) -> None:
         """
         Advance time by a given offset in seconds. Returns an awaitable
         that will complete after all tasks scheduled for after advancement
@@ -54,20 +52,15 @@ class EventLoopClockAdvancer:
 
 
 @pytest.fixture
-def advance_time(event_loop):
+def advance_time(event_loop: AbstractEventLoop):
     return EventLoopClockAdvancer(event_loop)
 
 
 @pytest.fixture
-def mock_aiohttp(mocker: Any) -> None:
+def mock_aiohttp(mocker: MockerFixture) -> None:
     mocker.patch('aiohttp.ClientSession', autospec=True)
 
 
 @pytest.fixture
-def mock_discord_bot(mocker: Any) -> None:
+def mock_discord_bot(mocker: MockerFixture) -> None:
     mocker.patch('discord.ext.commands.Bot')
-
-
-@pytest.fixture(autouse=True)
-def add_async_mocks(mocker: Any) -> None:
-    mocker.CoroutineMock = mocker.mock_module.CoroutineMock

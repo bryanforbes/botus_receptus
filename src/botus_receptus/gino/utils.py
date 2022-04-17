@@ -1,11 +1,10 @@
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from typing import Any, TypeVar, cast
 
 from gino.crud import CRUDModel
 from sqlalchemy.dialects.postgresql import insert
-
-from ..compat import Mapping, Sequence, dict, list, type
 
 _CM = TypeVar('_CM', bound=CRUDModel)
 

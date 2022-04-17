@@ -1,37 +1,41 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Type, TypeVar, cast, overload
+from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
+from contextlib import AbstractAsyncContextManager
+from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
 
 from asyncpg import Record
 from asyncpg.pool import PoolConnectionProxy
-from attr import dataclass
-from discord.ext import typed_commands
+from attrs import define
+from discord.ext import commands
 
-from ..compat import (
-    AbstractAsyncContextManager,
-    Awaitable,
-    Callable,
-    Coroutine,
-    Generator,
-    Sequence,
-    dict,
-    list,
-    tuple,
+from .utils import (
+    ConditionsType,
+    delete_from,
+    insert_into,
+    search,
+    select_all,
+    select_one,
+    update,
 )
-from .util import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
-    from .bot import Bot
+    from typing_extensions import LiteralString
+
+    from .bot import AutoShardedBot, Bot
 
 _Record = TypeVar('_Record', bound=Record)
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_FunctionType = Callable[..., Coroutine[Any, Any, Any]]
+_F = TypeVar('_F', bound=_FunctionType)
 
 
-@dataclass(slots=True)
+@define
 class AquireContextManager(
     AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
     Awaitable['PoolConnectionProxy[Record]'],
 ):
-    ctx: Context
+    ctx: Context[Any]
     timeout: float | None = None
 
     def __await__(self, /) -> Generator[Any, None, PoolConnectionProxy[Record]]:
@@ -44,11 +48,7 @@ class AquireContextManager(
         await self.ctx.release()
 
 
-FunctionType = Callable[..., Coroutine[Any, Any, Any]]
-F = TypeVar('F', bound=FunctionType)
-
-
-def ensure_db(func: F, /) -> F:
+def ensure_db(func: _F, /) -> _F:
     def wrapper(self: Any, /, *args: Any, **kwargs: Any) -> Any:
         if not hasattr(self, 'db'):
             raise RuntimeError(
@@ -57,11 +57,10 @@ def ensure_db(func: F, /) -> F:
 
         return func(self, *args, **kwargs)
 
-    return cast(F, wrapper)
+    return cast(_F, wrapper)
 
 
-class Context(typed_commands.Context):
-    bot: Bot[Any]
+class Context(commands.Context[_BotT]):
     db: PoolConnectionProxy[Record]
 
     async def _acquire(self, timeout: float | None, /) -> PoolConnectionProxy[Record]:
@@ -85,7 +84,7 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         order_by: str | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
@@ -100,11 +99,11 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         order_by: str | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> list[_Record]:
         ...
 
@@ -115,7 +114,7 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -140,7 +139,7 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
         record_class: None = ...,
@@ -154,10 +153,10 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = ...,
+        where: ConditionsType | None = ...,
         group_by: Sequence[str] | None = ...,
         joins: Sequence[tuple[str, str]] | None = ...,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> _Record | None:
         ...
 
@@ -168,7 +167,7 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
         record_class: Any | None = None,
@@ -191,9 +190,9 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -208,13 +207,13 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
-        record_class: Type[_Record],
+        record_class: type[_Record],
     ) -> list[_Record]:
         ...
 
@@ -225,9 +224,9 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         columns: Sequence[str],
-        search_columns: Sequence[str],
+        search_columns: Sequence[LiteralString],
         terms: Sequence[str],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
         group_by: Sequence[str] | None = None,
         order_by: str | None = None,
         joins: Sequence[tuple[str, str]] | None = None,
@@ -254,7 +253,7 @@ class Context(typed_commands.Context):
         *args: Any,
         table: str,
         values: dict[str, Any],
-        where: Sequence[str] | None = None,
+        where: ConditionsType | None = None,
     ) -> None:
         return await update(self.db, *args, table=table, values=values, where=where)
 
@@ -266,6 +265,6 @@ class Context(typed_commands.Context):
 
     @ensure_db
     async def delete_from(
-        self, /, *args: Any, table: str, where: Sequence[str]
+        self, /, *args: Any, table: str, where: ConditionsType
     ) -> None:
         return await delete_from(self.db, *args, table=table, where=where)

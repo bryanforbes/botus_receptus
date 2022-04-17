@@ -1,57 +1,121 @@
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
+from unittest.mock import AsyncMock
 
 import discord
-import pytest  # typing: ignore
-from attr import dataclass
-from pendulum import UTC, now
+import pytest
+from attrs import define
+from discord.ext.commands.view import StringView  # type: ignore
+from pendulum import now
+from pendulum.tz.timezone import UTC
 
+from botus_receptus.bot import Bot
+from botus_receptus.compat import list
 from botus_receptus.context import EmbedContext, PaginatedContext
 
+from .types import MockerFixture
 
-@dataclass(slots=True)
+
+@define
+class MockBot(object):
+    ...
+
+
+@define
 class MockUser(object):
-    bot: bool = None
-    id: int = None
-    mention: str = None
+    bot: bool | None = None
+    id: int | None = None
+    mention: str | None = None
 
 
-@dataclass(slots=True)
+@define
 class MockMessage(object):
-    author: MockUser = None
-    content: str = None
-    channel: Optional[discord.abc.GuildChannel] = None
-    _state: Optional[Any] = None
+    author: MockUser | None = None
+    content: str | None = None
+    channel: discord.abc.GuildChannel | None = None
+    _state: Any | None = None
 
 
 @pytest.fixture
-def mock_context_send(mocker):
+def mock_context_send(mocker: MockerFixture) -> AsyncMock:
     return mocker.patch('discord.ext.commands.Context.send')
 
 
+@pytest.fixture
+def mock_bot() -> MockBot:
+    return MockBot()
+
+
+@pytest.fixture
+def mock_message() -> MockMessage:
+    return MockMessage()
+
+
+@pytest.fixture
+def mock_message_2() -> MockMessage:
+    return MockMessage()
+
+
+@pytest.fixture
+def string_view() -> StringView:
+    return StringView('')
+
+
+@pytest.fixture
+async def view() -> discord.ui.View:
+    return discord.ui.View()
+
+
 class TestEmbedContext(object):
-    async def test_send_embed_description_only(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_description_only(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         await ctx.send_embed('baz')
 
-        assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert isinstance(
+            mock_context_send.call_args_list[0][1]['embeds'][0], discord.Embed
+        )
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'description': 'baz',
             'type': 'rich',
         }
         mock_context_send.assert_called_once_with(
+            content=None,
             tts=False,
-            embed=mocker.ANY,
+            embed=None,
+            embeds=[mocker.ANY],
             file=None,
             files=None,
             delete_after=None,
             nonce=None,
+            reference=mock_message,
+            allowed_mentions=None,
+            view=None,
         )
 
-    async def test_send_embed_args(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+        view: discord.ui.View,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
-        obj = mocker.sentinel.TEST_OBJECT
         time = now(UTC)
         await ctx.send_embed(
             'foo',
@@ -63,14 +127,11 @@ class TestEmbedContext(object):
             image='blah',
             timestamp=time,
             fields=[{'name': 'one', 'value': 'one', 'inline': True}],
-            tts=True,
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
+            reference=mock_message,
+            view=view,
         )
 
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
             'description': 'foo',
             'title': 'bar',
@@ -83,66 +144,143 @@ class TestEmbedContext(object):
             'fields': [{'name': 'one', 'value': 'one', 'inline': True}],
         }
         mock_context_send.assert_called_once_with(
-            tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
+            content=None,
+            tts=False,
+            embed=None,
+            embeds=[mocker.ANY],
+            file=None,
+            files=None,
+            delete_after=None,
+            nonce=None,
+            reference=mock_message,
+            allowed_mentions=None,
+            view=view,
         )
 
-    async def test_send_embed_other_args(self, mocker, mock_context_send):
-        ctx = EmbedContext(prefix='~', message=MockMessage())
+    async def test_send_embed_other_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        mock_message_2: discord.Message,
+        string_view: StringView,
+        view: discord.ui.View,
+    ) -> None:
+        ctx = EmbedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
-        obj = mocker.sentinel.TEST_OBJECT
         await ctx.send_embed(
             'foo',
             footer={'text': 'bar', 'icon_url': 'baz'},
             author={'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
-            tts=True,
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
+            reference=mock_message_2,
+            view=view,
         )
 
-        assert mock_context_send.call_args_list[0][1]['embed'].to_dict() == {
+        assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
             'description': 'foo',
             'footer': {'text': 'bar', 'icon_url': 'baz'},
             'author': {'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
         }
         mock_context_send.assert_called_once_with(
-            tts=True, embed=mocker.ANY, file=obj, files=obj, delete_after=1.0, nonce=200
+            content=None,
+            tts=False,
+            embed=None,
+            embeds=[mocker.ANY],
+            file=None,
+            files=None,
+            delete_after=None,
+            nonce=None,
+            reference=mock_message_2,
+            allowed_mentions=None,
+            view=view,
         )
 
 
 class TestPaginatedContext(object):
     @pytest.fixture
-    def mock_paginator(self, mocker):
+    def mock_paginator(self) -> list[str]:
         return ['```\nasdf\n```', '```\nqwerty foo\n```']
 
-    async def test_send_pages(self, mocker, mock_context_send, mock_paginator):
-        ctx = PaginatedContext(prefix='~', message=MockMessage())
+    async def test_send_pages(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_paginator: list[str],
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+    ) -> None:
+        ctx = PaginatedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         messages = await ctx.send_pages(mock_paginator)
         assert len(messages) == 2
         mock_context_send.assert_has_calls(
             [
-                mocker.call('```\nasdf\n```', tts=False, delete_after=None, nonce=None),
                 mocker.call(
-                    '```\nqwerty foo\n```', tts=False, delete_after=None, nonce=None
+                    '```\nasdf\n```',
+                    tts=False,
+                    delete_after=None,
+                    nonce=None,
+                    reference=None,
+                    view=None,
+                ),
+                mocker.call(
+                    '```\nqwerty foo\n```',
+                    tts=False,
+                    delete_after=None,
+                    nonce=None,
+                    reference=None,
+                    view=None,
                 ),
             ]
         )
 
-    async def test_send_pages_args(self, mocker, mock_context_send, mock_paginator):
-        ctx = PaginatedContext(prefix='~', message=MockMessage())
+    async def test_send_pages_args(
+        self,
+        mocker: MockerFixture,
+        mock_context_send: AsyncMock,
+        mock_paginator: list[str],
+        mock_bot: Bot,
+        mock_message: discord.Message,
+        string_view: StringView,
+        view: discord.ui.View,
+    ) -> None:
+        ctx = PaginatedContext(
+            prefix='~', message=mock_message, bot=mock_bot, view=string_view
+        )
 
         messages = await ctx.send_pages(
-            mock_paginator, tts=True, delete_after=1.0, nonce=200
+            mock_paginator,
+            tts=True,
+            delete_after=1.0,
+            nonce=200,
+            reference=mock_message,
+            view=view,
         )
         assert len(messages) == 2
         mock_context_send.assert_has_calls(
             [
-                mocker.call('```\nasdf\n```', tts=True, delete_after=1.0, nonce=200),
                 mocker.call(
-                    '```\nqwerty foo\n```', tts=True, delete_after=1.0, nonce=200
+                    '```\nasdf\n```',
+                    tts=True,
+                    delete_after=1.0,
+                    nonce=200,
+                    reference=mock_message,
+                    view=view,
+                ),
+                mocker.call(
+                    '```\nqwerty foo\n```',
+                    tts=True,
+                    delete_after=1.0,
+                    nonce=200,
+                    reference=mock_message,
+                    view=view,
                 ),
             ]
         )

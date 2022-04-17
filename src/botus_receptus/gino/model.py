@@ -1,41 +1,52 @@
 from __future__ import annotations
 
-from typing import Any, Final, TypeVar, cast
+import builtins
+from collections.abc import Mapping, Sequence
+from typing import Any, ClassVar, Final, Protocol, TypeVar, cast
 
-from gino.declarative import ModelType
+from gino.api import Gino
+from gino.declarative import InvertDict
 from gino.engine import GinoEngine
 from sqlalchemy.dialects.postgresql import insert
-
-from ..compat import Mapping, Sequence
-from ..compat import dict as Dict
-from ..compat import list, type
-
-_M = TypeVar('_M', bound='ModelMixin')
-
+from sqlalchemy.sql.schema import Table
 
 DEFAULT: Final = cast(int, object())
+
+
+class ModelTypeProtocol(Protocol):
+    __metadata__: ClassVar[Gino]
+    __table__: ClassVar[Table]
+    _column_name_map: ClassVar[InvertDict[str, str]]
+
+    def __init__(self, **kwargs: Any) -> None:
+        ...
+
+    @classmethod
+    def _check_abstract(cls) -> None:
+        ...
+
+
+_MTP = TypeVar('_MTP', bound='ModelTypeProtocol')
 
 
 class ModelMixin:
     @classmethod
     async def create_or_update(
-        cls: type[_M],
+        cls: type[_MTP],
         /,
         *,
         set_: Sequence[str] | Mapping[str, str],
         bind: GinoEngine | None = None,
         timeout: int = DEFAULT,
         **values: Any,
-    ) -> _M:
-        assert isinstance(cls, ModelType)
-
+    ) -> _MTP:
         cls._check_abstract()
 
         column_name_map = cls._column_name_map
         index_elements: list[str] = [
             column_name_map[k] for k in cls.__table__.primary_key.columns.keys()
         ]
-        insert_values: Dict[str, Any] = {
+        insert_values: dict[str, Any] = {
             column_name_map[k]: v for k, v in values.items()
         }
 
@@ -45,7 +56,7 @@ class ModelMixin:
         else:
             set_values = {v: v for v in cast(Sequence[str], set_)}
 
-        opts: Dict[str, Any] = dict(return_model=False, model=cls)
+        opts: dict[str, Any] = builtins.dict(return_model=False, model=cls)
         if timeout is not DEFAULT:
             opts['timeout'] = timeout
 

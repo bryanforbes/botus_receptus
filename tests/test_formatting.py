@@ -1,10 +1,16 @@
+from __future__ import annotations
+
+from typing import Any
+
 import pytest
 
+from botus_receptus.compat import dict, list
 from botus_receptus.formatting import (
     EmbedPaginator,
     Paginator,
     bold,
     code_block,
+    ellipsize,
     error,
     escape,
     info,
@@ -32,7 +38,12 @@ from botus_receptus.formatting import (
         (['fish', 'es'], [2], {'include_number': False}, 'fishes'),
     ],
 )
-def test_pluralizer(pluralizer_args, pluralize_args, pluralize_kwargs, expected):
+def test_pluralizer(
+    pluralizer_args: list[str],
+    pluralize_args: list[int],
+    pluralize_kwargs: dict[str, Any],
+    expected: str,
+) -> None:
     pluralize = pluralizer(*pluralizer_args)
 
     assert callable(pluralize) is True
@@ -114,7 +125,7 @@ class TestEmbedPaginator(object):
 
         assert paginator.prefix is None
         assert paginator.suffix is None
-        assert paginator.max_size == 2048
+        assert paginator.max_size == 4096
 
         assert paginator.pages[0] == '123 456 789'
 
@@ -170,3 +181,15 @@ def test_escape() -> None:
         )
         == r'\*\*\~\~some text @' + '\u200b' + r'here\~\~\*\*'
     )
+
+
+@pytest.mark.parametrize(
+    'text, max_length, expected',
+    [
+        ('asdf asdf asdf', 40, 'asdf asdf asdf'),
+        ('asdf asdf asdf', 10, 'asdf asdf…'),
+        ('asdf asdf asdf', 11, 'asdf asdf…'),
+    ],
+)
+def test_ellipsize(text: str, max_length: int, expected: str) -> None:
+    assert ellipsize(text, max_length=max_length) == expected

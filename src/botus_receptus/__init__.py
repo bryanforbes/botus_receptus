@@ -3,12 +3,13 @@ from __future__ import annotations
 from importlib.metadata import version
 from typing import Final
 
-from . import abc, checks, compat, formatting, re, util
-from .bot import Bot, DblBot
+from . import checks, compat, formatting, re, utils
+from .bot import AutoShardedBot, Bot, BotBase
 from .cli import cli
 from .cog import Cog
 from .config import Config, ConfigException
 from .context import EmbedContext, PaginatedContext
+from .embed import Embed
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 from .logging import setup_logging
 
@@ -18,22 +19,22 @@ __license__: Final = 'BSD 3-clause'
 __version__: Final = version('botus_receptus')
 
 __all__ = (
-    'abc',
     'checks',
     'compat',
-    'db',
     'formatting',
     're',
-    'util',
-    'setup_logging',
+    'utils',
+    'AutoShardedBot',
+    'Bot',
+    'BotBase',
     'cli',
     'Cog',
     'Config',
     'ConfigException',
-    'Bot',
-    'DblBot',
     'EmbedContext',
     'PaginatedContext',
-    'OnlyDirectMessage',
+    'Embed',
     'NotGuildOwner',
+    'OnlyDirectMessage',
+    'setup_logging',
 )

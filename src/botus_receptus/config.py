@@ -1,36 +1,34 @@
 from __future__ import annotations
 
-from typing import Any, TypedDict, cast
+from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import toml
 
-from .compat import dict
+if TYPE_CHECKING:
+    from typing_extensions import NotRequired
 
 
 class ConfigException(Exception):
     ...
 
 
-class LoggingBase(TypedDict):
+class Logging(TypedDict):
     log_file: str
     log_level: str
     log_to_console: bool
+    loggers: NotRequired[dict[str, str]]
 
 
-class Logging(LoggingBase, total=False):
-    loggers: dict[str, str]
-
-
-class ConfigBase(TypedDict):
+class Config(TypedDict):
     bot_name: str
     discord_api_key: str
+    application_id: int
     logging: Logging
-
-
-class Config(ConfigBase, total=False):
-    command_prefix: str
-    db_url: str
-    dbl_token: str
+    admin_guild: NotRequired[int]
+    test_guilds: NotRequired[list[int]]
+    command_prefix: NotRequired[str]
+    db_url: NotRequired[str]
+    dbl_token: NotRequired[str]
 
 
 def load(path: str, /) -> Config:
@@ -43,6 +41,8 @@ def load(path: str, /) -> Config:
         raise ConfigException('"bot_name" not specified in the config file')
     if 'discord_api_key' not in config:
         raise ConfigException('"discord_api_key" not specified in the config file')
+    if 'application_id' not in config:
+        raise ConfigException('"application_id" not specified in the config file')
 
     if 'logging' not in config:
         config['logging'] = cast(Any, {})

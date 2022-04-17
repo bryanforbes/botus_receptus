@@ -1,22 +1,22 @@
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator
 from typing import Final, Protocol
 
-from attr import attrib, dataclass
+from attrs import define, field
 
 from . import re
-from .compat import Iterable, Iterator, list
 
 
-@dataclass(slots=True)
+@define
 class Paginator(Iterable[str]):
     prefix: str | None = '```'
     suffix: str | None = '```'
     max_size: int = 2000
-    _real_max_size: int = attrib(init=False)
-    _current_page: list[str] = attrib(init=False)
-    _count: int = attrib(init=False)
-    _pages: list[str] = attrib(init=False)
+    _real_max_size: int = field(init=False)
+    _current_page: list[str] = field(init=False)
+    _count: int = field(init=False)
+    _pages: list[str] = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self.clear()
@@ -104,11 +104,11 @@ class Paginator(Iterable[str]):
         return self.pages.__iter__()
 
 
-@dataclass(slots=True)
+@define
 class EmbedPaginator(Paginator):
     prefix: str | None = None
     suffix: str | None = None
-    max_size: int = 2048
+    max_size: int = 4096
 
 
 class PluralizerType(Protocol):
@@ -185,5 +185,12 @@ def escape(
         text = remove_mass_mentions(text)
     if formatting:
         text = _formatting_re.sub(r'\\\g<target>', text)
+
+    return text
+
+
+def ellipsize(text: str, /, *, max_length: int) -> str:
+    if len(text) > max_length:
+        return f'{text[:max_length - 1].strip()}…'
 
     return text

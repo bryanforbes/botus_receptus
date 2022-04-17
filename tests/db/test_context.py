@@ -1,46 +1,49 @@
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 import discord
 import pytest
-from attr import dataclass
-from discord.ext import typed_commands
+from attrs import define
+from discord.ext import commands
+from discord.ext.commands.view import StringView  # type: ignore
 
 from botus_receptus.db import Context
 
-from ..types import Mocker
+from ..types import MockerFixture
 
 
-@dataclass(slots=True)
+@define
 class MockBot(object):
     pool: Any
 
 
-@dataclass(slots=True)
+@define
 class MockUser(object):
-    bot: Optional[bool] = None
-    id: Optional[int] = None
-    mention: Optional[str] = None
+    bot: bool | None = None
+    id: int | None = None
+    mention: str | None = None
 
 
-@dataclass(slots=True)
+@define
 class MockMessage(object):
-    author: Optional[MockUser] = None
-    content: Optional[str] = None
-    channel: Optional[discord.abc.GuildChannel] = None
+    author: MockUser | None = None
+    content: str | None = None
+    channel: discord.abc.GuildChannel | None = None
     _state: Any = None
 
 
-@dataclass(slots=True)
+@define
 class MockCommand(object):
     ...
 
 
 class TestContext(object):
     @pytest.fixture
-    def mock_bot(self, mocker: Mocker) -> MockBot:
+    def mock_bot(self, mocker: MockerFixture) -> MockBot:
         class MockPool:
-            acquire = mocker.CoroutineMock()
-            release = mocker.CoroutineMock()
+            acquire = mocker.AsyncMock()
+            release = mocker.AsyncMock()
 
         return MockBot(pool=MockPool())
 
@@ -53,50 +56,54 @@ class TestContext(object):
         return MockCommand()
 
     @pytest.fixture
-    def mock_select_all(self, mocker: Mocker) -> Any:
+    def mock_select_all(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.select_all', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.select_all', new_callable=mocker.AsyncMock
         )
 
     @pytest.fixture
-    def mock_select_one(self, mocker: Mocker) -> Any:
+    def mock_select_one(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.select_one', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.select_one', new_callable=mocker.AsyncMock
         )
 
     @pytest.fixture
-    def mock_search(self, mocker: Mocker) -> Any:
+    def mock_search(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.search', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.search', new_callable=mocker.AsyncMock
         )
 
     @pytest.fixture
-    def mock_update(self, mocker: Mocker) -> Any:
+    def mock_update(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.update', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.update', new_callable=mocker.AsyncMock
         )
 
     @pytest.fixture
-    def mock_insert_into(self, mocker: Any) -> Any:
+    def mock_insert_into(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.insert_into', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.insert_into', new_callable=mocker.AsyncMock
         )
 
     @pytest.fixture
-    def mock_delete_from(self, mocker: Any) -> Any:
+    def mock_delete_from(self, mocker: MockerFixture) -> Any:
         return mocker.patch(
-            'botus_receptus.db.context.delete_from', new_callable=mocker.CoroutineMock
+            'botus_receptus.db.context.delete_from', new_callable=mocker.AsyncMock
         )
 
     async def test_acquire(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         async with ctx.acquire():
@@ -113,10 +120,14 @@ class TestContext(object):
         mock_bot: Any,
         mock_select_all: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):
@@ -137,14 +148,18 @@ class TestContext(object):
 
     async def test_select_one(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_select_one: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):
@@ -164,14 +179,18 @@ class TestContext(object):
 
     async def test_search(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_search: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):
@@ -198,14 +217,18 @@ class TestContext(object):
 
     async def test_update(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_update: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):
@@ -219,14 +242,18 @@ class TestContext(object):
 
     async def test_insert_into(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_insert_into: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):
@@ -240,14 +267,18 @@ class TestContext(object):
 
     async def test_delete_from(
         self,
-        mocker: Any,
+        mocker: MockerFixture,
         mock_bot: Any,
         mock_delete_from: Any,
         mock_mesage: discord.Message,
-        mock_command: typed_commands.Command[Context],
+        mock_command: commands.Command[Any, ..., Any],
     ) -> None:
         ctx = Context(
-            prefix='~', message=mock_mesage, bot=mock_bot, command=mock_command
+            prefix='~',
+            message=mock_mesage,
+            bot=mock_bot,
+            command=mock_command,
+            view=StringView(''),
         )
 
         with pytest.raises(RuntimeError):

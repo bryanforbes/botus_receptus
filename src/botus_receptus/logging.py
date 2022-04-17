@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+from collections.abc import Iterator
 from logging import (
     CRITICAL,
     DEBUG,
@@ -14,7 +15,8 @@ from logging import (
 )
 from typing import Final
 
-from .compat import Iterator, dict
+import discord
+
 from .config import Config
 
 log_levels: Final[dict[str, int]] = {
@@ -27,7 +29,14 @@ log_levels: Final[dict[str, int]] = {
 
 
 @contextlib.contextmanager
-def setup_logging(config: Config, /) -> Iterator[None]:
+def setup_logging(
+    config: Config, /, handler_cls: type[FileHandler] = discord.utils.MISSING
+) -> Iterator[None]:
+    log = getLogger()
+
+    if handler_cls is discord.utils.MISSING:
+        handler_cls = FileHandler
+
     try:
         bot_name = config['bot_name']
         log_file = config['logging']['log_file']
@@ -43,7 +52,6 @@ def setup_logging(config: Config, /) -> Iterator[None]:
             for name, value in config['logging']['loggers'].items():
                 getLogger(name).setLevel(log_levels.get(value, log_levels['info']))
 
-        log = getLogger()
         log.setLevel(log_levels['info'])
 
         dt_fmt = '%Y-%m-%d %H:%M:%S'
@@ -51,7 +59,7 @@ def setup_logging(config: Config, /) -> Iterator[None]:
             '[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{'
         )
 
-        handler = FileHandler(filename=log_file, encoding='utf-8', mode='a')
+        handler = handler_cls(filename=log_file, encoding='utf-8', mode='a')
         handler.setFormatter(fmt)
         log.addHandler(handler)
 
