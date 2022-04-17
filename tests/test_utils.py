@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime
 from typing import Any
-from unittest.mock import ANY, Mock
+from unittest.mock import ANY, AsyncMock, Mock
 
 import discord
 import pendulum
@@ -61,6 +60,13 @@ def mock_interaction(mocker: MockerFixture) -> Mock:
     )
 
     return mock
+
+
+@pytest.fixture
+def mock_send(mocker: MockerFixture) -> AsyncMock:
+    return mocker.patch(
+        'botus_receptus.utils.send', return_value=mocker.sentinel.utils_send_return
+    )
 
 
 def test_has_any_role(mock_member: discord.Member) -> None:
@@ -147,53 +153,6 @@ async def test_race_timeout(
 
 
 @pytest.mark.parametrize(
-    'kwargs,expected',
-    [
-        ({}, {'type': 'rich'}),
-        ({'description': 'baz'}, {'description': 'baz', 'type': 'rich'}),
-        (
-            {
-                'title': 'bar',
-                'color': discord.Color.default(),
-                'footer': 'baz',
-                'thumbnail': 'ham',
-                'author': 'spam',
-                'image': 'blah',
-                'timestamp': datetime.fromisoformat('2022-04-14T16:54:40.595227+00:00'),
-                'fields': [{'name': 'one', 'value': 'one', 'inline': True}],
-            },
-            {
-                'type': 'rich',
-                'title': 'bar',
-                'color': 0,
-                'footer': {'text': 'baz'},
-                'thumbnail': {'url': 'ham'},
-                'author': {'name': 'spam'},
-                'image': {'url': 'blah'},
-                'timestamp': '2022-04-14T16:54:40.595227+00:00',
-                'fields': [{'name': 'one', 'value': 'one', 'inline': True}],
-            },
-        ),
-        (
-            {
-                'footer': {'text': 'baz', 'icon_url': 'bar'},
-                'author': {'name': 'spam', 'url': 'foo', 'icon_url': 'blah'},
-            },
-            {
-                'type': 'rich',
-                'footer': {'text': 'baz', 'icon_url': 'bar'},
-                'author': {'name': 'spam', 'url': 'foo', 'icon_url': 'blah'},
-            },
-        ),
-    ],
-)
-def test_create_embed(kwargs: dict[str, Any], expected: dict[str, Any]) -> None:
-    embed = utils.create_embed(**kwargs)
-
-    assert embed.to_dict() == expected
-
-
-@pytest.mark.parametrize(
     'kwargs,expected_args,expected_embed',
     [
         (
@@ -203,6 +162,7 @@ def test_create_embed(kwargs: dict[str, Any], expected: dict[str, Any]) -> None:
                 'tts': False,
                 'file': None,
                 'files': None,
+                'embed': None,
                 'embeds': None,
                 'delete_after': None,
                 'nonce': None,
@@ -213,28 +173,13 @@ def test_create_embed(kwargs: dict[str, Any], expected: dict[str, Any]) -> None:
             None,
         ),
         (
-            {'description': 'asdf'},
-            {
-                'content': None,
-                'tts': False,
-                'file': None,
-                'files': None,
-                'embeds': [ANY],
-                'delete_after': None,
-                'nonce': None,
-                'allowed_mentions': None,
-                'reference': ANY,
-                'view': None,
-            },
-            {'type': 'rich', 'description': 'asdf'},
-        ),
-        (
             {'embeds': [discord.Embed()]},
             {
                 'content': None,
                 'tts': False,
                 'file': None,
                 'files': None,
+                'embed': None,
                 'embeds': [ANY],
                 'delete_after': None,
                 'nonce': None,
@@ -251,6 +196,7 @@ def test_create_embed(kwargs: dict[str, Any], expected: dict[str, Any]) -> None:
                 'tts': False,
                 'file': None,
                 'files': None,
+                'embed': None,
                 'embeds': None,
                 'delete_after': None,
                 'nonce': None,
@@ -306,27 +252,13 @@ async def test_send_with_context(
                 'tts': False,
                 'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
+                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
             None,
-        ),
-        (
-            {'description': 'asdf'},
-            False,
-            {
-                'content': None,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': False,
-            },
-            {'type': 'rich', 'description': 'asdf'},
         ),
         (
             {'embeds': [discord.Embed()]},
@@ -336,12 +268,29 @@ async def test_send_with_context(
                 'tts': False,
                 'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
+                'embed': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
             {'type': 'rich'},
+        ),
+        (
+            {'ephemeral': True},
+            False,
+            {
+                'content': None,
+                'tts': False,
+                'file': discord.utils.MISSING,
+                'files': discord.utils.MISSING,
+                'embed': discord.utils.MISSING,
+                'embeds': discord.utils.MISSING,
+                'allowed_mentions': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
+            },
+            None,
         ),
         (
             {'content': 'asdf'},
@@ -351,6 +300,7 @@ async def test_send_with_context(
                 'tts': False,
                 'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
+                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -359,34 +309,36 @@ async def test_send_with_context(
             None,
         ),
         (
-            {'description': 'asdf'},
+            {'embeds': [discord.Embed()]},
             True,
             {
                 'content': discord.utils.MISSING,
                 'tts': False,
                 'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
+                'embed': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
-            {'type': 'rich', 'description': 'asdf'},
+            {'type': 'rich'},
         ),
         (
-            {'embeds': [discord.Embed()], 'ephemeral': True},
+            {'ephemeral': True},
             True,
             {
                 'content': discord.utils.MISSING,
                 'tts': False,
                 'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embeds': [ANY],
+                'embed': discord.utils.MISSING,
+                'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': True,
             },
-            {'type': 'rich'},
+            None,
         ),
     ],
 )
@@ -449,24 +401,59 @@ async def test_send_with_interaction(
             )
 
 
-async def test_send_raises(mock_context: Mock, mock_interaction: Mock) -> None:
-    with pytest.raises(
-        TypeError,
-        match='^Cannot mix embed content arguments and embeds keyword argument',
-    ):
-        await utils.send(
-            mock_context, description='asdf', embeds=[discord.Embed()]  # type: ignore
-        )
+@pytest.mark.parametrize(
+    'kwargs,expected_args,expected_embed',
+    [
+        (
+            {},
+            {
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': discord.utils.MISSING,
+            },
+            {'type': 'rich'},
+        ),
+        (
+            {'description': 'asdf'},
+            {
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': discord.utils.MISSING,
+            },
+            {'type': 'rich', 'description': 'asdf'},
+        ),
+        (
+            {'reference': [object()]},
+            {
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': ANY,
+                'view': discord.utils.MISSING,
+                'ephemeral': discord.utils.MISSING,
+            },
+            {'type': 'rich'},
+        ),
+    ],
+)
+async def test_send_embed_with_context(
+    mocker: MockerFixture,
+    mock_context: Mock,
+    mock_send: AsyncMock,
+    kwargs: dict[str, Any],
+    expected_args: dict[str, Any],
+    expected_embed: dict[str, Any],
+) -> None:
+    assert (
+        await utils.send_embed(mock_context, **kwargs)
+    ) is mocker.sentinel.utils_send_return
 
-    with pytest.raises(
-        TypeError,
-        match='^Cannot mix embed content arguments and embeds keyword argument',
-    ):
-        await utils.send(
-            mock_interaction,
-            description='asdf',
-            embeds=[discord.Embed()],  # type: ignore
-        )
+    mock_send.assert_awaited_once_with(mock_context, **expected_args)
+
+    assert mock_send.await_args_list[0][1]['embeds'][0].to_dict() == expected_embed
 
 
 @pytest.mark.parametrize(
@@ -475,117 +462,119 @@ async def test_send_raises(mock_context: Mock, mock_interaction: Mock) -> None:
         (
             {},
             {
-                'content': None,
-                'tts': False,
-                'file': None,
-                'files': None,
                 'embeds': [ANY],
-                'delete_after': None,
-                'nonce': None,
-                'allowed_mentions': None,
-                'reference': ANY,
-                'view': None,
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': discord.utils.MISSING,
+            },
+            {'type': 'rich'},
+        ),
+        (
+            {'description': 'asdf', 'ephemeral': False},
+            {
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': False,
+            },
+            {'type': 'rich', 'description': 'asdf'},
+        ),
+    ],
+)
+async def test_send_embed_with_interaction(
+    mocker: MockerFixture,
+    mock_interaction: Mock,
+    mock_send: AsyncMock,
+    kwargs: dict[str, Any],
+    expected_args: dict[str, Any],
+    expected_embed: dict[str, Any],
+) -> None:
+    assert (
+        await utils.send_embed(mock_interaction, **kwargs)
+    ) is mocker.sentinel.utils_send_return
+
+    mock_send.assert_awaited_once_with(mock_interaction, **expected_args)
+
+    assert mock_send.await_args_list[0][1]['embeds'][0].to_dict() == expected_embed
+
+
+@pytest.mark.parametrize(
+    'kwargs,expected_args,expected_embed',
+    [
+        (
+            {},
+            {
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
             },
             {'type': 'rich', 'color': 15158332},
         ),
         (
             {'description': 'asdf'},
             {
-                'content': None,
-                'tts': False,
-                'file': None,
-                'files': None,
                 'embeds': [ANY],
-                'delete_after': None,
-                'nonce': None,
-                'allowed_mentions': None,
-                'reference': ANY,
-                'view': None,
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
             },
             {'type': 'rich', 'description': 'asdf', 'color': 15158332},
         ),
         (
             {'reference': [object()]},
             {
-                'content': None,
-                'tts': False,
-                'file': None,
-                'files': None,
                 'embeds': [ANY],
-                'delete_after': None,
-                'nonce': None,
-                'allowed_mentions': None,
+                'allowed_mentions': discord.utils.MISSING,
                 'reference': ANY,
-                'view': None,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
             },
             {'type': 'rich', 'color': 15158332},
         ),
         (
             {'color': discord.Color.blue()},
             {
-                'content': None,
-                'tts': False,
-                'file': None,
-                'files': None,
                 'embeds': [ANY],
-                'delete_after': None,
-                'nonce': None,
-                'allowed_mentions': None,
-                'reference': ANY,
-                'view': None,
+                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
             },
             {'type': 'rich', 'color': 3447003},
         ),
     ],
 )
-async def test_send_error_with_context(
+async def test_send_embed_error_with_context(
     mocker: MockerFixture,
     mock_context: Mock,
+    mock_send: AsyncMock,
     kwargs: dict[str, Any],
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any],
 ) -> None:
     assert (
-        await utils.send_error(mock_context, **kwargs)
-    ) is mocker.sentinel.send_return
+        await utils.send_embed_error(mock_context, **kwargs)
+    ) is mocker.sentinel.utils_send_return
 
-    mock_context.send.assert_awaited_once_with(**expected_args)  # type: ignore
+    mock_send.assert_awaited_once_with(mock_context, **expected_args)
 
-    if expected_embed is None:
-        assert mock_context.send.await_args_list[0][1]['embeds'] is None  # type: ignore
-    else:
-        assert (
-            mock_context.send.await_args_list[0][1]['embeds'][  # type: ignore
-                0
-            ].to_dict()
-            == expected_embed
-        )
-
-    if 'reference' in kwargs:
-        assert (
-            mock_context.send.await_args_list[0][1]['reference']  # type: ignore
-            is kwargs['reference']
-        )
-    else:
-        assert (
-            mock_context.send.await_args_list[0][1]['reference']  # type: ignore
-            is mock_context.message  # type: ignore
-        )
+    assert mock_send.await_args_list[0][1]['embeds'][0].to_dict() == expected_embed
 
 
 @pytest.mark.parametrize(
-    'kwargs,is_done,expected_args,expected_embed',
+    'kwargs,expected_args,expected_embed',
     [
         (
             {},
-            False,
             {
-                'content': None,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': True,
             },
@@ -593,14 +582,10 @@ async def test_send_error_with_context(
         ),
         (
             {'description': 'asdf', 'ephemeral': False},
-            False,
             {
-                'content': None,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
@@ -608,59 +593,10 @@ async def test_send_error_with_context(
         ),
         (
             {'title': 'asdf', 'color': discord.Color.blue()},
-            False,
             {
-                'content': None,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-            },
-            {'type': 'rich', 'title': 'asdf', 'color': discord.Color.blue().value},
-        ),
-        (
-            {},
-            True,
-            {
-                'content': discord.utils.MISSING,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-            },
-            {'type': 'rich', 'color': discord.Color.red().value},
-        ),
-        (
-            {'description': 'asdf', 'ephemeral': False},
-            True,
-            {
-                'content': discord.utils.MISSING,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': False,
-            },
-            {'type': 'rich', 'description': 'asdf', 'color': discord.Color.red().value},
-        ),
-        (
-            {'title': 'asdf', 'color': discord.Color.blue()},
-            True,
-            {
-                'content': discord.utils.MISSING,
-                'tts': False,
-                'file': discord.utils.MISSING,
-                'files': discord.utils.MISSING,
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
+                'reference': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
                 'ephemeral': True,
             },
@@ -668,60 +604,18 @@ async def test_send_error_with_context(
         ),
     ],
 )
-async def test_send_error_with_interaction(
+async def test_send_embed_error_with_interaction(
     mocker: MockerFixture,
     mock_interaction: Mock,
+    mock_send: AsyncMock,
     kwargs: dict[str, Any],
-    is_done: bool,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any],
 ) -> None:
-    mock_interaction.configure_mock(**{'response.is_done.return_value': is_done})
-    assert (await utils.send_error(mock_interaction, **kwargs)) is (
-        mocker.sentinel.original_message_return
-        if not is_done
-        else mocker.sentinel.followup_send_return
-    )
+    assert (
+        await utils.send_embed_error(mock_interaction, **kwargs)
+    ) is mocker.sentinel.utils_send_return
 
-    if not is_done:
-        mock_interaction.response.send_message.assert_awaited_once_with(  # type: ignore
-            **expected_args
-        )
+    mock_send.assert_awaited_once_with(mock_interaction, **expected_args)
 
-        if expected_embed is None:
-            assert (
-                mock_interaction.response.send_message.await_args_list[  # type: ignore
-                    0
-                ][1]['embeds']
-                is discord.utils.MISSING
-            )
-        else:
-            assert (
-                mock_interaction.response.send_message.await_args_list[  # type: ignore
-                    0
-                ][1]['embeds'][0].to_dict()
-                == expected_embed
-            )
-
-        mock_interaction.followup.send.assert_not_awaited()  # type: ignore
-    else:
-        mock_interaction.response.send_message.assert_not_awaited()  # type: ignore
-        mock_interaction.original_message.assert_not_awaited()  # type: ignore
-        mock_interaction.followup.send.assert_awaited_once_with(  # type: ignore
-            wait=True, **expected_args
-        )
-
-        if expected_embed is None:
-            assert (
-                mock_interaction.followup.send.await_args_list[0][1][  # type: ignore
-                    'embeds'
-                ]
-                is discord.utils.MISSING
-            )
-        else:
-            assert (
-                mock_interaction.followup.send.await_args_list[0][1][  # type: ignore
-                    'embeds'
-                ][0].to_dict()
-                == expected_embed
-            )
+    assert mock_send.await_args_list[0][1]['embeds'][0].to_dict() == expected_embed

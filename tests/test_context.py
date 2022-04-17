@@ -82,8 +82,8 @@ class TestEmbedContext(object):
 
         await ctx.send_embed('baz')
 
-        assert (
-            type(mock_context_send.call_args_list[0][1]['embeds'][0]) == discord.Embed
+        assert isinstance(
+            mock_context_send.call_args_list[0][1]['embeds'][0], discord.Embed
         )
         assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'description': 'baz',
@@ -92,6 +92,7 @@ class TestEmbedContext(object):
         mock_context_send.assert_called_once_with(
             content=None,
             tts=False,
+            embed=None,
             embeds=[mocker.ANY],
             file=None,
             files=None,
@@ -115,7 +116,6 @@ class TestEmbedContext(object):
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
         )
 
-        obj = mocker.sentinel.TEST_OBJECT
         time = now(UTC)
         await ctx.send_embed(
             'foo',
@@ -127,11 +127,6 @@ class TestEmbedContext(object):
             image='blah',
             timestamp=time,
             fields=[{'name': 'one', 'value': 'one', 'inline': True}],
-            tts=True,
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
             reference=mock_message,
             view=view,
         )
@@ -150,12 +145,13 @@ class TestEmbedContext(object):
         }
         mock_context_send.assert_called_once_with(
             content=None,
-            tts=True,
+            tts=False,
+            embed=None,
             embeds=[mocker.ANY],
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
+            file=None,
+            files=None,
+            delete_after=None,
+            nonce=None,
             reference=mock_message,
             allowed_mentions=None,
             view=view,
@@ -175,16 +171,10 @@ class TestEmbedContext(object):
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
         )
 
-        obj = mocker.sentinel.TEST_OBJECT
         await ctx.send_embed(
             'foo',
             footer={'text': 'bar', 'icon_url': 'baz'},
             author={'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
-            tts=True,
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
             reference=mock_message_2,
             view=view,
         )
@@ -197,12 +187,13 @@ class TestEmbedContext(object):
         }
         mock_context_send.assert_called_once_with(
             content=None,
-            tts=True,
+            tts=False,
+            embed=None,
             embeds=[mocker.ANY],
-            file=obj,
-            files=obj,
-            delete_after=1.0,
-            nonce=200,
+            file=None,
+            files=None,
+            delete_after=None,
+            nonce=None,
             reference=mock_message_2,
             allowed_mentions=None,
             view=view,

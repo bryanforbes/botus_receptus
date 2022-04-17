@@ -7,7 +7,7 @@ from typing import Final, TypeVar
 import discord
 from discord.ext import commands
 
-from . import utils
+from . import embed, utils
 from .bot import AutoShardedBot, Bot
 
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
@@ -36,23 +36,18 @@ class EmbedContext(commands.Context[_BotT]):
         *,
         title: str | None = None,
         color: discord.Color | int | None = None,
-        footer: str | utils.FooterData | None = None,
+        footer: str | embed.FooterData | None = None,
         thumbnail: str | None = None,
-        author: str | utils.AuthorData | None = None,
+        author: str | embed.AuthorData | None = None,
         image: str | None = None,
         timestamp: datetime | None = None,
-        fields: Sequence[utils.FieldData] | None = None,
-        tts: bool = False,
-        file: discord.File = _MISSING,
-        files: Sequence[discord.File] = _MISSING,
-        delete_after: float = _MISSING,
-        nonce: int = _MISSING,
+        fields: Sequence[embed.FieldData] | None = None,
         reference: discord.Message
         | discord.MessageReference
         | discord.PartialMessage = _MISSING,
         view: discord.ui.View = _MISSING,
     ) -> discord.Message:
-        return await utils.send(  # type: ignore
+        return await utils.send_embed(
             self,
             description=description,
             title=title,
@@ -63,11 +58,6 @@ class EmbedContext(commands.Context[_BotT]):
             image=image,
             timestamp=timestamp,
             fields=fields,
-            tts=tts,
-            file=file,
-            files=files,
-            delete_after=delete_after,
-            nonce=nonce,
             reference=reference,
             view=view,
         )
