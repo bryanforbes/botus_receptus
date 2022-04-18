@@ -176,7 +176,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4133+g5456c0ca"
+version = "2.0.0a4140+gc2391cf6"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -196,7 +196,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "5456c0cae944f5e0dffb5de19cf18175e0d73011"
+resolved_reference = "c2391cf6735fd667b66735216c25c44a5edf61e8"
 
 [[package]]
 name = "distlib"
@@ -258,7 +258,7 @@ dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit"]
 
 [[package]]
 name = "flake8-pyi"
-version = "22.4.0"
+version = "22.4.1"
 description = "A plugin for flake8 to enable linting .pyi files."
 category = "dev"
 optional = false
@@ -962,8 +962,8 @@ flake8-bugbear = [
     {file = "flake8_bugbear-22.3.23-py3-none-any.whl", hash = "sha256:ec5ec92195720cee1589315416b844ffa5e82f73a78e65329e8055322df1e939"},
 ]
 flake8-pyi = [
-    {file = "flake8-pyi-22.4.0.tar.gz", hash = "sha256:53749fe2a9349d77fa8be23669b5bfd48dd5cc75117438b501e3ca81255a377e"},
-    {file = "flake8_pyi-22.4.0-py37-none-any.whl", hash = "sha256:2159dbb93889cce713c4e53de5e86e787f263f4c11582249f5b1f5edb1c84b00"},
+    {file = "flake8-pyi-22.4.1.tar.gz", hash = "sha256:0aef15bca27010b0c62ae3a7a6e5b05fcf776b1d1e05096512244a390c7cf03e"},
+    {file = "flake8_pyi-22.4.1-py37-none-any.whl", hash = "sha256:25249db753cf4978304ce485a31db5ec1f259a26bb20e6321d86444c83f42e14"},
 ]
 gino = [
     {file = "gino-1.0.1-py3-none-any.whl", hash = "sha256:56df57cfdefbaf897a7c4897c265a0e91a8cca80716fb64f7d3cf6d501fdfb3d"},
