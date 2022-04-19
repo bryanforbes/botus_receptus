@@ -191,7 +191,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4140+gc2391cf6"
+version = "2.0.0a4147+g1d97a353"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -211,7 +211,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "c2391cf6735fd667b66735216c25c44a5edf61e8"
+resolved_reference = "1d97a353850724a6abb117818ac284194db95f9e"
 
 [[package]]
 name = "distlib"
@@ -795,7 +795,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "aa1880854c511b2786c7827fc9bed6de8590ca31374a3238f48371c06f678ee5"
+content-hash = "a4f1646442df1a99a3e5dde3efef03e279c4c37a272c80873f0c216731170e23"
 
 [metadata.files]
 aiohttp = [
