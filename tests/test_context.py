@@ -101,6 +101,7 @@ class TestEmbedContext(object):
             reference=mock_message,
             allowed_mentions=None,
             view=None,
+            ephemeral=False,
         )
 
     async def test_send_embed_args(
@@ -155,6 +156,7 @@ class TestEmbedContext(object):
             reference=mock_message,
             allowed_mentions=None,
             view=view,
+            ephemeral=False,
         )
 
     async def test_send_embed_other_args(
@@ -197,6 +199,7 @@ class TestEmbedContext(object):
             reference=mock_message_2,
             allowed_mentions=None,
             view=view,
+            ephemeral=False,
         )
 
 

@@ -108,6 +108,7 @@ async def send(
     | discord.PartialMessage
     | None = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -129,6 +130,7 @@ async def send(
     | discord.PartialMessage
     | None = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -150,6 +152,7 @@ async def send(
     | discord.PartialMessage
     | None = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -171,6 +174,7 @@ async def send(
     | discord.PartialMessage
     | None = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -271,6 +275,7 @@ async def send(
             allowed_mentions=None if allowed_mentions is _MISSING else allowed_mentions,
             reference=ctx_or_intx.message if reference is _MISSING else reference,
             view=None if view is _MISSING else view,
+            ephemeral=False if ephemeral is _MISSING else ephemeral,
         )
     else:
         ephemeral = False if ephemeral is _MISSING else ephemeral
@@ -322,6 +327,7 @@ async def send_embed(
     | discord.MessageReference
     | discord.PartialMessage = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -366,8 +372,8 @@ async def send_embed(
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
 ) -> discord.Message:
-    return await send(  # type: ignore
-        ctx_or_intx,
+    return await send(
+        ctx_or_intx,  # type: ignore
         embeds=[
             Embed(
                 description=description,
@@ -406,6 +412,7 @@ async def send_embed_error(
     | discord.MessageReference
     | discord.PartialMessage = ...,
     view: discord.ui.View = ...,
+    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -450,8 +457,8 @@ async def send_embed_error(
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
 ) -> discord.Message:
-    return await send_embed(  # type: ignore
-        ctx_or_intx,
+    return await send_embed(
+        ctx_or_intx,  # type: ignore
         description=description,
         title=title,
         color=discord.Color.red() if color is None else color,
