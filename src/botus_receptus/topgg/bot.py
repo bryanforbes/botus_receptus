@@ -17,7 +17,7 @@ class BotBase(bot.BotBase):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         payload = {'server_count': len(cast(Any, self).guilds)}
 
-        with async_timeout.timeout(10):
+        async with async_timeout.timeout(10):
             await self.session.post(
                 f'https://top.gg/api/bots/{cast(Any, self).user.id}/stats',
                 data=discord.utils._to_json(payload),
