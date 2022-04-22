@@ -20,14 +20,24 @@ if sys.version_info >= (3, 9):
     from contextlib import AbstractAsyncContextManager
     from re import Pattern
 else:
-    from typing import AsyncContextManager as AbstractAsyncContextManager
-    from typing import AsyncIterable, Awaitable, Callable, Container, Coroutine
-    from typing import Dict as dict
-    from typing import Generator, Iterable, Iterator
-    from typing import List as list
-    from typing import Mapping, Pattern, Sequence
-    from typing import Tuple as tuple
-    from typing import Type as type
+    from typing import (
+        AsyncContextManager as AbstractAsyncContextManager,
+        AsyncIterable,
+        Awaitable,
+        Callable,
+        Container,
+        Coroutine,
+        Dict as dict,
+        Generator,
+        Iterable,
+        Iterator,
+        List as list,
+        Mapping,
+        Pattern,
+        Sequence,
+        Tuple as tuple,
+        Type as type,
+    )
 
 __all__: Final = (
     'AbstractAsyncContextManager',

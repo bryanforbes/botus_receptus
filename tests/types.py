@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 import sys
+from collections.abc import Callable
 from typing import Any, Protocol, TypeVar, overload
 from unittest import mock
-
-from botus_receptus.compat import Callable
-from botus_receptus.compat import dict as _dict
 
 _T = TypeVar('_T')
 
@@ -121,7 +119,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _dict[str, mock.MagicMock | mock.AsyncMock]:
+    ) -> dict[str, mock.MagicMock | mock.AsyncMock]:
         ...
 
     @overload
@@ -135,7 +133,7 @@ class _Patcher(Protocol):
         *,
         new_callable: Callable[[], _T],
         **kwargs: Any,
-    ) -> _dict[str, _T]:
+    ) -> dict[str, _T]:
         ...
 
     def dict(
