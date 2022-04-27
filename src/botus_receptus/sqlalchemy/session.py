@@ -1,23 +1,21 @@
 from __future__ import annotations
 
 from collections.abc import MutableMapping
-from typing import TYPE_CHECKING, Any, TypeAlias
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncSession
 from sqlalchemy.orm import sessionmaker as _sessionmaker
 
-AsyncSessionMakerType: TypeAlias = _sessionmaker[AsyncSession]  # type: ignore
-
 if TYPE_CHECKING:
 
-    _sessionmakerbase = _sessionmaker[AsyncSession]  # type: ignore
+    AsyncSessionMakerType = _sessionmaker[AsyncSession]  # type: ignore
 
 else:
 
-    _sessionmakerbase = _sessionmaker
+    AsyncSessionMakerType = _sessionmaker
 
 
-class sessionmaker(_sessionmakerbase):
+class sessionmaker(AsyncSessionMakerType):
     def __init__(
         self,
         bind: AsyncConnection | AsyncEngine | None = None,
