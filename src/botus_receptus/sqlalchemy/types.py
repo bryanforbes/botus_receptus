@@ -12,6 +12,7 @@ else:
 
 class Snowflake(IntBase):
     impl = String
+    cache_ok = True
 
     def process_bind_param(self, value: Any, dialect: Any) -> str | None:
         return str(value) if value is not None else value
