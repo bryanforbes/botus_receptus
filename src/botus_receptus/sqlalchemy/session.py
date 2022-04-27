@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, MutableMapping
+from collections.abc import MutableMapping
+from typing import TYPE_CHECKING, Any, TypeAlias
 
-from sqlalchemy.ext.asyncio.engine import AsyncConnection, AsyncEngine
-from sqlalchemy.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm.session import sessionmaker as _sessionmaker
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncSession
+from sqlalchemy.orm import sessionmaker as _sessionmaker
+
+AsyncSessionMakerType: TypeAlias = _sessionmaker[AsyncSession]  # type: ignore
 
 if TYPE_CHECKING:
 
@@ -21,6 +23,7 @@ class sessionmaker(_sessionmakerbase):
         bind: AsyncConnection | AsyncEngine | None = None,
         autoflush: bool = True,
         info: MutableMapping[Any, Any] | None = None,
+        expire_on_commit: bool = True,
         **kw: Any,
     ) -> None:
         super().__init__(  # type: ignore
@@ -28,6 +31,6 @@ class sessionmaker(_sessionmakerbase):
             autoflush=autoflush,
             info=info,
             class_=AsyncSession,
-            expire_on_commit=False,
+            expire_on_commit=expire_on_commit,
             **kw,
         )

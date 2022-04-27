@@ -1,25 +1,38 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from .. import bot
+from ..config import Config
+from .session import AsyncSessionMakerType
 
 
 class BotBase(bot.BotBase):
-    session_maker: ClassVar[sessionmaker[AsyncSession]]  # type: ignore
+    __Session: AsyncSessionMakerType
+
+    def __init__(
+        self,
+        config: Config,
+        /,
+        sessionmaker: AsyncSessionMakerType,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        self.__Session = sessionmaker
+
+        super().__init__(config, *args, **kwargs)
 
     async def setup_hook(self) -> None:
-        self.session_maker.configure(
-            bind=create_async_engine(self.config.get('db_url', ''))
+        self.__Session.configure(
+            bind=create_async_engine(self.config.get('db_url', '')),
         )
 
         await super().setup_hook()
 
     async def close(self) -> None:
-        self.session_maker.close_all()
+        self.__Session.close_all()
 
         await super().close()
 
