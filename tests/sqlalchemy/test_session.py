@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from botus_receptus.sqlalchemy.session import sessionmaker
+from botus_receptus.sqlalchemy.session import async_sessionmaker
 
 
-class TestSessionmaker:
+class TestAsyncSessionmaker:
     def test_init(self) -> None:
-        Session = sessionmaker()
+        Session = async_sessionmaker()
         assert issubclass(Session.class_, AsyncSession)

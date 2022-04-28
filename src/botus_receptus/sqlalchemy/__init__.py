@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .bot import AutoShardedBot, Bot, BotBase
-from .session import AsyncSessionMakerType, sessionmaker
+from .session import AsyncSessionMakerType, async_sessionmaker
 from .types import Snowflake
 
 __all__ = (
@@ -9,6 +9,6 @@ __all__ = (
     'Bot',
     'BotBase',
     'AsyncSessionMakerType',
-    'sessionmaker',
+    'async_sessionmaker',
     'Snowflake',
 )

@@ -15,7 +15,7 @@ else:
     AsyncSessionMakerType = _sessionmaker
 
 
-class sessionmaker(AsyncSessionMakerType):
+class async_sessionmaker(AsyncSessionMakerType):
     def __init__(
         self,
         bind: AsyncConnection | AsyncEngine | None = None,
