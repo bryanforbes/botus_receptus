@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
 
 import discord
@@ -44,7 +44,7 @@ class CommandTree(app_commands.CommandTree[_ClientT]):
         /,
         *,
         guild: discord.abc.Snowflake | None = discord.utils.MISSING,
-        guilds: list[discord.abc.Snowflake] = discord.utils.MISSING,
+        guilds: Sequence[discord.abc.Snowflake] = discord.utils.MISSING,
         override: bool = False,
     ) -> None:
         admin_guild_id: int | None = self.client.config.get('admin_guild', None)

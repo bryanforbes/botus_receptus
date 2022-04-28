@@ -5,13 +5,14 @@ from typing import TYPE_CHECKING, Any
 from sqlalchemy.types import String, TypeDecorator
 
 if TYPE_CHECKING:
-    IntBase = TypeDecorator[int]
+    _SnowflakeBase = TypeDecorator[int]
 else:
-    IntBase = TypeDecorator
+    _SnowflakeBase = TypeDecorator
 
 
-class Snowflake(IntBase):
+class Snowflake(_SnowflakeBase):
     impl = String
+    cache_ok = True
 
     def process_bind_param(self, value: Any, dialect: Any) -> str | None:
         return str(value) if value is not None else value

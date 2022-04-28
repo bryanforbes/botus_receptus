@@ -6,7 +6,7 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "sqlalchemy"
-        versions: ">=1.4.0"
+        versions: ">=1.5.0"
       - dependency-name: "types-click"
         versions: ">=0.1.12"
     open-pull-requests-limit: 10

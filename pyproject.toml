@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "botus_receptus"
-version = "2.0.0dev30"
+version = "2.0.0dev34"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -18,20 +18,20 @@ click = ">=8.0"
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master" }
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
-asyncpg = {version = ">=0.22.0", optional = true}
-gino = {version = "^1.0.1", optional = true}
-sqlalchemy = {version = ">=1.2,<1.4", optional = true}
+asyncpg = {version = ">=0.25.0", optional = true}
+sqlalchemy = {version = "~1.4", optional = true}
 uvloop = {version = "~0.16.0", optional = true}
+greenlet = {version = "^1.1.2", optional = true}
 
 [tool.poetry.extras]
 db = ["asyncpg"]
-dev = ["asyncpg", "gino", "uvloop"]
-gino = ["gino"]
+dev = ["asyncpg", "sqlalchemy", "greenlet", "uvloop"]
+sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "bb92f810baaa157c3750610a2ac946dfd903a5b8"}
-gino-stubs = {git = "https://github.com/bryanforbes/gino-stubs.git", rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e"}
+asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"}
+sqlalchemy2-stubs = "^0.0.2-alpha.22"
 black = "^22.3"
 coverage = {extras = ["toml"], version = "^6.3"}
 flake8 = "~4.0"
