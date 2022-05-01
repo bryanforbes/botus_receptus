@@ -143,3 +143,7 @@ class Cog(commands.Cog, Generic[_BotT]):
         /,
     ) -> None:
         ...
+
+
+class GroupCog(commands.GroupCog, Cog[_BotT]):
+    ...

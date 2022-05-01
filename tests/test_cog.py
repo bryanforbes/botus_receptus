@@ -7,20 +7,23 @@ from unittest.mock import AsyncMock
 import discord
 import pytest
 from discord import app_commands
+from discord.ext import commands
 from pytest_mock import MockerFixture
 
 from botus_receptus import Bot, Cog
+from botus_receptus.cog import GroupCog
 
 
 class MockBot(object):
     ...
 
 
-class TestCog(object):
-    @pytest.fixture
-    def mock_bot(self) -> MockBot:
-        return MockBot()
+@pytest.fixture
+def mock_bot() -> MockBot:
+    return MockBot()
 
+
+class TestCog(object):
     @pytest.fixture
     def mock_cog(self, mock_bot: Bot) -> Cog[Bot]:
         return Cog(mock_bot)
@@ -198,3 +201,11 @@ class TestCog(object):
         await cog.my_command_with_handler._invoke_error_handler(interaction, error)
         on_command_error.assert_awaited_once_with(cog, interaction, error)
         on_error.assert_awaited_once_with(cog, interaction, error)
+
+
+class TestGroupCog:
+    def test_init(self, mock_bot: Bot) -> None:
+        cog = GroupCog(mock_bot)
+        assert cog.bot is mock_bot
+        assert isinstance(cog, commands.GroupCog)
+        assert isinstance(cog, Cog)
