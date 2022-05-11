@@ -183,7 +183,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4255+gd319539e"
+version = "2.0.0a4261+g63e50bc3"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -191,7 +191,7 @@ python-versions = ">=3.8.0"
 develop = false
 
 [package.dependencies]
-aiohttp = ">=3.6.0,<4"
+aiohttp = ">=3.7.4,<4"
 
 [package.extras]
 docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions"]
@@ -203,7 +203,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "d319539edb214202b090b01d641c00f0c9d487c3"
+resolved_reference = "63e50bc3693437aad4c0c7c6f4e0cc306bc61258"
 
 [[package]]
 name = "distlib"
@@ -265,7 +265,7 @@ dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit"]
 
 [[package]]
 name = "flake8-pyi"
-version = "22.4.1"
+version = "22.5.0"
 description = "A plugin for flake8 to enable linting .pyi files."
 category = "dev"
 optional = false
@@ -768,7 +768,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "b920e36d320a6e0c69283c8fb16735c4492949c3498ebf0864617cbef9cccaa6"
+content-hash = "208e6dcd01f4a33b97655944c31280dcaa9adbe48d49fa5799d051800e8879f3"
 
 [metadata.files]
 aiohttp = [
@@ -1011,8 +1011,8 @@ flake8-bugbear = [
     {file = "flake8_bugbear-22.4.25-py3-none-any.whl", hash = "sha256:ec374101cddf65bd7a96d393847d74e58d3b98669dbf9768344c39b6290e8bd6"},
 ]
 flake8-pyi = [
-    {file = "flake8-pyi-22.4.1.tar.gz", hash = "sha256:0aef15bca27010b0c62ae3a7a6e5b05fcf776b1d1e05096512244a390c7cf03e"},
-    {file = "flake8_pyi-22.4.1-py37-none-any.whl", hash = "sha256:25249db753cf4978304ce485a31db5ec1f259a26bb20e6321d86444c83f42e14"},
+    {file = "flake8-pyi-22.5.0.tar.gz", hash = "sha256:0f84549c56367b9e580be968e5c8a7cda3b85f63bb06c659b4bdb8e03ad16264"},
+    {file = "flake8_pyi-22.5.0-py37-none-any.whl", hash = "sha256:dda560bee3a26db4bb6c9d85261423a93c4545ffde533c3b51552ae010fc6d59"},
 ]
 frozenlist = [
     {file = "frozenlist-1.3.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d2257aaba9660f78c7b1d8fea963b68f3feffb1a9d5d05a18401ca9eb3e8d0a3"},
