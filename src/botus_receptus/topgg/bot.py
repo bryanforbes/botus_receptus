@@ -1,21 +1,22 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
+from datetime import time
 from typing import Any, cast
 
 import async_timeout
 import discord
+import pendulum
+from discord.ext import tasks
+from more_itertools import bucket
+from pendulum.datetime import DateTime
 
 from .. import bot
 
 
 class BotBase(bot.BotBase):
-    async def __report_guilds(self, /) -> None:
-        token = self.config.get('dbl_token', None)
-        if token is None:
-            return
-
+    async def __post_topgg_stats(self, token: str, payload: Any, /) -> None:
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        payload = {'server_count': len(cast(Any, self).guilds)}
 
         async with async_timeout.timeout(10):
             await self.session.post(
@@ -24,22 +25,53 @@ class BotBase(bot.BotBase):
                 headers=headers,
             )
 
+    def _get_topgg_stats(self) -> int | Iterable[tuple[int, int]]:
+        ...
+
+    @tasks.loop(time=list(map(time, range(24))))
+    async def __topgg_task(self, token: str, /) -> None:
+        stats = self._get_topgg_stats()
+
+        if isinstance(stats, int):
+            await self.__post_topgg_stats(token, {'server_count': stats})
+
+        else:
+            for shard_id, server_count in stats:
+                await self.__post_topgg_stats(
+                    token, {'shard_id': shard_id, 'server_count': server_count}
+                )
+
     async def on_ready(self, /) -> None:
-        await self.__report_guilds()
+        token = self.config.get('dbl_token', None)
 
-    async def on_guild_available(self, guild: discord.Guild, /) -> None:
-        await self.__report_guilds()
+        if token is None:
+            return
 
-    async def on_guild_join(self, guild: discord.Guild, /) -> None:
-        await self.__report_guilds()
+        self.__topgg_task.start(token)
 
-    async def on_guild_remove(self, guild: discord.Guild, /) -> None:
-        await self.__report_guilds()
+        next_hour: DateTime = (
+            pendulum.now('UTC').start_of('hour').add(hours=1)  # type: ignore
+        )
+
+        if next_hour.diff().in_minutes() > 15:  # type: ignore
+            await self.__topgg_task(token)
+
+    async def close(self) -> None:
+        self.__topgg_task.cancel()
+
+        await super().close()
 
 
 class Bot(BotBase, bot.Bot):
-    ...
+    def _get_topgg_stats(self) -> int:
+        return len(self.guilds)
 
 
 class AutoShardedBot(BotBase, bot.AutoShardedBot):
-    ...
+    def _get_topgg_stats(self) -> Iterable[tuple[int, int]]:
+        guilds_by_shard_id = bucket(self.guilds, key=lambda g: g.shard_id)
+
+        return map(
+            lambda shard_id: (shard_id, len(list(guilds_by_shard_id[shard_id]))),
+            guilds_by_shard_id,
+        )
