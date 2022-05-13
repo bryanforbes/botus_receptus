@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, cast
-from unittest.mock import AsyncMock, Mock, call
+from unittest.mock import AsyncMock, Mock
 
 import discord
 import pytest
@@ -22,7 +22,7 @@ class MockGuild:
 
 
 class MockConnection:
-    __slots__ = ('user', 'guilds', 'application_id')
+    __slots__ = ('user', 'guilds', 'shard_info', 'application_id')
 
     def __init__(self) -> None:
         self.user = discord.Object(12)
@@ -161,31 +161,19 @@ class TestTopggAutoShardedBot(object):
         mock_in_minutes.return_value = 15.1
         bot = AutoShardedBot(config, intents=discord.Intents.all())
         cast(Any, bot)._connection = MockConnection()
+        bot.shard_count = 2
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_called_once_with(config.get('dbl_token'))
-        cast(AsyncMock, bot.session.post).assert_has_awaits(
-            [
-                call(
-                    'https://top.gg/api/bots/12/stats',
-                    data='{"shard_id":1,"server_count":3}',
-                    headers={
-                        'Content-Type': 'application/json',
-                        'Authorization': 'DBL_TOKEN',
-                    },
-                ),
-                call(
-                    'https://top.gg/api/bots/12/stats',
-                    data='{"shard_id":0,"server_count":2}',
-                    headers={
-                        'Content-Type': 'application/json',
-                        'Authorization': 'DBL_TOKEN',
-                    },
-                ),
-            ]
+        cast(AsyncMock, bot.session.post).assert_awaited_once_with(
+            'https://top.gg/api/bots/12/stats',
+            data='{"server_count":5,"shard_count":2}',
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': 'DBL_TOKEN',
+            },
         )
-        assert cast(AsyncMock, bot.session.post).await_count == 2
 
     async def test_report_guilds_within_15_minutes(
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
