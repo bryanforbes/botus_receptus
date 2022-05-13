@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterable
 from datetime import time
-from typing import Any, cast
+from typing import Any, Final, cast
 
 import async_timeout
 import discord
@@ -13,14 +14,20 @@ from pendulum.datetime import DateTime
 
 from .. import bot
 
+_log: Final = logging.getLogger(__name__)
+
 
 class BotBase(bot.BotBase):
     async def __post_topgg_stats(self, token: str, payload: Any, /) -> None:
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
         async with async_timeout.timeout(10):
+            user_id = cast(Any, self).user.id
+
+            _log.info('POSTing stats for bot %s: %s', user_id, payload)
+
             await self.session.post(
-                f'https://top.gg/api/bots/{cast(Any, self).user.id}/stats',
+                f'https://top.gg/api/bots/{user_id}/stats',
                 data=discord.utils._to_json(payload),
                 headers=headers,
             )

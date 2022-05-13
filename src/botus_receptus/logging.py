@@ -45,6 +45,7 @@ def setup_logging(
 
         getLogger('discord').setLevel(log_levels['info'])
         getLogger('discord.http').setLevel(log_levels['warning'])
+        getLogger('botus_receptus').setLevel(log_levels['info'])
 
         getLogger(bot_name).setLevel(log_levels.get(log_level, log_levels['info']))
 
