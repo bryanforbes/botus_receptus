@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeGuard, TypeVar, overload
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
 
 from asyncpg import Connection, Record
 from asyncpg.pool import PoolConnectionProxy
 
 if TYPE_CHECKING:
-    from typing_extensions import LiteralString
+    from typing_extensions import LiteralString, StrictTypeGuard
 
 _Record = TypeVar('_Record', bound=Record)
 
@@ -17,20 +17,25 @@ __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 ConditionsType: TypeAlias = "Sequence[LiteralString] | LiteralString"
 
 
-def _is_literal_string(obj: Any) -> TypeGuard[LiteralString]:
+def _is_literal_string(obj: Any) -> StrictTypeGuard[LiteralString]:
     return isinstance(obj, str)
 
 
-def _get_join_string(joins: Sequence[tuple[str, str]] | None, /) -> str:
+def _get_join_string(
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None,
+    /,
+) -> LiteralString:
     if joins is None or len(joins) == 0:
         return ''
 
-    return ' ' + ' '.join(map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins))
+    return ' ' + ' '.join(  # type: ignore
+        map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins)
+    )
 
 
 def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
     _conditions: Sequence[LiteralString] | None = (
-        [conditions] if _is_literal_string(conditions) else conditions  # type: ignore
+        [conditions] if _is_literal_string(conditions) else conditions
     )
 
     if _conditions is None or len(_conditions) == 0:
@@ -39,18 +44,18 @@ def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
     return ' WHERE ' + ' AND '.join(_conditions)  # type: ignore
 
 
-def _get_order_by_string(order_by: str | None, /) -> str:
+def _get_order_by_string(order_by: LiteralString | None, /) -> LiteralString:
     if order_by is None:
         return ''
 
-    return f' ORDER BY {order_by} ASC'
+    return f' ORDER BY {order_by} ASC'  # type: ignore
 
 
-def _get_group_by_string(group_by: Sequence[str] | None, /) -> str:
+def _get_group_by_string(group_by: Sequence[LiteralString] | None, /) -> LiteralString:
     if group_by is None:
         return ''
 
-    return ' GROUP BY ' + ', '.join(group_by)
+    return ' GROUP BY ' + ', '.join(group_by)  # type: ignore
 
 
 @overload
@@ -58,12 +63,12 @@ async def select_all(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    order_by: str | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    order_by: LiteralString | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
 ) -> list[_Record]:
     ...
@@ -74,12 +79,12 @@ async def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    order_by: str | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    order_by: LiteralString | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: type[_Record],
 ) -> list[_Record]:
     ...
@@ -89,12 +94,12 @@ async def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     where: ConditionsType | None = None,
-    group_by: Sequence[str] | None = None,
-    order_by: str | None = None,
-    joins: Sequence[tuple[str, str]] | None = None,
+    group_by: Sequence[LiteralString] | None = None,
+    order_by: LiteralString | None = None,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
     record_class: type[_Record] | None = None,
 ) -> list[Any]:
     columns_str = ', '.join(columns)
@@ -116,12 +121,12 @@ async def select_one(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     record_class: None = ...,
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
 ) -> _Record | None:
     ...
 
@@ -131,12 +136,12 @@ async def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     record_class: type[_Record],
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
 ) -> _Record | None:
     ...
 
@@ -145,12 +150,12 @@ async def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     record_class: type[_Record] | None = None,
     where: ConditionsType | None = None,
-    group_by: Sequence[str] | None = None,
-    joins: Sequence[tuple[str, str]] | None = None,
+    group_by: Sequence[LiteralString] | None = None,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
 ) -> Any | None:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
@@ -169,14 +174,14 @@ async def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
     terms: Sequence[str],
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    order_by: str | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    order_by: LiteralString | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
 ) -> list[_Record]:
     ...
@@ -187,14 +192,14 @@ async def search(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
     terms: Sequence[str],
     where: ConditionsType | None = ...,
-    group_by: Sequence[str] | None = ...,
-    order_by: str | None = ...,
-    joins: Sequence[tuple[str, str]] | None = ...,
+    group_by: Sequence[LiteralString] | None = ...,
+    order_by: LiteralString | None = ...,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: type[_Record],
 ) -> list[_Record]:
     ...
@@ -204,34 +209,37 @@ async def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
     *args: Any,
-    table: str,
-    columns: Sequence[str],
+    table: LiteralString,
+    columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
     terms: Sequence[str],
     where: ConditionsType | None = None,
-    group_by: Sequence[str] | None = None,
-    order_by: str | None = None,
-    joins: Sequence[tuple[str, str]] | None = None,
+    group_by: Sequence[LiteralString] | None = None,
+    order_by: LiteralString | None = None,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
     record_class: type[_Record] | None = None,
 ) -> list[_Record]:
     if where is None:
-        where = []
-    if _is_literal_string(where):
-        where = [where]
+        where_list: list[LiteralString] = []
     else:
-        where = list(where)  # type: ignore
+        if _is_literal_string(where):
+            where_list = [where]
+        else:
+            where_list = list(where)
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
-    search_columns_str = " || ' ' || ".join(search_columns)
+    search_columns_str: LiteralString = " || ' ' || ".join(  # type: ignore
+        search_columns
+    )
     args = args + (' & '.join(terms),)
 
-    where.append(
+    where_list.append(
         f"to_tsvector('english', {search_columns_str}) @@ "  # type: ignore
         f"to_tsquery('english', ${len(args)})"
     )
 
-    where_str = _get_where_string(where)
+    where_str = _get_where_string(where_list)
     group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
@@ -247,8 +255,8 @@ async def update(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
-    values: dict[str, Any],
+    table: LiteralString,
+    values: dict[LiteralString, Any],
     where: ConditionsType | None = None,
 ) -> None:
     set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
@@ -261,11 +269,11 @@ async def insert_into(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *,
-    table: str,
-    values: dict[str, Any],
+    table: LiteralString,
+    values: dict[LiteralString, Any],
     extra: str = '',
 ) -> None:
-    columns: list[str] = []
+    columns: list[LiteralString] = []
     data: list[Any] = []
 
     for column, value in values.items():
@@ -286,7 +294,7 @@ async def delete_from(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
-    table: str,
+    table: LiteralString,
     where: ConditionsType,
 ) -> None:
     where_str = _get_where_string(where)

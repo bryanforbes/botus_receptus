@@ -82,12 +82,12 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
-        group_by: Sequence[str] | None = ...,
-        order_by: str | None = ...,
-        joins: Sequence[tuple[str, str]] | None = ...,
+        group_by: Sequence[LiteralString] | None = ...,
+        order_by: LiteralString | None = ...,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: None = ...,
     ) -> list[Record]:
         ...
@@ -97,12 +97,12 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
-        group_by: Sequence[str] | None = ...,
-        order_by: str | None = ...,
-        joins: Sequence[tuple[str, str]] | None = ...,
+        group_by: Sequence[LiteralString] | None = ...,
+        order_by: LiteralString | None = ...,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: type[_Record],
     ) -> list[_Record]:
         ...
@@ -112,12 +112,12 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = None,
-        group_by: Sequence[str] | None = None,
-        order_by: str | None = None,
-        joins: Sequence[tuple[str, str]] | None = None,
+        group_by: Sequence[LiteralString] | None = None,
+        order_by: LiteralString | None = None,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
     ) -> list[Any]:
         return await select_all(
@@ -137,11 +137,11 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
-        group_by: Sequence[str] | None = ...,
-        joins: Sequence[tuple[str, str]] | None = ...,
+        group_by: Sequence[LiteralString] | None = ...,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: None = ...,
     ) -> Record | None:
         ...
@@ -151,11 +151,11 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
-        group_by: Sequence[str] | None = ...,
-        joins: Sequence[tuple[str, str]] | None = ...,
+        group_by: Sequence[LiteralString] | None = ...,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: type[_Record],
     ) -> _Record | None:
         ...
@@ -165,11 +165,11 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         where: ConditionsType | None = None,
-        group_by: Sequence[str] | None = None,
-        joins: Sequence[tuple[str, str]] | None = None,
+        group_by: Sequence[LiteralString] | None = None,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
     ) -> Any | None:
         return await select_one(
@@ -188,14 +188,14 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
-        terms: Sequence[str],
+        terms: Sequence[LiteralString],
         where: ConditionsType | None = None,
-        group_by: Sequence[str] | None = None,
-        order_by: str | None = None,
-        joins: Sequence[tuple[str, str]] | None = None,
+        group_by: Sequence[LiteralString] | None = None,
+        order_by: LiteralString | None = None,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: None = ...,
     ) -> list[Record]:
         ...
@@ -205,14 +205,14 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
-        terms: Sequence[str],
+        terms: Sequence[LiteralString],
         where: ConditionsType | None = None,
-        group_by: Sequence[str] | None = None,
-        order_by: str | None = None,
-        joins: Sequence[tuple[str, str]] | None = None,
+        group_by: Sequence[LiteralString] | None = None,
+        order_by: LiteralString | None = None,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: type[_Record],
     ) -> list[_Record]:
         ...
@@ -222,14 +222,14 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        columns: Sequence[str],
+        table: LiteralString,
+        columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
-        terms: Sequence[str],
+        terms: Sequence[LiteralString],
         where: ConditionsType | None = None,
-        group_by: Sequence[str] | None = None,
-        order_by: str | None = None,
-        joins: Sequence[tuple[str, str]] | None = None,
+        group_by: Sequence[LiteralString] | None = None,
+        order_by: LiteralString | None = None,
+        joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
     ) -> list[Any]:
         return await search(
@@ -251,20 +251,25 @@ class Context(commands.Context[_BotT]):
         self,
         /,
         *args: Any,
-        table: str,
-        values: dict[str, Any],
+        table: LiteralString,
+        values: dict[LiteralString, Any],
         where: ConditionsType | None = None,
     ) -> None:
         return await update(self.db, *args, table=table, values=values, where=where)
 
     @ensure_db
     async def insert_into(
-        self, /, *, table: str, values: dict[str, Any], extra: str = ''
+        self,
+        /,
+        *,
+        table: LiteralString,
+        values: dict[LiteralString, Any],
+        extra: str = '',
     ) -> None:
         return await insert_into(self.db, table=table, values=values, extra=extra)
 
     @ensure_db
     async def delete_from(
-        self, /, *args: Any, table: str, where: ConditionsType
+        self, /, *args: Any, table: LiteralString, where: ConditionsType
     ) -> None:
         return await delete_from(self.db, *args, table=table, where=where)

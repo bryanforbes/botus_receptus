@@ -54,7 +54,7 @@ def cli(
     /,
     handler_cls: type[FileHandler] = discord.utils.MISSING,
 ) -> click.Command:
-    @click.command()  # type: ignore
+    @click.command()
     @click.option(
         '-c',
         '--config',
