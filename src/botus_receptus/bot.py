@@ -45,15 +45,17 @@ class BotBase(bot.BotBase):
         self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def sync_app_commands(self, /) -> None:
+        guilds_to_sync: set[discord.Object] = set()
+
         if (guild_ids := self.config.get('test_guilds')) is not None:
-            test_guilds = [discord.Object(id=guild_id) for guild_id in guild_ids]
+            guilds_to_sync = {discord.Object(id=guild_id) for guild_id in guild_ids}
 
-            if (admin_guild_id := self.config.get('admin_guild', None)) is not None:
-                test_guilds.append(discord.Object(id=admin_guild_id))
+        if (admin_guild_id := self.config.get('admin_guild')) is not None:
+            guilds_to_sync.add(discord.Object(id=admin_guild_id))
 
-            for test_guild in test_guilds:
-                self.tree.copy_global_to(guild=test_guild)
-                await self.tree.sync(guild=test_guild)
+        for guild_to_sync in guilds_to_sync:
+            self.tree.copy_global_to(guild=guild_to_sync)
+            await self.tree.sync(guild=guild_to_sync)
 
         await self.tree.sync()
 
