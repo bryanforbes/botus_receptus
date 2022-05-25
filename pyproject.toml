@@ -30,7 +30,7 @@ sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = "~0.25.2"
+asyncpg-stubs = "~0.25.3"
 sqlalchemy2-stubs = "^0.0.2-alpha.22"
 black = "^22.3"
 coverage = {extras = ["toml"], version = "^6.3"}

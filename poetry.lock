@@ -76,7 +76,7 @@ test = ["pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.25.2"
+version = "0.25.3"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
@@ -183,7 +183,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4293+g3dddddc8"
+version = "2.0.0a4300+gf19f51f7"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -203,7 +203,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "3dddddc8f95494c93ab4696672f473fc6aa29c14"
+resolved_reference = "f19f51f7717d566aaf5f38876dc333ffd4c3a725"
 
 [[package]]
 name = "distlib"
@@ -768,7 +768,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "208e6dcd01f4a33b97655944c31280dcaa9adbe48d49fa5799d051800e8879f3"
+content-hash = "f6172ecaa7ef7b831e2d6a3521abdab03d74f1e7944c6cc3c463de7261e50581"
 
 [metadata.files]
 aiohttp = [
@@ -894,8 +894,8 @@ asyncpg = [
     {file = "asyncpg-0.25.0.tar.gz", hash = "sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540"},
 ]
 asyncpg-stubs = [
-    {file = "asyncpg-stubs-0.25.2.tar.gz", hash = "sha256:8b61485973a13b894683138f5d8a6c08fcfbe2a6c30980ad8c72510d4a885ba7"},
-    {file = "asyncpg_stubs-0.25.2-py3-none-any.whl", hash = "sha256:ab5f1a9a045402f18d142470af40f7f2c49c2dffe615cbec20303ac71328d02d"},
+    {file = "asyncpg-stubs-0.25.3.tar.gz", hash = "sha256:54af49cb246bc46ab80794c23d90b3f0e2334d0629a6a1b7b2672efb0bfb3fb5"},
+    {file = "asyncpg_stubs-0.25.3-py3-none-any.whl", hash = "sha256:f88f8157ce229b5fa469b557accde05e461d6ae4164b8a80f83c480166d75dce"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
