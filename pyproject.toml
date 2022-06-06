@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "botus_receptus"
-version = "2.0.0dev44"
+version = "2.0.0dev45"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -31,7 +31,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = "~0.25.2"
-sqlalchemy2-stubs = "^0.0.2-alpha.22"
+sqlalchemy2-stubs = "^0.0.2a23"
 black = "^22.3"
 coverage = {extras = ["toml"], version = "^6.4"}
 flake8 = "~4.0"
