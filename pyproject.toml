@@ -13,7 +13,7 @@ python = "^3.10"
 typing_extensions = "~4.3.0"
 aioitertools = "^0.10.0"
 "async-timeout" = "~4.0.0"
-attrs = ">=21.4.0"
+attrs = ">=22.1.0"
 click = ">=8.0"
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master" }
 tomli = "^2.0.1"
