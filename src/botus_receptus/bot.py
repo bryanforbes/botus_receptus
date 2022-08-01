@@ -39,7 +39,9 @@ class BotBase(bot.BotBase):
         )
 
     def run_with_config(self, /) -> None:
-        cast(Any, self).run(self.config['discord_api_key'])
+        cast(Any, self).run(
+            self.config['discord_api_key'], log_handler=None, log_formatter=None
+        )
 
     async def setup_hook(self, /) -> None:
         self.session = aiohttp.ClientSession(loop=self.loop)
