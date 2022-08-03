@@ -41,21 +41,21 @@ def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
     if _conditions is None or len(_conditions) == 0:
         return ''
 
-    return ' WHERE ' + ' AND '.join(_conditions)  # type: ignore
+    return ' WHERE ' + ' AND '.join(_conditions)
 
 
 def _get_order_by_string(order_by: LiteralString | None, /) -> LiteralString:
     if order_by is None:
         return ''
 
-    return f' ORDER BY {order_by} ASC'  # type: ignore
+    return f' ORDER BY {order_by} ASC'
 
 
 def _get_group_by_string(group_by: Sequence[LiteralString] | None, /) -> LiteralString:
     if group_by is None:
         return ''
 
-    return ' GROUP BY ' + ', '.join(group_by)  # type: ignore
+    return ' GROUP BY ' + ', '.join(group_by)
 
 
 @overload
@@ -229,9 +229,7 @@ async def search(
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
-    search_columns_str: LiteralString = " || ' ' || ".join(  # type: ignore
-        search_columns
-    )
+    search_columns_str: LiteralString = " || ' ' || ".join(search_columns)
     args = args + (' & '.join(terms),)
 
     where_list.append(
