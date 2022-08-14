@@ -292,7 +292,7 @@ async def send(
                 allowed_mentions=allowed_mentions,
                 ephemeral=ephemeral,
             )
-            return await ctx_or_intx.original_message()
+            return await ctx_or_intx.original_response()
         else:
             return await ctx_or_intx.followup.send(
                 content=content,
