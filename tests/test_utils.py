@@ -55,8 +55,8 @@ def mock_interaction(mocker: MockerFixture) -> Mock:
     mock.followup.send.return_value = (  # type: ignore
         mocker.sentinel.followup_send_return
     )
-    mock.original_message.return_value = (  # type: ignore
-        mocker.sentinel.original_message_return
+    mock.original_response.return_value = (  # type: ignore
+        mocker.sentinel.original_response_return
     )
 
     return mock
@@ -355,7 +355,7 @@ async def test_send_with_interaction(
 ) -> None:
     mock_interaction.configure_mock(**{'response.is_done.return_value': is_done})
     assert (await utils.send(mock_interaction, **kwargs)) is (
-        mocker.sentinel.original_message_return
+        mocker.sentinel.original_response_return
         if not is_done
         else mocker.sentinel.followup_send_return
     )
@@ -383,7 +383,7 @@ async def test_send_with_interaction(
         mock_interaction.followup.send.assert_not_awaited()  # type: ignore
     else:
         mock_interaction.response.send_message.assert_not_awaited()  # type: ignore
-        mock_interaction.original_message.assert_not_awaited()  # type: ignore
+        mock_interaction.original_response.assert_not_awaited()  # type: ignore
         mock_interaction.followup.send.assert_awaited_once_with(  # type: ignore
             wait=True, **expected_args
         )
