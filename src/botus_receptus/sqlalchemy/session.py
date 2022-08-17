@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import MutableMapping
 from typing import TYPE_CHECKING, Any
 
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncSession
 from sqlalchemy.orm import sessionmaker as _sessionmaker
 
 if TYPE_CHECKING:
+    from collections.abc import MutableMapping
 
     AsyncSessionMakerType = _sessionmaker[AsyncSession]  # type: ignore
 

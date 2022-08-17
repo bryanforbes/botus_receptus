@@ -1,16 +1,19 @@
 from __future__ import annotations
 
-from typing import Any, cast
-from unittest.mock import AsyncMock, Mock
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
 from pendulum.duration import Duration
 
-from botus_receptus import Config
 from botus_receptus.topgg.bot import AutoShardedBot, Bot
 
-from ..types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import AsyncMock, Mock
+
+    from botus_receptus import Config
+
+    from ..types import MockerFixture
 
 
 class MockGuild:
@@ -82,24 +85,24 @@ class TestTopggBot(object):
     async def test_no_token(self, config: Config, mock_task_start: Mock) -> None:
         del config['dbl_token']
         bot = Bot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_not_called()
-        cast(AsyncMock, bot.session.post).assert_not_awaited()
+        cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_report_guilds_before_15_minutes(
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 15.1
         bot = Bot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_called_once_with(config.get('dbl_token'))
-        cast(AsyncMock, bot.session.post).assert_awaited_with(
+        cast('AsyncMock', bot.session.post).assert_awaited_with(
             'https://top.gg/api/bots/12/stats',
             data='{"server_count":5}',
             headers={
@@ -113,16 +116,16 @@ class TestTopggBot(object):
     ) -> None:
         mock_in_minutes.return_value = 14.9
         bot = Bot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_called_once_with(config.get('dbl_token'))
-        cast(AsyncMock, bot.session.post).assert_not_awaited()
+        cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_close(self, config: Config, mock_task_cancel: Mock) -> None:
         bot = Bot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         bot._closed = True
         await bot.close()
@@ -148,25 +151,25 @@ class TestTopggAutoShardedBot(object):
     async def test_no_token(self, config: Config, mock_task_start: Mock) -> None:
         del config['dbl_token']
         bot = AutoShardedBot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_not_called()
-        cast(AsyncMock, bot.session.post).assert_not_awaited()
+        cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_report_guilds_before_15_minutes(
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 15.1
         bot = AutoShardedBot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         bot.shard_count = 2
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_called_once_with(config.get('dbl_token'))
-        cast(AsyncMock, bot.session.post).assert_awaited_once_with(
+        cast('AsyncMock', bot.session.post).assert_awaited_once_with(
             'https://top.gg/api/bots/12/stats',
             data='{"server_count":5,"shard_count":2}',
             headers={
@@ -180,16 +183,16 @@ class TestTopggAutoShardedBot(object):
     ) -> None:
         mock_in_minutes.return_value = 14.9
         bot = AutoShardedBot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
 
         mock_task_start.assert_called_once_with(config.get('dbl_token'))
-        cast(AsyncMock, bot.session.post).assert_not_awaited()
+        cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_close(self, config: Config, mock_task_cancel: Mock) -> None:
         bot = AutoShardedBot(config, intents=discord.Intents.all())
-        cast(Any, bot)._connection = MockConnection()
+        cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         bot._closed = True
         await bot.close()

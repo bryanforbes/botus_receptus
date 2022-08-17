@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
-from _pytest.fixtures import SubRequest
 from aioitertools.builtins import list as alist
 from attrs import define
 
@@ -26,7 +25,11 @@ from .mocks import (
     MockPermissions,
     MockUser,
 )
-from .types import ClockAdvancer, MockerFixture
+
+if TYPE_CHECKING:
+    from _pytest.fixtures import SubRequest
+
+    from .types import ClockAdvancer, MockerFixture
 
 
 @define
@@ -212,7 +215,7 @@ class TestInteractivePager(object):
 
     @pytest.mark.parametrize('me_user', [MockUser(id=400)])
     def test_create(self, context: MockContext, fetcher: ListPageSource[int]) -> None:
-        InteractivePager.create(cast(Any, context), fetcher)
+        InteractivePager.create(cast('Any', context), fetcher)
 
         assert context.guild is not None
         context.channel.permissions_for.assert_called_with(context.guild.me)
@@ -224,7 +227,7 @@ class TestInteractivePager(object):
         fetcher: ListPageSource[int],
         guild: discord.Guild,
     ) -> None:
-        InteractivePager.create(cast(Any, context), fetcher)
+        InteractivePager.create(cast('Any', context), fetcher)
 
         context.channel.permissions_for.assert_called_with(context.bot.user)
 
@@ -248,7 +251,7 @@ class TestInteractivePager(object):
         reason: CannotPaginateReason,
     ) -> None:
         with pytest.raises(CannotPaginate) as excinfo:
-            InteractivePager.create(cast(Any, context), fetcher)
+            InteractivePager.create(cast('Any', context), fetcher)
 
         assert excinfo.value.reason == reason
 
@@ -261,7 +264,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())
@@ -296,7 +299,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())
@@ -325,7 +328,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())
@@ -349,7 +352,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert not p.paginating
         event_loop.create_task(p.paginate())
@@ -373,7 +376,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())
         await advance_time(0)
@@ -403,7 +406,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())
         await advance_time(0)
@@ -444,7 +447,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())
         await advance_time(0)
@@ -467,7 +470,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())
         await advance_time(0)
@@ -489,7 +492,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         event_loop.create_task(p.paginate())
         await advance_time(0)
@@ -519,7 +522,7 @@ class TestInteractivePager(object):
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast(Any, context), fetcher)
+        p = InteractivePager.create(cast('Any', context), fetcher)
 
         event_loop.create_task(p.paginate())
         await advance_time(0)

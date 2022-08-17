@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
 
 from asyncpg import Connection, Record
-from asyncpg.pool import PoolConnectionProxy
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
     from typing_extensions import LiteralString, StrictTypeGuard
+
+    from asyncpg.pool import PoolConnectionProxy
 
 _Record = TypeVar('_Record', bound=Record)
 

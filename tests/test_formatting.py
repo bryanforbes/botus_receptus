@@ -4,7 +4,6 @@ from typing import Any
 
 import pytest
 
-from botus_receptus.compat import dict, list
 from botus_receptus.formatting import (
     EmbedPaginator,
     Paginator,

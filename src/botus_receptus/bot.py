@@ -9,7 +9,9 @@ from discord.ext import commands
 from discord.ext.commands import bot  # type: ignore
 
 from .app_commands import CommandTree
-from .config import Config
+
+if TYPE_CHECKING:
+    from .config import Config
 
 
 class BotBase(bot.BotBase):
@@ -39,7 +41,7 @@ class BotBase(bot.BotBase):
         )
 
     def run_with_config(self, /) -> None:
-        cast(Any, self).run(
+        cast('Any', self).run(
             self.config['discord_api_key'], log_handler=None, log_formatter=None
         )
 

@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from .. import bot
-from ..config import Config
-from .session import AsyncSessionMakerType
+
+if TYPE_CHECKING:
+    from ..config import Config
+    from .session import AsyncSessionMakerType
 
 
 class BotBase(bot.BotBase):

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import asyncio
-from asyncio.events import AbstractEventLoop
+from typing import TYPE_CHECKING
 
 import pytest
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from asyncio.events import AbstractEventLoop
+
+    from .types import MockerFixture
 
 
 class EventLoopClockAdvancer:

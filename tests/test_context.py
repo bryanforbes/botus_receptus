@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
-from unittest.mock import AsyncMock
+from typing import TYPE_CHECKING, Any
 
 import discord
 import pytest
@@ -10,11 +9,14 @@ from discord.ext.commands.view import StringView  # type: ignore
 from pendulum import now
 from pendulum.tz.timezone import UTC
 
-from botus_receptus.bot import Bot
-from botus_receptus.compat import list
 from botus_receptus.context import EmbedContext, PaginatedContext
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import AsyncMock
+
+    from botus_receptus.bot import Bot
+
+    from .types import MockerFixture
 
 
 @define

@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any
-from unittest.mock import AsyncMock, Mock
+from typing import TYPE_CHECKING, Any
 
 from attrs import define, field
 
-from botus_receptus.compat import Awaitable, Callable, dict, list, tuple
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable
+    from unittest.mock import AsyncMock, Mock
 
-from .types import MockerFixture
+    from .types import MockerFixture
 
 
 @define

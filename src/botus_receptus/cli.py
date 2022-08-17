@@ -1,14 +1,17 @@
 from __future__ import annotations
 
-from logging import FileHandler
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import click
 import discord
 import tomli
 
 from . import config, logging
-from .bot import BotBase
+
+if TYPE_CHECKING:
+    from logging import FileHandler
+
+    from .bot import BotBase
 
 
 def config_callback(
@@ -72,7 +75,7 @@ def cli(
         default='info',
     )
     def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
-        cast(dict[str, Any], bot_config['logging']).update(
+        cast('dict[str, Any]', bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from importlib.metadata import version
 from typing import Final
 
-from . import checks, compat, formatting, re, utils
+from . import checks, formatting, re, utils
 from .bot import AutoShardedBot, Bot, BotBase
 from .cli import cli
 from .cog import Cog, GroupCog
@@ -20,7 +20,6 @@ __version__: Final = version('botus_receptus')
 
 __all__ = (
     'checks',
-    'compat',
     'formatting',
     're',
     'utils',

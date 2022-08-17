@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import enum
 from abc import abstractmethod
-from collections.abc import AsyncIterable, Awaitable, Callable
 from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, TypeVar, cast
 
 import discord
@@ -11,15 +10,17 @@ import discord.abc
 from aioitertools.builtins import enumerate as aenumerate
 from aioitertools.helpers import maybe_await
 from aioitertools.itertools import starmap
-from aioitertools.types import AnyIterable
 from attrs import define, field
-from discord.ext import commands
 
 from .formatting import warning
 from .utils import race
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterable, Awaitable, Callable
     from typing_extensions import Self
+
+    from aioitertools.types import AnyIterable
+    from discord.ext import commands
 
 
 _T = TypeVar('_T')
@@ -284,7 +285,7 @@ class InteractivePager(Generic[_T]):
                 await asyncio.sleep(5)
 
         try:
-            await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
+            await cast('discord.TextChannel', self.channel).delete_messages(to_delete)
         except Exception:
             pass
 
@@ -396,11 +397,11 @@ class InteractivePager(Generic[_T]):
         /,
     ) -> Self:
         if ctx.guild is not None and ctx.guild.me is not None:
-            permissions = cast(discord.abc.GuildChannel, ctx.channel).permissions_for(
+            permissions = cast('discord.abc.GuildChannel', ctx.channel).permissions_for(
                 ctx.guild.me
             )
         else:
-            permissions = cast(discord.GroupChannel, ctx.channel).permissions_for(
+            permissions = cast('discord.GroupChannel', ctx.channel).permissions_for(
                 ctx.bot.user
             )
 

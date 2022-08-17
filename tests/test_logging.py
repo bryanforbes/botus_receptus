@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, cast
-from unittest.mock import MagicMock
+from typing import TYPE_CHECKING, Any, cast
 
 import pytest
 
-from botus_receptus.config import Config
 from botus_receptus.logging import setup_logging
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import MagicMock
+
+    from botus_receptus.config import Config
+
+    from .types import MockerFixture
 
 
 class MockHandler:
@@ -163,6 +166,6 @@ def test_setup_logging_handler_cls(
     mock_handler = mocker.MagicMock()
     mock_cls = mocker.MagicMock(return_value=mock_handler)
 
-    with setup_logging(config, handler_cls=cast(Any, mock_cls)):
+    with setup_logging(config, handler_cls=cast('Any', mock_cls)):
         mock_cls.assert_called_with(filename='botty.log', encoding='utf-8', mode='a')
         mock_get_logger.return_value.addHandler.assert_called_with(mock_handler)

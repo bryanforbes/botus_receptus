@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
-from unittest.mock import MagicMock, Mock
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
@@ -9,10 +8,13 @@ from click.testing import CliRunner
 
 from botus_receptus import ConfigException, cli
 from botus_receptus.bot import BotBase
-from botus_receptus.compat import type
-from botus_receptus.config import Config
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import MagicMock, Mock
+
+    from botus_receptus.config import Config
+
+    from .types import MockerFixture
 
 
 class MockBot:
@@ -68,7 +70,7 @@ def test_run(
     with open('config.toml', 'w') as f:
         f.write('')
 
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     cli_runner.invoke(command, [])  # type: ignore
 
     mock_setup_logging.assert_called_once_with(
@@ -115,9 +117,9 @@ def test_run_logging_config(
     mock_cls = mocker.MagicMock()
 
     command = cli(
-        cast(type[BotBase], mock_bot_class),
+        cast('type[BotBase]', mock_bot_class),
         './config.toml',
-        handler_cls=cast(Any, mock_cls),
+        handler_cls=cast('Any', mock_cls),
     )
     cli_runner.invoke(command, [])  # type: ignore
 
@@ -144,7 +146,7 @@ def test_run_config(
     with open('config-test.toml', 'w') as f:
         f.write('')
 
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     cli_runner.invoke(command, ['--config=config-test.toml'])  # type: ignore
 
     mock_config_load.call_args[0][0].endswith('/config-test.toml')
@@ -156,7 +158,7 @@ def test_run_log_to_console(
     with open('config.toml', 'w') as f:
         f.write('')
 
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     cli_runner.invoke(command, ['--log-to-console'])  # type: ignore
 
     mock_setup_logging.assert_called_once_with(
@@ -179,7 +181,7 @@ def test_run_log_level(
     with open('config.toml', 'w') as f:
         f.write('')
 
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     cli_runner.invoke(command, ['--log-level=critical'])  # type: ignore
 
     mock_setup_logging.assert_called_once_with(
@@ -199,7 +201,7 @@ def test_run_log_level(
 def test_run_error_no_config(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
 ):
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     result = cli_runner.invoke(command, [])  # type: ignore
     assert result.exit_code == 2
     mock_setup_logging.assert_not_called()
@@ -215,7 +217,7 @@ def test_run_error_reading(
         f.write('')
 
     mock_config_load.side_effect = OSError()
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     result = cli_runner.invoke(command, [])  # type: ignore
     assert result.exit_code == 2
     assert 'Error reading configuration file: ' in result.output
@@ -232,7 +234,7 @@ def test_run_config_exception(
         f.write('')
 
     mock_config_load.side_effect = ConfigException('No section and stuff')
-    command = cli(cast(type[BotBase], mock_bot_class), './config.toml')
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     result = cli_runner.invoke(command, [])  # type: ignore
     assert result.exit_code == 2
     assert 'No section and stuff' in result.output

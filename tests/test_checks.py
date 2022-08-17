@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
@@ -8,7 +8,8 @@ from discord.ext import commands
 
 from botus_receptus import NotGuildOwner, OnlyDirectMessage, checks
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from .types import MockerFixture
 
 
 class MockContext:
@@ -47,7 +48,7 @@ def test_dm_only() -> None:
     async def test() -> None:
         pass
 
-    predicate = cast(Any, test).__commands_checks__[0]
+    predicate = cast('Any', test).__commands_checks__[0]
 
     ctx = MockContext()
     ctx.channel = MockDMChannel()
@@ -65,7 +66,7 @@ def test_is_guild_owner() -> None:
     async def test() -> None:
         pass
 
-    predicate = cast(Any, test).__commands_checks__[0]
+    predicate = cast('Any', test).__commands_checks__[0]
 
     ctx = MockContext()
     ctx.guild = None

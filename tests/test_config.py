@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
 from botus_receptus import config
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def test_load(tmp_path: Path):

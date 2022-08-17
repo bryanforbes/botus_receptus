@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import pytest
 
-from botus_receptus.compat import dict, list
 from botus_receptus.db import utils
 
-from ..types import MockerFixture
+if TYPE_CHECKING:
+    from ..types import MockerFixture
 
 
 class MockDb:
@@ -83,7 +83,7 @@ class TestDbUtil(object):
         kwargs: dict[str, Any],
         expected_query: str,
     ) -> None:
-        await utils.select_all(cast(Any, mock_db), *args, **kwargs)
+        await utils.select_all(cast('Any', mock_db), *args, **kwargs)
 
         mock_db.fetch.assert_called_once_with(expected_query, *args, record_class=None)
 
@@ -151,7 +151,7 @@ class TestDbUtil(object):
         kwargs: dict[str, Any],
         expected_query: str,
     ) -> None:
-        await utils.select_one(cast(Any, mock_db), *args, **kwargs)
+        await utils.select_one(cast('Any', mock_db), *args, **kwargs)
         mock_db.fetchrow.assert_called_once_with(
             expected_query, *args, record_class=None
         )
@@ -274,7 +274,7 @@ class TestDbUtil(object):
         kwargs: dict[str, Any],
         expected_query: str,
     ):
-        await utils.search(cast(Any, mock_db), *args, **kwargs)
+        await utils.search(cast('Any', mock_db), *args, **kwargs)
 
         expected_args = args.copy()
         expected_args.append(' & '.join(kwargs['terms']))
@@ -314,7 +314,7 @@ class TestDbUtil(object):
         kwargs: dict[str, Any],
         expected_query: str,
     ):
-        await utils.update(cast(Any, mock_db), *args, **kwargs)
+        await utils.update(cast('Any', mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)
 
@@ -339,7 +339,7 @@ class TestDbUtil(object):
     async def test_insert_into(
         self, mock_db: MockDb, kwargs: dict[str, Any], expected_query: str
     ):
-        await utils.insert_into(cast(Any, mock_db), **kwargs)
+        await utils.insert_into(cast('Any', mock_db), **kwargs)
 
         args = [value for value in kwargs['values'].values()]
         mock_db.execute.assert_called_once_with(expected_query, *args)
@@ -361,6 +361,6 @@ class TestDbUtil(object):
         kwargs: dict[str, Any],
         expected_query: str,
     ):
-        await utils.delete_from(cast(Any, mock_db), *args, **kwargs)
+        await utils.delete_from(cast('Any', mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)

@@ -1,16 +1,18 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import discord
 import pytest
 from attrs import define
-from discord.ext import commands
 from discord.ext.commands.view import StringView  # type: ignore
 
 from botus_receptus.db import Context
 
-from ..types import MockerFixture
+if TYPE_CHECKING:
+    from discord.ext import commands
+
+    from ..types import MockerFixture
 
 
 @define

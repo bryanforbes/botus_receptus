@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
 from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
 
 import discord
 from discord import app_commands
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
+
     from . import bot
 
 

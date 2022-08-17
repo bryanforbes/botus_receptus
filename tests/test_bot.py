@@ -1,16 +1,20 @@
 from __future__ import annotations
 
-from typing import Any, cast
-from unittest.mock import AsyncMock, MagicMock
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
 from discord.ext import commands
 
 from botus_receptus.bot import Bot
-from botus_receptus.config import Config
 
-from .types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import AsyncMock, MagicMock
+
+    from botus_receptus.config import Config
+
+    from .types import MockerFixture
+
 
 OriginalBot = commands.Bot
 
@@ -107,4 +111,4 @@ class TestBot(object):
         await bot.close()
 
         close.assert_awaited()
-        cast(AsyncMock, bot.session.close).assert_awaited()
+        cast('AsyncMock', bot.session.close).assert_awaited()

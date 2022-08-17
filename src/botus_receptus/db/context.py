@@ -5,7 +5,6 @@ from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
 
 from asyncpg import Record
-from asyncpg.pool import PoolConnectionProxy
 from attrs import define
 from discord.ext import commands
 
@@ -21,6 +20,8 @@ from .utils import (
 
 if TYPE_CHECKING:
     from typing_extensions import LiteralString
+
+    from asyncpg.pool import PoolConnectionProxy
 
     from .bot import AutoShardedBot, Bot
 
@@ -57,7 +58,7 @@ def ensure_db(func: _F, /) -> _F:
 
         return func(self, *args, **kwargs)
 
-    return cast(_F, wrapper)
+    return cast('_F', wrapper)
 
 
 class Context(commands.Context[_BotT]):

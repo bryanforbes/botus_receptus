@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import discord
 import pytest
 from discord import app_commands
 
 from botus_receptus.app_commands import CommandTree, admin_guild_only, test_guilds_only
-from botus_receptus.bot import Bot
+
+if TYPE_CHECKING:
+    from botus_receptus.bot import Bot
 
 
 class MockConnection:

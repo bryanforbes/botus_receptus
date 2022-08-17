@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import sys
-from collections.abc import Callable
-from typing import Any, Protocol, TypeVar, overload
-from unittest import mock
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar, overload
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from unittest import mock
 
 _T = TypeVar('_T')
 

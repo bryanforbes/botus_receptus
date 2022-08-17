@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 from unittest.mock import AsyncMock
 
 import discord
 import pytest
 from discord.ext import commands
-from pytest_mock import MockerFixture
 
 from botus_receptus import Bot, Cog
 from botus_receptus.cog import GroupCog
+
+if TYPE_CHECKING:
+    from pytest_mock import MockerFixture
 
 
 class MockBot(object):
@@ -47,7 +49,7 @@ class TestCog(object):
         async_methods: bool,
     ) -> None:
         pre_inject_spy = cast(
-            AsyncMock,
+            'AsyncMock',
             mocker.patch.object(
                 mock_cog,
                 '__pre_inject__',
@@ -55,7 +57,7 @@ class TestCog(object):
             ),
         )
         post_inject_spy = cast(
-            AsyncMock,
+            'AsyncMock',
             mocker.patch.object(
                 mock_cog,
                 '__post_inject__',
@@ -87,7 +89,7 @@ class TestCog(object):
         async_methods: bool,
     ) -> None:
         pre_eject_spy = cast(
-            AsyncMock,
+            'AsyncMock',
             mocker.patch.object(
                 mock_cog,
                 '__pre_eject__',
@@ -95,7 +97,7 @@ class TestCog(object):
             ),
         )
         post_eject_spy = cast(
-            AsyncMock,
+            'AsyncMock',
             mocker.patch.object(
                 mock_cog,
                 '__post_eject__',

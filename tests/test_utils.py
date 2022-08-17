@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from unittest.mock import ANY, AsyncMock, Mock
 
 import discord
@@ -9,11 +9,13 @@ import pendulum
 import pytest
 from attrs import define, field
 from discord.ext import commands
-from pendulum.duration import Duration
 
 from botus_receptus import utils
 
-from .types import ClockAdvancer, MockerFixture
+if TYPE_CHECKING:
+    from pendulum.duration import Duration
+
+    from .types import ClockAdvancer, MockerFixture
 
 
 @define

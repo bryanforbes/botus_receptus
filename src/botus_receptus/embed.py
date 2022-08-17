@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
-from datetime import datetime
-from typing import Any, TypedDict
-from typing_extensions import NotRequired
+from typing import TYPE_CHECKING, Any, TypedDict
 
 import discord
-from discord.types.embed import EmbedType
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from datetime import datetime
+    from typing_extensions import NotRequired
+
+    from discord.types.embed import EmbedType
 
 
 class FooterData(TypedDict):

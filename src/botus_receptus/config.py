@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from os import PathLike
 from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import tomli
 
 if TYPE_CHECKING:
+    from os import PathLike
     from typing_extensions import NotRequired
 
 
@@ -48,7 +48,7 @@ def load(path: str | PathLike[str], /) -> Config:
         raise ConfigException('"application_id" not specified in the config file')
 
     if 'logging' not in config:
-        config['logging'] = cast(Any, {})
+        config['logging'] = cast('Any', {})
     if 'log_file' not in config['logging']:
         config['logging']['log_file'] = f'{config["bot_name"]}.log'
 

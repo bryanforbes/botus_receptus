@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, Mock
+from typing import TYPE_CHECKING
 
 import discord
 import pytest
 
-from botus_receptus.config import Config
 from botus_receptus.sqlalchemy.bot import Bot
 
-from ..types import MockerFixture
+if TYPE_CHECKING:
+    from unittest.mock import AsyncMock, Mock
+
+    from botus_receptus.config import Config
+
+    from ..types import MockerFixture
 
 
 class TestBotBase:

@@ -2,16 +2,19 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import Any, Final, TypedDict, cast
-from typing_extensions import NotRequired
+from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 
 import async_timeout
 import discord
 import pendulum
 from discord.ext import tasks
-from pendulum.datetime import DateTime
 
 from .. import bot
+
+if TYPE_CHECKING:
+    from typing_extensions import NotRequired
+
+    from pendulum.datetime import DateTime
 
 _log: Final = logging.getLogger(__name__)
 
@@ -33,7 +36,7 @@ class BotBase(bot.BotBase):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
         async with async_timeout.timeout(10):
-            user_id = cast(Any, self).user.id
+            user_id = cast('Any', self).user.id
 
             _log.info('POSTing stats for bot %s: %s', user_id, stats)
 

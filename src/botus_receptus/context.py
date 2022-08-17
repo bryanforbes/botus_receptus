@@ -1,14 +1,17 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
-from datetime import datetime
-from typing import Final, TypeVar
+from typing import TYPE_CHECKING, Final, TypeVar
 
 import discord
 from discord.ext import commands
 
 from . import embed, utils
 from .bot import AutoShardedBot, Bot
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Sequence
+    from datetime import datetime
+
 
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
 

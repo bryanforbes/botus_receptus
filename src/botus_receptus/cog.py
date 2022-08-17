@@ -1,16 +1,17 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Iterable
 from typing import TYPE_CHECKING, Generic, TypeVar
 
-from discord.abc import Snowflake
 from discord.ext import commands
 from discord.utils import maybe_coroutine
 
 from .bot import AutoShardedBot, Bot
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable, Iterable
     from typing_extensions import Self
+
+    from discord.abc import Snowflake
 
 
 _BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)

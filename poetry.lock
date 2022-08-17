@@ -133,6 +133,14 @@ python-versions = ">=3.6.0"
 unicode_backport = ["unicodedata2"]
 
 [[package]]
+name = "classify-imports"
+version = "4.2.0"
+description = "Utilities for refactoring imports in python-like syntax."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
@@ -259,6 +267,18 @@ python-versions = ">=3.7"
 [package.dependencies]
 flake8 = ">=3.2.1,<6.0.0"
 pyflakes = ">=2.1.1"
+
+[[package]]
+name = "flake8-type-checking"
+version = "2.1.2"
+description = "A flake8 plugin for managing type-checking imports & forward references"
+category = "dev"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+classify-imports = "*"
+flake8 = "*"
 
 [[package]]
 name = "frozenlist"
@@ -755,7 +775,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "d76e83006a3e78f77bd5655cdbff824e1a236675f138a82cafc3c5024cb8d56f"
+content-hash = "b2e3d8d25c558496ec4b4946c4e416b372d1d79638dbc1e57b1f2e098725663d"
 
 [metadata.files]
 aiohttp = [
@@ -913,6 +933,10 @@ cfgv = [
     {file = "cfgv-3.3.1.tar.gz", hash = "sha256:f5a830efb9ce7a445376bb66ec94c638a9787422f96264c98edc6bdeed8ab736"},
 ]
 charset-normalizer = []
+classify-imports = [
+    {file = "classify_imports-4.2.0-py2.py3-none-any.whl", hash = "sha256:dbbc264b70a470ed8c6c95976a11dfb8b7f63df44ed1af87328bbed2663f5161"},
+    {file = "classify_imports-4.2.0.tar.gz", hash = "sha256:7abfb7ea92149b29d046bd34573d247ba6e68cc28100c801eba4af17964fc40e"},
+]
 click = [
     {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
     {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
@@ -997,6 +1021,10 @@ flake8-bugbear = [
 flake8-pyi = [
     {file = "flake8-pyi-22.8.1.tar.gz", hash = "sha256:6364a6c3e0ad5b7882391b28ebbf19f70e59d84466cb716b2185fabc55ed9855"},
     {file = "flake8_pyi-22.8.1-py37-none-any.whl", hash = "sha256:064c4c19814e15abfb24b602c7f342c91774e562658e32dcd2e587c42d81d0e7"},
+]
+flake8-type-checking = [
+    {file = "flake8-type-checking-2.1.2.tar.gz", hash = "sha256:42bbe98dbb014f413473bfd38a75ece334cad1b5c0a66e96efa03bd69fdfd816"},
+    {file = "flake8_type_checking-2.1.2-py3-none-any.whl", hash = "sha256:aeb55170ec7b77c123c130b95cb7ad32e9c0f1cf882203b24db94a85f24ebb93"},
 ]
 frozenlist = [
     {file = "frozenlist-1.3.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:5f271c93f001748fc26ddea409241312a75e13466b06c94798d1a341cf0e6989"},

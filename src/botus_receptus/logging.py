@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import contextlib
-from collections.abc import Iterator
 from logging import (
     CRITICAL,
     DEBUG,
@@ -13,11 +12,15 @@ from logging import (
     StreamHandler,
     getLogger,
 )
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 import discord
 
-from .config import Config
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from .config import Config
+
 
 log_levels: Final[dict[str, int]] = {
     'critical': CRITICAL,

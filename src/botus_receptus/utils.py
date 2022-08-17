@@ -2,16 +2,19 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from collections.abc import Awaitable, Container, Iterable, Sequence
-from datetime import datetime
-from typing import Any, Final, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
 
 import discord
 import pendulum
 from discord.ext import commands
-from pendulum.duration import Duration
 
 from .embed import AuthorData, Embed, FieldData, FooterData
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Container, Iterable, Sequence
+    from datetime import datetime
+
+    from pendulum.duration import Duration
 
 _T = TypeVar('_T')
 
