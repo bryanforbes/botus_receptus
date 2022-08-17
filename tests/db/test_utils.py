@@ -17,7 +17,7 @@ class MockDb:
         self.execute = mocker.AsyncMock()
 
 
-class TestDbUtil(object):
+class TestDbUtil:
     @pytest.fixture
     def mock_db(self, mocker: MockerFixture):
         return MockDb(mocker)

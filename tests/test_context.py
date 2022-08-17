@@ -20,19 +20,19 @@ if TYPE_CHECKING:
 
 
 @define
-class MockBot(object):
+class MockBot:
     ...
 
 
 @define
-class MockUser(object):
+class MockUser:
     bot: bool | None = None
     id: int | None = None
     mention: str | None = None
 
 
 @define
-class MockMessage(object):
+class MockMessage:
     author: MockUser | None = None
     content: str | None = None
     channel: discord.abc.GuildChannel | None = None
@@ -69,7 +69,7 @@ async def view() -> discord.ui.View:
     return discord.ui.View()
 
 
-class TestEmbedContext(object):
+class TestEmbedContext:
     async def test_send_embed_description_only(
         self,
         mocker: MockerFixture,
@@ -205,7 +205,7 @@ class TestEmbedContext(object):
         )
 
 
-class TestPaginatedContext(object):
+class TestPaginatedContext:
     @pytest.fixture
     def mock_paginator(self) -> list[str]:
         return ['```\nasdf\n```', '```\nqwerty foo\n```']

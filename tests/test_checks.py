@@ -18,7 +18,7 @@ class MockContext:
     author: MockUser | None
 
 
-class MockGuild(object):
+class MockGuild:
     __slots__ = ('owner',)
 
     def __init__(self, owner: Any):

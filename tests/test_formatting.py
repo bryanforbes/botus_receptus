@@ -49,7 +49,7 @@ def test_pluralizer(
     assert pluralize(*pluralize_args, **pluralize_kwargs) == expected
 
 
-class TestPaginator(object):
+class TestPaginator:
     def test_add_line_no_args(self) -> None:
         paginator = Paginator(max_size=13)
         paginator.add_line('123 456 789')
@@ -117,7 +117,7 @@ class TestPaginator(object):
         assert len(paginator) == 0
 
 
-class TestEmbedPaginator(object):
+class TestEmbedPaginator:
     def test_iterate(self) -> None:
         paginator = EmbedPaginator()
         paginator.add_line('123 456 789')

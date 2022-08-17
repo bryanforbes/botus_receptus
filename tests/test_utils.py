@@ -19,13 +19,13 @@ if TYPE_CHECKING:
 
 
 @define
-class MockRole(object):
+class MockRole:
     id: int = 0
     name: str = ''
 
 
 @define
-class MockMember(object):
+class MockMember:
     roles: list[MockRole] = field(factory=list)
 
 

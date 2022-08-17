@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 
 
 @define
-class MockUser(object):
+class MockUser:
     id: int
     bot: bool | None = None
     mention: str | None = None
 
 
 @define
-class MockPermissions(object):
+class MockPermissions:
     embed_links: bool = True
     send_messages: bool = True
     add_reactions: bool = True
@@ -29,13 +29,13 @@ class MockPermissions(object):
 
 
 @define
-class MockGuild(object):
+class MockGuild:
     me: MockUser | None = None
     owner: MockUser | None = None
 
 
 @define
-class MockChannel(object):
+class MockChannel:
     permissions_for: Mock = field(init=False)
     send: AsyncMock = field(init=False)
     delete_messages: AsyncMock = field(init=False)
@@ -55,7 +55,7 @@ class MockChannel(object):
 
 
 @define
-class MockBot(object):
+class MockBot:
     user: MockUser
     loop: Any
     advance_time: Callable[[float], Awaitable[None]]
@@ -129,7 +129,7 @@ class MockBot(object):
 
 
 @define
-class MockMessage(object):
+class MockMessage:
     id: int
     author: MockUser
     channel: MockChannel
@@ -164,7 +164,7 @@ class MockMessage(object):
 
 
 @define
-class MockContext(object):
+class MockContext:
     bot: MockBot
     author: MockUser
     message: MockMessage

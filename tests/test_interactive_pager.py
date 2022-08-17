@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 
 
 @define
-class MockReaction(object):
+class MockReaction:
     message: Any
     emoji: str
 
@@ -60,7 +60,7 @@ class SubFieldPageSource(FieldPageSource[str]):
         return self.strings[base : base + self.per_page]
 
 
-class TestPageSource(object):
+class TestPageSource:
     @pytest.mark.parametrize(
         'per_page,max_pages,paginated',
         [(2, 4, True), (3, 3, True), (4, 2, True), (10, 1, False)],
@@ -102,7 +102,7 @@ class TestPageSource(object):
         assert page['entry_text'] == lines
 
 
-class TestListPageSource(object):
+class TestListPageSource:
     @pytest.mark.parametrize(
         'per_page,max_pages,paginated',
         [(2, 4, True), (3, 3, True), (4, 2, True), (10, 1, False)],
@@ -135,7 +135,7 @@ class TestListPageSource(object):
         assert page['entry_text'] == lines
 
 
-class TestFieldPageSource(object):
+class TestFieldPageSource:
     @pytest.mark.parametrize('show_entry_count', [False, True])
     @pytest.mark.parametrize('per_page,max_pages', [(2, 4), (3, 3), (4, 2), (10, 1)])
     async def test_get_page(
@@ -164,7 +164,7 @@ class TestFieldPageSource(object):
         assert actual_fields == expected_fields
 
 
-class TestInteractivePager(object):
+class TestInteractivePager:
     @pytest.fixture
     def fetcher(self, request: SubRequest) -> ListPageSource[int]:
         return ListPageSource.create(

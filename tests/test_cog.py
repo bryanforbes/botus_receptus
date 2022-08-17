@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from pytest_mock import MockerFixture
 
 
-class MockBot(object):
+class MockBot:
     ...
 
 
@@ -23,7 +23,7 @@ def mock_bot() -> MockBot:
     return MockBot()
 
 
-class TestCog(object):
+class TestCog:
     @pytest.fixture
     def mock_cog(self, mock_bot: Bot) -> Cog[Bot]:
         return Cog(mock_bot)

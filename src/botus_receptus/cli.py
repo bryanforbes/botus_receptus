@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 from typing import TYPE_CHECKING, Any, cast
 
 import click
@@ -38,15 +39,13 @@ def config_callback(
     if ctx.default_map is None:
         ctx.default_map = {}
 
-    try:
+    with contextlib.suppress(KeyError):
         ctx.default_map.update(
             {
                 k.replace("--", "").replace("-", "_"): v
                 for k, v in bot_config['logging'].items()
             }
         )
-    except KeyError:
-        pass
 
     return bot_config
 

@@ -67,7 +67,7 @@ def mock_in_minutes(mocker: MockerFixture) -> Mock:
     return mocker.patch.object(Duration, 'in_minutes')
 
 
-class TestTopggBot(object):
+class TestTopggBot:
     @pytest.fixture
     def config(self) -> Config:
         return {
@@ -133,7 +133,7 @@ class TestTopggBot(object):
         mock_task_cancel.assert_called_once_with()
 
 
-class TestTopggAutoShardedBot(object):
+class TestTopggAutoShardedBot:
     @pytest.fixture
     def config(self) -> Config:
         return {

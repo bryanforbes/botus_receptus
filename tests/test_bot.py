@@ -48,7 +48,7 @@ def http(mocker: MockerFixture) -> MagicMock:
 
 
 @pytest.mark.usefixtures('mock_aiohttp')
-class TestBot(object):
+class TestBot:
     @pytest.fixture
     def config(self) -> Config:
         return {

@@ -16,19 +16,19 @@ if TYPE_CHECKING:
 
 
 @define
-class MockBot(object):
+class MockBot:
     pool: Any
 
 
 @define
-class MockUser(object):
+class MockUser:
     bot: bool | None = None
     id: int | None = None
     mention: str | None = None
 
 
 @define
-class MockMessage(object):
+class MockMessage:
     author: MockUser | None = None
     content: str | None = None
     channel: discord.abc.GuildChannel | None = None
@@ -36,11 +36,11 @@ class MockMessage(object):
 
 
 @define
-class MockCommand(object):
+class MockCommand:
     ...
 
 
-class TestContext(object):
+class TestContext:
     @pytest.fixture
     def mock_bot(self, mocker: MockerFixture) -> MockBot:
         class MockPool:

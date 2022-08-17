@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import enum
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, TypeVar, cast
@@ -284,10 +285,8 @@ class InteractivePager(Generic[_T]):
                 )
                 await asyncio.sleep(5)
 
-        try:
+        with contextlib.suppress(Exception):
             await cast('discord.TextChannel', self.channel).delete_messages(to_delete)
-        except Exception:
-            pass
 
     async def __stop_pages(self, /) -> None:
         '''stops the interactive pagination session'''
@@ -380,11 +379,9 @@ class InteractivePager(Generic[_T]):
                 except Exception:
                     break
 
-            try:
+            with contextlib.suppress(Exception):
                 if user is not None:
                     await self.message.remove_reaction(reaction, user)
-            except Exception:
-                pass
 
             assert self.match is not None
             await self.match()
