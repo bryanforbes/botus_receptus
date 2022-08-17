@@ -5,16 +5,16 @@ from typing import TYPE_CHECKING, Generic, TypeVar
 from discord.ext import commands
 from discord.utils import maybe_coroutine
 
-from .bot import AutoShardedBot, Bot
-
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Iterable
     from typing_extensions import Self
 
     from discord.abc import Snowflake
 
+    from .bot import AutoShardedBot, Bot
 
-_BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
+
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
 
 
 class Cog(commands.Cog, Generic[_BotT]):

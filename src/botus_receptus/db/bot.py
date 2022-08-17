@@ -3,12 +3,12 @@ from __future__ import annotations
 import asyncio
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-import discord
-
 from .. import bot
 from .context import Context
 
 if TYPE_CHECKING:
+    import discord
+
     from ..config import Config
 
 try:

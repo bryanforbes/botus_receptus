@@ -5,15 +5,17 @@ from typing import TYPE_CHECKING, Final, TypeVar
 import discord
 from discord.ext import commands
 
-from . import embed, utils
-from .bot import AutoShardedBot, Bot
+from . import utils
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
     from datetime import datetime
 
+    from . import embed
+    from .bot import AutoShardedBot, Bot
 
-_BotT = TypeVar('_BotT', bound=Bot | AutoShardedBot)
+
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
 
 _MISSING: Final = discord.utils.MISSING
 

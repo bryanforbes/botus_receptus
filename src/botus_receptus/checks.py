@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Coroutine
-from typing import Any, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar
 
 import discord
 from discord.ext import commands
 
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 
-_CoroType: TypeAlias = Callable[..., Coroutine[Any, Any, Any]]
+if TYPE_CHECKING:
+    from collections.abc import Callable, Coroutine
+
+_CoroType: TypeAlias = 'Callable[..., Coroutine[Any, Any, Any]]'
 _F = TypeVar('_F', bound='_CoroType | commands.Command[Any, Any, Any]')
 
 

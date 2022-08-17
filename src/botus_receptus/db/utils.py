@@ -2,20 +2,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
 
-from asyncpg import Connection, Record
-
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing_extensions import LiteralString, StrictTypeGuard
 
+    from asyncpg import Connection, Record
     from asyncpg.pool import PoolConnectionProxy
 
-_Record = TypeVar('_Record', bound=Record)
+_Record = TypeVar('_Record', bound='Record')
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 
 
-ConditionsType: TypeAlias = "Sequence[LiteralString] | LiteralString"
+ConditionsType: TypeAlias = 'Sequence[LiteralString] | LiteralString'
 
 
 def _is_literal_string(obj: Any) -> StrictTypeGuard[LiteralString]:

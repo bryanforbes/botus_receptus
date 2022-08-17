@@ -4,7 +4,6 @@ from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
 from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
 
-from asyncpg import Record
 from attrs import define
 from discord.ext import commands
 
@@ -21,14 +20,14 @@ from .utils import (
 if TYPE_CHECKING:
     from typing_extensions import LiteralString
 
+    from asyncpg import Record
     from asyncpg.pool import PoolConnectionProxy
 
     from .bot import AutoShardedBot, Bot
 
-_Record = TypeVar('_Record', bound=Record)
+_Record = TypeVar('_Record', bound='Record')
 _BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
-_FunctionType = Callable[..., Coroutine[Any, Any, Any]]
-_F = TypeVar('_F', bound=_FunctionType)
+_F = TypeVar('_F', bound='Callable[..., Coroutine[Any, Any, Any]]')
 
 
 @define
