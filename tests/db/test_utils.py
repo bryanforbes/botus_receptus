@@ -341,7 +341,7 @@ class TestDbUtil:
     ):
         await utils.insert_into(cast('Any', mock_db), **kwargs)
 
-        args = [value for value in kwargs['values'].values()]
+        args = list(kwargs['values'].values())
         mock_db.execute.assert_called_once_with(expected_query, *args)
 
     @pytest.mark.parametrize(

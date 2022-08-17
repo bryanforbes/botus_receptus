@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
+from attrs import define
 from click.testing import CliRunner
 
 from botus_receptus import ConfigException, cli
@@ -17,11 +18,9 @@ if TYPE_CHECKING:
     from .types import MockerFixture
 
 
+@define
 class MockBot:
     run_with_config: MagicMock
-
-    def __init__(self, mocker: MockerFixture, /) -> None:
-        self.run_with_config = mocker.stub()
 
 
 @pytest.fixture
@@ -33,7 +32,7 @@ def cli_runner():
 
 @pytest.fixture
 def mock_bot_class_instance(mocker: MockerFixture):
-    return MockBot(mocker)
+    return MockBot(mocker.stub())
 
 
 @pytest.fixture

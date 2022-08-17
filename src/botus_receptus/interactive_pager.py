@@ -262,8 +262,9 @@ class InteractivePager(Generic[_T]):
 
     async def __numbered_page(self, /) -> None:
         '''lets you type a page number to go to'''
-        to_delete: list[discord.Message] = []
-        to_delete.append(await self.channel.send('What page do you want to go to?'))
+        to_delete: list[discord.Message] = [
+            await self.channel.send('What page do you want to go to?')
+        ]
 
         try:
             message = await self.bot.wait_for(
@@ -376,7 +377,7 @@ class InteractivePager(Generic[_T]):
                 try:
                     await self.message.clear_reactions()
                     break
-                except Exception:
+                except discord.DiscordException:
                     break
 
             with contextlib.suppress(Exception):

@@ -75,7 +75,7 @@ class MockBot:
 
                 try:
                     result = condition(*args)
-                except Exception as exc:
+                except Exception as exc:  # noqa: PIE786
                     future.set_exception(exc)
                     removed.append(i)
                 else:
@@ -149,7 +149,7 @@ class MockMessage:
         channel: MockChannel,
         content: str,
     ) -> MockMessage:
-        message = MockMessage(
+        return MockMessage(
             id=id,
             author=author,
             channel=channel,
@@ -160,7 +160,6 @@ class MockMessage:
             remove_reaction=mocker.AsyncMock(return_value=None),
             delete=mocker.AsyncMock(return_value=None),
         )
-        return message
 
 
 @define

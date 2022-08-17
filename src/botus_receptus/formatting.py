@@ -139,7 +139,7 @@ _formatting_re: Final = re.compile(re.named_group('target')('[`*_~]'))
 
 
 def remove_mass_mentions(string: str, /) -> str:
-    return _mass_mention_pattern_re.sub('@\u200b' r'\g<target>', string)
+    return _mass_mention_pattern_re.sub('@\u200b' r'\g<target>', string)  # noqa: ISC001
 
 
 def error(text: str, /) -> str:

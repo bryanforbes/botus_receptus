@@ -21,9 +21,8 @@ def config_callback(
     value: str | int | bool | None,
     /,
 ) -> Any:
-    assert (
-        not isinstance(value, (int, bool)) and value is not None
-    ), "Invalid parameter type passed"
+    assert not isinstance(value, (int, bool)), "Invalid parameter type passed"
+    assert value is not None, "Invalid parameter type passed"
 
     assert param.name is not None, "Invalid parameter name passed"
 

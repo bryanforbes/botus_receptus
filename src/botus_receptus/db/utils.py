@@ -29,9 +29,7 @@ def _get_join_string(
     if joins is None or len(joins) == 0:
         return ''
 
-    return ' ' + ' '.join(  # type: ignore
-        map(lambda join: f'JOIN {join[0]} ON {join[1]}', joins)
-    )
+    return ' ' + ' '.join(f'JOIN {join[0]} ON {join[1]}' for join in joins)
 
 
 def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
@@ -283,7 +281,7 @@ async def insert_into(
         extra = ' ' + extra
 
     columns_str = ', '.join(columns)
-    values_str = ', '.join(map(lambda index: f'${index}', range(1, len(values) + 1)))
+    values_str = ', '.join(f'${index}' for index in range(1, len(values) + 1))
     await db.execute(
         f'INSERT INTO {table} ({columns_str}) VALUES ({values_str}){extra}', *data
     )

@@ -78,7 +78,7 @@ class TestPaginator:
         paginator = Paginator(max_size=13)
         paginator.add_line('123 456 789')
 
-        assert [page for page in paginator] == [
+        assert list(paginator) == [
             '```\n123\n```',
             '```\n456\n```',
             '```\n789\n```',
@@ -88,7 +88,7 @@ class TestPaginator:
         paginator = Paginator(prefix=None, suffix=None, max_size=3)
         paginator.add_line('123 456 789')
 
-        assert [page for page in paginator] == ['123', '456', '789']
+        assert list(paginator) == ['123', '456', '789']
 
     def test_len(self) -> None:
         paginator = Paginator(max_size=11)
@@ -178,7 +178,9 @@ def test_escape() -> None:
         escape(
             bold(strikethrough('some text @here')), formatting=True, mass_mentions=True
         )
-        == r'\*\*\~\~some text @' + '\u200b' + r'here\~\~\*\*'
+        == r'\*\*\~\~some text @'
+        '\u200b'
+        r'here\~\~\*\*'
     )
 
 

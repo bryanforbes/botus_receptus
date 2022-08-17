@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
+from attrs import define, field
 from discord.ext import commands
 
 from botus_receptus import NotGuildOwner, OnlyDirectMessage, checks
@@ -12,10 +13,11 @@ if TYPE_CHECKING:
     from .types import MockerFixture
 
 
+@define
 class MockContext:
-    channel: MockDMChannel | None
-    guild: MockGuild | None
-    author: MockUser | None
+    channel: MockDMChannel | None = field(default=None)
+    guild: MockGuild | None = field(default=None)
+    author: MockUser | None = field(default=None)
 
 
 class MockGuild:

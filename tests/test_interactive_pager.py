@@ -234,11 +234,11 @@ class TestInteractivePager:
     @pytest.mark.parametrize(
         'permissions,reason',
         [
-            (dict(embed_links=False), CannotPaginateReason.embed_links),
-            (dict(send_messages=False), CannotPaginateReason.send_messages),
-            (dict(add_reactions=False), CannotPaginateReason.add_reactions),
+            ({'embed_links': False}, CannotPaginateReason.embed_links),
+            ({'send_messages': False}, CannotPaginateReason.send_messages),
+            ({'add_reactions': False}, CannotPaginateReason.add_reactions),
             (
-                dict(read_message_history=False),
+                {'read_message_history': False},
                 CannotPaginateReason.read_message_history,
             ),
         ],
@@ -316,7 +316,7 @@ class TestInteractivePager:
         assert p.match is None
 
     @pytest.mark.parametrize(
-        'permissions', [dict(manage_messages=False)], indirect=['permissions']
+        'permissions', [{'manage_messages': False}], indirect=['permissions']
     )
     @pytest.mark.flaky(reruns=5)
     async def test_paginate_timeout_no_manage_messages(
