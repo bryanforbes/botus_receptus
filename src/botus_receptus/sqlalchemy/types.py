@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from sqlalchemy.types import String, TypeDecorator
 
@@ -12,7 +12,7 @@ else:
 
 class Snowflake(_SnowflakeBase):
     impl = String
-    cache_ok = True
+    cache_ok: ClassVar[bool | None] = True
 
     def process_bind_param(self, value: Any, dialect: Any) -> str | None:
         return str(value) if value is not None else value

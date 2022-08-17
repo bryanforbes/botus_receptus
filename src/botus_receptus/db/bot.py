@@ -24,7 +24,7 @@ except ImportError:
 
 class BotBase(bot.BotBase):
     pool: Pool[Record]
-    context_cls: ClassVar = Context
+    context_cls: ClassVar[type[Context[Any]]] = Context
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         if not _has_asyncpg:
