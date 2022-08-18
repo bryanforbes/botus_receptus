@@ -9,6 +9,8 @@ if TYPE_CHECKING:
     from asyncpg import Connection, Record
     from asyncpg.pool import PoolConnectionProxy
 
+    from ..types import Coroutine
+
 _Record = TypeVar('_Record', bound='Record')
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
@@ -88,7 +90,7 @@ async def select_all(
     ...
 
 
-async def select_all(
+def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
@@ -99,14 +101,14 @@ async def select_all(
     order_by: LiteralString | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
     record_class: type[_Record] | None = None,
-) -> list[Any]:
+) -> Coroutine[list[Any]]:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
     group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
-    return await db.fetch(
+    return db.fetch(
         f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}'
         f'{order_by_str}',
         *args,
@@ -144,7 +146,7 @@ async def select_one(
     ...
 
 
-async def select_one(
+def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: Any,
@@ -154,13 +156,13 @@ async def select_one(
     where: ConditionsType | None = None,
     group_by: Sequence[LiteralString] | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-) -> Any | None:
+) -> Coroutine[Any | None]:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
     group_by_str = _get_group_by_string(group_by)
 
-    return await db.fetchrow(
+    return db.fetchrow(
         f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}',
         *args,
         record_class=record_class,
@@ -203,7 +205,7 @@ async def search(
     ...
 
 
-async def search(
+def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
     *args: Any,
@@ -216,7 +218,7 @@ async def search(
     order_by: LiteralString | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
     record_class: type[_Record] | None = None,
-) -> list[_Record]:
+) -> Coroutine[list[_Record]]:
     if where is None:
         where_list: list[LiteralString] = []
     else:
@@ -239,7 +241,7 @@ async def search(
     group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
-    return await db.fetch(
+    return db.fetch(
         f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}'
         f'{order_by_str}',
         *args,

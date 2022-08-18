@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 
 _T = TypeVar('_T')
-_WaitResult: TypeAlias = 'tuple[discord.Reaction, discord.User | discord.Member | None]'
+_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member | None]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 

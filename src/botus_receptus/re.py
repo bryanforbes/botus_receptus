@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 # Inspired by https://github.com/TehShrike/regex-fun
 
 
-_ReOrStrType: TypeAlias = 'str | re.Pattern[str]'
+_ReOrStrType: TypeAlias = str | re.Pattern[str]
 
 
 class _ReOrStrFuncType(Protocol):

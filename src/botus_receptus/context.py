@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 
     from . import embed
     from .bot import AutoShardedBot, Bot
+    from .types import Coroutine
 
 
 _BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
@@ -35,7 +36,7 @@ class GuildContext(commands.Context[_BotT]):
 
 
 class EmbedContext(commands.Context[_BotT]):
-    async def send_embed(
+    def send_embed(
         self,
         description: str,
         *,
@@ -51,8 +52,8 @@ class EmbedContext(commands.Context[_BotT]):
         | discord.MessageReference
         | discord.PartialMessage = _MISSING,
         view: discord.ui.View = _MISSING,
-    ) -> discord.Message:
-        return await utils.send_embed(
+    ) -> Coroutine[discord.Message]:
+        return utils.send_embed(
             self,
             description=description,
             title=title,

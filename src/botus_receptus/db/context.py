@@ -1,12 +1,21 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable, Coroutine, Generator, Sequence
+from collections.abc import Awaitable, Generator, Sequence
 from contextlib import AbstractAsyncContextManager
-from typing import TYPE_CHECKING, Any, TypeVar, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Concatenate,
+    ParamSpec,
+    TypeAlias,
+    TypeVar,
+    overload,
+)
 
 from attrs import define
 from discord.ext import commands
 
+from ..types import Coroutine, CoroutineFunc
 from .utils import (
     ConditionsType,
     delete_from,
@@ -27,7 +36,10 @@ if TYPE_CHECKING:
 
 _Record = TypeVar('_Record', bound='Record')
 _BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
-_F = TypeVar('_F', bound='Callable[..., Coroutine[Any, Any, Any]]')
+_P = ParamSpec('_P')
+_R = TypeVar('_R')
+
+_DbMethod: TypeAlias = CoroutineFunc[Concatenate['Context[Any]', _P], _R]
 
 
 @define
@@ -41,15 +53,15 @@ class AquireContextManager(
     def __await__(self, /) -> Generator[Any, None, PoolConnectionProxy[Record]]:
         return self.ctx._acquire(self.timeout).__await__()
 
-    async def __aenter__(self, /) -> PoolConnectionProxy[Record]:
-        return await self.ctx._acquire(self.timeout)
+    def __aenter__(self, /) -> Coroutine[PoolConnectionProxy[Record]]:
+        return self.ctx._acquire(self.timeout)
 
     async def __aexit__(self, /, *args: Any) -> None:
         await self.ctx.release()
 
 
-def ensure_db(func: _F, /) -> _F:
-    def wrapper(self: Any, /, *args: Any, **kwargs: Any) -> Any:
+def ensure_db(func: _DbMethod[_P, _R], /) -> _DbMethod[_P, _R]:
+    def wrapper(self: Any, /, *args: _P.args, **kwargs: _P.kwargs) -> Coroutine[_R]:
         if not hasattr(self, 'db'):
             raise RuntimeError(
                 'No database object available; ensure acquire() was called'
@@ -57,7 +69,7 @@ def ensure_db(func: _F, /) -> _F:
 
         return func(self, *args, **kwargs)
 
-    return cast('_F', wrapper)
+    return wrapper
 
 
 class Context(commands.Context[_BotT]):
@@ -108,7 +120,7 @@ class Context(commands.Context[_BotT]):
         ...
 
     @ensure_db
-    async def select_all(
+    def select_all(
         self,
         /,
         *args: Any,
@@ -119,8 +131,8 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
-    ) -> list[Any]:
-        return await select_all(
+    ) -> Coroutine[list[Any]]:
+        return select_all(
             self.db,
             *args,
             columns=columns,
@@ -161,7 +173,7 @@ class Context(commands.Context[_BotT]):
         ...
 
     @ensure_db
-    async def select_one(
+    def select_one(
         self,
         /,
         *args: Any,
@@ -171,8 +183,8 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
-    ) -> Any | None:
-        return await select_one(
+    ) -> Coroutine[Any | None]:
+        return select_one(
             self.db,
             *args,
             columns=columns,
@@ -218,7 +230,7 @@ class Context(commands.Context[_BotT]):
         ...
 
     @ensure_db
-    async def search(
+    def search(
         self,
         /,
         *args: Any,
@@ -231,8 +243,8 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: Any | None = None,
-    ) -> list[Any]:
-        return await search(
+    ) -> Coroutine[list[Any]]:
+        return search(
             self.db,
             *args,
             columns=columns,
@@ -247,29 +259,29 @@ class Context(commands.Context[_BotT]):
         )
 
     @ensure_db
-    async def update(
+    def update(
         self,
         /,
         *args: Any,
         table: LiteralString,
         values: dict[LiteralString, Any],
         where: ConditionsType | None = None,
-    ) -> None:
-        return await update(self.db, *args, table=table, values=values, where=where)
+    ) -> Coroutine[None]:
+        return update(self.db, *args, table=table, values=values, where=where)
 
     @ensure_db
-    async def insert_into(
+    def insert_into(
         self,
         /,
         *,
         table: LiteralString,
         values: dict[LiteralString, Any],
         extra: str = '',
-    ) -> None:
-        return await insert_into(self.db, table=table, values=values, extra=extra)
+    ) -> Coroutine[None]:
+        return insert_into(self.db, table=table, values=values, extra=extra)
 
     @ensure_db
-    async def delete_from(
+    def delete_from(
         self, /, *args: Any, table: LiteralString, where: ConditionsType
-    ) -> None:
-        return await delete_from(self.db, *args, table=table, where=where)
+    ) -> Coroutine[None]:
+        return delete_from(self.db, *args, table=table, where=where)

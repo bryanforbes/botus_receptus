@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 import discord
 from discord.ext import commands
@@ -8,10 +8,11 @@ from discord.ext import commands
 from .exceptions import NotGuildOwner, OnlyDirectMessage
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Coroutine
+    from collections.abc import Callable
 
-_CoroType: TypeAlias = 'Callable[..., Coroutine[Any, Any, Any]]'
-_F = TypeVar('_F', bound='_CoroType | commands.Command[Any, Any, Any]')
+    from .types import AnyCoroutineFunc, AnyExtCommand
+
+_F = TypeVar('_F', bound='AnyCoroutineFunc | AnyExtCommand')
 
 
 def dm_only() -> Callable[[_F], _F]:

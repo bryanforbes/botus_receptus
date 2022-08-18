@@ -16,6 +16,8 @@ if TYPE_CHECKING:
 
     from pendulum.duration import Duration
 
+    from .types import Coroutine
+
 _T = TypeVar('_T')
 
 _MISSING: Final = discord.utils.MISSING
@@ -356,7 +358,7 @@ async def send_embed(
     ...
 
 
-async def send_embed(
+def send_embed(
     ctx_or_intx: commands.Context[Any] | discord.Interaction,
     /,
     description: str | None = None,
@@ -374,8 +376,8 @@ async def send_embed(
     reference: discord.Message
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
-) -> discord.Message:
-    return await send(
+) -> Coroutine[discord.Message]:
+    return send(
         ctx_or_intx,  # type: ignore
         embeds=[
             Embed(
@@ -441,7 +443,7 @@ async def send_embed_error(
     ...
 
 
-async def send_embed_error(
+def send_embed_error(
     ctx_or_intx: commands.Context[Any] | discord.Interaction,
     /,
     description: str | None = None,
@@ -459,8 +461,8 @@ async def send_embed_error(
     reference: discord.Message
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
-) -> discord.Message:
-    return await send_embed(
+) -> Coroutine[discord.Message]:
+    return send_embed(
         ctx_or_intx,  # type: ignore
         description=description,
         title=title,
