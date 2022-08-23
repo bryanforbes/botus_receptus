@@ -44,7 +44,25 @@ def mock_member() -> MockMember:
 def mock_context(mocker: MockerFixture) -> Mock:
     mock: Mock = mocker.create_autospec(commands.Context)
     mock.message = mocker.MagicMock()
-    mock.send.return_value = mocker.sentinel.send_return  # type: ignore
+    mock.send.return_value = mocker.sentinel.context_send_return  # type: ignore
+
+    return mock
+
+
+@pytest.fixture
+def mock_messageable(mocker: MockerFixture) -> Mock:
+    mock: Mock = mocker.create_autospec(discord.TextChannel)
+    mock.send.return_value = mocker.sentinel.messageable_send_return  # type: ignore
+
+    return mock
+
+
+@pytest.fixture
+def mock_message(mocker: MockerFixture) -> Mock:
+    mock: Mock = mocker.create_autospec(discord.Message)
+    channel: Mock = mocker.create_autospec(discord.TextChannel)
+    channel.configure_mock(**{'send.return_value': mocker.sentinel.message_send_return})
+    mock.channel = channel
 
     return mock
 
@@ -162,16 +180,13 @@ async def test_race_timeout(
             {
                 'content': 'asdf',
                 'tts': False,
-                'file': None,
                 'files': None,
-                'embed': None,
                 'embeds': None,
                 'delete_after': None,
                 'nonce': None,
                 'allowed_mentions': None,
                 'reference': ANY,
                 'view': None,
-                'ephemeral': False,
             },
             None,
         ),
@@ -180,34 +195,28 @@ async def test_race_timeout(
             {
                 'content': None,
                 'tts': False,
-                'file': None,
                 'files': None,
-                'embed': None,
                 'embeds': [ANY],
                 'delete_after': None,
                 'nonce': None,
                 'allowed_mentions': None,
                 'reference': ANY,
                 'view': None,
-                'ephemeral': False,
             },
             {'type': 'rich'},
         ),
         (
-            {'reference': object(), 'ephemeral': True},
+            {'reference': object()},
             {
                 'content': None,
                 'tts': False,
-                'file': None,
                 'files': None,
-                'embed': None,
                 'embeds': None,
                 'delete_after': None,
                 'nonce': None,
                 'allowed_mentions': None,
                 'reference': ANY,
                 'view': None,
-                'ephemeral': True,
             },
             None,
         ),
@@ -220,7 +229,9 @@ async def test_send_with_context(
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
-    assert (await utils.send(mock_context, **kwargs)) is mocker.sentinel.send_return
+    assert (
+        await utils.send(mock_context, **kwargs)
+    ) is mocker.sentinel.context_send_return
 
     mock_context.send.assert_awaited_once_with(**expected_args)  # type: ignore
 
@@ -247,6 +258,182 @@ async def test_send_with_context(
 
 
 @pytest.mark.parametrize(
+    'kwargs,expected_args,expected_embed',
+    [
+        (
+            {'content': 'asdf'},
+            {
+                'content': 'asdf',
+                'tts': False,
+                'files': None,
+                'embeds': None,
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            None,
+        ),
+        (
+            {'embeds': [discord.Embed()]},
+            {
+                'content': None,
+                'tts': False,
+                'files': None,
+                'embeds': [ANY],
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            {'type': 'rich'},
+        ),
+        (
+            {'reference': object()},
+            {
+                'content': None,
+                'tts': False,
+                'files': None,
+                'embeds': None,
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            None,
+        ),
+    ],
+)
+async def test_send_with_messageable(
+    mocker: MockerFixture,
+    mock_messageable: Mock,
+    kwargs: dict[str, Any],
+    expected_args: dict[str, Any],
+    expected_embed: dict[str, Any] | None,
+) -> None:
+    assert (
+        await utils.send(mock_messageable, **kwargs)
+    ) is mocker.sentinel.messageable_send_return
+
+    mock_messageable.send.assert_awaited_once_with(**expected_args)  # type: ignore
+
+    if expected_embed is None:
+        assert (
+            mock_messageable.send.await_args_list[0][1]['embeds']  # type: ignore
+            is None
+        )
+    else:
+        assert (
+            mock_messageable.send.await_args_list[0][1]['embeds'][  # type: ignore
+                0
+            ].to_dict()
+            == expected_embed
+        )
+
+    if 'reference' in kwargs:
+        assert (
+            mock_messageable.send.await_args_list[0][1]['reference']  # type: ignore
+            is kwargs['reference']
+        )
+    else:
+        assert (
+            mock_messageable.send.await_args_list[0][1]['reference']  # type: ignore
+            is None
+        )
+
+
+@pytest.mark.parametrize(
+    'kwargs,expected_args,expected_embed',
+    [
+        (
+            {'content': 'asdf'},
+            {
+                'content': 'asdf',
+                'tts': False,
+                'files': None,
+                'embeds': None,
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            None,
+        ),
+        (
+            {'embeds': [discord.Embed()]},
+            {
+                'content': None,
+                'tts': False,
+                'files': None,
+                'embeds': [ANY],
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            {'type': 'rich'},
+        ),
+        (
+            {'reference': object()},
+            {
+                'content': None,
+                'tts': False,
+                'files': None,
+                'embeds': None,
+                'delete_after': None,
+                'nonce': None,
+                'allowed_mentions': None,
+                'reference': ANY,
+                'view': None,
+            },
+            None,
+        ),
+    ],
+)
+async def test_send_with_message(
+    mocker: MockerFixture,
+    mock_message: Mock,
+    kwargs: dict[str, Any],
+    expected_args: dict[str, Any],
+    expected_embed: dict[str, Any] | None,
+) -> None:
+    assert (
+        await utils.send(mock_message, **kwargs)
+    ) is mocker.sentinel.message_send_return
+
+    mock_message.channel.send.assert_awaited_once_with(**expected_args)  # type: ignore
+
+    if expected_embed is None:
+        assert (
+            mock_message.channel.send.await_args_list[0][1]['embeds']  # type: ignore
+            is None
+        )
+    else:
+        assert (
+            mock_message.channel.send.await_args_list[0][1]['embeds'][  # type: ignore
+                0
+            ].to_dict()
+            == expected_embed
+        )
+
+    if 'reference' in kwargs:
+        assert (
+            mock_message.channel.send.await_args_list[0][1]['reference']  # type: ignore
+            is kwargs['reference']
+        )
+    else:
+        assert (
+            mock_message.channel.send.await_args_list[0][1]['reference']  # type: ignore
+            is mock_message
+        )
+
+
+@pytest.mark.parametrize(
     'kwargs,is_done,expected_args,expected_embed',
     [
         (
@@ -255,9 +442,7 @@ async def test_send_with_context(
             {
                 'content': 'asdf',
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -271,9 +456,7 @@ async def test_send_with_context(
             {
                 'content': None,
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -287,9 +470,7 @@ async def test_send_with_context(
             {
                 'content': None,
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -303,9 +484,7 @@ async def test_send_with_context(
             {
                 'content': 'asdf',
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -319,9 +498,7 @@ async def test_send_with_context(
             {
                 'content': discord.utils.MISSING,
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': [ANY],
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,
@@ -335,9 +512,7 @@ async def test_send_with_context(
             {
                 'content': discord.utils.MISSING,
                 'tts': False,
-                'file': discord.utils.MISSING,
                 'files': discord.utils.MISSING,
-                'embed': discord.utils.MISSING,
                 'embeds': discord.utils.MISSING,
                 'allowed_mentions': discord.utils.MISSING,
                 'view': discord.utils.MISSING,

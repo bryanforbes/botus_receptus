@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Generator, Sequence
 from contextlib import AbstractAsyncContextManager
+from functools import wraps
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -43,25 +44,35 @@ _DbMethod: TypeAlias = CoroutineFunc[Concatenate['Context[Any]', _P], _R]
 
 
 @define
-class AquireContextManager(
+class AcquireContextManager(
     AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
     Awaitable['PoolConnectionProxy[Record]'],
 ):
     ctx: Context[Any]
     timeout: float | None = None
 
-    def __await__(self, /) -> Generator[Any, None, PoolConnectionProxy[Record]]:
-        return self.ctx._acquire(self.timeout).__await__()
+    async def __acquire(self) -> PoolConnectionProxy[Record]:
+        ctx = self.ctx
+        if not hasattr(ctx, 'db'):
+            ctx.db = await ctx.bot.pool.acquire(timeout=self.timeout)
 
-    def __aenter__(self, /) -> Coroutine[PoolConnectionProxy[Record]]:
-        return self.ctx._acquire(self.timeout)
+        return ctx.db
+
+    def __await__(self) -> Generator[Any, None, PoolConnectionProxy[Record]]:
+        return self.__acquire().__await__()
+
+    def __aenter__(self) -> Coroutine[PoolConnectionProxy[Record]]:
+        return self.__acquire()
 
     async def __aexit__(self, /, *args: Any) -> None:
         await self.ctx.release()
 
 
 def ensure_db(func: _DbMethod[_P, _R], /) -> _DbMethod[_P, _R]:
-    def wrapper(self: Any, /, *args: _P.args, **kwargs: _P.kwargs) -> Coroutine[_R]:
+    @wraps(func)
+    def wrapper(
+        self: Context[Any], /, *args: _P.args, **kwargs: _P.kwargs
+    ) -> Coroutine[_R]:
         if not hasattr(self, 'db'):
             raise RuntimeError(
                 'No database object available; ensure acquire() was called'
@@ -75,16 +86,10 @@ def ensure_db(func: _DbMethod[_P, _R], /) -> _DbMethod[_P, _R]:
 class Context(commands.Context[_BotT]):
     db: PoolConnectionProxy[Record]
 
-    async def _acquire(self, timeout: float | None, /) -> PoolConnectionProxy[Record]:
-        if not hasattr(self, 'db'):
-            self.db = await self.bot.pool.acquire(timeout=timeout)
+    def acquire(self, /, *, timeout: float | None = None) -> AcquireContextManager:
+        return AcquireContextManager(self, timeout)
 
-        return self.db
-
-    def acquire(self, /, *, timeout: float | None = None) -> AquireContextManager:
-        return AquireContextManager(self, timeout)
-
-    async def release(self, /) -> None:
+    async def release(self) -> None:
         if hasattr(self, 'db'):
             await self.bot.pool.release(self.db)
             del self.db

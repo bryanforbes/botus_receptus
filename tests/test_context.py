@@ -94,16 +94,13 @@ class TestEmbedContext:
         mock_context_send.assert_called_once_with(
             content=None,
             tts=False,
-            embed=None,
             embeds=[mocker.ANY],
-            file=None,
             files=None,
             delete_after=None,
             nonce=None,
             reference=mock_message,
             allowed_mentions=None,
             view=None,
-            ephemeral=False,
         )
 
     async def test_send_embed_args(
@@ -149,16 +146,13 @@ class TestEmbedContext:
         mock_context_send.assert_called_once_with(
             content=None,
             tts=False,
-            embed=None,
             embeds=[mocker.ANY],
-            file=None,
             files=None,
             delete_after=None,
             nonce=None,
             reference=mock_message,
             allowed_mentions=None,
             view=view,
-            ephemeral=False,
         )
 
     async def test_send_embed_other_args(
@@ -192,16 +186,13 @@ class TestEmbedContext:
         mock_context_send.assert_called_once_with(
             content=None,
             tts=False,
-            embed=None,
             embeds=[mocker.ANY],
-            file=None,
             files=None,
             delete_after=None,
             nonce=None,
             reference=mock_message_2,
             allowed_mentions=None,
             view=view,
-            ephemeral=False,
         )
 
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
+from typing import TYPE_CHECKING, Final, TypeVar, overload
 
 import discord
 import pendulum
@@ -98,73 +98,7 @@ async def race(
 
 @overload
 async def send(
-    ctx: commands.Context[Any],
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embed: discord.Embed = ...,
-    file: discord.File = ...,
-    delete_after: float = ...,
-    nonce: int = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    ctx: commands.Context[Any],
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embed: discord.Embed = ...,
-    files: Sequence[discord.File] = ...,
-    delete_after: float = ...,
-    nonce: int = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    ctx: commands.Context[Any],
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    file: discord.File = ...,
-    delete_after: float = ...,
-    nonce: int = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    ctx: commands.Context[Any],
+    ctx: discord.abc.Messageable | discord.Message,
     /,
     *,
     content: str = ...,
@@ -179,55 +113,6 @@ async def send(
     | discord.PartialMessage
     | None = ...,
     view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    interaction: discord.Interaction,
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embed: discord.Embed = ...,
-    file: discord.File = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    interaction: discord.Interaction,
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embed: discord.Embed = ...,
-    files: Sequence[discord.File] = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send(
-    interaction: discord.Interaction,
-    /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    file: discord.File = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -248,14 +133,34 @@ async def send(
     ...
 
 
+@overload
 async def send(
-    ctx_or_intx: commands.Context[Any] | discord.Interaction,
+    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    /,
+    *,
+    content: str = ...,
+    tts: bool = ...,
+    embeds: Sequence[discord.Embed] = ...,
+    files: Sequence[discord.File] = ...,
+    delete_after: float = ...,
+    nonce: int = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    reference: discord.Message
+    | discord.MessageReference
+    | discord.PartialMessage
+    | None = ...,
+    view: discord.ui.View = ...,
+    ephemeral: bool = ...,
+) -> discord.Message:
+    ...
+
+
+async def send(
+    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
     /,
     content: str = _MISSING,
     tts: bool = False,
-    embed: discord.Embed = _MISSING,
     embeds: Sequence[discord.Embed] = _MISSING,
-    file: discord.File = _MISSING,
     files: Sequence[discord.File] = _MISSING,
     view: discord.ui.View = _MISSING,
     allowed_mentions: discord.AllowedMentions = _MISSING,
@@ -267,20 +172,37 @@ async def send(
     | discord.PartialMessage
     | None = _MISSING,
 ) -> discord.Message:
-    if isinstance(ctx_or_intx, commands.Context):
-        return await ctx_or_intx.send(
+    if not isinstance(ctx_or_intx, discord.Interaction):
+        messageable = (
+            ctx_or_intx
+            if isinstance(ctx_or_intx, discord.abc.Messageable)
+            else ctx_or_intx.channel
+        )
+
+        if reference is _MISSING:
+            if isinstance(ctx_or_intx, commands.Context):
+                reference = ctx_or_intx.message
+            elif isinstance(ctx_or_intx, discord.Message):
+                reference = ctx_or_intx
+            else:
+                reference = None
+
+        return await messageable.send(
             content=None if content is _MISSING else content,
             tts=tts,
-            embed=None if embed is _MISSING else embed,
-            embeds=None if embeds is _MISSING else embeds,
-            file=None if file is _MISSING else file,
-            files=None if files is _MISSING else files,
-            delete_after=None if delete_after is _MISSING else delete_after,
-            nonce=None if nonce is _MISSING else nonce,
-            allowed_mentions=None if allowed_mentions is _MISSING else allowed_mentions,
-            reference=ctx_or_intx.message if reference is _MISSING else reference,
-            view=None if view is _MISSING else view,
-            ephemeral=False if ephemeral is _MISSING else ephemeral,
+            embeds=None if embeds is _MISSING else embeds,  # type: ignore
+            files=None if files is _MISSING else files,  # type: ignore
+            delete_after=(
+                None if delete_after is _MISSING else delete_after  # type: ignore
+            ),
+            nonce=None if nonce is _MISSING else nonce,  # type: ignore
+            allowed_mentions=(
+                None
+                if allowed_mentions is _MISSING
+                else allowed_mentions  # type: ignore
+            ),
+            reference=reference,  # type: ignore
+            view=None if view is _MISSING else view,  # type: ignore
         )
     else:
         ephemeral = False if ephemeral is _MISSING else ephemeral
@@ -289,9 +211,7 @@ async def send(
             await ctx_or_intx.response.send_message(
                 content=None if content is _MISSING else content,
                 tts=tts,
-                embed=embed,
                 embeds=embeds,
-                file=file,
                 files=files,
                 view=view,
                 allowed_mentions=allowed_mentions,
@@ -302,9 +222,7 @@ async def send(
             return await ctx_or_intx.followup.send(
                 content=content,
                 tts=tts,
-                embed=embed,
                 embeds=embeds,
-                file=file,
                 files=files,
                 view=view,
                 allowed_mentions=allowed_mentions,
@@ -315,7 +233,51 @@ async def send(
 
 @overload
 async def send_embed(
-    ctx: commands.Context[Any],
+    ctx: discord.abc.Messageable | discord.Message,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Iterable[FieldData] | None = None,
+    allowed_mentions: discord.AllowedMentions = ...,
+    reference: discord.Message
+    | discord.MessageReference
+    | discord.PartialMessage = ...,
+    view: discord.ui.View = ...,
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_embed(
+    interaction: discord.Interaction,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Iterable[FieldData] | None = None,
+    view: discord.ui.View = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    ephemeral: bool = ...,
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_embed(
+    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
     /,
     *,
     description: str | None = None,
@@ -337,29 +299,8 @@ async def send_embed(
     ...
 
 
-@overload
-async def send_embed(
-    interaction: discord.Interaction,
-    /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-) -> discord.Message:
-    ...
-
-
 def send_embed(
-    ctx_or_intx: commands.Context[Any] | discord.Interaction,
+    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
     /,
     description: str | None = None,
     title: str | None = None,
@@ -378,7 +319,7 @@ def send_embed(
     | discord.PartialMessage = _MISSING,
 ) -> Coroutine[discord.Message]:
     return send(
-        ctx_or_intx,  # type: ignore
+        ctx_or_intx,
         embeds=[
             Embed(
                 description=description,
@@ -401,7 +342,7 @@ def send_embed(
 
 @overload
 async def send_embed_error(
-    ctx: commands.Context[Any],
+    ctx: discord.abc.Messageable | discord.Message,
     /,
     *,
     description: str | None = None,
@@ -417,7 +358,6 @@ async def send_embed_error(
     | discord.MessageReference
     | discord.PartialMessage = ...,
     view: discord.ui.View = ...,
-    ephemeral: bool = ...,
 ) -> discord.Message:
     ...
 
@@ -443,8 +383,31 @@ async def send_embed_error(
     ...
 
 
+@overload
+async def send_embed_error(
+    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Iterable[FieldData] | None = None,
+    reference: discord.Message
+    | discord.MessageReference
+    | discord.PartialMessage = ...,
+    view: discord.ui.View = ...,
+    ephemeral: bool = ...,
+) -> discord.Message:
+    ...
+
+
 def send_embed_error(
-    ctx_or_intx: commands.Context[Any] | discord.Interaction,
+    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
     /,
     description: str | None = None,
     title: str | None = None,
@@ -463,7 +426,7 @@ def send_embed_error(
     | discord.PartialMessage = _MISSING,
 ) -> Coroutine[discord.Message]:
     return send_embed(
-        ctx_or_intx,  # type: ignore
+        ctx_or_intx,
         description=description,
         title=title,
         color=discord.Color.red() if color is None else color,
