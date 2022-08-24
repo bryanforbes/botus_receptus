@@ -70,9 +70,7 @@ class PageSource(Generic[_T]):
 
     @abstractmethod
     def get_page_items(
-        self,
-        page: int,
-        /,
+        self, page: int, /
     ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]:
         ...
 
@@ -169,10 +167,7 @@ class InteractivePager(Generic[_T]):
         ]
 
     def __react_check(
-        self,
-        reaction: discord.Reaction,
-        user: discord.User | discord.Member | None,
-        /,
+        self, reaction: discord.Reaction, user: discord.User | discord.Member | None, /
     ) -> bool:
         if user is None or user.id != self.author.id:
             return False
@@ -388,12 +383,7 @@ class InteractivePager(Generic[_T]):
             await self.match()
 
     @classmethod
-    def create(
-        cls,
-        ctx: commands.Context[Any],
-        source: PageSource[_T],
-        /,
-    ) -> Self:
+    def create(cls, ctx: commands.Context[Any], source: PageSource[_T], /) -> Self:
         if ctx.guild is not None and ctx.guild.me is not None:
             permissions = cast('discord.abc.GuildChannel', ctx.channel).permissions_for(
                 ctx.guild.me
@@ -466,9 +456,6 @@ class InteractiveFieldPager(InteractivePager[_T]):
 
     @classmethod
     def create(  # type: ignore
-        cls,
-        ctx: commands.Context[Any],
-        source: FieldPageSource[_T],
-        /,
+        cls, ctx: commands.Context[Any], source: FieldPageSource[_T], /
     ) -> Self:
         return super().create(ctx, source)

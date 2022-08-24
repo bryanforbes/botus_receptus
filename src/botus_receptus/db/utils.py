@@ -24,8 +24,7 @@ def _is_literal_string(obj: Any) -> StrictTypeGuard[LiteralString]:
 
 
 def _get_join_string(
-    joins: Sequence[tuple[LiteralString, LiteralString]] | None,
-    /,
+    joins: Sequence[tuple[LiteralString, LiteralString]] | None, /
 ) -> LiteralString:
     if joins is None or len(joins) == 0:
         return ''
