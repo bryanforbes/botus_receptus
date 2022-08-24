@@ -85,7 +85,9 @@ def mock_interaction(mocker: MockerFixture) -> Mock:
 @pytest.fixture
 def mock_send(mocker: MockerFixture) -> AsyncMock:
     return mocker.patch(
-        'botus_receptus.utils.send', return_value=mocker.sentinel.utils_send_return
+        'botus_receptus.utils.send',
+        return_value=mocker.sentinel.utils_send_return,
+        new_callable=mocker.AsyncMock,
     )
 
 

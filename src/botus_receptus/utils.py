@@ -96,6 +96,44 @@ async def race(
             future.cancel()
 
 
+async def _send_interaction(
+    itx: discord.Interaction,
+    /,
+    *,
+    content: str = ...,
+    tts: bool = ...,
+    embeds: Sequence[discord.Embed] = ...,
+    files: Sequence[discord.File] = ...,
+    view: discord.ui.View = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    ephemeral: bool = ...,
+) -> discord.Message:
+    ephemeral = False if ephemeral is _MISSING else ephemeral
+
+    if not itx.response.is_done():
+        await itx.response.send_message(
+            content=None if content is _MISSING else content,
+            tts=tts,
+            embeds=embeds,
+            files=files,
+            view=view,
+            allowed_mentions=allowed_mentions,
+            ephemeral=ephemeral,
+        )
+        return await itx.original_response()
+    else:
+        return await itx.followup.send(
+            content=content,
+            tts=tts,
+            embeds=embeds,
+            files=files,
+            view=view,
+            allowed_mentions=allowed_mentions,
+            ephemeral=ephemeral,
+            wait=True,
+        )
+
+
 @overload
 async def send(
     ctx: discord.abc.Messageable | discord.Message,
@@ -155,7 +193,7 @@ async def send(
     ...
 
 
-async def send(
+def send(
     ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
     /,
     content: str = _MISSING,
@@ -171,7 +209,7 @@ async def send(
     | discord.MessageReference
     | discord.PartialMessage
     | None = _MISSING,
-) -> discord.Message:
+) -> Coroutine[discord.Message]:
     if not isinstance(ctx_or_intx, discord.Interaction):
         messageable = (
             ctx_or_intx
@@ -187,7 +225,7 @@ async def send(
             else:
                 reference = None
 
-        return await messageable.send(
+        return messageable.send(
             content=None if content is _MISSING else content,
             tts=tts,
             embeds=None if embeds is _MISSING else embeds,  # type: ignore
@@ -205,30 +243,16 @@ async def send(
             view=None if view is _MISSING else view,  # type: ignore
         )
     else:
-        ephemeral = False if ephemeral is _MISSING else ephemeral
-
-        if not ctx_or_intx.response.is_done():
-            await ctx_or_intx.response.send_message(
-                content=None if content is _MISSING else content,
-                tts=tts,
-                embeds=embeds,
-                files=files,
-                view=view,
-                allowed_mentions=allowed_mentions,
-                ephemeral=ephemeral,
-            )
-            return await ctx_or_intx.original_response()
-        else:
-            return await ctx_or_intx.followup.send(
-                content=content,
-                tts=tts,
-                embeds=embeds,
-                files=files,
-                view=view,
-                allowed_mentions=allowed_mentions,
-                ephemeral=ephemeral,
-                wait=True,
-            )
+        return _send_interaction(
+            ctx_or_intx,
+            content=content,
+            tts=tts,
+            embeds=embeds,
+            files=files,
+            view=view,
+            allowed_mentions=allowed_mentions,
+            ephemeral=ephemeral,
+        )
 
 
 @overload
