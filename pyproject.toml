@@ -15,7 +15,7 @@ aioitertools = "^0.10.0"
 "async-timeout" = "~4.0.0"
 attrs = ">=22.1.0"
 click = ">=8.0"
-"discord.py" = "^2.0.0"
+"discord.py" = "^2.0.1"
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
 asyncpg = {version = "~0.26.0", optional = true}
@@ -31,7 +31,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = "~0.26.2"
-sqlalchemy2-stubs = "^0.0.2a25"
+sqlalchemy2-stubs = "^0.0.2a26"
 black = "^22.6"
 coverage = {extras = ["toml"], version = "^6.4"}
 flake8 = "~5.0"
