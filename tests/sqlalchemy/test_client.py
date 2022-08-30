@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 def config() -> Config:
     return {
         'bot_name': 'botty',
+        'intents': discord.Intents.all(),
         'discord_api_key': 'API_KEY',
         'application_id': 1,
         'db_url': 'some://db/url',
@@ -52,9 +53,7 @@ class TestClient:
         return mocker.patch('botus_receptus.client.Client.close')
 
     def test_init(self, config: Config, mock_sessionmaker: Mock) -> None:
-        client = Client(
-            config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all()
-        )
+        client = Client(config, sessionmaker=mock_sessionmaker)
 
         assert client.config == config
         assert client.intents.value == discord.Intents.all().value
@@ -73,9 +72,7 @@ class TestClient:
         setup_hook = mocker.patch(
             'botus_receptus.client.Client.setup_hook', new_callable=mocker.AsyncMock
         )
-        client = Client(
-            config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all()
-        )
+        client = Client(config, sessionmaker=mock_sessionmaker)
         await client.setup_hook()
 
         mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
@@ -93,9 +90,7 @@ class TestClient:
         close = mocker.patch(
             'botus_receptus.client.Client.close', new_callable=mocker.AsyncMock
         )
-        client = Client(
-            config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all()
-        )
+        client = Client(config, sessionmaker=mock_sessionmaker)
         await client.close()
 
         mock_sessionmaker.close_all.assert_called_once_with()  # type: ignore
@@ -104,15 +99,11 @@ class TestClient:
 
 class TestAutoShardedClient:
     def test_init(self, config: Config, mock_sessionmaker: Mock) -> None:
-        client = AutoShardedClient(
-            config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all()
-        )
+        client = AutoShardedClient(config, sessionmaker=mock_sessionmaker)
 
         assert client.config == config
         assert client.intents.value == discord.Intents.all().value
 
         assert isinstance(client, AutoShardedClient)
         assert isinstance(client, discord.AutoShardedClient)
-        assert isinstance(client, Client)
-        assert isinstance(client, botus_receptus.client.Client)
         assert isinstance(client, discord.Client)

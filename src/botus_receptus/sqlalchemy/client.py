@@ -11,7 +11,8 @@ if TYPE_CHECKING:
     from .session import AsyncSessionMakerType
 
 
-class Client(client.Client):
+class _ClientBase:
+    config: Config
     __Session: AsyncSessionMakerType
 
     def __init__(
@@ -24,30 +25,24 @@ class Client(client.Client):
     ) -> None:
         self.__Session = sessionmaker
 
-        super().__init__(config, *args, **kwargs)
+        super().__init__(config, *args, **kwargs)  # pyright: ignore
 
     async def setup_hook(self) -> None:
         self.__Session.configure(
             bind=create_async_engine(self.config.get('db_url', '')),
         )
 
-        await super().setup_hook()
+        await super().setup_hook()  # pyright: ignore
 
     async def close(self) -> None:
         self.__Session.close_all()
 
-        await super().close()
+        await super().close()  # pyright: ignore
 
 
-class AutoShardedClient(  # pyright: ignore [reportIncompatibleVariableOverride]
-    client.AutoShardedClient, Client
-):
-    def __init__(
-        self,
-        config: Config,
-        /,
-        *args: Any,
-        sessionmaker: AsyncSessionMakerType,
-        **kwargs: Any,
-    ) -> None:
-        super().__init__(config, *args, sessionmaker=sessionmaker, **kwargs)
+class Client(_ClientBase, client.Client):
+    ...
+
+
+class AutoShardedClient(_ClientBase, client.AutoShardedClient):
+    ...

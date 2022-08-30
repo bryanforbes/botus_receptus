@@ -50,6 +50,7 @@ def test_setup_logging(
 ) -> None:
     config: Config = {
         'bot_name': 'botty',
+        'intents': discord.Intents.all(),
         'discord_api_key': 'API_KEY',
         'application_id': 1,
         'intents': discord.Intents.all(),
@@ -95,6 +96,7 @@ def test_setup_logging_console(
 ) -> None:
     config: Config = {
         'bot_name': 'botty',
+        'intents': discord.Intents.all(),
         'discord_api_key': 'API_KEY',
         'application_id': 1,
         'intents': discord.Intents.all(),
@@ -120,6 +122,7 @@ def test_setup_logging_loggers(
 ) -> None:
     config: Config = {
         'bot_name': 'botty',
+        'intents': discord.Intents.all(),
         'discord_api_key': 'API_KEY',
         'application_id': 1,
         'intents': discord.Intents.all(),
@@ -158,6 +161,7 @@ def test_setup_logging_handler_cls(
 ) -> None:
     config: Config = {
         'bot_name': 'botty',
+        'intents': discord.Intents.all(),
         'discord_api_key': 'API_KEY',
         'application_id': 1,
         'intents': discord.Intents.all(),

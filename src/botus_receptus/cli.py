@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from logging import FileHandler
 
     from .bot import BotBase
+    from .client import Client
 
 
 def config_callback(
@@ -47,7 +48,7 @@ def config_callback(
 
 
 def cli(
-    bot_class: type[BotBase],
+    bot_class: type[BotBase] | type[Client],
     default_config_path: str,
     /,
     handler_cls: type[FileHandler] = discord.utils.MISSING,

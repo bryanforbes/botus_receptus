@@ -53,6 +53,7 @@ class TestClient:
         return {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'intents': discord.Intents(guilds=True),
             'application_id': 1,
             'logging': {
                 'log_file': '',
@@ -74,30 +75,28 @@ class TestClient:
         shutil.rmtree(botus_tests)
 
     @pytest.mark.parametrize(
-        'config,intents,tree_cls',
+        'config,tree_cls',
         [
             (
                 {
                     'bot_name': 'botty',
+                    'intents': discord.Intents.all(),
                     'application_id': 1,
                 },
-                discord.Intents.all(),
                 None,
             ),
             (
                 {
                     'bot_name': 'mcbotterson',
+                    'intents': discord.Intents.none(),
                     'application_id': 2,
                 },
-                discord.Intents.none(),
                 MyCommandTree,
             ),
         ],
     )
-    def test_init(
-        self, config: Config, intents: discord.Intents, tree_cls: type[Any] | None
-    ) -> None:
-        kwargs: dict[str, Any] = {'intents': intents}
+    def test_init(self, config: Config, tree_cls: type[Any] | None) -> None:
+        kwargs: dict[str, Any] = {}
 
         if tree_cls is not None:
             kwargs['tree_cls'] = tree_cls
@@ -107,7 +106,7 @@ class TestClient:
         assert client.config == config
         assert client.bot_name == config['bot_name']
         assert client.application_id == config['application_id']
-        assert client.intents.value == intents.value
+        assert client.intents.value == config['intents'].value
 
         assert isinstance(client, Client)
         assert isinstance(client, OriginalClient)
@@ -120,7 +119,7 @@ class TestClient:
     def test_run_with_config(self, mocker: MockerFixture, config: Config) -> None:
         run = mocker.patch('discord.Client.run')
 
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
 
         client.run_with_config()
         run.assert_called_once_with('API_KEY', log_handler=None)
@@ -131,6 +130,7 @@ class TestClient:
             (
                 {
                     'bot_name': 'botty',
+                    'intents': discord.Intents.all(),
                     'application_id': 1,
                 },
                 [call()],
@@ -138,6 +138,7 @@ class TestClient:
             (
                 {
                     'bot_name': 'mcbotterson',
+                    'intents': discord.Intents.all(),
                     'application_id': 2,
                     'test_guilds': [1234, 5678],
                 },
@@ -150,6 +151,7 @@ class TestClient:
             (
                 {
                     'bot_name': 'mcbotterson',
+                    'intents': discord.Intents.all(),
                     'application_id': 2,
                     'admin_guild': 91011,
                 },
@@ -161,6 +163,7 @@ class TestClient:
             (
                 {
                     'bot_name': 'mcbotterson',
+                    'intents': discord.Intents.all(),
                     'application_id': 2,
                     'test_guilds': [1234, 5678],
                     'admin_guild': 91011,
@@ -181,7 +184,7 @@ class TestClient:
             'botus_receptus.client.CommandTree.sync', new_callable=mocker.AsyncMock
         )
 
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
         await client.sync_app_commands()
 
         sync.assert_has_awaits(calls)
@@ -189,7 +192,7 @@ class TestClient:
     async def test_close(self, mocker: MockerFixture, config: Config) -> None:
         close = mocker.patch('discord.Client.close', new_callable=mocker.AsyncMock)
 
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
         await client.setup_hook()
         await client.close()
 
@@ -197,7 +200,7 @@ class TestClient:
         cast('AsyncMock', client.session.close).assert_awaited()
 
     async def test_load_extension(self, mocker: MockerFixture, config: Config) -> None:
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
 
         client.module_1_setup = False  # pyright: ignore
         client.module_2_setup = False  # pyright: ignore
@@ -267,7 +270,7 @@ class TestClient:
     async def test_unload_extension(
         self, mocker: MockerFixture, config: Config
     ) -> None:
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
 
         client.module_2_torn_down = False  # pyright: ignore
         remove = mocker.patch(
@@ -296,7 +299,7 @@ class TestClient:
     async def test_reload_extension(
         self, mocker: MockerFixture, config: Config, botus_tests: Path
     ) -> None:
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
 
         remove = mocker.patch(
             'botus_receptus.app_commands.CommandTree._remove_with_module'
@@ -361,7 +364,7 @@ class TestClient:
     ) -> None:
         mocker.patch('discord.Client.close', new_callable=mocker.AsyncMock)
 
-        client = Client(config, intents=discord.Intents.all())
+        client = Client(config)
         await client.load_extension('tests.client.module_2')
         await client.setup_hook()
         await client.close()
@@ -371,31 +374,27 @@ class TestClient:
 
 class TestAutoShardedClient:
     @pytest.mark.parametrize(
-        'config,intents',
+        'config',
         [
-            (
-                {
-                    'bot_name': 'botty',
-                    'application_id': 1,
-                },
-                discord.Intents.all(),
-            ),
-            (
-                {
-                    'bot_name': 'mcbotterson',
-                    'application_id': 2,
-                },
-                discord.Intents.none(),
-            ),
+            {
+                'bot_name': 'botty',
+                'intents': discord.Intents.all(),
+                'application_id': 1,
+            },
+            {
+                'bot_name': 'mcbotterson',
+                'intents': discord.Intents.none(),
+                'application_id': 2,
+            },
         ],
     )
-    def test_init(self, config: Config, intents: discord.Intents) -> None:
-        client = AutoShardedClient(config, intents=intents)
+    def test_init(self, config: Config) -> None:
+        client = AutoShardedClient(config)
 
         assert client.config == config
         assert client.bot_name == config['bot_name']
         assert client.application_id == config['application_id']
-        assert client.intents.value == intents.value
+        assert client.intents.value == config['intents'].value
 
         assert isinstance(client, AutoShardedClient)
         assert isinstance(client, OriginalAutoShardedClient)

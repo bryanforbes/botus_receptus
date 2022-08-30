@@ -49,6 +49,7 @@ class TestBot:
     def config(self) -> Config:
         return {
             'bot_name': 'botty',
+            'intents': discord.Intents.all(),
             'discord_api_key': 'API_KEY',
             'intents': discord.Intents.all(),
             'application_id': 1,
@@ -90,6 +91,7 @@ class TestBot:
         assert bot.bot_name == config['bot_name']
         assert bot.intents.value == config['intents'].value
         assert bot.default_prefix == prefix
+        assert bot.intents.value == config['intents'].value
 
         assert isinstance(bot, OriginalBot)
 

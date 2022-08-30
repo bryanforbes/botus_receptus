@@ -26,9 +26,9 @@ if TYPE_CHECKING:
     from .config import Config
 
 
-class Client(discord.Client):
+class _ClientBase:
     __extensions: dict[str, types.ModuleType]
-    __tree: CommandTree[Self]
+    __tree: CommandTree[Any]
 
     bot_name: str
     config: Config
@@ -45,7 +45,6 @@ class Client(discord.Client):
         config: Config,
         /,
         *args: Any,
-        intents: discord.Intents,
         tree_cls: type[CommandTree[Any]] = CommandTree,
         **kwargs: Any,
     ) -> None:
@@ -54,13 +53,16 @@ class Client(discord.Client):
         self.__extensions = {}
 
         super().__init__(
-            *args, intents=intents, **kwargs, application_id=config['application_id']
+            *args,
+            **kwargs,
+            intents=config['intents'],  # pyright: ignore
+            application_id=config['application_id'],  # pyright: ignore
         )
 
         self.__tree = tree_cls(self)
 
     @property
-    def tree(self) -> CommandTree[Self]:
+    def tree(self) -> CommandTree[Self]:  # pyright: ignore
         return self.__tree
 
     @property
@@ -68,10 +70,10 @@ class Client(discord.Client):
         return types.MappingProxyType(self.__extensions)
 
     def run_with_config(self) -> None:
-        self.run(self.config['discord_api_key'], log_handler=None)
+        self.run(self.config['discord_api_key'], log_handler=None)  # pyright: ignore
 
     async def setup_hook(self) -> None:
-        self.session = aiohttp.ClientSession(loop=self.loop)
+        self.session = aiohttp.ClientSession(loop=self.loop)  # pyright: ignore
 
     async def sync_app_commands(self) -> None:
         guilds_to_sync: set[discord.Object] = set()
@@ -93,7 +95,7 @@ class Client(discord.Client):
             with contextlib.suppress(Exception):
                 await self.unload_extension(extension)
 
-        await super().close()
+        await super().close()  # pyright: ignore
 
         await self.session.close()
 
@@ -204,16 +206,9 @@ class Client(discord.Client):
             raise
 
 
-class AutoShardedClient(  # pyright: ignore [reportIncompatibleVariableOverride]
-    discord.AutoShardedClient, Client
-):
-    def __init__(
-        self,
-        config: Config,
-        /,
-        *args: Any,
-        intents: discord.Intents,
-        tree_cls: type[CommandTree[Any]] = CommandTree,
-        **kwargs: Any,
-    ) -> None:
-        super().__init__(config, *args, intents=intents, tree_cls=tree_cls, **kwargs)
+class Client(_ClientBase, discord.Client):
+    ...
+
+
+class AutoShardedClient(_ClientBase, discord.AutoShardedClient):
+    ...
