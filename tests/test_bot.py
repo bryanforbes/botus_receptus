@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import discord
 import pytest
@@ -17,10 +17,6 @@ if TYPE_CHECKING:
 
 
 OriginalBot = commands.Bot
-
-
-class MockContext(commands.Context[Any]):
-    pass
 
 
 class MockConnection:

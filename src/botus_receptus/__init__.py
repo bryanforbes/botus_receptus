@@ -6,6 +6,7 @@ from typing import Final
 from . import checks, formatting, re, utils
 from .bot import AutoShardedBot, Bot, BotBase
 from .cli import cli
+from .client import AutoShardedClient, Client
 from .cog import Cog, GroupCog
 from .config import Config, ConfigException
 from .context import EmbedContext, PaginatedContext
@@ -27,6 +28,8 @@ __all__ = (
     'Bot',
     'BotBase',
     'cli',
+    'AutoShardedClient',
+    'Client',
     'Cog',
     'GroupCog',
     'Config',
