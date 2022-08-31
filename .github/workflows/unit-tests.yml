@@ -12,7 +12,7 @@ jobs:
     with:
       python_versions: '["3.10"]'
       coverage: true
-      poetry_args: '--extras dev'
+      poetry_args: '--extras all'
       pytest_args: '-p no:sugar'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
