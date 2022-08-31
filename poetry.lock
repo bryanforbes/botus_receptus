@@ -858,15 +858,15 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [extras]
+all = ["asyncpg", "sqlalchemy", "greenlet", "uvloop"]
 db = ["asyncpg"]
-dev = ["asyncpg", "sqlalchemy", "greenlet", "uvloop"]
 sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a67c6070840b7c8e2fd09eb1aecf44ae80e0e39ce6f8ab42dce170cb4146b036"
+content-hash = "e127c12f32bc7f6c761f35ccaa10158c7e62f08a8df20fd3c9ba8364edb31879"
 
 [metadata.files]
 aiohttp = [
