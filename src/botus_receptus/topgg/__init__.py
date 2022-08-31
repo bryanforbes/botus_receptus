@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from .base import AutoShardedClientMixin, BotStats, ClientMixin
+from .base import AutoShardedClientBase, BotStats, ClientBase
 from .bot import AutoShardedBot, Bot
 from .client import AutoShardedClient, Client
 
 __all__ = (
-    'AutoShardedClientMixin',
+    'AutoShardedClientBase',
     'BotStats',
-    'ClientMixin',
+    'ClientBase',
     'AutoShardedBot',
     'Bot',
     'AutoShardedClient',

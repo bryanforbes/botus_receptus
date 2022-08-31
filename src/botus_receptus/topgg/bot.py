@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from .. import bot
-from .base import AutoShardedClientMixin, ClientMixin
+from .base import AutoShardedClientBase, ClientBase
 
 
-class Bot(ClientMixin, bot.Bot):
+class Bot(ClientBase, bot.Bot):
     ...
 
 
-class AutoShardedBot(AutoShardedClientMixin, bot.AutoShardedBot):
+class AutoShardedBot(AutoShardedClientBase, bot.AutoShardedBot):
     ...

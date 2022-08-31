@@ -42,7 +42,7 @@ class TestBotBase:
     @pytest.fixture
     def mock_create_async_engine(self, mocker: MockerFixture) -> Mock:
         return mocker.patch(
-            'botus_receptus.sqlalchemy.bot.create_async_engine',
+            'botus_receptus.sqlalchemy.base.create_async_engine',
             return_value=mocker.sentinel.create_async_engine_result,
         )
 

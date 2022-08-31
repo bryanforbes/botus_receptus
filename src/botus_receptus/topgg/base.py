@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Any, Final, Protocol, TypedDict, cast
+from typing import TYPE_CHECKING, Final, TypedDict, cast
 
 import aiohttp
 import async_timeout
@@ -11,7 +11,6 @@ import pendulum
 from discord.ext import tasks
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
     from typing_extensions import NotRequired
 
     from pendulum.datetime import DateTime
@@ -28,25 +27,15 @@ class BotStats(TypedDict):
     shard_count: NotRequired[int]
 
 
-class Client(Protocol):
+class ClientBase:
     config: Config
     session: aiohttp.ClientSession
-    __topgg_task: Any
 
-    @property
-    def guilds(self) -> Sequence[discord.Guild]:
-        ...
-
-    def _get_topgg_stats(self: Client) -> BotStats:
-        ...
-
-
-class ClientMixin:
-    def _get_topgg_stats(self: Client) -> BotStats:
-        return {'server_count': len(self.guilds)}
+    def _get_topgg_stats(self) -> BotStats:
+        return {'server_count': len(self.guilds)}  # pyright: ignore
 
     @tasks.loop(time=list(map(time, range(24))))
-    async def __topgg_task(self: Client, token: str, /) -> None:  # pyright: ignore
+    async def __topgg_task(self, token: str, /) -> None:
         stats = self._get_topgg_stats()
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
@@ -61,7 +50,7 @@ class ClientMixin:
                 headers=headers,
             )
 
-    async def on_ready(self: Client) -> None:
+    async def on_ready(self) -> None:
         token = self.config.get('dbl_token', None)
 
         if token is None:
@@ -76,15 +65,15 @@ class ClientMixin:
         if next_hour.diff().in_minutes() > 15:  # type: ignore
             await self.__topgg_task(token)
 
-    async def close(self: Client) -> None:
+    async def close(self) -> None:
         self.__topgg_task.cancel()
 
         await super().close()  # pyright: ignore
 
 
-class AutoShardedClientMixin(ClientMixin):
-    def _get_topgg_stats(self: Client) -> BotStats:
+class AutoShardedClientBase(ClientBase):
+    def _get_topgg_stats(self) -> BotStats:
         return {
-            'server_count': len(self.guilds),
+            'server_count': len(self.guilds),  # pyright: ignore
             'shard_count': self.shard_count,  # pyright: ignore
         }
