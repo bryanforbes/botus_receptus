@@ -49,7 +49,6 @@ class TestBot:
     def config(self) -> Config:
         return {
             'bot_name': 'botty',
-            'intents': discord.Intents.all(),
             'discord_api_key': 'API_KEY',
             'intents': discord.Intents.all(),
             'application_id': 1,
@@ -101,7 +100,7 @@ class TestBot:
         bot = Bot(config)
 
         bot.run_with_config()
-        run.assert_called_once_with('API_KEY', log_handler=None, log_formatter=None)
+        run.assert_called_once_with('API_KEY', log_handler=None)
 
     async def test_close(self, mocker: MockerFixture, config: Config) -> None:
         close = mocker.patch(

@@ -6,9 +6,9 @@ import sys
 import types
 from typing import TYPE_CHECKING, Any
 
-import aiohttp
 import discord
 
+from . import base
 from .app_commands import CommandTree
 from .exceptions import (
     ExtensionAlreadyLoaded,
@@ -26,19 +26,9 @@ if TYPE_CHECKING:
     from .config import Config
 
 
-class _ClientBase:
+class _ClientBase(base.Base):
     __extensions: dict[str, types.ModuleType]
     __tree: CommandTree[Any]
-
-    bot_name: str
-    config: Config
-    session: aiohttp.ClientSession
-
-    if TYPE_CHECKING:
-
-        @property
-        def application_id(self) -> int:
-            ...
 
     def __init__(
         self,
@@ -48,16 +38,9 @@ class _ClientBase:
         tree_cls: type[CommandTree[Any]] = CommandTree,
         **kwargs: Any,
     ) -> None:
-        self.bot_name = config['bot_name']
-        self.config = config
         self.__extensions = {}
 
-        super().__init__(
-            *args,
-            **kwargs,
-            intents=config['intents'],  # pyright: ignore
-            application_id=config['application_id'],  # pyright: ignore
-        )
+        super().__init__(config, *args, **kwargs)
 
         self.__tree = tree_cls(self)
 
@@ -69,35 +52,12 @@ class _ClientBase:
     def extensions(self) -> Mapping[str, types.ModuleType]:
         return types.MappingProxyType(self.__extensions)
 
-    def run_with_config(self) -> None:
-        self.run(self.config['discord_api_key'], log_handler=None)  # pyright: ignore
-
-    async def setup_hook(self) -> None:
-        self.session = aiohttp.ClientSession(loop=self.loop)  # pyright: ignore
-
-    async def sync_app_commands(self) -> None:
-        guilds_to_sync: set[discord.Object] = set()
-
-        if (guild_ids := self.config.get('test_guilds')) is not None:
-            guilds_to_sync = {discord.Object(id=guild_id) for guild_id in guild_ids}
-
-        if (admin_guild_id := self.config.get('admin_guild')) is not None:
-            guilds_to_sync.add(discord.Object(id=admin_guild_id))
-
-        for guild_to_sync in guilds_to_sync:
-            self.__tree.copy_global_to(guild=guild_to_sync)
-            await self.__tree.sync(guild=guild_to_sync)
-
-        await self.__tree.sync()
-
     async def close(self) -> None:
         for extension in tuple(self.__extensions):
             with contextlib.suppress(Exception):
                 await self.unload_extension(extension)
 
-        await super().close()  # pyright: ignore
-
-        await self.session.close()
+        await super().close()
 
     async def _remove_module_references(self, name: str, /) -> None:
         self.__tree._remove_with_module(name)

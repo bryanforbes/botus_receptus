@@ -72,7 +72,6 @@ class TestTopggBot:
     def config(self) -> Config:
         return {
             'bot_name': 'botty',
-            'intents': discord.Intents.all(),
             'discord_api_key': 'API_KEY',
             'application_id': 1,
             'intents': discord.Intents.all(),
@@ -140,7 +139,6 @@ class TestTopggAutoShardedBot:
     def config(self) -> Config:
         return {
             'bot_name': 'botty',
-            'intents': discord.Intents.all(),
             'discord_api_key': 'API_KEY',
             'application_id': 1,
             'intents': discord.Intents.all(),
