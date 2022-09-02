@@ -56,7 +56,7 @@ class PageSource(Generic[_T]):
     show_entry_count: bool
     max_pages: int = field(init=False)
 
-    def __attrs_post_init__(self, /) -> None:
+    def __attrs_post_init__(self) -> None:
         max_pages, left_over = divmod(self.total, self.per_page)
 
         if left_over:
@@ -65,7 +65,7 @@ class PageSource(Generic[_T]):
         self.max_pages = max_pages
 
     @property
-    def paginated(self, /) -> bool:
+    def paginated(self) -> bool:
         return self.total > self.per_page
 
     @abstractmethod
@@ -145,7 +145,7 @@ class InteractivePager(Generic[_T]):
     match: Callable[[], Awaitable[None]] | None = field(init=False, default=None)
     help_task: asyncio.Task[None] | None = field(init=False, default=None)
 
-    def __attrs_post_init__(self, /) -> None:
+    def __attrs_post_init__(self) -> None:
         self.embed = discord.Embed()
         self.paginating = self.source.paginated
         self.reaction_emojis = [
@@ -239,23 +239,23 @@ class InteractivePager(Generic[_T]):
         if page > 0 and page <= self.source.max_pages:
             await self.__show_page(page)
 
-    async def __first_page(self, /) -> None:
+    async def __first_page(self) -> None:
         '''goes to the first page'''
         await self.__show_page(1)
 
-    async def __last_page(self, /) -> None:
+    async def __last_page(self) -> None:
         '''goes to the last page'''
         await self.__show_page(self.source.max_pages)
 
-    async def __previous_page(self, /) -> None:
+    async def __previous_page(self) -> None:
         '''goes to the previous page'''
         await self.__checked_show_page(self.current_page - 1)
 
-    async def __next_page(self, /) -> None:
+    async def __next_page(self) -> None:
         '''goes to the next page'''
         await self.__checked_show_page(self.current_page + 1)
 
-    async def __numbered_page(self, /) -> None:
+    async def __numbered_page(self) -> None:
         '''lets you type a page number to go to'''
         to_delete: list[discord.Message] = [
             await self.channel.send('What page do you want to go to?')
@@ -284,7 +284,7 @@ class InteractivePager(Generic[_T]):
         with contextlib.suppress(Exception):
             await cast('discord.TextChannel', self.channel).delete_messages(to_delete)
 
-    async def __stop_pages(self, /) -> None:
+    async def __stop_pages(self) -> None:
         '''stops the interactive pagination session'''
         await self.message.delete()
         self.paginating = False
@@ -292,11 +292,11 @@ class InteractivePager(Generic[_T]):
             self.help_task.cancel()
             self.help_task = None
 
-    async def __show_current_page(self, /) -> None:
+    async def __show_current_page(self) -> None:
         if self.paginating:
             await self.__show_page(self.current_page)
 
-    async def __show_help(self, /) -> None:
+    async def __show_help(self) -> None:
         '''shows this message'''
         messages = [
             'Welcome to the interactive pager!\n',
@@ -333,7 +333,7 @@ class InteractivePager(Generic[_T]):
 
         self.help_task = self.bot.loop.create_task(go_back_to_current_page())
 
-    async def paginate(self, /) -> None:
+    async def paginate(self) -> None:
         first_page = self.__show_page(1, first=True)
         if not self.paginating:
             await first_page

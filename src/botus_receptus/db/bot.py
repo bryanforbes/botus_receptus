@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, ClassVar, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .. import bot
 from .context import Context
@@ -24,7 +24,6 @@ except ImportError:
 
 class BotBase(bot.BotBase):
     pool: Pool[Record]
-    context_cls: ClassVar[type[Context[Any]]] = Context
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         if not _has_asyncpg:
@@ -57,7 +56,7 @@ class BotBase(bot.BotBase):
 
         await super().setup_hook()
 
-    async def close(self, /) -> None:
+    async def close(self) -> None:
         await self.pool.close()
         await super().close()
 

@@ -23,15 +23,15 @@ _MISSING: Final = discord.utils.MISSING
 
 class GuildContext(commands.Context[_BotT]):
     @discord.utils.cached_property
-    def guild(self, /) -> discord.Guild:
+    def guild(self) -> discord.Guild:
         return self.message.guild  # type: ignore
 
     @discord.utils.cached_property
-    def channel(self, /) -> discord.TextChannel:
+    def channel(self) -> discord.TextChannel:
         return self.message.channel  # type: ignore
 
     @discord.utils.cached_property
-    def author(self, /) -> discord.Member:
+    def author(self) -> discord.Member:
         return self.message.author  # type: ignore
 
 

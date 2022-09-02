@@ -28,7 +28,7 @@ class _BotStats(TypedDict):
 
 class BotBase(bot.BotBase):
     def _get_topgg_stats(self) -> _BotStats:
-        ...
+        raise NotImplementedError
 
     @tasks.loop(time=list(map(time, range(24))))
     async def __topgg_task(self, token: str, /) -> None:
@@ -46,7 +46,7 @@ class BotBase(bot.BotBase):
                 headers=headers,
             )
 
-    async def on_ready(self, /) -> None:
+    async def on_ready(self) -> None:
         token = self.config.get('dbl_token', None)
 
         if token is None:
