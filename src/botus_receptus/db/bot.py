@@ -1,25 +1,38 @@
 from __future__ import annotations
 
-import asyncio
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from .. import bot
 from .context import Context
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     import discord
 
     from ..config import Config
 
 try:
-    from asyncpg import Record, create_pool
+    from asyncpg import Connection, Record, create_pool
 
     if TYPE_CHECKING:
-        from asyncpg.pool import Pool
+        from asyncpg.pool import Pool, PoolConnectionProxy
 
     _has_asyncpg = True
 except ImportError:
     _has_asyncpg = False
+
+
+_F = TypeVar('_F', bound='Callable[..., Any]')
+
+
+def _db_special_method(func: _F, /) -> _F:
+    func.__db_special_method__ = None  # pyright: ignore
+    return func
+
+
+def _get_special_method(method: _F, /) -> _F | None:
+    return getattr(method.__func__, '__db_special_method__', method)  # pyright: ignore
 
 
 class BotBase(bot.BotBase):
@@ -34,14 +47,11 @@ class BotBase(bot.BotBase):
     async def setup_hook(self) -> None:
         pool_kwargs: dict[str, Any] = {}
 
-        if hasattr(self, '__init_connection__') and asyncio.iscoroutinefunction(
-            cast('Any', self).__init_connection__
-        ):
-            pool_kwargs['init'] = cast('Any', self).__init_connection__
-        if hasattr(self, '__setup_connection__') and asyncio.iscoroutinefunction(
-            cast('Any', self).__setup_connection__
-        ):
-            pool_kwargs['setup'] = cast('Any', self).__setup_connection__
+        if (init := _get_special_method(self.__db_init_connection__)) is not None:
+            pool_kwargs['init'] = init
+
+        if (setup := _get_special_method(self.__db_setup_connection__)) is not None:
+            pool_kwargs['setup'] = setup
 
         pool = await create_pool(
             self.config.get('db_url', ''),
@@ -55,6 +65,16 @@ class BotBase(bot.BotBase):
         self.pool = pool
 
         await super().setup_hook()
+
+    @_db_special_method
+    async def __db_init_connection__(self, connection: Connection[Record], /) -> None:
+        ...
+
+    @_db_special_method
+    async def __db_setup_connection__(
+        self, connection: PoolConnectionProxy[Record], /
+    ) -> None:
+        ...
 
     async def close(self) -> None:
         await self.pool.close()
