@@ -24,7 +24,7 @@ class async_sessionmaker(AsyncSessionMakerType):
         expire_on_commit: bool = True,
         **kw: Any,
     ) -> None:
-        super().__init__(  # type: ignore
+        super().__init__(
             bind=bind,
             autoflush=autoflush,
             info=info,

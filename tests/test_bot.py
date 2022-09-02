@@ -54,6 +54,7 @@ class TestBot:
         return {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'intents': discord.Intents.all(),
             'application_id': 1,
             'logging': {
                 'log_file': '',
@@ -68,6 +69,7 @@ class TestBot:
             (
                 {
                     'bot_name': 'botty',
+                    'intents': discord.Intents.all(),
                     'application_id': 1,
                 },
                 '$',
@@ -75,6 +77,7 @@ class TestBot:
             (
                 {
                     'bot_name': 'mcbotterson',
+                    'intents': discord.Intents.none(),
                     'command_prefix': '!',
                     'application_id': 1,
                 },
@@ -85,10 +88,11 @@ class TestBot:
     def test_init(self, mocker: MockerFixture, config: Config, prefix: str) -> None:
         mocker.patch('discord.ext.commands.Bot', autospec=True)
 
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
 
         assert bot.config == config
         assert bot.bot_name == config['bot_name']
+        assert bot.intents.value == config['intents'].value
         assert bot.default_prefix == prefix
 
         assert isinstance(bot, OriginalBot)
@@ -96,7 +100,7 @@ class TestBot:
     def test_run_with_config(self, mocker: MockerFixture, config: Config) -> None:
         run = mocker.patch('discord.ext.commands.Bot.run')
 
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
 
         bot.run_with_config()
         run.assert_called_once_with('API_KEY', log_handler=None, log_formatter=None)
@@ -106,7 +110,7 @@ class TestBot:
             'discord.ext.commands.bot.BotBase.close', new_callable=mocker.AsyncMock
         )
 
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
         await bot.setup_hook()
         await bot.close()
 

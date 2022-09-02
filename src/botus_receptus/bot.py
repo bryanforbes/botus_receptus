@@ -37,18 +37,19 @@ class BotBase(bot.BotBase):
             **kwargs,
             command_prefix=self.default_prefix,
             application_id=config['application_id'],
+            intents=config['intents'],
             tree_cls=CommandTree,
         )
 
-    def run_with_config(self, /) -> None:
+    def run_with_config(self) -> None:
         cast('Any', self).run(
             self.config['discord_api_key'], log_handler=None, log_formatter=None
         )
 
-    async def setup_hook(self, /) -> None:
+    async def setup_hook(self) -> None:
         self.session = aiohttp.ClientSession(loop=self.loop)
 
-    async def sync_app_commands(self, /) -> None:
+    async def sync_app_commands(self) -> None:
         guilds_to_sync: set[discord.Object] = set()
 
         if (guild_ids := self.config.get('test_guilds')) is not None:
@@ -63,7 +64,7 @@ class BotBase(bot.BotBase):
 
         await self.tree.sync()
 
-    async def close(self, /) -> None:
+    async def close(self) -> None:
         await super().close()
         await self.session.close()
 

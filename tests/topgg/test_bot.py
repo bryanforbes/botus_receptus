@@ -74,6 +74,7 @@ class TestTopggBot:
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
             'application_id': 1,
+            'intents': discord.Intents.all(),
             'dbl_token': 'DBL_TOKEN',
             'logging': {
                 'log_file': '',
@@ -84,7 +85,7 @@ class TestTopggBot:
 
     async def test_no_token(self, config: Config, mock_task_start: Mock) -> None:
         del config['dbl_token']
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
@@ -96,7 +97,7 @@ class TestTopggBot:
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 15.1
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
@@ -115,7 +116,7 @@ class TestTopggBot:
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 14.9
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
@@ -124,7 +125,7 @@ class TestTopggBot:
         cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_close(self, config: Config, mock_task_cancel: Mock) -> None:
-        bot = Bot(config, intents=discord.Intents.all())
+        bot = Bot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         bot._closed = True
@@ -140,6 +141,7 @@ class TestTopggAutoShardedBot:
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
             'application_id': 1,
+            'intents': discord.Intents.all(),
             'dbl_token': 'DBL_TOKEN',
             'logging': {
                 'log_file': '',
@@ -150,7 +152,7 @@ class TestTopggAutoShardedBot:
 
     async def test_no_token(self, config: Config, mock_task_start: Mock) -> None:
         del config['dbl_token']
-        bot = AutoShardedBot(config, intents=discord.Intents.all())
+        bot = AutoShardedBot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
@@ -162,7 +164,7 @@ class TestTopggAutoShardedBot:
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 15.1
-        bot = AutoShardedBot(config, intents=discord.Intents.all())
+        bot = AutoShardedBot(config)
         cast('Any', bot)._connection = MockConnection()
         bot.shard_count = 2
         await bot.setup_hook()
@@ -182,7 +184,7 @@ class TestTopggAutoShardedBot:
         self, config: Config, mock_in_minutes: Mock, mock_task_start: Mock
     ) -> None:
         mock_in_minutes.return_value = 14.9
-        bot = AutoShardedBot(config, intents=discord.Intents.all())
+        bot = AutoShardedBot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         await bot.on_ready()
@@ -191,7 +193,7 @@ class TestTopggAutoShardedBot:
         cast('AsyncMock', bot.session.post).assert_not_awaited()
 
     async def test_close(self, config: Config, mock_task_cancel: Mock) -> None:
-        bot = AutoShardedBot(config, intents=discord.Intents.all())
+        bot = AutoShardedBot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
         bot._closed = True

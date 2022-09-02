@@ -46,11 +46,17 @@ def mock_setup_logging(mocker: MockerFixture):
 
 
 @pytest.fixture
-def mock_config():
+def mock_config() -> Config:
     return {
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
-        'logging': {'log_file': 'botty.log'},
+        'application_id': 1,
+        'intents': discord.Intents.all(),
+        'logging': {
+            'log_file': 'botty.log',
+            'log_level': 'info',
+            'log_to_console': False,
+        },
     }
 
 
@@ -76,6 +82,8 @@ def test_run(
         {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
             'logging': {
                 'log_file': 'botty.log',
                 'log_to_console': False,
@@ -96,6 +104,8 @@ def test_run(
         {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
             'logging': {
                 'log_file': 'botty.log',
                 'log_level': 'warning',
@@ -126,6 +136,8 @@ def test_run_logging_config(
         {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
             'logging': {
                 'log_file': 'botty.log',
                 'log_to_console': True,
@@ -164,6 +176,8 @@ def test_run_log_to_console(
         {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
             'logging': {
                 'log_file': 'botty.log',
                 'log_to_console': True,
@@ -187,6 +201,8 @@ def test_run_log_level(
         {
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
             'logging': {
                 'log_file': 'botty.log',
                 'log_to_console': False,

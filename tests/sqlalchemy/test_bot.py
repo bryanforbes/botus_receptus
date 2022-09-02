@@ -22,6 +22,7 @@ class TestBotBase:
             'bot_name': 'botty',
             'discord_api_key': 'API_KEY',
             'application_id': 1,
+            'intents': discord.Intents.all(),
             'db_url': 'some://db/url',
             'logging': {
                 'log_file': '',
@@ -60,7 +61,7 @@ class TestBotBase:
         mock_create_async_engine: Mock,
         mock_bot_base_setup_hook: AsyncMock,
     ) -> None:
-        bot = Bot(config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all())
+        bot = Bot(config, sessionmaker=mock_sessionmaker)
         await bot.setup_hook()
 
         mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
@@ -72,7 +73,7 @@ class TestBotBase:
     async def test_close(
         self, config: Config, mock_sessionmaker: Mock, mock_bot_base_close: AsyncMock
     ) -> None:
-        bot = Bot(config, sessionmaker=mock_sessionmaker, intents=discord.Intents.all())
+        bot = Bot(config, sessionmaker=mock_sessionmaker)
         await bot.close()
 
         mock_sessionmaker.close_all.assert_called_once_with()  # type: ignore

@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any, cast
 
+import discord
 import pytest
 
 from botus_receptus.logging import setup_logging
@@ -51,6 +52,7 @@ def test_setup_logging(
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'application_id': 1,
+        'intents': discord.Intents.all(),
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': False,
@@ -95,6 +97,7 @@ def test_setup_logging_console(
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'application_id': 1,
+        'intents': discord.Intents.all(),
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': True,
@@ -119,6 +122,7 @@ def test_setup_logging_loggers(
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'application_id': 1,
+        'intents': discord.Intents.all(),
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': True,
@@ -156,6 +160,7 @@ def test_setup_logging_handler_cls(
         'bot_name': 'botty',
         'discord_api_key': 'API_KEY',
         'application_id': 1,
+        'intents': discord.Intents.all(),
         'logging': {
             'log_file': 'botty.log',
             'log_to_console': False,
