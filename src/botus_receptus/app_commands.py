@@ -9,10 +9,13 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
 
     from . import bot
+    from .client import AutoShardedClient, Client
 
 
 _T = TypeVar('_T')
-_ClientT = TypeVar('_ClientT', bound='bot.Bot | bot.AutoShardedBot')
+_ClientT = TypeVar(
+    '_ClientT', bound='Client | AutoShardedClient | bot.Bot | bot.AutoShardedBot'
+)
 
 _ADMIN_ONLY: Final = -1
 _TEST_ONLY: Final = -2

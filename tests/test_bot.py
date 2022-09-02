@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import discord
 import pytest
@@ -17,10 +17,6 @@ if TYPE_CHECKING:
 
 
 OriginalBot = commands.Bot
-
-
-class MockContext(commands.Context[Any]):
-    pass
 
 
 class MockConnection:
@@ -94,6 +90,7 @@ class TestBot:
         assert bot.bot_name == config['bot_name']
         assert bot.intents.value == config['intents'].value
         assert bot.default_prefix == prefix
+        assert bot.intents.value == config['intents'].value
 
         assert isinstance(bot, OriginalBot)
 
@@ -103,7 +100,7 @@ class TestBot:
         bot = Bot(config)
 
         bot.run_with_config()
-        run.assert_called_once_with('API_KEY', log_handler=None, log_formatter=None)
+        run.assert_called_once_with('API_KEY', log_handler=None)
 
     async def test_close(self, mocker: MockerFixture, config: Config) -> None:
         close = mocker.patch(
