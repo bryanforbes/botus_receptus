@@ -857,7 +857,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "9be421e4e4d4cd743b1fae7ce85531c1ed922d1c1fe532521371a87656a8974c"
+content-hash = "cd997031c98eb20531393c1a79854fd6ecf9961f02beda5d0c9e5c681c21963c"
 
 [metadata.files]
 aiohttp = [

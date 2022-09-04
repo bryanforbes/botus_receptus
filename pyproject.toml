@@ -29,7 +29,7 @@ db = ["asyncpg"]
 sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "~0.26.2"
 sqlalchemy2-stubs = "^0.0.2a27"
 black = "^22.8"
