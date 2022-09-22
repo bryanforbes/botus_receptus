@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Mapping, Sequence
     from typing_extensions import LiteralString, StrictTypeGuard
 
     from asyncpg import Connection, Record
@@ -19,7 +19,7 @@ __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 ConditionsType: TypeAlias = 'Sequence[LiteralString] | LiteralString'
 
 
-def _is_literal_string(obj: Any) -> StrictTypeGuard[LiteralString]:
+def _is_literal_string(obj: object) -> StrictTypeGuard[LiteralString]:
     return isinstance(obj, str)
 
 
@@ -61,7 +61,7 @@ def _get_group_by_string(group_by: Sequence[LiteralString] | None, /) -> Literal
 async def select_all(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     where: ConditionsType | None = ...,
@@ -77,7 +77,7 @@ async def select_all(
 async def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     where: ConditionsType | None = ...,
@@ -92,7 +92,7 @@ async def select_all(
 def select_all(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     where: ConditionsType | None = None,
@@ -119,7 +119,7 @@ def select_all(
 async def select_one(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     record_class: None = ...,
@@ -134,7 +134,7 @@ async def select_one(
 async def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     record_class: type[_Record],
@@ -148,7 +148,7 @@ async def select_one(
 def select_one(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     record_class: type[_Record] | None = None,
@@ -172,7 +172,7 @@ def select_one(
 async def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
@@ -190,7 +190,7 @@ async def search(
 async def search(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
@@ -207,7 +207,7 @@ async def search(
 def search(
     db: Connection[_Record] | PoolConnectionProxy[_Record],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
     search_columns: Sequence[LiteralString],
@@ -251,9 +251,9 @@ def search(
 async def update(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
-    values: dict[LiteralString, Any],
+    values: Mapping[LiteralString, Any],
     where: ConditionsType | None = None,
 ) -> None:
     set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
@@ -267,7 +267,7 @@ async def insert_into(
     /,
     *,
     table: LiteralString,
-    values: dict[LiteralString, Any],
+    values: Mapping[LiteralString, object],
     extra: str = '',
 ) -> None:
     columns: list[LiteralString] = []
@@ -290,7 +290,7 @@ async def insert_into(
 async def delete_from(
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
-    *args: Any,
+    *args: object,
     table: LiteralString,
     where: ConditionsType,
 ) -> None:

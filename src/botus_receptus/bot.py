@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import aiohttp
 import discord
@@ -27,7 +27,7 @@ class BotBase(bot.BotBase):
         def application_id(self) -> int:
             ...
 
-    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.config = config
         self.bot_name = self.config['bot_name']
         self.default_prefix = self.config.get('command_prefix', '$')
@@ -42,8 +42,8 @@ class BotBase(bot.BotBase):
         )
 
     def run_with_config(self) -> None:
-        cast('Any', self).run(
-            self.config['discord_api_key'], log_handler=None, log_formatter=None
+        cast('discord.Client', self).run(
+            self.config['discord_api_key'], log_handler=None
         )
 
     async def setup_hook(self) -> None:

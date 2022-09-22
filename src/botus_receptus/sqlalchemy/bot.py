@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -19,8 +19,8 @@ class BotBase(bot.BotBase):
         config: Config,
         /,
         sessionmaker: AsyncSessionMakerType,
-        *args: Any,
-        **kwargs: Any,
+        *args: object,
+        **kwargs: object,
     ) -> None:
         self.__Session = sessionmaker
 

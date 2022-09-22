@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
+from typing import TYPE_CHECKING, Final, TypedDict
 
 import async_timeout
 import discord
@@ -36,7 +36,9 @@ class BotBase(bot.BotBase):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
         async with async_timeout.timeout(10):
-            user_id = cast('Any', self).user.id
+            user_id: int = (
+                self.user.id  # pyright: ignore [reportUnknownMemberType, reportGeneralTypeIssues]  # noqa: B950
+            )
 
             _log.info('POSTing stats for bot %s: %s', user_id, stats)
 

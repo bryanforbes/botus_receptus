@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Generator, Sequence
+from collections.abc import Awaitable, Generator, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
 from typing import (
@@ -64,7 +64,7 @@ class AcquireContextManager(
     def __aenter__(self) -> Coroutine[PoolConnectionProxy[Record]]:
         return self.__acquire()
 
-    async def __aexit__(self, /, *args: Any) -> None:
+    async def __aexit__(self, /, *args: object) -> None:
         await self.ctx.release()
 
 
@@ -98,7 +98,7 @@ class Context(commands.Context[_BotT]):
     async def select_all(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
@@ -113,7 +113,7 @@ class Context(commands.Context[_BotT]):
     async def select_all(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
@@ -128,14 +128,14 @@ class Context(commands.Context[_BotT]):
     def select_all(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = None,
         group_by: Sequence[LiteralString] | None = None,
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: Any | None = None,
+        record_class: type[_Record] | None = None,
     ) -> Coroutine[list[Any]]:
         return select_all(
             self.db,
@@ -153,7 +153,7 @@ class Context(commands.Context[_BotT]):
     async def select_one(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
@@ -167,7 +167,7 @@ class Context(commands.Context[_BotT]):
     async def select_one(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = ...,
@@ -181,13 +181,13 @@ class Context(commands.Context[_BotT]):
     def select_one(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         where: ConditionsType | None = None,
         group_by: Sequence[LiteralString] | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: Any | None = None,
+        record_class: type[_Record] | None = None,
     ) -> Coroutine[Any | None]:
         return select_one(
             self.db,
@@ -204,7 +204,7 @@ class Context(commands.Context[_BotT]):
     async def search(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
@@ -221,7 +221,7 @@ class Context(commands.Context[_BotT]):
     async def search(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
@@ -238,7 +238,7 @@ class Context(commands.Context[_BotT]):
     def search(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
         columns: Sequence[LiteralString],
         search_columns: Sequence[LiteralString],
@@ -247,7 +247,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = None,
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: Any | None = None,
+        record_class: type[_Record] | None = None,
     ) -> Coroutine[list[Any]]:
         return search(
             self.db,
@@ -267,9 +267,9 @@ class Context(commands.Context[_BotT]):
     def update(
         self,
         /,
-        *args: Any,
+        *args: object,
         table: LiteralString,
-        values: dict[LiteralString, Any],
+        values: Mapping[LiteralString, object],
         where: ConditionsType | None = None,
     ) -> Coroutine[None]:
         return update(self.db, *args, table=table, values=values, where=where)
@@ -280,13 +280,13 @@ class Context(commands.Context[_BotT]):
         /,
         *,
         table: LiteralString,
-        values: dict[LiteralString, Any],
+        values: Mapping[LiteralString, object],
         extra: str = '',
     ) -> Coroutine[None]:
         return insert_into(self.db, table=table, values=values, extra=extra)
 
     @ensure_db
     def delete_from(
-        self, /, *args: Any, table: LiteralString, where: ConditionsType
+        self, /, *args: object, table: LiteralString, where: ConditionsType
     ) -> Coroutine[None]:
         return delete_from(self.db, *args, table=table, where=where)

@@ -70,7 +70,7 @@ def cli(
         default='info',
     )
     def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
-        cast('dict[str, Any]', bot_config['logging']).update(
+        cast('dict[str, object]', bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )
 

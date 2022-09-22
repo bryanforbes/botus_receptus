@@ -22,7 +22,7 @@ class async_sessionmaker(AsyncSessionMakerType):
         autoflush: bool = True,
         info: MutableMapping[Any, Any] | None = None,
         expire_on_commit: bool = True,
-        **kw: Any,
+        **kw: object,
     ) -> None:
         super().__init__(
             bind=bind,

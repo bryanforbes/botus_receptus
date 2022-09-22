@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypedDict
+from typing import TYPE_CHECKING, TypedDict
 
 import discord
 
@@ -35,11 +35,11 @@ class Embed(discord.Embed):
         /,
         *,
         type: EmbedType = 'rich',
-        description: Any | None = None,
-        title: Any | None = None,
+        description: object | None = None,
+        title: object | None = None,
         colour: discord.Color | int | None = None,
         color: discord.Color | int | None = None,
-        url: Any | None = None,
+        url: object | None = None,
         timestamp: datetime | None = None,
         footer: str | FooterData | None = None,
         author: str | AuthorData | None = None,

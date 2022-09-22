@@ -103,7 +103,7 @@ class TestBot:
         bot = Bot(config)
 
         bot.run_with_config()
-        run.assert_called_once_with('API_KEY', log_handler=None, log_formatter=None)
+        run.assert_called_once_with('API_KEY', log_handler=None)
 
     async def test_close(self, mocker: MockerFixture, config: Config) -> None:
         close = mocker.patch(

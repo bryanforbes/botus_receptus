@@ -38,14 +38,14 @@ def _get_special_method(method: _F, /) -> _F | None:
 class BotBase(bot.BotBase):
     pool: Pool[Record]
 
-    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         if not _has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')
 
         super().__init__(config, *args, **kwargs)
 
     async def setup_hook(self) -> None:
-        pool_kwargs: dict[str, Any] = {}
+        pool_kwargs: dict[str, object] = {}
 
         if (init := _get_special_method(self.__db_init_connection__)) is not None:
             pool_kwargs['init'] = init

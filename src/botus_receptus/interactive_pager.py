@@ -418,12 +418,12 @@ class InteractivePager(Generic[_T]):
 
 
 class FieldPage(Page):
-    fields: AsyncIterable[tuple[str, str]]
+    fields: AsyncIterable[tuple[int, object]]
 
 
 @define
 class FieldPageSource(PageSource[_T]):
-    def format_field(self, index: int, entry: _T, /) -> tuple[Any, Any]:
+    def format_field(self, index: int, entry: _T, /) -> tuple[int, _T]:
         return (index, entry)
 
     async def get_page(self, page: int, /) -> FieldPage:
