@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "botus_receptus"
-version = "22.9.2"
+version = "22.9.3"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -30,12 +30,12 @@ sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "~0.26.2"
+asyncpg-stubs = "~0.26.3"
 sqlalchemy2-stubs = "^0.0.2a27"
 black = "^22.8"
 coverage = {extras = ["toml"], version = "^6.4"}
 flake8 = "~5.0"
-flake8-bugbear = ">=21.3.1"
+flake8-bugbear = ">=22.9.11"
 flake8-comprehensions = "^3.10.0"
 flake8-implicit-str-concat = "^0.3.0"
 flake8-pie = "^0.16.0"
