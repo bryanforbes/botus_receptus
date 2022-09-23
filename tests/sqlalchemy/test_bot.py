@@ -38,7 +38,7 @@ class TestBotBase:
         mock.close_all = mocker.Mock()
         return mock
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True)
     def mock_create_async_engine(self, mocker: MockerFixture) -> Mock:
         return mocker.patch(
             'botus_receptus.sqlalchemy.bot.create_async_engine',
@@ -46,32 +46,42 @@ class TestBotBase:
         )
 
     @pytest.fixture
-    def mock_bot_base_setup_hook(self, mocker: MockerFixture) -> AsyncMock:
-        return mocker.patch('botus_receptus.bot.BotBase.setup_hook')
-
-    @pytest.fixture
     def mock_bot_base_close(self, mocker: MockerFixture) -> AsyncMock:
         return mocker.patch('botus_receptus.bot.BotBase.close')
 
-    async def test_setup_hook(
+    def test_init(
         self,
         mocker: MockerFixture,
         config: Config,
         mock_sessionmaker: Mock,
         mock_create_async_engine: Mock,
-        mock_bot_base_setup_hook: AsyncMock,
     ) -> None:
-        bot = Bot(config, sessionmaker=mock_sessionmaker)
-        await bot.setup_hook()
+        Bot(config, sessionmaker=mock_sessionmaker)
 
         mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
             bind=mocker.sentinel.create_async_engine_result
         )
         mock_create_async_engine.assert_called_once_with('some://db/url')
-        mock_bot_base_setup_hook.assert_awaited_once_with()
+
+    def test_init_engine_kwargs(
+        self,
+        mocker: MockerFixture,
+        config: Config,
+        mock_sessionmaker: Mock,
+        mock_create_async_engine: Mock,
+    ) -> None:
+        Bot(config, sessionmaker=mock_sessionmaker, engine_kwargs={'one': 1, 'two': 2})
+
+        mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
+            bind=mocker.sentinel.create_async_engine_result
+        )
+        mock_create_async_engine.assert_called_once_with('some://db/url', one=1, two=2)
 
     async def test_close(
-        self, config: Config, mock_sessionmaker: Mock, mock_bot_base_close: AsyncMock
+        self,
+        config: Config,
+        mock_sessionmaker: Mock,
+        mock_bot_base_close: AsyncMock,
     ) -> None:
         bot = Bot(config, sessionmaker=mock_sessionmaker)
         await bot.close()

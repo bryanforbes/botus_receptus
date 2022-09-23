@@ -7,34 +7,36 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from .. import bot
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
     from ..config import Config
     from .session import AsyncSessionMakerType
 
 
 class BotBase(bot.BotBase):
-    __Session: AsyncSessionMakerType
+    __sessionmaker: AsyncSessionMakerType
 
     def __init__(
         self,
         config: Config,
         /,
         sessionmaker: AsyncSessionMakerType,
+        engine_kwargs: Mapping[str, object] | None = None,
         *args: object,
         **kwargs: object,
     ) -> None:
-        self.__Session = sessionmaker
+        self.__sessionmaker = sessionmaker
 
         super().__init__(config, *args, **kwargs)
 
-    async def setup_hook(self) -> None:
-        self.__Session.configure(
-            bind=create_async_engine(self.config.get('db_url', '')),
+        engine_kwargs = engine_kwargs if engine_kwargs is not None else {}
+
+        self.__sessionmaker.configure(
+            bind=create_async_engine(self.config.get('db_url', ''), **engine_kwargs),
         )
 
-        await super().setup_hook()
-
     async def close(self) -> None:
-        self.__Session.close_all()
+        self.__sessionmaker.close_all()
 
         await super().close()
 
