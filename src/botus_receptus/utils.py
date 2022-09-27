@@ -167,6 +167,9 @@ async def send(
     view: discord.ui.View = ...,
     allowed_mentions: discord.AllowedMentions = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.WebhookMessage:
     ...
 
@@ -208,6 +211,9 @@ async def send(
     | None = ...,
     view: discord.ui.View = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.Message:
     ...
 
@@ -231,6 +237,9 @@ def send(
     | discord.MessageReference
     | discord.PartialMessage
     | None = _MISSING,
+    username: str = _MISSING,
+    avatar_url: str = _MISSING,
+    thread: discord.Thread | discord.Object = _MISSING,
 ) -> Coroutine[discord.Message]:
     if not isinstance(ctx_or_intx, (discord.Interaction, discord.Webhook)):
         messageable = (
@@ -274,6 +283,9 @@ def send(
             allowed_mentions=allowed_mentions,
             ephemeral=False if ephemeral is _MISSING else ephemeral,
             wait=True,
+            username=username,
+            avatar_url=avatar_url,
+            thread=thread,
         )
     else:
         return _send_interaction(
@@ -328,6 +340,9 @@ async def send_embed(
     view: discord.ui.View = ...,
     allowed_mentions: discord.AllowedMentions = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.WebhookMessage:
     ...
 
@@ -376,6 +391,9 @@ async def send_embed(
     | discord.PartialMessage = ...,
     view: discord.ui.View = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.Message:
     ...
 
@@ -401,6 +419,9 @@ def send_embed(
     reference: discord.Message
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
+    username: str = _MISSING,
+    avatar_url: str = _MISSING,
+    thread: discord.Thread | discord.Object = _MISSING,
 ) -> Coroutine[discord.Message]:
     return send(
         ctx_or_intx,
@@ -421,6 +442,9 @@ def send_embed(
         allowed_mentions=allowed_mentions,
         ephemeral=ephemeral,
         reference=reference,
+        username=username,
+        avatar_url=avatar_url,
+        thread=thread,
     )
 
 
@@ -463,6 +487,9 @@ async def send_embed_error(
     view: discord.ui.View = ...,
     allowed_mentions: discord.AllowedMentions = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.WebhookMessage:
     ...
 
@@ -510,6 +537,9 @@ async def send_embed_error(
     | discord.PartialMessage = ...,
     view: discord.ui.View = ...,
     ephemeral: bool = ...,
+    username: str = ...,
+    avatar_url: str = ...,
+    thread: discord.Thread | discord.Object = ...,
 ) -> discord.Message:
     ...
 
@@ -535,6 +565,9 @@ def send_embed_error(
     reference: discord.Message
     | discord.MessageReference
     | discord.PartialMessage = _MISSING,
+    username: str = _MISSING,
+    avatar_url: str = _MISSING,
+    thread: discord.Thread | discord.Object = _MISSING,
 ) -> Coroutine[discord.Message]:
     return send_embed(
         ctx_or_intx,
@@ -551,4 +584,7 @@ def send_embed_error(
         allowed_mentions=allowed_mentions,
         ephemeral=True if ephemeral is _MISSING else ephemeral,
         reference=reference,
+        username=username,
+        avatar_url=avatar_url,
+        thread=thread,
     )
