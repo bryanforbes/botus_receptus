@@ -68,6 +68,14 @@ def mock_message(mocker: MockerFixture) -> Mock:
 
 
 @pytest.fixture
+def mock_webhook(mocker: MockerFixture) -> Mock:
+    mock: Mock = mocker.create_autospec(discord.Webhook)
+    mock.configure_mock(**{'send.return_value': mocker.sentinel.webhook_send_return})
+
+    return mock
+
+
+@pytest.fixture
 def mock_interaction(mocker: MockerFixture) -> Mock:
     mock: Mock = mocker.create_autospec(discord.Interaction)
     mock.response = mocker.create_autospec(discord.InteractionResponse)
@@ -432,6 +440,80 @@ async def test_send_with_message(
         assert (
             mock_message.channel.send.await_args_list[0][1]['reference']  # type: ignore
             is mock_message
+        )
+
+
+@pytest.mark.parametrize(
+    'kwargs,expected_args,expected_embed',
+    [
+        (
+            {'content': 'asdf'},
+            {
+                'content': 'asdf',
+                'tts': False,
+                'files': discord.utils.MISSING,
+                'embeds': discord.utils.MISSING,
+                'allowed_mentions': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': False,
+                'wait': True,
+            },
+            None,
+        ),
+        (
+            {'embeds': [discord.Embed()]},
+            {
+                'content': discord.utils.MISSING,
+                'tts': False,
+                'files': discord.utils.MISSING,
+                'embeds': [ANY],
+                'allowed_mentions': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': False,
+                'wait': True,
+            },
+            {'type': 'rich'},
+        ),
+        (
+            {'ephemeral': True},
+            {
+                'content': discord.utils.MISSING,
+                'tts': False,
+                'files': discord.utils.MISSING,
+                'embeds': discord.utils.MISSING,
+                'allowed_mentions': discord.utils.MISSING,
+                'view': discord.utils.MISSING,
+                'ephemeral': True,
+                'wait': True,
+            },
+            None,
+        ),
+    ],
+)
+async def test_send_with_webhook(
+    mocker: MockerFixture,
+    mock_webhook: Mock,
+    kwargs: dict[str, Any],
+    expected_args: dict[str, Any],
+    expected_embed: dict[str, Any] | None,
+) -> None:
+    assert (
+        await utils.send(mock_webhook, **kwargs)
+    ) is mocker.sentinel.webhook_send_return
+
+    mock_webhook.send.assert_awaited_once_with(**expected_args)  # type: ignore
+
+    if expected_embed is None:
+        assert (
+            mock_webhook.send.await_args_list[0][1]['embeds']  # type: ignore
+            is discord.utils.MISSING
+        )
+    else:
+        assert (
+            mock_webhook.send.await_args_list[0][1]['embeds'][  # type: ignore
+                0
+            ].to_dict()
+            == expected_embed
         )
 
 

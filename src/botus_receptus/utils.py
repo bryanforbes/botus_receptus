@@ -157,6 +157,22 @@ async def send(
 
 @overload
 async def send(
+    ctx: discord.Webhook,
+    /,
+    *,
+    content: str = ...,
+    tts: bool = ...,
+    embeds: Sequence[discord.Embed] = ...,
+    files: Sequence[discord.File] = ...,
+    view: discord.ui.View = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    ephemeral: bool = ...,
+) -> discord.WebhookMessage:
+    ...
+
+
+@overload
+async def send(
     interaction: discord.Interaction,
     /,
     *,
@@ -173,7 +189,10 @@ async def send(
 
 @overload
 async def send(
-    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     *,
     content: str = ...,
@@ -194,7 +213,10 @@ async def send(
 
 
 def send(
-    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx_or_intx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     content: str = _MISSING,
     tts: bool = False,
@@ -210,7 +232,7 @@ def send(
     | discord.PartialMessage
     | None = _MISSING,
 ) -> Coroutine[discord.Message]:
-    if not isinstance(ctx_or_intx, discord.Interaction):
+    if not isinstance(ctx_or_intx, (discord.Interaction, discord.Webhook)):
         messageable = (
             ctx_or_intx
             if isinstance(ctx_or_intx, discord.abc.Messageable)
@@ -241,6 +263,17 @@ def send(
             ),
             reference=reference,  # type: ignore
             view=None if view is _MISSING else view,  # type: ignore
+        )
+    elif isinstance(ctx_or_intx, discord.Webhook):
+        return ctx_or_intx.send(
+            content=content,
+            tts=tts,
+            embeds=embeds,
+            files=files,
+            view=view,
+            allowed_mentions=allowed_mentions,
+            ephemeral=False if ephemeral is _MISSING else ephemeral,
+            wait=True,
         )
     else:
         return _send_interaction(
@@ -280,6 +313,27 @@ async def send_embed(
 
 @overload
 async def send_embed(
+    interaction: discord.Webhook,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Iterable[FieldData] | None = None,
+    view: discord.ui.View = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    ephemeral: bool = ...,
+) -> discord.WebhookMessage:
+    ...
+
+
+@overload
+async def send_embed(
     interaction: discord.Interaction,
     /,
     *,
@@ -301,7 +355,10 @@ async def send_embed(
 
 @overload
 async def send_embed(
-    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     *,
     description: str | None = None,
@@ -324,7 +381,10 @@ async def send_embed(
 
 
 def send_embed(
-    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx_or_intx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     description: str | None = None,
     title: str | None = None,
@@ -388,6 +448,27 @@ async def send_embed_error(
 
 @overload
 async def send_embed_error(
+    interaction: discord.Webhook,
+    /,
+    *,
+    description: str | None = None,
+    title: str | None = None,
+    color: discord.Color | int | None = None,
+    footer: str | FooterData | None = None,
+    thumbnail: str | None = None,
+    author: str | AuthorData | None = None,
+    image: str | None = None,
+    timestamp: datetime | None = None,
+    fields: Iterable[FieldData] | None = None,
+    view: discord.ui.View = ...,
+    allowed_mentions: discord.AllowedMentions = ...,
+    ephemeral: bool = ...,
+) -> discord.WebhookMessage:
+    ...
+
+
+@overload
+async def send_embed_error(
     interaction: discord.Interaction,
     /,
     *,
@@ -409,7 +490,10 @@ async def send_embed_error(
 
 @overload
 async def send_embed_error(
-    ctx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     *,
     description: str | None = None,
@@ -431,7 +515,10 @@ async def send_embed_error(
 
 
 def send_embed_error(
-    ctx_or_intx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    ctx_or_intx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     /,
     description: str | None = None,
     title: str | None = None,
