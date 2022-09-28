@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from typing import TYPE_CHECKING, Final, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Final, TypedDict, TypeVar, overload
 
 import discord
 import pendulum
@@ -13,6 +13,7 @@ from .embed import AuthorData, Embed, FieldData, FooterData
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Container, Iterable, Sequence
     from datetime import datetime
+    from typing_extensions import NotRequired, Unpack
 
     from pendulum.duration import Duration
 
@@ -96,61 +97,82 @@ async def race(
             future.cancel()
 
 
+class BaseSendKwargs(TypedDict):
+    allowed_mentions: NotRequired[discord.AllowedMentions]
+    view: NotRequired[discord.ui.View]
+
+
+class BaseSendMessageableKwargs(BaseSendKwargs):
+    delete_after: NotRequired[float]
+    nonce: NotRequired[int]
+    reference: NotRequired[
+        discord.Message | discord.MessageReference | discord.PartialMessage | None
+    ]
+
+
+class BaseSendInteractionKwargs(BaseSendKwargs):
+    ephemeral: NotRequired[bool]
+
+
+class BaseSendWebhookKwargs(BaseSendInteractionKwargs):
+    username: NotRequired[str]
+    avatar_url: NotRequired[str]
+    thread: NotRequired[discord.Thread | discord.Object]
+
+
+class BaseSendAnyKwargs(BaseSendMessageableKwargs, BaseSendWebhookKwargs):
+    ...
+
+
+class SendKwargs(BaseSendKwargs):
+    content: NotRequired[str]
+    tts: NotRequired[bool]
+    embeds: NotRequired[Sequence[discord.Embed]]
+    files: NotRequired[Sequence[discord.File]]
+
+
+class SendMessageableKwargs(SendKwargs, BaseSendMessageableKwargs):
+    ...
+
+
+class SendInteractionKwargs(SendKwargs, BaseSendInteractionKwargs):
+    ...
+
+
+class SendWebhookKwargs(SendKwargs, BaseSendInteractionKwargs):
+    ...
+
+
+class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs):
+    ...
+
+
+def _pop_value(kwargs: TypedDict, key: str, default: object) -> Any:
+    value = kwargs.pop(key, _MISSING)  # type: ignore
+    return default if value is _MISSING else value
+
+
 async def _send_interaction(
     itx: discord.Interaction,
     /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    files: Sequence[discord.File] = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
+    **kwargs: Unpack[SendInteractionKwargs],
 ) -> discord.Message:
-    ephemeral = False if ephemeral is _MISSING else ephemeral
+    kwargs['ephemeral'] = _pop_value(kwargs, 'ephemeral', False)
 
     if not itx.response.is_done():
-        await itx.response.send_message(
-            content=None if content is _MISSING else content,
-            tts=tts,
-            embeds=embeds,
-            files=files,
-            view=view,
-            allowed_mentions=allowed_mentions,
-            ephemeral=ephemeral,
-        )
+        kwargs['content'] = _pop_value(kwargs, 'content', None)
+
+        await itx.response.send_message(**kwargs)
         return await itx.original_response()
     else:
-        return await itx.followup.send(
-            content=content,
-            tts=tts,
-            embeds=embeds,
-            files=files,
-            view=view,
-            allowed_mentions=allowed_mentions,
-            ephemeral=ephemeral,
-            wait=True,
-        )
+        return await itx.followup.send(**kwargs, wait=True)
 
 
 @overload
 async def send(
     ctx: discord.abc.Messageable | discord.Message,
     /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    files: Sequence[discord.File] = ...,
-    delete_after: float = ...,
-    nonce: int = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = ...,
-    view: discord.ui.View = ...,
+    **kwargs: Unpack[SendMessageableKwargs],
 ) -> discord.Message:
     ...
 
@@ -159,17 +181,7 @@ async def send(
 async def send(
     ctx: discord.Webhook,
     /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    files: Sequence[discord.File] = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    **kwargs: Unpack[SendWebhookKwargs],
 ) -> discord.WebhookMessage:
     ...
 
@@ -178,14 +190,7 @@ async def send(
 async def send(
     interaction: discord.Interaction,
     /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    files: Sequence[discord.File] = ...,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
+    **kwargs: Unpack[SendInteractionKwargs],
 ) -> discord.Message:
     ...
 
@@ -197,23 +202,7 @@ async def send(
     | discord.Webhook
     | discord.Interaction,
     /,
-    *,
-    content: str = ...,
-    tts: bool = ...,
-    embeds: Sequence[discord.Embed] = ...,
-    files: Sequence[discord.File] = ...,
-    delete_after: float = ...,
-    nonce: int = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    **kwargs: Unpack[SendAnyKwargs],
 ) -> discord.Message:
     ...
 
@@ -224,6 +213,7 @@ def send(
     | discord.Webhook
     | discord.Interaction,
     /,
+    *,
     content: str = _MISSING,
     tts: bool = False,
     embeds: Sequence[discord.Embed] = _MISSING,
@@ -300,70 +290,57 @@ def send(
         )
 
 
+class EmbedKwargs(TypedDict):
+    description: NotRequired[str | None]
+    title: NotRequired[str | None]
+    color: NotRequired[discord.Color | int | None]
+    footer: NotRequired[str | FooterData | None]
+    thumbnail: NotRequired[str | None]
+    author: NotRequired[str | AuthorData | None]
+    image: NotRequired[str | None]
+    timestamp: NotRequired[datetime | None]
+    fields: NotRequired[Sequence[FieldData] | None]
+
+
+class SendEmbedKwargs(BaseSendKwargs, EmbedKwargs):
+    ...
+
+
+class SendEmbedMessageableKwargs(SendEmbedKwargs, BaseSendMessageableKwargs):
+    ...
+
+
+class SendEmbedWebhookKwargs(SendEmbedKwargs, BaseSendWebhookKwargs):
+    ...
+
+
+class SendEmbedInteractionKwargs(SendEmbedKwargs, BaseSendInteractionKwargs):
+    ...
+
+
+class SendEmbedAnyKwargs(SendEmbedKwargs, BaseSendAnyKwargs):
+    ...
+
+
 @overload
 async def send_embed(
     ctx: discord.abc.Messageable | discord.Message,
     /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = ...,
-    view: discord.ui.View = ...,
+    **kwargs: Unpack[SendEmbedMessageableKwargs],
 ) -> discord.Message:
     ...
 
 
 @overload
 async def send_embed(
-    interaction: discord.Webhook,
-    /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    interaction: discord.Webhook, /, **kwargs: Unpack[SendEmbedWebhookKwargs]
 ) -> discord.WebhookMessage:
     ...
 
 
 @overload
 async def send_embed(
-    interaction: discord.Interaction,
-    /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
+    interaction: discord.Interaction, /, **kwargs: Unpack[SendEmbedInteractionKwargs]
 ) -> discord.Message:
     ...
 
@@ -375,25 +352,7 @@ async def send_embed(
     | discord.Webhook
     | discord.Interaction,
     /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    allowed_mentions: discord.AllowedMentions = ...,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> discord.Message:
     ...
 
@@ -404,113 +363,59 @@ def send_embed(
     | discord.Webhook
     | discord.Interaction,
     /,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = _MISSING,
-    allowed_mentions: discord.AllowedMentions = _MISSING,
-    ephemeral: bool = _MISSING,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = _MISSING,
-    username: str = _MISSING,
-    avatar_url: str = _MISSING,
-    thread: discord.Thread | discord.Object = _MISSING,
+    **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> Coroutine[discord.Message]:
-    return send(
-        ctx_or_intx,
-        embeds=[
-            Embed(
-                description=description,
-                title=title,
-                color=color,
-                footer=footer,
-                thumbnail=thumbnail,
-                author=author,
-                image=image,
-                timestamp=timestamp,
-                fields=fields,
-            )
-        ],
-        view=view,
-        allowed_mentions=allowed_mentions,
-        ephemeral=ephemeral,
-        reference=reference,
-        username=username,
-        avatar_url=avatar_url,
-        thread=thread,
-    )
+    embed_kwargs: EmbedKwargs = {}
+
+    if 'description' in kwargs:
+        embed_kwargs['description'] = kwargs.pop('description')
+
+    if 'title' in kwargs:
+        embed_kwargs['title'] = kwargs.pop('title')
+
+    if 'color' in kwargs:
+        embed_kwargs['color'] = kwargs.pop('color')
+
+    if 'footer' in kwargs:
+        embed_kwargs['footer'] = kwargs.pop('footer')
+
+    if 'thumbnail' in kwargs:
+        embed_kwargs['thumbnail'] = kwargs.pop('thumbnail')
+
+    if 'author' in kwargs:
+        embed_kwargs['author'] = kwargs.pop('author')
+
+    if 'image' in kwargs:
+        embed_kwargs['image'] = kwargs.pop('image')
+
+    if 'timestamp' in kwargs:
+        embed_kwargs['timestamp'] = kwargs.pop('timestamp')
+
+    if 'fields' in kwargs:
+        embed_kwargs['fields'] = kwargs.pop('fields')
+
+    return send(ctx_or_intx, embeds=[Embed(**embed_kwargs)], **kwargs)
 
 
 @overload
 async def send_embed_error(
     ctx: discord.abc.Messageable | discord.Message,
     /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = ...,
-    view: discord.ui.View = ...,
+    **kwargs: Unpack[SendEmbedMessageableKwargs],
 ) -> discord.Message:
     ...
 
 
 @overload
 async def send_embed_error(
-    interaction: discord.Webhook,
-    /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    interaction: discord.Webhook, /, **kwargs: Unpack[SendEmbedWebhookKwargs]
 ) -> discord.WebhookMessage:
     ...
 
 
 @overload
 async def send_embed_error(
-    interaction: discord.Interaction,
-    /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = ...,
-    allowed_mentions: discord.AllowedMentions = ...,
-    ephemeral: bool = ...,
+    interaction: discord.Interaction, /, **kwargs: Unpack[SendEmbedInteractionKwargs]
 ) -> discord.Message:
     ...
 
@@ -522,24 +427,7 @@ async def send_embed_error(
     | discord.Webhook
     | discord.Interaction,
     /,
-    *,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = ...,
-    view: discord.ui.View = ...,
-    ephemeral: bool = ...,
-    username: str = ...,
-    avatar_url: str = ...,
-    thread: discord.Thread | discord.Object = ...,
+    **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> discord.Message:
     ...
 
@@ -550,41 +438,12 @@ def send_embed_error(
     | discord.Webhook
     | discord.Interaction,
     /,
-    description: str | None = None,
-    title: str | None = None,
-    color: discord.Color | int | None = None,
-    footer: str | FooterData | None = None,
-    thumbnail: str | None = None,
-    author: str | AuthorData | None = None,
-    image: str | None = None,
-    timestamp: datetime | None = None,
-    fields: Iterable[FieldData] | None = None,
-    view: discord.ui.View = _MISSING,
-    allowed_mentions: discord.AllowedMentions = _MISSING,
-    ephemeral: bool = _MISSING,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage = _MISSING,
-    username: str = _MISSING,
-    avatar_url: str = _MISSING,
-    thread: discord.Thread | discord.Object = _MISSING,
+    **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> Coroutine[discord.Message]:
-    return send_embed(
-        ctx_or_intx,
-        description=description,
-        title=title,
-        color=discord.Color.red() if color is None else color,
-        footer=footer,
-        thumbnail=thumbnail,
-        author=author,
-        image=image,
-        timestamp=timestamp,
-        fields=fields,
-        view=view,
-        allowed_mentions=allowed_mentions,
-        ephemeral=True if ephemeral is _MISSING else ephemeral,
-        reference=reference,
-        username=username,
-        avatar_url=avatar_url,
-        thread=thread,
-    )
+    if 'color' not in kwargs:
+        kwargs['color'] = discord.Color.red()
+
+    if 'ephemeral' not in kwargs:
+        kwargs['ephemeral'] = True
+
+    return send_embed(ctx_or_intx, **kwargs)

@@ -276,8 +276,7 @@ class TestDbUtil:
     ):
         await utils.search(cast('Any', mock_db), *args, **kwargs)
 
-        expected_args = args.copy()
-        expected_args.append(' & '.join(kwargs['terms']))
+        expected_args = [*args, ' & '.join(kwargs['terms'])]
 
         mock_db.fetch.assert_called_once_with(
             expected_query, *expected_args, record_class=None

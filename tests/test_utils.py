@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
+from typing_extensions import assert_type
 from unittest.mock import ANY, AsyncMock, Mock
 
 import discord
@@ -235,12 +236,15 @@ async def test_race_timeout(
 async def test_send_with_context(
     mocker: MockerFixture,
     mock_context: Mock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendMessageableKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
     assert (
-        await utils.send(mock_context, **kwargs)
+        assert_type(
+            await utils.send(cast('commands.Context[Any]', mock_context), **kwargs),
+            discord.Message,
+        )
     ) is mocker.sentinel.context_send_return
 
     mock_context.send.assert_awaited_once_with(**expected_args)  # type: ignore
@@ -320,12 +324,17 @@ async def test_send_with_context(
 async def test_send_with_messageable(
     mocker: MockerFixture,
     mock_messageable: Mock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendMessageableKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
     assert (
-        await utils.send(mock_messageable, **kwargs)
+        assert_type(
+            await utils.send(
+                cast('discord.abc.Messageable', mock_messageable), **kwargs
+            ),
+            discord.Message,
+        )
     ) is mocker.sentinel.messageable_send_return
 
     mock_messageable.send.assert_awaited_once_with(**expected_args)  # type: ignore
@@ -408,12 +417,15 @@ async def test_send_with_messageable(
 async def test_send_with_message(
     mocker: MockerFixture,
     mock_message: Mock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendMessageableKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
     assert (
-        await utils.send(mock_message, **kwargs)
+        assert_type(
+            await utils.send(cast('discord.Message', mock_message), **kwargs),
+            discord.Message,
+        )
     ) is mocker.sentinel.message_send_return
 
     mock_message.channel.send.assert_awaited_once_with(**expected_args)  # type: ignore
@@ -502,12 +514,15 @@ async def test_send_with_message(
 async def test_send_with_webhook(
     mocker: MockerFixture,
     mock_webhook: Mock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendWebhookKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
     assert (
-        await utils.send(mock_webhook, **kwargs)
+        assert_type(
+            await utils.send(cast('discord.Webhook', mock_webhook), **kwargs),
+            discord.WebhookMessage,
+        )
     ) is mocker.sentinel.webhook_send_return
 
     mock_webhook.send.assert_awaited_once_with(**expected_args)  # type: ignore
@@ -618,13 +633,18 @@ async def test_send_with_webhook(
 async def test_send_with_interaction(
     mocker: MockerFixture,
     mock_interaction: Mock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendInteractionKwargs,
     is_done: bool,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any] | None,
 ) -> None:
     mock_interaction.configure_mock(**{'response.is_done.return_value': is_done})
-    assert (await utils.send(mock_interaction, **kwargs)) is (
+    assert (
+        assert_type(
+            await utils.send(cast('discord.Interaction', mock_interaction), **kwargs),
+            discord.Message,
+        )
+    ) is (
         mocker.sentinel.original_response_return
         if not is_done
         else mocker.sentinel.followup_send_return
@@ -679,44 +699,17 @@ async def test_send_with_interaction(
     [
         (
             {},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': discord.utils.MISSING,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY]},
             {'type': 'rich'},
         ),
         (
             {'description': 'asdf'},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': discord.utils.MISSING,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY]},
             {'type': 'rich', 'description': 'asdf'},
         ),
         (
             {'reference': [object()]},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': ANY,
-                'view': discord.utils.MISSING,
-                'ephemeral': discord.utils.MISSING,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'reference': ANY},
             {'type': 'rich'},
         ),
     ],
@@ -725,12 +718,17 @@ async def test_send_embed_with_context(
     mocker: MockerFixture,
     mock_context: Mock,
     mock_send: AsyncMock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendEmbedMessageableKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any],
 ) -> None:
     assert (
-        await utils.send_embed(mock_context, **kwargs)
+        assert_type(
+            await utils.send_embed(
+                cast('commands.Context[Any]', mock_context), **kwargs
+            ),
+            discord.Message,
+        )
     ) is mocker.sentinel.utils_send_return
 
     mock_send.assert_awaited_once_with(mock_context, **expected_args)
@@ -741,32 +739,10 @@ async def test_send_embed_with_context(
 @pytest.mark.parametrize(
     'kwargs,expected_args,expected_embed',
     [
-        (
-            {},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': discord.utils.MISSING,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
-            {'type': 'rich'},
-        ),
+        ({}, {'embeds': [ANY]}, {'type': 'rich'}),
         (
             {'description': 'asdf', 'ephemeral': False},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': False,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': False},
             {'type': 'rich', 'description': 'asdf'},
         ),
     ],
@@ -775,12 +751,17 @@ async def test_send_embed_with_interaction(
     mocker: MockerFixture,
     mock_interaction: Mock,
     mock_send: AsyncMock,
-    kwargs: dict[str, Any],
+    kwargs: utils.SendEmbedInteractionKwargs,
     expected_args: dict[str, Any],
     expected_embed: dict[str, Any],
 ) -> None:
     assert (
-        await utils.send_embed(mock_interaction, **kwargs)
+        assert_type(
+            await utils.send_embed(
+                cast('discord.Interaction', mock_interaction), **kwargs
+            ),
+            discord.Message,
+        )
     ) is mocker.sentinel.utils_send_return
 
     mock_send.assert_awaited_once_with(mock_interaction, **expected_args)
@@ -793,58 +774,22 @@ async def test_send_embed_with_interaction(
     [
         (
             {},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': True},
             {'type': 'rich', 'color': 15158332},
         ),
         (
             {'description': 'asdf'},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': True},
             {'type': 'rich', 'description': 'asdf', 'color': 15158332},
         ),
         (
             {'reference': [object()]},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': ANY,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'reference': ANY, 'ephemeral': True},
             {'type': 'rich', 'color': 15158332},
         ),
         (
             {'color': discord.Color.blue()},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': True},
             {'type': 'rich', 'color': 3447003},
         ),
     ],
@@ -858,7 +803,12 @@ async def test_send_embed_error_with_context(
     expected_embed: dict[str, Any],
 ) -> None:
     assert (
-        await utils.send_embed_error(mock_context, **kwargs)
+        assert_type(
+            await utils.send_embed_error(
+                cast('commands.Context[Any]', mock_context), **kwargs
+            ),
+            discord.Message,
+        )
     ) is mocker.sentinel.utils_send_return
 
     mock_send.assert_awaited_once_with(mock_context, **expected_args)
@@ -871,44 +821,17 @@ async def test_send_embed_error_with_context(
     [
         (
             {},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': True},
             {'type': 'rich', 'color': discord.Color.red().value},
         ),
         (
             {'description': 'asdf', 'ephemeral': False},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': False,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': False},
             {'type': 'rich', 'description': 'asdf', 'color': discord.Color.red().value},
         ),
         (
             {'title': 'asdf', 'color': discord.Color.blue()},
-            {
-                'embeds': [ANY],
-                'allowed_mentions': discord.utils.MISSING,
-                'reference': discord.utils.MISSING,
-                'view': discord.utils.MISSING,
-                'ephemeral': True,
-                'username': discord.utils.MISSING,
-                'avatar_url': discord.utils.MISSING,
-                'thread': discord.utils.MISSING,
-            },
+            {'embeds': [ANY], 'ephemeral': True},
             {'type': 'rich', 'title': 'asdf', 'color': discord.Color.blue().value},
         ),
     ],
@@ -922,7 +845,12 @@ async def test_send_embed_error_with_interaction(
     expected_embed: dict[str, Any],
 ) -> None:
     assert (
-        await utils.send_embed_error(mock_interaction, **kwargs)
+        assert_type(
+            await utils.send_embed_error(
+                cast('discord.Interaction', mock_interaction), **kwargs
+            ),
+            discord.Message,
+        )
     ) is mocker.sentinel.utils_send_return
 
     mock_send.assert_awaited_once_with(mock_interaction, **expected_args)
