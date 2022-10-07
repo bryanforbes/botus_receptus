@@ -68,7 +68,7 @@ test = ["flake8 (>=3.9.2,<3.10.0)", "pycodestyle (>=2.7.0,<2.8.0)", "uvloop (>=0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.26.3"
+version = "0.26.4"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
@@ -860,7 +860,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e78e84c4bab74fd42ce9d347dfc54352181571144dbdcf91ac15da76492bc466"
+content-hash = "709ac32a1fca373bca570cdc5f71144617537f2002664db92cf899746c7bf291"
 
 [metadata.files]
 aiohttp = [
@@ -997,8 +997,8 @@ asyncpg = [
     {file = "asyncpg-0.26.0.tar.gz", hash = "sha256:77e684a24fee17ba3e487ca982d0259ed17bae1af68006f4cf284b23ba20ea2c"},
 ]
 asyncpg-stubs = [
-    {file = "asyncpg-stubs-0.26.3.tar.gz", hash = "sha256:f3b52e3dcdc5c0b937edcc63aba1fffa4040d1baed555ba4ac7eb1937d94842f"},
-    {file = "asyncpg_stubs-0.26.3-py3-none-any.whl", hash = "sha256:1bd9854b98de5451c98ea79d90a7c8303276ef0bd6be0425f28f6f2c702f5398"},
+    {file = "asyncpg-stubs-0.26.4.tar.gz", hash = "sha256:f61e4dbeddcc587009e6745504ce6deb6234955e6ab94c05f963723ccb6e4a3a"},
+    {file = "asyncpg_stubs-0.26.4-py3-none-any.whl", hash = "sha256:04be46e33b4d93327b4ea7f9a662831ee35923647fed98934b69cd26ab12cdf4"},
 ]
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
