@@ -31,7 +31,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "~0.26.4"
-sqlalchemy2-stubs = "^0.0.2a27"
+sqlalchemy2-stubs = "^0.0.2a29"
 black = "^22.10"
 coverage = {extras = ["toml"], version = "^6.5"}
 flake8 = "~5.0"
