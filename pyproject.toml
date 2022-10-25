@@ -30,7 +30,7 @@ sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "~0.26.5"
+asyncpg-stubs = "~0.26.6"
 sqlalchemy2-stubs = "^0.0.2a29"
 black = "^22.10"
 coverage = {extras = ["toml"], version = "^6.5"}
@@ -46,7 +46,7 @@ flake8-type-checking = "^2.2.0"
 isort = "^5.10"
 mypy = ">=0.982"
 pre-commit = "^2.20"
-pytest = "^7.1"
+pytest = "^7.2"
 pytest-asyncio = "^0.20.1"
 pytest-cov = "^4.0"
 pytest-mock = "^3.10"
