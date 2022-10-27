@@ -111,6 +111,9 @@ minversion = "6.0"
 addopts ="--cov=botus_receptus --cov-branch --cov-report=term"
 testpaths = ["tests"]
 asyncio_mode = "auto"
+filterwarnings = [
+  "ignore:.*'audioop' is deprecated:DeprecationWarning"
+]
 
 [tool.tox]
 legacy_tox_ini = """

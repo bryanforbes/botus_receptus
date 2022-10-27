@@ -6,7 +6,11 @@ import discord
 import pytest
 from discord import app_commands
 
-from botus_receptus.app_commands import CommandTree, admin_guild_only, test_guilds_only
+from botus_receptus.app_commands import (
+    CommandTree,
+    admin_guild_only,
+    test_guilds_only as _test_guilds_only,
+)
 
 if TYPE_CHECKING:
     from botus_receptus.bot import Bot
@@ -44,7 +48,7 @@ def test_admin_guild_only_invoke() -> None:
 
 def test_test_guilds_only() -> None:
     @app_commands.command()
-    @test_guilds_only
+    @_test_guilds_only
     async def my_command(interaction: discord.Interaction) -> None:
         ...
 
@@ -53,7 +57,7 @@ def test_test_guilds_only() -> None:
 
 def test_test_guilds_only_invoke() -> None:
     @app_commands.command()
-    @test_guilds_only()
+    @_test_guilds_only()
     async def my_command(interaction: discord.Interaction) -> None:
         ...
 
@@ -79,7 +83,7 @@ class TestCommandTree:
             ...
 
         @app_commands.command()
-        @test_guilds_only()
+        @_test_guilds_only()
         async def my_test_command(interaction: discord.Interaction) -> None:
             ...
 
