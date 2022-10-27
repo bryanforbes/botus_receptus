@@ -115,7 +115,7 @@ asyncio_mode = "auto"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py310,report
+envlist = clean,py310,py311,report
 isolated_build = True
 
 [testenv]
@@ -130,10 +130,16 @@ deps =
 extras =
     all
 setenv =
-    py{310}: COVERAGE_FILE=.coverage.{envname}
+    py{310,311}: COVERAGE_FILE=.coverage.{envname}
 commands = py.test {posargs:-vv}
 depends =
-    report: py310
+    py31{0,1}: clean
+    report: py310,py311
+
+[testenv:clean]
+deps = coverage[toml]
+skip_install = true
+commands = coverage erase
 
 [testenv:report]
 deps = coverage[toml]
