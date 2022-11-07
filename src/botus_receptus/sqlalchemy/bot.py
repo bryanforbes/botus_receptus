@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import close_all_sessions
 
 from .. import bot
 
@@ -36,7 +37,7 @@ class BotBase(bot.BotBase):
         )
 
     async def close(self) -> None:
-        self.__sessionmaker.close_all()
+        close_all_sessions()
 
         await super().close()
 

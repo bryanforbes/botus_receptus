@@ -32,6 +32,10 @@ class TestBotBase:
         }
 
     @pytest.fixture
+    def mock_close_all_sessions(self, mocker: MockerFixture) -> Mock:
+        return mocker.patch('botus_receptus.sqlalchemy.bot.close_all_sessions')
+
+    @pytest.fixture
     def mock_sessionmaker(self, mocker: MockerFixture) -> Mock:
         mock = mocker.Mock()
         mock.configure = mocker.Mock()
@@ -82,9 +86,11 @@ class TestBotBase:
         config: Config,
         mock_sessionmaker: Mock,
         mock_bot_base_close: AsyncMock,
+        mock_close_all_sessions: Mock,
     ) -> None:
         bot = Bot(config, sessionmaker=mock_sessionmaker)
         await bot.close()
 
-        mock_sessionmaker.close_all.assert_called_once_with()  # type: ignore
+        mock_close_all_sessions.assert_called_once_with()
+        mock_sessionmaker.close_all.assert_not_called()  # type: ignore
         mock_bot_base_close.assert_awaited_once_with()
