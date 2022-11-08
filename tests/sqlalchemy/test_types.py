@@ -86,8 +86,8 @@ class TestTSVector:
     def test_match(self, user_table: type[User]) -> None:
         expr = user_table.search_index.match('something')  # type: ignore
 
-        assert str(expr.compile(dialect=postgresql.dialect())) == (  # type: ignore
-            '''users.search_index @@ to_tsquery('pg_catalog.finnish', '''
+        assert str(expr.compile(dialect=postgresql.dialect())) == (
+            '''users.search_index @@ plainto_tsquery('pg_catalog.finnish', '''
             '''%(search_index_1)s)'''
         )
 
@@ -98,21 +98,17 @@ class TestTSVector:
 
     def test_match_concatenation(self, user_table: type[User]) -> None:
         concat = user_table.search_index | user_table.search_index  # type: ignore
-        assert str(
-            concat.match('something').compile(
-                dialect=postgresql.dialect()  # type: ignore
-            )
-        ) == (
+        assert str(concat.match('something').compile(dialect=postgresql.dialect())) == (
             '(users.search_index || users.search_index) @@ '
-            "to_tsquery('pg_catalog.finnish', %(param_1)s)"
+            "plainto_tsquery('pg_catalog.finnish', %(param_1)s)"
         )
 
     def test_match_with_catalog(self, user_table: type[User]) -> None:
         expr = user_table.search_index.match(  # type: ignore
             'something', postgresql_regconfig='pg_catalog.simple'
         )
-        assert str(expr.compile(dialect=postgresql.dialect())) == (  # type: ignore
-            '''users.search_index @@ to_tsquery('pg_catalog.simple', '''
+        assert str(expr.compile(dialect=postgresql.dialect())) == (
+            '''users.search_index @@ plainto_tsquery('pg_catalog.simple', '''
             '''%(search_index_1)s)'''
         )
 

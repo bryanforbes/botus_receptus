@@ -1,34 +1,16 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from sqlalchemy import BigInteger, Boolean, String, TypeDecorator as _TypeDecorator
+from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
-from sqlalchemy.types import TypeEngine
 
-if TYPE_CHECKING:
-    from sqlalchemy.sql import ColumnElement
-
-
-_T = TypeVar('_T')
 _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
-
-if TYPE_CHECKING:
-    _TSVectorComparatorBase = TypeEngine.Comparator['TSVector']
-
-    class TypeDecorator(_TypeDecorator[_T]):
-        ...
-
-else:
-    _TSVectorComparatorBase = TSVECTOR.Comparator
-
-    class TypeDecorator(_TypeDecorator, Generic[_T]):
-        ...
 
 
 class Snowflake(TypeDecorator[int]):
-    impl = String
+    impl: String = String  # pyright: ignore
     cache_ok = True
 
     def process_bind_param(self, value: int | None, dialect: object) -> str | None:
@@ -47,14 +29,21 @@ class Snowflake(TypeDecorator[int]):
         return Snowflake(self.impl.length)
 
 
-class _TSVectorComparator(_TSVectorComparatorBase):
-    def match(self, other: object, **kwargs: object) -> ColumnElement[Boolean]:
-        if 'postgresql_regconfig' not in kwargs and 'regconfig' in self.type.options:
-            kwargs['postgresql_regconfig'] = self.type.options['regconfig']
-        return TSVECTOR.Comparator.match(self, other, **kwargs)
+class _TSVectorComparator(TSVECTOR.Comparator[str]):
+    def match(self, other: object, **kwargs: object) -> ColumnOperators:
+        if TYPE_CHECKING:
+            assert isinstance(self.expr.type, TypeDecorator)
 
-    def __or__(self, other: object) -> ColumnElement[TSVector]:
-        return self.op('||')(other)  # type: ignore
+        if (
+            'postgresql_regconfig' not in kwargs
+            and 'regconfig' in self.expr.type.options
+        ):
+            kwargs['postgresql_regconfig'] = self.expr.type.options['regconfig']
+
+        return super().match(other, **kwargs)
+
+    def __or__(self, other: object) -> Operators:
+        return self.op('||')(other)
 
 
 class TSVector(TypeDecorator[str]):
@@ -62,7 +51,7 @@ class TSVector(TypeDecorator[str]):
     cache_ok = True
 
     @property
-    def comparator_factory(self) -> type[_TSVectorComparator]:  # type: ignore
+    def comparator_factory(self) -> type[_TSVectorComparator]:
         return _TSVectorComparator
 
     def __init__(self, *args: object, **kwargs: object) -> None:
