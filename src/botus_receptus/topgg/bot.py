@@ -56,11 +56,9 @@ class BotBase(bot.BotBase):
 
         self.__topgg_task.start(token)
 
-        next_hour: DateTime = (
-            pendulum.now('UTC').start_of('hour').add(hours=1)  # type: ignore
-        )
+        next_hour: DateTime = pendulum.now(pendulum.UTC).start_of('hour').add(hours=1)
 
-        if next_hour.diff().in_minutes() > 15:  # type: ignore
+        if next_hour.diff().in_minutes() > 15:
             await self.__topgg_task(token)
 
     async def close(self) -> None:
