@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker as _sessionmaker
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
-    AsyncSessionMakerType = _sessionmaker[AsyncSession]  # type: ignore
+    AsyncSessionMakerType = _sessionmaker[AsyncSession]
 
 else:
 
