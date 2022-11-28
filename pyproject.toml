@@ -17,7 +17,7 @@ attrs = ">=22.1.0"
 click = ">=8.0"
 "discord.py" = "^2.1.0"
 tomli = "^2.0.1"
-"pendulum" = {git = "https://github.com/sdispater/pendulum.git", rev = "9d06ff3c9805869ccfc4163172b658482ec50087"}
+"pendulum" = {git = "https://github.com/sdispater/pendulum.git", rev = "46b27c122d060ae9df139311ca0d4d880ac5137e"}
 asyncpg = {version = "~0.27.0", optional = true}
 sqlalchemy = {version = "~1.4", optional = true}
 uvloop = {version = "~0.17.0", optional = true}

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from datetime import time
 from typing import TYPE_CHECKING, Final, TypedDict
 
 import async_timeout
@@ -13,8 +12,6 @@ from .. import bot
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired
-
-    from pendulum.datetime import DateTime
 
 _log: Final = logging.getLogger(__name__)
 
@@ -30,7 +27,7 @@ class BotBase(bot.BotBase):
     def _get_topgg_stats(self) -> _BotStats:
         raise NotImplementedError
 
-    @tasks.loop(time=list(map(time, range(24))))
+    @tasks.loop(time=[pendulum.time(hour) for hour in range(24)])
     async def __topgg_task(self, token: str, /) -> None:
         stats = self._get_topgg_stats()
         headers = {'Content-Type': 'application/json', 'Authorization': token}
@@ -56,7 +53,7 @@ class BotBase(bot.BotBase):
 
         self.__topgg_task.start(token)
 
-        next_hour: DateTime = pendulum.now(pendulum.UTC).start_of('hour').add(hours=1)
+        next_hour = pendulum.now(pendulum.UTC).start_of('hour').add(hours=1)
 
         if next_hour.diff().in_minutes() > 15:
             await self.__topgg_task(token)

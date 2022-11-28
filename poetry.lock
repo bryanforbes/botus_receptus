@@ -508,8 +508,8 @@ tzdata = ">=2020.1"
 [package.source]
 type = "git"
 url = "https://github.com/sdispater/pendulum.git"
-reference = "9d06ff3c9805869ccfc4163172b658482ec50087"
-resolved_reference = "9d06ff3c9805869ccfc4163172b658482ec50087"
+reference = "46b27c122d060ae9df139311ca0d4d880ac5137e"
+resolved_reference = "46b27c122d060ae9df139311ca0d4d880ac5137e"
 
 [[package]]
 name = "platformdirs"
@@ -871,7 +871,7 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "2b4bd64f2eabbf8711dd50dcf45f712cabb252dd06033f794f061d6ecb4273f1"
+content-hash = "b8a66fa29ae40671c250693935ed9b42f81c90060676a82cda8cedff1ed58a31"
 
 [metadata.files]
 aiohttp = [
