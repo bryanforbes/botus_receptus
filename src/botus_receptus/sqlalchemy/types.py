@@ -47,23 +47,23 @@ class Snowflake(TypeDecorator[int]):
         return Snowflake(self.impl.length)
 
 
+class _TSVectorComparator(_TSVectorComparatorBase):
+    def match(self, other: object, **kwargs: object) -> ColumnElement[Boolean]:
+        if 'postgresql_regconfig' not in kwargs and 'regconfig' in self.type.options:
+            kwargs['postgresql_regconfig'] = self.type.options['regconfig']
+        return TSVECTOR.Comparator.match(self, other, **kwargs)
+
+    def __or__(self, other: object) -> ColumnElement[TSVector]:
+        return self.op('||')(other)  # type: ignore
+
+
 class TSVector(TypeDecorator[str]):
     impl = TSVECTOR
     cache_ok = True
 
-    class Comparator(_TSVectorComparatorBase):
-        def match(self, other: object, **kwargs: object) -> ColumnElement[Boolean]:
-            if (
-                'postgresql_regconfig' not in kwargs
-                and 'regconfig' in self.type.options
-            ):
-                kwargs['postgresql_regconfig'] = self.type.options['regconfig']
-            return TSVECTOR.Comparator.match(self, other, **kwargs)
-
-        def __or__(self, other: object) -> ColumnElement[TSVector]:
-            return self.op('||')(other)  # type: ignore
-
-    comparator_factory = Comparator  # type: ignore
+    @property
+    def comparator_factory(self) -> type[_TSVectorComparator]:  # type: ignore
+        return _TSVectorComparator
 
     def __init__(self, *args: object, **kwargs: object) -> None:
         """
