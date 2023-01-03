@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import close_all_sessions
 
 from .. import bot
@@ -11,17 +11,16 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
     from ..config import Config
-    from .session import AsyncSessionMakerType
 
 
 class BotBase(bot.BotBase):
-    __sessionmaker: AsyncSessionMakerType
+    __sessionmaker: async_sessionmaker[Any]
 
     def __init__(
         self,
         config: Config,
         /,
-        sessionmaker: AsyncSessionMakerType,
+        sessionmaker: async_sessionmaker[Any],
         engine_kwargs: Mapping[str, object] | None = None,
         *args: object,
         **kwargs: object,
