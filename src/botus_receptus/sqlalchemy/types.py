@@ -10,7 +10,7 @@ _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
 
 
 class Snowflake(TypeDecorator[int]):
-    impl: String = String  # pyright: ignore
+    impl = String
     cache_ok = True
 
     def process_bind_param(self, value: int | None, dialect: object) -> str | None:
@@ -26,7 +26,10 @@ class Snowflake(TypeDecorator[int]):
         return int(value)
 
     def copy(self, /, **kwargs: object) -> Snowflake:
-        return Snowflake(self.impl.length)
+        if TYPE_CHECKING:
+            assert isinstance(self.impl_instance, String)
+
+        return Snowflake(self.impl_instance.length)
 
 
 class _TSVectorComparator(TSVECTOR.Comparator[str]):
