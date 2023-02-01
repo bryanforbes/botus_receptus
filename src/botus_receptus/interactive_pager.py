@@ -384,14 +384,10 @@ class InteractivePager(Generic[_T]):
 
     @classmethod
     def create(cls, ctx: commands.Context[Any], source: PageSource[_T], /) -> Self:
-        if ctx.guild is not None and ctx.guild.me is not None:
-            permissions = cast('discord.abc.GuildChannel', ctx.channel).permissions_for(
-                ctx.guild.me
-            )
+        if ctx.guild is not None:
+            permissions = ctx.channel.permissions_for(ctx.guild.me)
         else:
-            permissions = cast('discord.GroupChannel', ctx.channel).permissions_for(
-                ctx.bot.user
-            )
+            permissions = ctx.channel.permissions_for(ctx.bot.user)
 
         if not permissions.embed_links:
             raise CannotPaginate(CannotPaginateReason.embed_links)
