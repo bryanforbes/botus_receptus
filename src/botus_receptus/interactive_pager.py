@@ -175,7 +175,7 @@ class InteractivePager(Generic[_T]):
         if reaction.message.id != self.message.id:
             return False
 
-        for (emoji, show_for_two, func) in self.reaction_emojis:
+        for emoji, show_for_two, func in self.reaction_emojis:
             if reaction.emoji == emoji:
                 if self.source.max_pages == 2 and not show_for_two:
                     return False
