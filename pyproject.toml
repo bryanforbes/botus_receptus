@@ -19,7 +19,7 @@ click = ">=8.0"
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
 asyncpg = {version = "~0.27.0", optional = true}
-sqlalchemy = {version = "~2.0.1", optional = true}
+sqlalchemy = {version = "~2.0.2", optional = true}
 uvloop = {version = "~0.17.0", optional = true}
 greenlet = {version = "^2.0.2", optional = true}
 
@@ -36,7 +36,7 @@ coverage = {extras = ["toml"], version = "^7.1"}
 flake8 = "~6.0"
 flake8-bugbear = ">=23.1.14"
 flake8-comprehensions = "^3.10.1"
-flake8-implicit-str-concat = "^0.3.0"
+flake8-implicit-str-concat = "^0.4.0"
 flake8-pie = "^0.16.0"
 flake8-pyi = "^23.1"
 flake8-pytest-style = "^1.6.0"
