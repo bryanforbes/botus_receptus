@@ -6,6 +6,9 @@ from typing import TYPE_CHECKING, TypeVar
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
 _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
 
 
@@ -25,7 +28,7 @@ class Snowflake(TypeDecorator[int]):
 
         return int(value)
 
-    def copy(self, /, **kwargs: object) -> Snowflake:
+    def copy(self, /, **kwargs: object) -> Self:
         if TYPE_CHECKING:
             assert isinstance(self.impl_instance, String)
 
