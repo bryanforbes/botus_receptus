@@ -4,7 +4,8 @@ import asyncio
 import contextlib
 import enum
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, cast
+from typing_extensions import Self, TypeVar
 
 import discord
 import discord.abc
@@ -18,13 +19,12 @@ from .utils import race
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterable, Awaitable, Callable
-    from typing_extensions import Self
 
     from aioitertools.types import AnyIterable
     from discord.ext import commands
 
 
-_T = TypeVar('_T')
+_T = TypeVar('_T', infer_variance=True)
 _WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member | None]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny

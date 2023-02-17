@@ -1,17 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar, overload
+from typing import TYPE_CHECKING, Any, TypeAlias, overload
+from typing_extensions import LiteralString, TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
-    from typing_extensions import LiteralString, StrictTypeGuard
+    from typing_extensions import StrictTypeGuard
 
     from asyncpg import Connection, Record
     from asyncpg.pool import PoolConnectionProxy
 
     from ..types import Coroutine
 
-_Record = TypeVar('_Record', bound='Record')
+_Record = TypeVar('_Record', bound='Record', infer_variance=True)
 
 __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 

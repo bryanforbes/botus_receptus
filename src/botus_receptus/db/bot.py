@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any
+from typing_extensions import TypeVar
 
 from .. import bot
 from .context import Context
@@ -23,7 +24,7 @@ except ImportError:
     _has_asyncpg = False
 
 
-_F = TypeVar('_F', bound='Callable[..., Any]')
+_F = TypeVar('_F', bound='Callable[..., Any]', infer_variance=True)
 
 
 def _db_special_method(func: _F, /) -> _F:

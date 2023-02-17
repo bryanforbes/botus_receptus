@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, Any, Protocol, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Protocol, overload
+from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from unittest import mock
 
-_T = TypeVar('_T')
+_T = TypeVar('_T', infer_variance=True)
 
 
 class ClockAdvancer(Protocol):

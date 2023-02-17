@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from typing import TYPE_CHECKING, Any, Final, TypedDict, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Final, TypedDict, overload
+from typing_extensions import NotRequired, TypeVar, Unpack
 
 import discord
 import pendulum
@@ -13,13 +14,12 @@ from .embed import AuthorData, Embed, FieldData, FooterData
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Container, Iterable, Sequence
     from datetime import datetime
-    from typing_extensions import NotRequired, Unpack
 
     from pendulum.duration import Duration
 
     from .types import Coroutine
 
-_T = TypeVar('_T')
+_T = TypeVar('_T', infer_variance=True)
 
 _MISSING: Final = discord.utils.MISSING
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final, TypeVar
+from typing import TYPE_CHECKING, Final
+from typing_extensions import TypeVar
 
 import discord
 from discord.ext import commands
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
     from .types import Coroutine
 
 
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
 
 _MISSING: Final = discord.utils.MISSING
 

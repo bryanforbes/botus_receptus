@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Final, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Final, overload
+from typing_extensions import TypeVar
 
 import discord
 from discord import app_commands
@@ -11,8 +12,10 @@ if TYPE_CHECKING:
     from . import bot
 
 
-_T = TypeVar('_T')
-_ClientT = TypeVar('_ClientT', bound='bot.Bot | bot.AutoShardedBot')
+_T = TypeVar('_T', infer_variance=True)
+_ClientT = TypeVar(
+    '_ClientT', bound='bot.Bot | bot.AutoShardedBot', infer_variance=True
+)
 
 _ADMIN_ONLY: Final = -1
 _TEST_ONLY: Final = -2

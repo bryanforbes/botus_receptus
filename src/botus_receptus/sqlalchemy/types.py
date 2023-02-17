@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
+from typing_extensions import Self, TypeVar
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
-if TYPE_CHECKING:
-    from typing_extensions import Self
-
-_FlagT = TypeVar('_FlagT', bound=_EnumFlag)
+_FlagT = TypeVar('_FlagT', bound=_EnumFlag, infer_variance=True)
 
 
 class Snowflake(TypeDecorator[int]):

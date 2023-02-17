@@ -3,15 +3,8 @@ from __future__ import annotations
 from collections.abc import Awaitable, Generator, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Concatenate,
-    ParamSpec,
-    TypeAlias,
-    TypeVar,
-    overload,
-)
+from typing import TYPE_CHECKING, Any, Concatenate, ParamSpec, TypeAlias, overload
+from typing_extensions import LiteralString, TypeVar
 
 from attrs import define
 from discord.ext import commands
@@ -28,17 +21,15 @@ from .utils import (
 )
 
 if TYPE_CHECKING:
-    from typing_extensions import LiteralString
-
     from asyncpg import Record
     from asyncpg.pool import PoolConnectionProxy
 
     from .bot import AutoShardedBot, Bot
 
-_Record = TypeVar('_Record', bound='Record')
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_Record = TypeVar('_Record', bound='Record', infer_variance=True)
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
 _P = ParamSpec('_P')
-_R = TypeVar('_R')
+_R = TypeVar('_R', infer_variance=True)
 
 _DbMethod: TypeAlias = CoroutineFunc[Concatenate['Context[Any]', _P], _R]
 

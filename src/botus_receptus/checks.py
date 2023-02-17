@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any
+from typing_extensions import TypeVar
 
 import discord
 from discord.ext import commands
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 
     from .types import AnyCoroutineFunc, AnyExtCommand
 
-_F = TypeVar('_F', bound='AnyCoroutineFunc | AnyExtCommand')
+_F = TypeVar('_F', bound='AnyCoroutineFunc | AnyExtCommand', infer_variance=True)
 
 
 def dm_only() -> Callable[[_F], _F]:
