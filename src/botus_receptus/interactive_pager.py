@@ -262,7 +262,7 @@ class InteractivePager(Generic[_T]):
         ]
 
         try:
-            message = await self.bot.wait_for(  # pyright: ignore
+            message = await self.bot.wait_for(
                 'message', check=self.__message_check, timeout=30.0
             )
         except asyncio.TimeoutError:
@@ -344,7 +344,7 @@ class InteractivePager(Generic[_T]):
         if self.can_manage_messages:
 
             def wait_for_reaction() -> Awaitable[_WaitResult]:
-                return self.bot.wait_for(  # pyright: ignore
+                return self.bot.wait_for(
                     'reaction_add', check=self.__react_check, timeout=120.0
                 )
 
@@ -354,10 +354,8 @@ class InteractivePager(Generic[_T]):
                 return self.bot.loop.create_task(
                     race(
                         [
-                            self.bot.wait_for(  # pyright: ignore
-                                'reaction_add', check=self.__react_check
-                            ),
-                            self.bot.wait_for(  # pyright: ignore
+                            self.bot.wait_for('reaction_add', check=self.__react_check),
+                            self.bot.wait_for(
                                 'reaction_remove', check=self.__react_check
                             ),
                         ],
