@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 
 _T = TypeVar('_T', infer_variance=True)
-_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member | None]
+_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -262,7 +262,7 @@ class InteractivePager(Generic[_T]):
         ]
 
         try:
-            message = await self.bot.wait_for(
+            message = await self.bot.wait_for(  # pyright: ignore
                 'message', check=self.__message_check, timeout=30.0
             )
         except asyncio.TimeoutError:
@@ -343,19 +343,21 @@ class InteractivePager(Generic[_T]):
 
         if self.can_manage_messages:
 
-            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
-                return self.bot.wait_for(
+            def wait_for_reaction() -> Awaitable[_WaitResult]:
+                return self.bot.wait_for(  # pyright: ignore
                     'reaction_add', check=self.__react_check, timeout=120.0
                 )
 
         else:
 
-            def wait_for_reaction() -> asyncio.Future[_WaitResult]:
+            def wait_for_reaction() -> Awaitable[_WaitResult]:
                 return self.bot.loop.create_task(
                     race(
                         [
-                            self.bot.wait_for('reaction_add', check=self.__react_check),
-                            self.bot.wait_for(
+                            self.bot.wait_for(  # pyright: ignore
+                                'reaction_add', check=self.__react_check
+                            ),
+                            self.bot.wait_for(  # pyright: ignore
                                 'reaction_remove', check=self.__react_check
                             ),
                         ],
@@ -376,8 +378,7 @@ class InteractivePager(Generic[_T]):
                     break
 
             with contextlib.suppress(Exception):
-                if user is not None:
-                    await self.message.remove_reaction(reaction, user)
+                await self.message.remove_reaction(reaction, user)
 
             assert self.match is not None
             await self.match()
