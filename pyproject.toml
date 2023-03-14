@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "botus_receptus"
-version = "23.3.3.dev0"
+version = "23.3.3"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
