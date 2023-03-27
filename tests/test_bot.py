@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import discord
 import pytest
@@ -17,23 +17,6 @@ if TYPE_CHECKING:
 
 
 OriginalBot = commands.Bot
-
-
-class MockContext(commands.Context[Any]):
-    pass
-
-
-class MockConnection:
-    def __init__(self) -> None:
-        self.user = discord.Object(12)
-        self.guilds = [1, 2, 3, 4]
-        self.application_id = 1
-
-
-class MockHTTPClient:
-    def __init__(self, mocker: MockerFixture) -> None:
-        self.bulk_upsert_global_commands = mocker.AsyncMock()
-        self.bulk_upsert_guild_commands = mocker.AsyncMock()
 
 
 @pytest.fixture(autouse=True)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from typing import TYPE_CHECKING, Any, cast
+from typing_extensions import override
 
 import discord
 import pytest
@@ -46,6 +47,7 @@ class MockReaction:
 class SubPageSource(PageSource[str]):
     strings: list[str]
 
+    @override
     def get_page_items(self, page: int) -> list[str]:
         base = (page - 1) * self.per_page
         return self.strings[base : base + self.per_page]
@@ -55,6 +57,7 @@ class SubPageSource(PageSource[str]):
 class SubFieldPageSource(FieldPageSource[str]):
     strings: list[str]
 
+    @override
     def get_page_items(self, page: int) -> list[str]:
         base = (page - 1) * self.per_page
         return self.strings[base : base + self.per_page]

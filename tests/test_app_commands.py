@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 import discord
 import pytest
+from attrs import define, field
 from discord import app_commands
 
 from botus_receptus.app_commands import (
@@ -16,16 +17,16 @@ if TYPE_CHECKING:
     from botus_receptus.bot import Bot
 
 
+@define
 class MockConnection:
-    def __init__(self) -> None:
-        self._command_tree: app_commands.CommandTree[Any] | None = None
+    _command_tree: app_commands.CommandTree[Any] | None = field(default=None)
 
 
+@define
 class MockClient:
-    def __init__(self) -> None:
-        self.http = object()
-        self._connection = MockConnection()
-        self.config = {}
+    http: object = field(factory=object)
+    _connection: MockConnection = field(factory=MockConnection)
+    config: dict[str, Any] = field(factory=dict)
 
 
 def test_admin_guild_only() -> None:

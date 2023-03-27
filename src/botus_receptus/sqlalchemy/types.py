@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Flag as _EnumFlag
 from typing import TYPE_CHECKING
-from typing_extensions import Self, TypeVar
+from typing_extensions import Self, TypeVar, override
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
@@ -14,18 +14,21 @@ class Snowflake(TypeDecorator[int]):
     impl = String
     cache_ok = True
 
+    @override
     def process_bind_param(self, value: int | None, dialect: object) -> str | None:
         if value is None:
             return value
 
         return str(value)
 
+    @override
     def process_result_value(self, value: str | None, dialect: object) -> int | None:
         if value is None:
             return value
 
         return int(value)
 
+    @override
     def copy(self, /, **kwargs: object) -> Self:
         if TYPE_CHECKING:
             assert isinstance(self.impl_instance, String)
@@ -34,6 +37,7 @@ class Snowflake(TypeDecorator[int]):
 
 
 class _TSVectorComparator(TSVECTOR.Comparator[str]):
+    @override
     def match(self, other: object, **kwargs: object) -> ColumnOperators:
         if TYPE_CHECKING:
             assert isinstance(self.expr.type, TypeDecorator)
@@ -46,6 +50,7 @@ class _TSVectorComparator(TSVECTOR.Comparator[str]):
 
         return super().match(other, **kwargs)
 
+    @override
     def __or__(self, other: object) -> Operators:
         return self.op('||')(other)
 
@@ -58,6 +63,7 @@ class TSVector(TypeDecorator[str]):
     def comparator_factory(self) -> type[_TSVectorComparator]:
         return _TSVectorComparator
 
+    @override
     def __init__(self, *args: object, **kwargs: object) -> None:
         """
         Initializes new TSVectorType
@@ -77,18 +83,21 @@ class Flag(TypeDecorator[_FlagT]):
 
     _flag_cls: type[_FlagT]
 
+    @override
     def __init__(
         self, flag_cls: type[_FlagT], /, *args: object, **kwargs: object
     ) -> None:
         self._flag_cls = flag_cls
         super().__init__(*args, **kwargs)
 
+    @override
     def process_bind_param(self, value: _FlagT | None, dialect: object) -> int | None:
         if value is None:
             return None
 
         return value.value
 
+    @override
     def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
         if value is None:
             return None

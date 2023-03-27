@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
+from typing_extensions import override
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import close_all_sessions
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
 class BotBase(bot.BotBase):
     __sessionmaker: async_sessionmaker[Any]
 
+    @override
     def __init__(
         self,
         config: Config,
@@ -35,6 +37,7 @@ class BotBase(bot.BotBase):
             bind=create_async_engine(self.config.get('db_url', ''), **engine_kwargs),
         )
 
+    @override
     async def close(self) -> None:
         close_all_sessions()
 

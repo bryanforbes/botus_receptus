@@ -5,7 +5,7 @@ import contextlib
 import enum
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, cast
-from typing_extensions import Self, TypeVar
+from typing_extensions import Self, TypeVar, override
 
 import discord
 import discord.abc
@@ -40,6 +40,7 @@ class CannotPaginateReason(enum.IntEnum):
 class CannotPaginate(Exception):
     reason: CannotPaginateReason
 
+    @override
     def __init__(self, reason: CannotPaginateReason, /) -> None:
         self.reason = reason
 
@@ -106,6 +107,7 @@ class PageSource(Generic[_T]):
 class ListPageSource(PageSource[_T]):
     entries: list[_T]
 
+    @override
     def get_page_items(self, page: int, /) -> list[_T]:
         base = (page - 1) * self.per_page
         return self.entries[base : base + self.per_page]
@@ -421,6 +423,7 @@ class FieldPageSource(PageSource[_T]):
     def format_field(self, index: int, entry: _T, /) -> tuple[int, _T]:
         return (index, entry)
 
+    @override
     async def get_page(self, page: int, /) -> FieldPage:
         entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
         fields = starmap(

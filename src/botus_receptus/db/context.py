@@ -4,7 +4,7 @@ from collections.abc import Awaitable, Generator, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
 from typing import TYPE_CHECKING, Any, Concatenate, ParamSpec, TypeAlias, overload
-from typing_extensions import LiteralString, TypeVar
+from typing_extensions import LiteralString, TypeVar, override
 
 from attrs import define
 from discord.ext import commands
@@ -49,12 +49,15 @@ class AcquireContextManager(
 
         return ctx.db
 
+    @override
     def __await__(self) -> Generator[Any, None, PoolConnectionProxy[Record]]:
         return self.__acquire().__await__()
 
+    @override
     def __aenter__(self) -> Coroutine[PoolConnectionProxy[Record]]:
         return self.__acquire()
 
+    @override
     async def __aexit__(self, /, *args: object) -> None:
         await self.ctx.release()
 

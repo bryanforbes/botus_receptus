@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from typing import TYPE_CHECKING, cast
+from typing_extensions import override
 
 import aiohttp
 import discord
@@ -27,6 +28,7 @@ class BotBase(bot.BotBase):
         def application_id(self) -> int:
             ...
 
+    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.config = config
         self.bot_name = self.config['bot_name']
@@ -64,6 +66,7 @@ class BotBase(bot.BotBase):
 
         await self.tree.sync()
 
+    @override
     async def close(self) -> None:
         await super().close()
         await self.session.close()

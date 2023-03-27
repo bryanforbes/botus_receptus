@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
+from attrs import define, field
 from pendulum.duration import Duration
 
 from botus_receptus.topgg.bot import AutoShardedBot, Bot
@@ -16,18 +17,22 @@ if TYPE_CHECKING:
     from ..types import MockerFixture
 
 
+@define
 class MockGuild:
-    __slots__ = ('id', 'shard_id')
+    id: int
+    shard_id: int = field(init=False)
 
-    def __init__(self, id: int) -> None:
-        self.id = id
-        self.shard_id = id % 2
+    def __attrs_post_init__(self) -> None:
+        self.shard_id = self.id % 2
 
 
+@define
 class MockConnection:
-    __slots__ = ('user', 'guilds', 'shard_info', 'application_id')
+    user: discord.Object = field(init=False)
+    guilds: list[MockGuild] = field(init=False)
+    application_id: int = field(init=False)
 
-    def __init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self.user = discord.Object(12)
         self.guilds = [
             MockGuild(1),

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
+from typing_extensions import override
 
 import discord
 import pytest
@@ -20,22 +21,22 @@ class MockContext:
     author: MockUser | None = field(default=None)
 
 
+@define
 class MockGuild:
-    __slots__ = ('owner',)
-
-    def __init__(self, owner: Any):
-        self.owner = owner
+    owner: Any
 
 
+@define
 class MockUser:
-    def __init__(self, id: int):
-        self.id = id
+    id: int
 
+    @override
     def __eq__(self, other: Any):
         return self.id == other.id
 
 
 class MockDMChannel(discord.DMChannel):
+    @override
     def __init__(self):
         pass
 

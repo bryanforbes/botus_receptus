@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Final, overload
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, override
 
 import discord
 from discord import app_commands
@@ -58,6 +58,7 @@ def test_guilds_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
 
 
 class CommandTree(app_commands.CommandTree[_ClientT]):
+    @override
     def add_command(
         self,
         command: app_commands.Command[Any, ..., Any]

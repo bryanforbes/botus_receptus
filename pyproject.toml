@@ -105,6 +105,7 @@ reportPrivateUsage = "none"
 reportUnusedImport = "none"
 reportUnusedVariable = "none"
 reportImportCycles = "none"
+reportImplicitOverride = "error"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

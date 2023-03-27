@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Final, TypedDict
+from typing import TYPE_CHECKING, Final, TypedDict, cast
+from typing_extensions import override
 
 import async_timeout
 import discord
@@ -36,9 +37,10 @@ class BotBase(bot.BotBase):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
         async with async_timeout.timeout(10):
-            user_id: int = (
-                self.user.id  # pyright: ignore [reportUnknownMemberType, reportGeneralTypeIssues]  # noqa: B950
-            )
+            user_id = cast(
+                'discord.ClientUser',
+                self.user,  # pyright: ignore [reportUnknownMemberType, reportGeneralTypeIssues]  # noqa: B950
+            ).id
 
             _log.info('POSTing stats for bot %s: %s', user_id, stats)
 
@@ -63,6 +65,7 @@ class BotBase(bot.BotBase):
         if next_hour.diff().in_minutes() > 15:  # type: ignore
             await self.__topgg_task(token)
 
+    @override
     async def close(self) -> None:
         self.__topgg_task.cancel()
 
@@ -70,11 +73,13 @@ class BotBase(bot.BotBase):
 
 
 class Bot(BotBase, bot.Bot):
+    @override
     def _get_topgg_stats(self) -> _BotStats:
         return {'server_count': len(self.guilds)}
 
 
 class AutoShardedBot(BotBase, bot.AutoShardedBot):
+    @override
     def _get_topgg_stats(self) -> _BotStats:
         return {
             'server_count': len(self.guilds),

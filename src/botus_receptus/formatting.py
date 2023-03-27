@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
-from typing import Final, Protocol
+from typing import TYPE_CHECKING, Final, Protocol
 
 from attrs import define, field
 
 from . import re
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
 
 @define
-class Paginator(Iterable[str]):
+class Paginator:
     prefix: str | None = '```'
     suffix: str | None = '```'
     max_size: int = 2000

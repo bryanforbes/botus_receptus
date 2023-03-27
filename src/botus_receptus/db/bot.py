@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, override
 
 from .. import bot
 from .context import Context
@@ -39,12 +39,14 @@ def _get_special_method(method: _F, /) -> _F | None:
 class BotBase(bot.BotBase):
     pool: Pool[Record]
 
+    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         if not _has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')
 
         super().__init__(config, *args, **kwargs)
 
+    @override
     async def setup_hook(self) -> None:
         pool_kwargs: dict[str, object] = {}
 
@@ -77,10 +79,12 @@ class BotBase(bot.BotBase):
     ) -> None:
         ...
 
+    @override
     async def close(self) -> None:
         await self.pool.close()
         await super().close()
 
+    @override
     async def process_commands(self, message: discord.Message, /) -> None:
         ctx = await self.get_context(message, cls=Context[Any])
 

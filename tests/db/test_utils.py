@@ -3,24 +3,36 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, cast
 
 import pytest
+from attrs import define
 
 from botus_receptus.db import utils
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+    from unittest.mock import AsyncMock
+
     from ..types import MockerFixture
 
 
+@define
 class MockDb:
-    def __init__(self, mocker: MockerFixture) -> None:
-        self.fetch = mocker.AsyncMock()
-        self.fetchrow = mocker.AsyncMock()
-        self.execute = mocker.AsyncMock()
+    fetch: AsyncMock
+    fetchrow: AsyncMock
+    execute: AsyncMock
+
+    @classmethod
+    def create(cls, mocker: MockerFixture) -> Self:
+        return cls(
+            fetch=mocker.AsyncMock(),
+            fetchrow=mocker.AsyncMock(),
+            execute=mocker.AsyncMock(),
+        )
 
 
 class TestDbUtil:
     @pytest.fixture
     def mock_db(self, mocker: MockerFixture):
-        return MockDb(mocker)
+        return MockDb.create(mocker)
 
     @pytest.mark.parametrize(
         'args,kwargs,expected_query',
