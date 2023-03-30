@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Final, TypedDict, cast
+from typing import TYPE_CHECKING, Final, TypedDict
 from typing_extensions import override
 
 import async_timeout
@@ -28,6 +28,12 @@ class _BotStats(TypedDict):
 
 
 class BotBase(bot.BotBase):
+    if TYPE_CHECKING:
+
+        @property
+        def user(self) -> discord.ClientUser:
+            ...
+
     def _get_topgg_stats(self) -> _BotStats:
         raise NotImplementedError
 
@@ -37,10 +43,7 @@ class BotBase(bot.BotBase):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
         async with async_timeout.timeout(10):
-            user_id = cast(
-                'discord.ClientUser',
-                self.user,  # pyright: ignore [reportUnknownMemberType, reportGeneralTypeIssues]  # noqa: B950
-            ).id
+            user_id = self.user.id
 
             _log.info('POSTing stats for bot %s: %s', user_id, stats)
 
