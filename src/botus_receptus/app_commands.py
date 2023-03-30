@@ -70,8 +70,8 @@ class CommandTree(app_commands.CommandTree[_ClientT]):
         guilds: Sequence[discord.abc.Snowflake] = discord.utils.MISSING,
         override: bool = False,
     ) -> None:
-        admin_guild_id: int | None = self.client.config.get('admin_guild', None)
-        test_guild_ids: list[int] | None = self.client.config.get('test_guilds', None)
+        admin_guild_id: int | None = self.client.config.get('admin_guild')
+        test_guild_ids: list[int] | None = self.client.config.get('test_guilds')
 
         guild_ids = [] if command._guild_ids is None else command._guild_ids
 

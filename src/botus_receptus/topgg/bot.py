@@ -54,7 +54,7 @@ class BotBase(bot.BotBase):
             )
 
     async def on_ready(self) -> None:
-        token = self.config.get('dbl_token', None)
+        token = self.config.get('dbl_token')
 
         if token is None:
             return
