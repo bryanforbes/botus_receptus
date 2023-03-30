@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "schedule:daily",
+    ":enablePreCommit",
+    ":assignee(bryanforbes)",
+    ":timezone(America/Chicago)",
+    ":combinePatchMinorReleases"
+  ],
+  "rangeStrategy": "replace",
+  "packageRules": [
+    {
+      "matchDepTypes": ["dev-dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev dependencies (non-major)",
+      "rangeStrategy": "bump"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": [
+      "schedule:daily"
+    ]
+  }
+}
