@@ -1,30 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    "schedule:daily",
-    ":enablePreCommit",
-    ":assignee(bryanforbes)",
-    ":timezone(America/Chicago)",
-    ":combinePatchMinorReleases"
+    "github>bryanforbes/python-workflows:library"
   ],
-  "rangeStrategy": "update-lockfile",
-  "packageRules": [
-    {
-      "matchDepTypes": ["dev"],
-      "rangeStrategy": "pin"
-    },
-    {
-      "matchDepTypes": ["dev"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "dev dependencies (non-major)",
-      "groupSlug": "dev-dependencies"
-    }
-  ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "extends": [
-      "schedule:daily"
-    ]
-  }
+  "rangeStrategy": "bump"
 }
