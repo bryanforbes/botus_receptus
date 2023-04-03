@@ -8,15 +8,14 @@
     ":timezone(America/Chicago)",
     ":combinePatchMinorReleases"
   ],
-  "rangeStrategy": "replace",
   "packageRules": [
     {
-      "matchDepTypes": ["dev-dependencies"],
-      "rangeStrategy": "bump"
+      "matchDepTypes": ["dependencies", "extras"],
+      "rangeStrategy": "replace"
     },
     {
       "matchDepTypes": ["dev-dependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "rangeStrategy": "pin",
       "groupName": "dev dependencies (non-major)"
     }
   ],
