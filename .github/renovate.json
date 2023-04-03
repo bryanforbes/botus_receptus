@@ -8,11 +8,8 @@
     ":timezone(America/Chicago)",
     ":combinePatchMinorReleases"
   ],
+  "rangeStrategy": "update-lockfile",
   "packageRules": [
-    {
-      "matchDepTypes": ["dependencies", "extras"],
-      "rangeStrategy": "update-lockfile"
-    },
     {
       "matchDepTypes": ["dev-dependencies"],
       "rangeStrategy": "pin",
