@@ -11,9 +11,14 @@
   "rangeStrategy": "update-lockfile",
   "packageRules": [
     {
-      "matchDepTypes": ["dev-dependencies"],
-      "rangeStrategy": "pin",
-      "groupName": "dev dependencies (non-major)"
+      "matchDepTypes": ["dev"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "matchDepTypes": ["dev"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev dependencies (non-major)",
+      "groupSlug": "dev-dependencies"
     }
   ],
   "lockFileMaintenance": {
