@@ -97,6 +97,8 @@ combine_as_imports = true
 
 [tool.pyright]
 include = ["src", "tests"]
+venvPath = "."
+venv = ".venv"
 
 pythonVersion = "3.10"
 typeCheckingMode = "strict"
