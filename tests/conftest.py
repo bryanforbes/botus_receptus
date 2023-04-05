@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 from typing import TYPE_CHECKING
-from typing_extensions import override
 
 import pytest
 
@@ -21,7 +20,6 @@ class EventLoopClockAdvancer:
 
     __slots__ = ("offset", "loop", "sleep_duration", "_base_time")
 
-    @override
     def __init__(self, loop: AbstractEventLoop, sleep_duration: float = 1e-4) -> None:
         self.offset = 0.0
         self._base_time = loop.time

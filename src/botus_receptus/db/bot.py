@@ -39,7 +39,6 @@ def _get_special_method(method: _F, /) -> _F | None:
 class BotBase(bot.BotBase):
     pool: Pool[Record]
 
-    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         if not _has_asyncpg:
             raise RuntimeError('asyncpg library needed in order to use a database')

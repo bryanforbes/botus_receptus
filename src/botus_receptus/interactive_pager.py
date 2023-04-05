@@ -40,7 +40,6 @@ class CannotPaginateReason(enum.IntEnum):
 class CannotPaginate(Exception):
     reason: CannotPaginateReason
 
-    @override
     def __init__(self, reason: CannotPaginateReason, /) -> None:
         self.reason = reason
 

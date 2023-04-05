@@ -60,10 +60,10 @@ class TSVector(TypeDecorator[str]):
     cache_ok = True
 
     @property
+    @override
     def comparator_factory(self) -> type[_TSVectorComparator]:
         return _TSVectorComparator
 
-    @override
     def __init__(self, *args: object, **kwargs: object) -> None:
         """
         Initializes new TSVectorType
@@ -83,7 +83,6 @@ class Flag(TypeDecorator[_FlagT]):
 
     _flag_cls: type[_FlagT]
 
-    @override
     def __init__(
         self, flag_cls: type[_FlagT], /, *args: object, **kwargs: object
     ) -> None:

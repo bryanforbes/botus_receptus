@@ -36,7 +36,6 @@ class MockUser:
 
 
 class MockDMChannel(discord.DMChannel):
-    @override
     def __init__(self):
         pass
 

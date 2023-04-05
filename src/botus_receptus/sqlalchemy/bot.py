@@ -17,7 +17,6 @@ if TYPE_CHECKING:
 class BotBase(bot.BotBase):
     __sessionmaker: async_sessionmaker[Any]
 
-    @override
     def __init__(
         self,
         config: Config,

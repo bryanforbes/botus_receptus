@@ -28,7 +28,6 @@ class BotBase(bot.BotBase):
         def application_id(self) -> int:
             ...
 
-    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.config = config
         self.bot_name = self.config['bot_name']
