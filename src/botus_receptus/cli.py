@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import click
 import discord
@@ -17,11 +17,11 @@ if TYPE_CHECKING:
 
 def config_callback(
     ctx: click.Context, param: click.Parameter, value: str | int | bool | None, /
-) -> Any:
-    assert not isinstance(value, (int, bool)), "Invalid parameter type passed"
-    assert value is not None, "Invalid parameter type passed"
+) -> config.Config:
+    assert not isinstance(value, int | bool), 'Invalid parameter type passed'
+    assert value is not None, 'Invalid parameter type passed'
 
-    assert param.name is not None, "Invalid parameter name passed"
+    assert param.name is not None, 'Invalid parameter name passed'
 
     try:
         bot_config = config.load(value)
@@ -38,7 +38,7 @@ def config_callback(
     with contextlib.suppress(KeyError):
         ctx.default_map.update(
             {
-                k.replace("--", "").replace("-", "_"): v
+                k.replace('--', '').replace('-', '_'): v
                 for k, v in bot_config['logging'].items()
             }
         )

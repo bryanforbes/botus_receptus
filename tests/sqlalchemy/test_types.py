@@ -46,8 +46,8 @@ class TestSnowflake:
     @pytest.mark.parametrize(
         'bind_param,expected',
         [
-            (1, "1"),
-            (400, "400"),
+            (1, '1'),
+            (400, '400'),
             (None, None),
         ],
     )
@@ -58,8 +58,8 @@ class TestSnowflake:
     @pytest.mark.parametrize(
         'result_value,expected',
         [
-            ("1", 1),
-            ("201293", 201293),
+            ('1', 1),
+            ('201293', 201293),
             (None, None),
         ],
     )

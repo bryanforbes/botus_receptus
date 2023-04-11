@@ -381,7 +381,7 @@ class TestInteractivePager:
     ) -> None:
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        asyncio.create_task(p.paginate())
+        asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
         reaction = MockReaction.create('\N{BLACK SQUARE FOR STOP}', p.message.id)
         await context.bot._dispatch_wait_for('reaction_add', reaction, context.author)
@@ -411,7 +411,7 @@ class TestInteractivePager:
     ) -> None:
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        asyncio.create_task(p.paginate())
+        asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
         reaction = MockReaction.create(emoji, p.message.id)
         await context.bot._dispatch_wait_for('reaction_add', reaction, context.author)
@@ -452,7 +452,7 @@ class TestInteractivePager:
     ) -> None:
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        asyncio.create_task(p.paginate())
+        asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
         reaction = MockReaction.create(first_emoji, p.message.id)
         await context.bot._dispatch_wait_for('reaction_add', reaction, context.author)
@@ -475,7 +475,7 @@ class TestInteractivePager:
     ) -> None:
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        asyncio.create_task(p.paginate())
+        asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
         reaction = MockReaction.create('\N{BLACK LEFT-POINTING TRIANGLE}', p.message.id)
         await context.bot._dispatch_wait_for('reaction_add', reaction, context.author)

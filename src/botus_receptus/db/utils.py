@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeAlias, overload
+from typing import TYPE_CHECKING, Any, TypeAlias, cast, overload
 from typing_extensions import LiteralString, TypeVar
 
 if TYPE_CHECKING:
@@ -229,12 +229,13 @@ def search(
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
-    search_columns_str: LiteralString = " || ' ' || ".join(search_columns)
-    args = args + (' & '.join(terms),)
+    search_columns_str = " || ' ' || ".join(search_columns)
+    args = (*args, ' & '.join(terms))
+    len_str: LiteralString = cast(LiteralString, str(len(args)))
 
     where_list.append(
-        f"to_tsvector('english', {search_columns_str}) @@ "  # type: ignore
-        f"to_tsquery('english', ${len(args)})"
+        f"to_tsvector('english', {search_columns_str}) @@ "
+        f"to_tsquery('english', ${len_str})"
     )
 
     where_str = _get_where_string(where_list)

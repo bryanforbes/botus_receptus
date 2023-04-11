@@ -89,7 +89,7 @@ async def race(
 
     try:
         if len(pending) == len(tasks):
-            raise asyncio.TimeoutError()
+            raise asyncio.TimeoutError  # noqa: TRY301
 
         return done.pop().result()
     finally:
@@ -148,7 +148,7 @@ class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs):
 
 
 def _pop_value(kwargs: TypedDict, key: str, default: object) -> Any:
-    value = kwargs.pop(key, _MISSING)  # type: ignore
+    value = kwargs.pop(key, _MISSING)  # pyright: ignore[reportGeneralTypeIssues]
     return default if value is _MISSING else value
 
 
@@ -164,8 +164,8 @@ async def _send_interaction(
 
         await itx.response.send_message(**kwargs)
         return await itx.original_response()
-    else:
-        return await itx.followup.send(**kwargs, wait=True)
+
+    return await itx.followup.send(**kwargs, wait=True)
 
 
 @overload
@@ -231,7 +231,7 @@ def send(
     avatar_url: str = _MISSING,
     thread: discord.Thread | discord.Object = _MISSING,
 ) -> Coroutine[discord.Message]:
-    if not isinstance(ctx_or_intx, (discord.Interaction, discord.Webhook)):
+    if not isinstance(ctx_or_intx, discord.Interaction | discord.Webhook):
         messageable = (
             ctx_or_intx
             if isinstance(ctx_or_intx, discord.abc.Messageable)
@@ -249,21 +249,32 @@ def send(
         return messageable.send(
             content=None if content is _MISSING else content,
             tts=tts,
-            embeds=None if embeds is _MISSING else embeds,  # type: ignore
-            files=None if files is _MISSING else files,  # type: ignore
+            embeds=None
+            if embeds is _MISSING
+            else embeds,  # pyright: ignore[reportGeneralTypeIssues]
+            files=None
+            if files is _MISSING
+            else files,  # pyright: ignore[reportGeneralTypeIssues]
             delete_after=(
-                None if delete_after is _MISSING else delete_after  # type: ignore
+                None
+                if delete_after is _MISSING
+                else delete_after  # pyright: ignore[reportGeneralTypeIssues]
             ),
-            nonce=None if nonce is _MISSING else nonce,  # type: ignore
+            nonce=None
+            if nonce is _MISSING
+            else nonce,  # pyright: ignore[reportGeneralTypeIssues]
             allowed_mentions=(
                 None
                 if allowed_mentions is _MISSING
-                else allowed_mentions  # type: ignore
+                else allowed_mentions  # pyright: ignore[reportGeneralTypeIssues]
             ),
-            reference=reference,  # type: ignore
-            view=None if view is _MISSING else view,  # type: ignore
+            reference=reference,  # pyright: ignore[reportGeneralTypeIssues]
+            view=None
+            if view is _MISSING
+            else view,  # pyright: ignore[reportGeneralTypeIssues]
         )
-    elif isinstance(ctx_or_intx, discord.Webhook):
+
+    if isinstance(ctx_or_intx, discord.Webhook):
         return ctx_or_intx.send(
             content=content,
             tts=tts,
@@ -277,17 +288,17 @@ def send(
             avatar_url=avatar_url,
             thread=thread,
         )
-    else:
-        return _send_interaction(
-            ctx_or_intx,
-            content=content,
-            tts=tts,
-            embeds=embeds,
-            files=files,
-            view=view,
-            allowed_mentions=allowed_mentions,
-            ephemeral=ephemeral,
-        )
+
+    return _send_interaction(
+        ctx_or_intx,
+        content=content,
+        tts=tts,
+        embeds=embeds,
+        files=files,
+        view=view,
+        allowed_mentions=allowed_mentions,
+        ephemeral=ephemeral,
+    )
 
 
 class EmbedKwargs(TypedDict):

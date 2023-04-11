@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING, TypedDict
 
 import discord
@@ -50,7 +51,7 @@ class Config(_BaseConfig):
 
 
 def load(path: str | PathLike[str], /) -> Config:
-    with open(path, 'rb') as f:
+    with Path(path).open('rb') as f:
         config_toml = tomli.load(f)
 
     raw_config: _RawConfig | None = config_toml.get('bot')

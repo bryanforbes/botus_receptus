@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import sys
 from typing import TYPE_CHECKING, Any, Protocol, overload
 from typing_extensions import TypeVar
 
@@ -200,33 +199,18 @@ class MockerFixture(Protocol):
     sentinel: Any
     call: mock._Call
 
-    if sys.version_info >= (3, 10):
-
-        def create_autospec(
-            self,
-            spec: Any,
-            spec_set: Any = ...,
-            instance: Any = ...,
-            _parent: Any | None = ...,
-            _name: Any | None = ...,
-            *,
-            unsafe: bool = ...,
-            **kwargs: Any,
-        ) -> Any:
-            ...
-
-    else:
-
-        def create_autospec(
-            self,
-            spec: Any,
-            spec_set: Any = ...,
-            instance: Any = ...,
-            _parent: Any | None = ...,
-            _name: Any | None = ...,
-            **kwargs: Any,
-        ) -> Any:
-            ...
+    def create_autospec(
+        self,
+        spec: Any,
+        spec_set: Any = ...,
+        instance: Any = ...,
+        _parent: Any | None = ...,
+        _name: Any | None = ...,
+        *,
+        unsafe: bool = ...,
+        **kwargs: Any,
+    ) -> Any:
+        ...
 
     def mock_open(self, mock: Any | None = ..., read_data: Any = ...) -> Any:
         ...

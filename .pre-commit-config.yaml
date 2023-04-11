@@ -6,18 +6,14 @@ files: >
 repos:
   - repo: local
     hooks:
-    - id: isort
-      name: isort
+    - id: ruff
+      name: ruff
       language: system
-      entry: poetry run isort --check-only
+      entry: poetry run ruff
     - id: black
       name: black
       language: system
       entry: poetry run black --check
-    - id: flake8
-      name: flake8
-      language: system
-      entry: poetry run flake8
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.305
     hooks:

@@ -25,15 +25,15 @@ _MISSING: Final = discord.utils.MISSING
 class GuildContext(commands.Context[_BotT]):
     @discord.utils.cached_property
     def guild(self) -> discord.Guild:
-        return self.message.guild  # type: ignore
+        return self.message.guild  # pyright: ignore
 
     @discord.utils.cached_property
     def channel(self) -> discord.TextChannel:
-        return self.message.channel  # type: ignore
+        return self.message.channel  # pyright: ignore
 
     @discord.utils.cached_property
     def author(self) -> discord.Member:
-        return self.message.author  # type: ignore
+        return self.message.author  # pyright: ignore
 
 
 class EmbedContext(commands.Context[_BotT]):

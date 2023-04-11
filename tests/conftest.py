@@ -18,7 +18,7 @@ class EventLoopClockAdvancer:
     wake up any awaiting handlers.
     """
 
-    __slots__ = ("offset", "loop", "sleep_duration", "_base_time")
+    __slots__ = ('offset', 'loop', 'sleep_duration', '_base_time')
 
     def __init__(self, loop: AbstractEventLoop, sleep_duration: float = 1e-4) -> None:
         self.offset = 0.0
