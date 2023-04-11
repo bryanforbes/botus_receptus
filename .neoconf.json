@@ -3,8 +3,5 @@
     "pyright": {
       "pyright.disableOrganizeImports": true
     }
-  },
-  "null-ls": {
-    "enable_isort": false
   }
 }
