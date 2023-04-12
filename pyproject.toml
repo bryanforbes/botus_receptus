@@ -85,7 +85,7 @@ select = [
   "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
 ]
 ignore = ["PT004", "ANN101", "ANN102", "TRY003"]
-extend-exclude = [".venv*", "stubs"]
+extend-exclude = [".venv*"]
 line-length = 88
 target-version = "py310"
 
@@ -112,7 +112,6 @@ parametrize-names-type = "csv"
 
 [tool.ruff.flake8-quotes]
 inline-quotes = "single"
-multiline-quotes = "single"
 
 [tool.ruff.flake8-tidy-imports.banned-api]
 "typing.TypeVar".msg = "Use `typing_extensions.TypeVar` instead."

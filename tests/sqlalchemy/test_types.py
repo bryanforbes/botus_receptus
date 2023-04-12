@@ -89,8 +89,8 @@ class TestTSVector:
         expr = user_table.search_index.match('something')  # type: ignore
 
         assert str(expr.compile(dialect=postgresql.dialect())) == (
-            '''users.search_index @@ plainto_tsquery('pg_catalog.finnish', '''
-            '''%(search_index_1)s)'''
+            "users.search_index @@ plainto_tsquery('pg_catalog.finnish', "
+            '%(search_index_1)s)'
         )
 
     def test_concat(self, user_table: type[User]) -> None:
@@ -110,8 +110,8 @@ class TestTSVector:
             'something', postgresql_regconfig='pg_catalog.simple'
         )
         assert str(expr.compile(dialect=postgresql.dialect())) == (
-            '''users.search_index @@ plainto_tsquery('pg_catalog.simple', '''
-            '''%(search_index_1)s)'''
+            "users.search_index @@ plainto_tsquery('pg_catalog.simple', "
+            '%(search_index_1)s)'
         )
 
 

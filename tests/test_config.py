@@ -14,11 +14,11 @@ if TYPE_CHECKING:
 def test_load(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 bot_name = "botty"
 intents = "all"
 discord_api_key = "API_KEY"
-application_id = 1'''
+application_id = 1"""
     )
 
     bot_config = config.load(str(c))
@@ -39,11 +39,11 @@ application_id = 1'''
 def test_load_with_intents_list(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 bot_name = "botty"
 intents = ["guilds", "reactions", "messages"]
 discord_api_key = "API_KEY"
-application_id = 1'''
+application_id = 1"""
     )
 
     bot_config = config.load(str(c))
@@ -78,11 +78,11 @@ log_level = "warning"'''
 def test_load_no_bot_section(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[foo]
+        """[foo]
 bot_name = "botty"
 discord_api_key = "API_KEY"
 application_id = 1
-'''
+"""
     )
 
     with pytest.raises(
@@ -94,11 +94,11 @@ application_id = 1
 def test_load_no_bot_name(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 intents = "all"
 discord_api_key = "API_KEY"
 application_id = 1
-'''
+"""
     )
 
     with pytest.raises(
@@ -110,11 +110,11 @@ application_id = 1
 def test_load_no_api_key(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 bot_name = "botty"
 intents = "all"
 application_id = 1
-'''
+"""
     )
 
     with pytest.raises(
@@ -127,11 +127,11 @@ application_id = 1
 def test_load_no_application_id(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 bot_name = "botty"
 intents = "all"
 discord_api_key = "API_KEY"
-'''
+"""
     )
 
     with pytest.raises(
@@ -144,11 +144,11 @@ discord_api_key = "API_KEY"
 def test_load_no_intents(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
-        '''[bot]
+        """[bot]
 bot_name = "botty"
 discord_api_key = "API_KEY"
 application_id = 1
-'''
+"""
     )
 
     with pytest.raises(
