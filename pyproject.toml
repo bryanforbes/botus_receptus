@@ -82,7 +82,7 @@ exclude_lines = [
 select = [
   "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "F", "G", "I", "I002",
   "ISC", "PGH", "PIE", "PT", "PTH", "PYI", "Q", "RET", "RSE", "SIM",
-  "T20", "TCH", "TRY", "UP", "W", "RUF"
+  "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
 ]
 ignore = ["PT004", "ANN101", "ANN102", "TRY003"]
 extend-exclude = [".venv*", "stubs"]
@@ -113,6 +113,9 @@ parametrize-names-type = "csv"
 [tool.ruff.flake8-quotes]
 inline-quotes = "single"
 multiline-quotes = "single"
+
+[tool.ruff.flake8-tidy-imports.banned-api]
+"typing.TypeVar".msg = "Use `typing_extensions.TypeVar` instead."
 
 [tool.pyright]
 include = ["src", "tests"]
