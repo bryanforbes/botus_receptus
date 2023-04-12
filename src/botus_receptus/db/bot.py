@@ -55,16 +55,12 @@ class BotBase(bot.BotBase):
         if (setup := _get_special_method(self.__db_setup_connection__)) is not None:
             pool_kwargs['setup'] = setup
 
-        pool = await create_pool(
+        self.pool = await create_pool(  # pyright: ignore[reportGeneralTypeIssues]
             self.config.get('db_url', ''),
             min_size=1,
             max_size=10,
             **pool_kwargs,
         )
-
-        assert pool is not None
-
-        self.pool = pool
 
         await super().setup_hook()
 

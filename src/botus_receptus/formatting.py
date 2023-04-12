@@ -89,9 +89,8 @@ class Paginator:
         if self.prefix is not None:
             if len(self._current_page) > 1:
                 self.close_page()
-        else:
-            if len(self._current_page) > 0:
-                self.close_page()
+        elif len(self._current_page) > 0:
+            self.close_page()
 
         return self._pages
 

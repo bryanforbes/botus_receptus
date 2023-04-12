@@ -379,7 +379,9 @@ class InteractivePager(Generic[_T]):
             with contextlib.suppress(Exception):
                 await self.message.remove_reaction(reaction, user)
 
-            assert self.match is not None
+            if TYPE_CHECKING:
+                assert self.match is not None  # noqa: S101
+
             await self.match()
 
     @classmethod

@@ -157,7 +157,7 @@ async def _send_interaction(
     /,
     **kwargs: Unpack[SendInteractionKwargs],
 ) -> discord.Message:
-    kwargs['ephemeral'] = _pop_value(kwargs, 'ephemeral', False)
+    kwargs['ephemeral'] = _pop_value(kwargs, 'ephemeral', default=False)
 
     if not itx.response.is_done():
         kwargs['content'] = _pop_value(kwargs, 'content', None)

@@ -16,12 +16,10 @@ if TYPE_CHECKING:
 
 
 def config_callback(
-    ctx: click.Context, param: click.Parameter, value: str | int | bool | None, /
+    ctx: click.Context, param: click.Parameter, value: str, /
 ) -> config.Config:
-    assert not isinstance(value, int | bool), 'Invalid parameter type passed'
-    assert value is not None, 'Invalid parameter type passed'
-
-    assert param.name is not None, 'Invalid parameter name passed'
+    if TYPE_CHECKING:
+        assert param.name is not None  # noqa: S101
 
     try:
         bot_config = config.load(value)
@@ -69,7 +67,9 @@ def cli(
         type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
         default='info',
     )
-    def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
+    def main(
+        bot_config: config.Config, log_to_console: bool, log_level: str  # noqa: FBT001
+    ) -> None:
         cast('dict[str, object]', bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )

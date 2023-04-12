@@ -154,7 +154,7 @@ class TestFieldPageSource:
 
         page = await source.get_page(0)
 
-        assert page['entry_text'] == ''
+        assert not page['entry_text']
         if show_entry_count and max_pages >= 2:
             assert page['footer_text'] is not None
 

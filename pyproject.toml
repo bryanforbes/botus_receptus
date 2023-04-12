@@ -80,18 +80,18 @@ exclude_lines = [
 
 [tool.ruff]
 select = [
-  "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "F", "G", "I", "I002",
-  "ISC", "PGH", "PIE", "PT", "PTH", "PYI", "Q", "RET", "RSE", "SIM",
-  "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
+  "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "EXE", "F", "FBT", "G",
+  "I", "I002", "ISC", "INP", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "Q", "RET",
+  "RSE", "S", "SIM", "T10", "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
 ]
-ignore = ["PT004", "ANN101", "ANN102", "TRY003"]
+ignore = ["ANN101", "ANN102", "PLR2004", "PT004", "TRY003"]
 extend-exclude = [".venv*"]
 line-length = 88
 target-version = "py310"
 
 [tool.ruff.per-file-ignores]
-"*.pyi" = ["F401", "F403", "F405", "F811", "E501", "E701", "E741", "TCH"]
-"tests/*.py" = ["PGH003", "ANN401"]
+"*.pyi" = ["E501", "E701", "E741", "F401", "F403", "F405", "F811", "TCH"]
+"tests/*.py" = ["ANN401", "FBT001", "FBT002", "PGH003", "PLR0913", "PLR0912", "S101"]
 
 [tool.ruff.mccabe]
 max-complexity = 15
