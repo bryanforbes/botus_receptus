@@ -29,7 +29,7 @@ class EventLoopClockAdvancer:
         # incorporate offset timing into the event loop
         self.loop.time = self.time
 
-    def time(self):
+    def time(self) -> float:
         """
         Return the time according to the event loop's clock. The time is
         adjusted by an offset.
@@ -55,7 +55,7 @@ class EventLoopClockAdvancer:
 
 
 @pytest.fixture
-def advance_time(event_loop: AbstractEventLoop):
+def advance_time(event_loop: AbstractEventLoop) -> EventLoopClockAdvancer:
     return EventLoopClockAdvancer(event_loop)
 
 

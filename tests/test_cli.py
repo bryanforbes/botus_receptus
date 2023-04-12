@@ -11,6 +11,7 @@ from click.testing import CliRunner
 from botus_receptus import ConfigException, cli
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
     from unittest.mock import MagicMock, Mock
 
     from botus_receptus.bot import BotBase
@@ -25,24 +26,24 @@ class MockBot:
 
 
 @pytest.fixture
-def cli_runner():
+def cli_runner() -> Iterator[CliRunner]:
     runner = CliRunner()
     with runner.isolated_filesystem():  # type: ignore
         yield runner
 
 
 @pytest.fixture
-def mock_bot_class_instance(mocker: MockerFixture):
+def mock_bot_class_instance(mocker: MockerFixture) -> MockBot:
     return MockBot(mocker.stub())
 
 
 @pytest.fixture
-def mock_bot_class(mocker: MockerFixture, mock_bot_class_instance: MockBot):
+def mock_bot_class(mocker: MockerFixture, mock_bot_class_instance: MockBot) -> Mock:
     return mocker.Mock(return_value=mock_bot_class_instance)
 
 
 @pytest.fixture(autouse=True)
-def mock_setup_logging(mocker: MockerFixture):
+def mock_setup_logging(mocker: MockerFixture) -> Mock:
     return mocker.patch('botus_receptus.logging.setup_logging')
 
 
@@ -62,7 +63,7 @@ def mock_config() -> Config:
 
 
 @pytest.fixture(autouse=True)
-def mock_config_load(mocker: MockerFixture, mock_config: Config):
+def mock_config_load(mocker: MockerFixture, mock_config: Config) -> Mock:
     return mocker.patch('botus_receptus.config.load', return_value=mock_config)
 
 
@@ -72,7 +73,7 @@ def test_run(
     mock_bot_class_instance: MockBot,
     mock_setup_logging: MagicMock,
     mock_config_load: MagicMock,
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -121,7 +122,7 @@ def test_run_logging_config(
     mock_bot_class: Mock,
     mock_setup_logging: MagicMock,
     mock_config_load: MagicMock,
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -153,7 +154,7 @@ def test_run_logging_config(
 
 def test_run_config(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_config_load: MagicMock
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -168,7 +169,7 @@ def test_run_config(
 
 def test_run_log_to_console(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -193,7 +194,7 @@ def test_run_log_to_console(
 
 def test_run_log_level(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -218,7 +219,7 @@ def test_run_log_level(
 
 def test_run_error_no_config(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
-):
+) -> None:
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
     result = cli_runner.invoke(command, [])  # type: ignore
     assert result.exit_code == 2
@@ -230,7 +231,7 @@ def test_run_error_reading(
     mock_bot_class: Mock,
     mock_config_load: MagicMock,
     mock_setup_logging: MagicMock,
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 
@@ -247,7 +248,7 @@ def test_run_config_exception(
     mock_bot_class: Mock,
     mock_config_load: MagicMock,
     mock_setup_logging: MagicMock,
-):
+) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
 

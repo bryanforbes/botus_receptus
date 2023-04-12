@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-def test_load(tmp_path: Path):
+def test_load(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -36,7 +36,7 @@ application_id = 1'''
     }
 
 
-def test_load_with_intents_list(tmp_path: Path):
+def test_load_with_intents_list(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -52,7 +52,7 @@ application_id = 1'''
     )
 
 
-def test_load_logging_config(tmp_path: Path):
+def test_load_logging_config(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -75,7 +75,7 @@ log_level = "warning"'''
     assert logging.get('log_level') == 'warning'
 
 
-def test_load_no_bot_section(tmp_path: Path):
+def test_load_no_bot_section(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[foo]
@@ -91,7 +91,7 @@ application_id = 1
         config.load(str(c))
 
 
-def test_load_no_bot_name(tmp_path: Path):
+def test_load_no_bot_name(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -107,7 +107,7 @@ application_id = 1
         config.load(str(c))
 
 
-def test_load_no_api_key(tmp_path: Path):
+def test_load_no_api_key(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -124,7 +124,7 @@ application_id = 1
         config.load(str(c))
 
 
-def test_load_no_application_id(tmp_path: Path):
+def test_load_no_application_id(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]
@@ -141,7 +141,7 @@ discord_api_key = "API_KEY"
         config.load(str(c))
 
 
-def test_load_no_intents(tmp_path: Path):
+def test_load_no_intents(tmp_path: Path) -> None:
     c = tmp_path / 'config.toml'
     c.write_text(
         '''[bot]

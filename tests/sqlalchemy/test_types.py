@@ -51,7 +51,9 @@ class TestSnowflake:
             (None, None),
         ],
     )
-    def test_process_bind_param(self, bind_param: int | None, expected: str | None):
+    def test_process_bind_param(
+        self, bind_param: int | None, expected: str | None
+    ) -> None:
         snowflake = Snowflake()
         assert snowflake.process_bind_param(bind_param, object()) == expected
 

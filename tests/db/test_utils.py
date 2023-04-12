@@ -31,7 +31,7 @@ class MockDb:
 
 class TestDbUtil:
     @pytest.fixture
-    def mock_db(self, mocker: MockerFixture):
+    def mock_db(self, mocker: MockerFixture) -> MockDb:
         return MockDb.create(mocker)
 
     @pytest.mark.parametrize(
@@ -285,7 +285,7 @@ class TestDbUtil:
         args: list[str],
         kwargs: dict[str, Any],
         expected_query: str,
-    ):
+    ) -> None:
         await utils.search(cast('Any', mock_db), *args, **kwargs)
 
         expected_args = [*args, ' & '.join(kwargs['terms'])]
@@ -324,7 +324,7 @@ class TestDbUtil:
         args: list[str],
         kwargs: dict[str, Any],
         expected_query: str,
-    ):
+    ) -> None:
         await utils.update(cast('Any', mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)
@@ -349,7 +349,7 @@ class TestDbUtil:
     )
     async def test_insert_into(
         self, mock_db: MockDb, kwargs: dict[str, Any], expected_query: str
-    ):
+    ) -> None:
         await utils.insert_into(cast('Any', mock_db), **kwargs)
 
         args = list(kwargs['values'].values())
@@ -371,7 +371,7 @@ class TestDbUtil:
         args: list[str],
         kwargs: dict[str, Any],
         expected_query: str,
-    ):
+    ) -> None:
         await utils.delete_from(cast('Any', mock_db), *args, **kwargs)
 
         mock_db.execute.assert_called_once_with(expected_query, *args)

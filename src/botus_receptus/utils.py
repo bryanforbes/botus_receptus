@@ -147,7 +147,7 @@ class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs):
     ...
 
 
-def _pop_value(kwargs: TypedDict, key: str, default: object) -> Any:
+def _pop_value(kwargs: TypedDict, key: str, default: object) -> Any:  # noqa: ANN401
     value = kwargs.pop(key, _MISSING)  # pyright: ignore[reportGeneralTypeIssues]
     return default if value is _MISSING else value
 
