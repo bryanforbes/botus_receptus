@@ -19,7 +19,7 @@ def config_callback(
     ctx: click.Context, param: click.Parameter, value: str, /
 ) -> config.Config:
     if TYPE_CHECKING:
-        assert param.name is not None  # noqa: S101
+        assert param.name is not None
 
     try:
         bot_config = config.load(value)

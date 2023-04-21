@@ -31,7 +31,7 @@ class Snowflake(TypeDecorator[int]):
     @override
     def copy(self, /, **kwargs: object) -> Self:
         if TYPE_CHECKING:
-            assert isinstance(self.impl_instance, String)  # noqa: S101
+            assert isinstance(self.impl_instance, String)
 
         return Snowflake(self.impl_instance.length)
 
@@ -40,7 +40,7 @@ class _TSVectorComparator(TSVECTOR.Comparator[str]):
     @override
     def match(self, other: object, **kwargs: object) -> ColumnOperators:
         if TYPE_CHECKING:
-            assert isinstance(self.expr.type, TypeDecorator)  # noqa: S101
+            assert isinstance(self.expr.type, TypeDecorator)
 
         if (
             'postgresql_regconfig' not in kwargs

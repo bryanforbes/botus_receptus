@@ -28,12 +28,16 @@ _F = TypeVar('_F', bound='Callable[..., Any]', infer_variance=True)
 
 
 def _db_special_method(func: _F, /) -> _F:
-    func.__db_special_method__ = None  # pyright: ignore
+    func.__db_special_method__ = None  # pyright: ignore[reportFunctionMemberAccess]
     return func
 
 
 def _get_special_method(method: _F, /) -> _F | None:
-    return getattr(method.__func__, '__db_special_method__', method)  # pyright: ignore
+    return getattr(
+        method.__func__,  # pyright: ignore[reportFunctionMemberAccess]
+        '__db_special_method__',
+        method,
+    )
 
 
 class BotBase(bot.BotBase):

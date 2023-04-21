@@ -23,17 +23,17 @@ _MISSING: Final = discord.utils.MISSING
 
 
 class GuildContext(commands.Context[_BotT]):
-    @discord.utils.cached_property
+    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
     def guild(self) -> discord.Guild:
-        return self.message.guild  # pyright: ignore
+        return self.message.guild  # pyright: ignore[reportGeneralTypeIssues]
 
-    @discord.utils.cached_property
+    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
     def channel(self) -> discord.TextChannel:
-        return self.message.channel  # pyright: ignore
+        return self.message.channel  # pyright: ignore[reportGeneralTypeIssues]
 
-    @discord.utils.cached_property
+    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
     def author(self) -> discord.Member:
-        return self.message.author  # pyright: ignore
+        return self.message.author  # pyright: ignore[reportGeneralTypeIssues]
 
 
 class EmbedContext(commands.Context[_BotT]):
