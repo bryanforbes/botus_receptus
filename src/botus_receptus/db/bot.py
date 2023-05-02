@@ -28,12 +28,16 @@ _F = TypeVar('_F', bound='Callable[..., Any]', infer_variance=True)
 
 
 def _db_special_method(func: _F, /) -> _F:
-    func.__db_special_method__ = None  # pyright: ignore
+    func.__db_special_method__ = None  # pyright: ignore[reportFunctionMemberAccess]
     return func
 
 
 def _get_special_method(method: _F, /) -> _F | None:
-    return getattr(method.__func__, '__db_special_method__', method)  # pyright: ignore
+    return getattr(
+        method.__func__,  # pyright: ignore[reportFunctionMemberAccess]
+        '__db_special_method__',
+        method,
+    )
 
 
 class BotBase(bot.BotBase):
@@ -55,16 +59,12 @@ class BotBase(bot.BotBase):
         if (setup := _get_special_method(self.__db_setup_connection__)) is not None:
             pool_kwargs['setup'] = setup
 
-        pool = await create_pool(
+        self.pool = await create_pool(  # pyright: ignore[reportGeneralTypeIssues]
             self.config.get('db_url', ''),
             min_size=1,
             max_size=10,
             **pool_kwargs,
         )
-
-        assert pool is not None
-
-        self.pool = pool
 
         await super().setup_hook()
 

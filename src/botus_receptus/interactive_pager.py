@@ -241,23 +241,23 @@ class InteractivePager(Generic[_T]):
             await self.__show_page(page)
 
     async def __first_page(self) -> None:
-        '''goes to the first page'''
+        """goes to the first page"""
         await self.__show_page(1)
 
     async def __last_page(self) -> None:
-        '''goes to the last page'''
+        """goes to the last page"""
         await self.__show_page(self.source.max_pages)
 
     async def __previous_page(self) -> None:
-        '''goes to the previous page'''
+        """goes to the previous page"""
         await self.__checked_show_page(self.current_page - 1)
 
     async def __next_page(self) -> None:
-        '''goes to the next page'''
+        """goes to the next page"""
         await self.__checked_show_page(self.current_page + 1)
 
     async def __numbered_page(self) -> None:
-        '''lets you type a page number to go to'''
+        """lets you type a page number to go to"""
         to_delete: list[discord.Message] = [
             await self.channel.send('What page do you want to go to?')
         ]
@@ -283,10 +283,10 @@ class InteractivePager(Generic[_T]):
                 await asyncio.sleep(5)
 
         with contextlib.suppress(Exception):
-            await cast('discord.TextChannel', self.channel).delete_messages(to_delete)
+            await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
 
     async def __stop_pages(self) -> None:
-        '''stops the interactive pagination session'''
+        """stops the interactive pagination session"""
         await self.message.delete()
         self.paginating = False
         if self.help_task is not None:
@@ -298,7 +298,7 @@ class InteractivePager(Generic[_T]):
             await self.__show_page(self.current_page)
 
     async def __show_help(self) -> None:
-        '''shows this message'''
+        """shows this message"""
         messages = [
             'Welcome to the interactive pager!\n',
             'This interactively allows you to see pages of text by navigating with '
@@ -379,7 +379,9 @@ class InteractivePager(Generic[_T]):
             with contextlib.suppress(Exception):
                 await self.message.remove_reaction(reaction, user)
 
-            assert self.match is not None
+            if TYPE_CHECKING:
+                assert self.match is not None
+
             await self.match()
 
     @classmethod
@@ -439,7 +441,8 @@ class FieldPageSource(PageSource[_T]):
 class InteractiveFieldPager(InteractivePager[_T]):
     source: FieldPageSource[_T]
 
-    async def modify_embed(  # type: ignore
+    @override
+    async def modify_embed(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, page: FieldPage, page_num: int, /, *, first: bool = False
     ) -> None:
         self.embed.clear_fields()
@@ -452,7 +455,8 @@ class InteractiveFieldPager(InteractivePager[_T]):
             self.embed.set_footer(text=page['footer_text'])
 
     @classmethod
-    def create(  # type: ignore
+    @override
+    def create(  # pyright: ignore[reportIncompatibleMethodOverride]
         cls, ctx: commands.Context[Any], source: FieldPageSource[_T], /
     ) -> Self:
         return super().create(ctx, source)

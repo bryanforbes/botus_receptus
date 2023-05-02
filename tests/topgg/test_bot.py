@@ -45,15 +45,15 @@ class MockConnection:
 
 
 class MockSession:
-    async def post(self, url: str, *, data: Any = None, **kwargs: Any):
+    async def post(self, url: str, *, data: Any = None, **kwargs: Any) -> None:
         pass
 
-    async def close(self):
+    async def close(self) -> None:
         pass
 
 
 @pytest.fixture(autouse=True)
-def mock_aiohttp(mocker: MockerFixture):
+def mock_aiohttp(mocker: MockerFixture) -> None:
     mocker.patch('aiohttp.ClientSession', new=mocker.create_autospec(MockSession))
 
 

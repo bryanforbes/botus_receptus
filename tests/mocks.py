@@ -75,7 +75,7 @@ class MockBot:
 
                 try:
                     result = condition(*args)
-                except Exception as exc:  # noqa: PIE786
+                except Exception as exc:  # noqa: BLE001
                     future.set_exception(exc)
                     removed.append(i)
                 else:

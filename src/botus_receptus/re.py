@@ -36,7 +36,7 @@ RegexFlag: Final = re.RegexFlag
 A: Final = re.A
 ASCII: Final = re.ASCII
 DEBUG: Final = re.DEBUG
-I: Final = re.I
+I: Final = re.I  # noqa: E741
 IGNORECASE: Final = re.IGNORECASE
 L: Final = re.L
 LOCALE: Final = re.LOCALE
@@ -55,8 +55,8 @@ def compile(*args: _ReOrStrType, flags: int | re.RegexFlag = 0) -> re.Pattern[st
 def _to_str(re_or_str: _ReOrStrType, /) -> str:
     if isinstance(re_or_str, str):
         return re_or_str
-    else:
-        return str(re_or_str.pattern)
+
+    return str(re_or_str.pattern)
 
 
 def _no_top_level_ors(string: str, /) -> str:
@@ -89,8 +89,8 @@ def group(*args: _ReOrStrType, start: str = '(?:', joiner: str = '') -> str:
     return f'{start}{body})'
 
 
-capture: Final = cast('_ReOrStrFuncType', partial(group, start='('))
-either: Final = cast('_ReOrStrFuncType', partial(group, joiner='|'))
+capture: Final = cast(_ReOrStrFuncType, partial(group, start='('))
+either: Final = cast(_ReOrStrFuncType, partial(group, joiner='|'))
 
 
 def named_group(name: str, /) -> _GrouperType:
@@ -148,9 +148,9 @@ def _suffix(*args: _ReOrStrType, suffix: str, greedy: bool = True) -> str:
     return f'{atomic(combine(*args))}{suffix}{"" if greedy else "?"}'
 
 
-optional: Final = cast('_ReOrStrGreedyFuncType', partial(_suffix, suffix='?'))
-one_or_more: Final = cast('_ReOrStrGreedyFuncType', partial(_suffix, suffix='+'))
-any_number_of: Final = cast('_ReOrStrGreedyFuncType', partial(_suffix, suffix='*'))
+optional: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='?'))
+one_or_more: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='+'))
+any_number_of: Final = cast(_ReOrStrGreedyFuncType, partial(_suffix, suffix='*'))
 
 
 def exactly(n: int, /, *args: _ReOrStrType, greedy: bool = True) -> str:

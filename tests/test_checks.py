@@ -11,6 +11,8 @@ from discord.ext import commands
 from botus_receptus import NotGuildOwner, OnlyDirectMessage, checks
 
 if TYPE_CHECKING:
+    from unittest.mock import Mock
+
     from .types import MockerFixture
 
 
@@ -31,17 +33,17 @@ class MockUser:
     id: int
 
     @override
-    def __eq__(self, other: Any):
+    def __eq__(self, other: Any) -> bool:
         return self.id == other.id
 
 
 class MockDMChannel(discord.DMChannel):
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
 
 @pytest.fixture
-def mock_commands_check(mocker: MockerFixture):
+def mock_commands_check(mocker: MockerFixture) -> Mock:
     return mocker.patch('discord.ext.commands.check')
 
 

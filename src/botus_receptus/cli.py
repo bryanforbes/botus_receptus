@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import click
 import discord
@@ -16,12 +16,10 @@ if TYPE_CHECKING:
 
 
 def config_callback(
-    ctx: click.Context, param: click.Parameter, value: str | int | bool | None, /
-) -> Any:
-    assert not isinstance(value, (int, bool)), "Invalid parameter type passed"
-    assert value is not None, "Invalid parameter type passed"
-
-    assert param.name is not None, "Invalid parameter name passed"
+    ctx: click.Context, param: click.Parameter, value: str, /
+) -> config.Config:
+    if TYPE_CHECKING:
+        assert param.name is not None
 
     try:
         bot_config = config.load(value)
@@ -38,7 +36,7 @@ def config_callback(
     with contextlib.suppress(KeyError):
         ctx.default_map.update(
             {
-                k.replace("--", "").replace("-", "_"): v
+                k.replace('--', '').replace('-', '_'): v
                 for k, v in bot_config['logging'].items()
             }
         )
@@ -69,7 +67,9 @@ def cli(
         type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
         default='info',
     )
-    def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:
+    def main(
+        bot_config: config.Config, log_to_console: bool, log_level: str  # noqa: FBT001
+    ) -> None:
         cast('dict[str, object]', bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )

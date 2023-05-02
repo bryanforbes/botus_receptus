@@ -23,15 +23,8 @@ class Paginator:
     def __attrs_post_init__(self) -> None:
         self.clear()
 
-        if self.prefix is not None:
-            prefix_size = len(self.prefix) + 1
-        else:
-            prefix_size = 0
-
-        if self.suffix is not None:
-            suffix_size = len(self.suffix) + 1
-        else:
-            suffix_size = 0
+        prefix_size = 0 if self.prefix is None else len(self.prefix) + 1
+        suffix_size = 0 if self.suffix is None else len(self.suffix) + 1
 
         self._real_max_size = self.max_size - (prefix_size + suffix_size)
 
@@ -58,7 +51,7 @@ class Paginator:
     def add_line(self, line: str = '', /, *, empty: bool = False) -> None:
         if len(line) == 0:
             self._add_line(line, empty=empty)
-            return None
+            return
 
         while len(line) > 0:
             # if the line is too long, paginate it
@@ -96,9 +89,8 @@ class Paginator:
         if self.prefix is not None:
             if len(self._current_page) > 1:
                 self.close_page()
-        else:
-            if len(self._current_page) > 0:
-                self.close_page()
+        elif len(self._current_page) > 0:
+            self.close_page()
 
         return self._pages
 
@@ -120,10 +112,7 @@ class PluralizerType(Protocol):
 
 def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
     def pluralize(value: int, /, *, include_number: bool = True) -> str:
-        if include_number:
-            result = f'{value} {word}'
-        else:
-            result = word
+        result = f'{value} {word}' if include_number else word
 
         if value == 0 or value > 1:
             result = f'{result}{suffix}'

@@ -46,20 +46,22 @@ class TestSnowflake:
     @pytest.mark.parametrize(
         'bind_param,expected',
         [
-            (1, "1"),
-            (400, "400"),
+            (1, '1'),
+            (400, '400'),
             (None, None),
         ],
     )
-    def test_process_bind_param(self, bind_param: int | None, expected: str | None):
+    def test_process_bind_param(
+        self, bind_param: int | None, expected: str | None
+    ) -> None:
         snowflake = Snowflake()
         assert snowflake.process_bind_param(bind_param, object()) == expected
 
     @pytest.mark.parametrize(
         'result_value,expected',
         [
-            ("1", 1),
-            ("201293", 201293),
+            ('1', 1),
+            ('201293', 201293),
             (None, None),
         ],
     )
@@ -87,8 +89,8 @@ class TestTSVector:
         expr = user_table.search_index.match('something')  # type: ignore
 
         assert str(expr.compile(dialect=postgresql.dialect())) == (
-            '''users.search_index @@ plainto_tsquery('pg_catalog.finnish', '''
-            '''%(search_index_1)s)'''
+            "users.search_index @@ plainto_tsquery('pg_catalog.finnish', "
+            '%(search_index_1)s)'
         )
 
     def test_concat(self, user_table: type[User]) -> None:
@@ -108,8 +110,8 @@ class TestTSVector:
             'something', postgresql_regconfig='pg_catalog.simple'
         )
         assert str(expr.compile(dialect=postgresql.dialect())) == (
-            '''users.search_index @@ plainto_tsquery('pg_catalog.simple', '''
-            '''%(search_index_1)s)'''
+            "users.search_index @@ plainto_tsquery('pg_catalog.simple', "
+            '%(search_index_1)s)'
         )
 
 

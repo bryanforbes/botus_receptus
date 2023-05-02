@@ -16,11 +16,6 @@ if TYPE_CHECKING:
     from .types import MockerFixture
 
 
-class MockHandler:
-    def setFormatter(self, formatter: Any):
-        pass
-
-
 @pytest.fixture(autouse=True)
 def mock_get_logger(mocker: MockerFixture) -> MagicMock:
     return mocker.patch('botus_receptus.logging.getLogger')

@@ -130,9 +130,9 @@ class TestEmbedPaginator:
 
 
 def test_remove_mentions() -> None:
-    result = remove_mass_mentions('hello, @everyone, I\'m @here today')
+    result = remove_mass_mentions("hello, @everyone, I'm @here today")
 
-    assert result == 'hello, @\u200beveryone, I\'m @\u200bhere today'
+    assert result == "hello, @\u200beveryone, I'm @\u200bhere today"
 
 
 def test_error() -> None:

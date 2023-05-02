@@ -18,7 +18,7 @@ class EventLoopClockAdvancer:
     wake up any awaiting handlers.
     """
 
-    __slots__ = ("offset", "loop", "sleep_duration", "_base_time")
+    __slots__ = ('offset', 'loop', 'sleep_duration', '_base_time')
 
     def __init__(self, loop: AbstractEventLoop, sleep_duration: float = 1e-4) -> None:
         self.offset = 0.0
@@ -29,7 +29,7 @@ class EventLoopClockAdvancer:
         # incorporate offset timing into the event loop
         self.loop.time = self.time
 
-    def time(self):
+    def time(self) -> float:
         """
         Return the time according to the event loop's clock. The time is
         adjusted by an offset.
@@ -55,7 +55,7 @@ class EventLoopClockAdvancer:
 
 
 @pytest.fixture
-def advance_time(event_loop: AbstractEventLoop):
+def advance_time(event_loop: AbstractEventLoop) -> EventLoopClockAdvancer:
     return EventLoopClockAdvancer(event_loop)
 
 

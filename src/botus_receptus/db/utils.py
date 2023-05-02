@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeAlias, overload
+from typing import TYPE_CHECKING, Any, TypeAlias, cast, overload
 from typing_extensions import LiteralString, TypeVar
 
 if TYPE_CHECKING:
@@ -109,8 +109,8 @@ def select_all(
     order_by_str = _get_order_by_string(order_by)
 
     return db.fetch(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}'
-        f'{order_by_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}'  # noqa: S608
+        f'{group_by_str}{order_by_str}',
         *args,
         record_class=record_class,
     )
@@ -163,7 +163,8 @@ def select_one(
     group_by_str = _get_group_by_string(group_by)
 
     return db.fetchrow(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}'  # noqa: S608
+        + group_by_str,
         *args,
         record_class=record_class,
     )
@@ -221,20 +222,20 @@ def search(
 ) -> Coroutine[list[_Record]]:
     if where is None:
         where_list: list[LiteralString] = []
+    elif _is_literal_string(where):
+        where_list = [where]
     else:
-        if _is_literal_string(where):
-            where_list = [where]
-        else:
-            where_list = list(where)
+        where_list = list(where)
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
-    search_columns_str: LiteralString = " || ' ' || ".join(search_columns)
-    args = args + (' & '.join(terms),)
+    search_columns_str = " || ' ' || ".join(search_columns)
+    args = (*args, ' & '.join(terms))
+    len_str: LiteralString = cast(LiteralString, str(len(args)))
 
     where_list.append(
-        f"to_tsvector('english', {search_columns_str}) @@ "  # type: ignore
-        f"to_tsquery('english', ${len(args)})"
+        f"to_tsvector('english', {search_columns_str}) @@ "
+        f"to_tsquery('english', ${len_str})"
     )
 
     where_str = _get_where_string(where_list)
@@ -242,8 +243,8 @@ def search(
     order_by_str = _get_order_by_string(order_by)
 
     return db.fetch(
-        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}{group_by_str}'
-        f'{order_by_str}',
+        f'SELECT {columns_str} FROM {table}{joins_str}{where_str}'  # noqa: S608
+        f'{group_by_str}{order_by_str}',
         *args,
         record_class=record_class,
     )
@@ -260,7 +261,7 @@ async def update(
     set_str = ', '.join([' = '.join([key, value]) for key, value in values.items()])
     where_str = _get_where_string(where)
 
-    await db.execute(f'UPDATE {table} SET {set_str}{where_str}', *args)
+    await db.execute(f'UPDATE {table} SET {set_str}{where_str}', *args)  # noqa: S608
 
 
 async def insert_into(
@@ -284,7 +285,9 @@ async def insert_into(
     columns_str = ', '.join(columns)
     values_str = ', '.join(f'${index}' for index in range(1, len(values) + 1))
     await db.execute(
-        f'INSERT INTO {table} ({columns_str}) VALUES ({values_str}){extra}', *data
+        f'INSERT INTO {table} ({columns_str}) VALUES '  # noqa: S608
+        f'({values_str}){extra}',
+        *data,
     )
 
 
@@ -296,4 +299,4 @@ async def delete_from(
     where: ConditionsType,
 ) -> None:
     where_str = _get_where_string(where)
-    await db.execute(f'DELETE FROM {table}{where_str}', *args)
+    await db.execute(f'DELETE FROM {table}{where_str}', *args)  # noqa: S608

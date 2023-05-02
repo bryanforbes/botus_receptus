@@ -1,17 +1,18 @@
 from __future__ import annotations
 
-import asyncio
 from typing import TYPE_CHECKING, cast
 from typing_extensions import override
 
 import aiohttp
 import discord
 from discord.ext import commands
-from discord.ext.commands import bot  # type: ignore
+from discord.ext.commands import bot  # pyright: ignore[reportMissingTypeStubs]
 
 from .app_commands import CommandTree
 
 if TYPE_CHECKING:
+    import asyncio
+
     from .config import Config
 
 
@@ -43,9 +44,7 @@ class BotBase(bot.BotBase):
         )
 
     def run_with_config(self) -> None:
-        cast('discord.Client', self).run(
-            self.config['discord_api_key'], log_handler=None
-        )
+        cast(discord.Client, self).run(self.config['discord_api_key'], log_handler=None)
 
     async def setup_hook(self) -> None:
         self.session = aiohttp.ClientSession(loop=self.loop)
