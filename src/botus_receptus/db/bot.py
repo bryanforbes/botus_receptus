@@ -51,7 +51,7 @@ class BotBase(bot.BotBase):
 
     @override
     async def setup_hook(self) -> None:
-        pool_kwargs: dict[str, object] = {}
+        pool_kwargs: dict[str, Any] = {}
 
         if (init := _get_special_method(self.__db_init_connection__)) is not None:
             pool_kwargs['init'] = init
