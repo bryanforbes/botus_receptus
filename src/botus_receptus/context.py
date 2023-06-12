@@ -88,10 +88,10 @@ class PaginatedContext(commands.Context[_BotT]):
             await self.send(
                 page,
                 tts=tts,
-                delete_after=delete_after,
-                nonce=nonce,
-                reference=reference,
-                view=view,
+                delete_after=delete_after,  # pyright: ignore[reportGeneralTypeIssues]
+                nonce=nonce,  # pyright: ignore[reportGeneralTypeIssues]
+                reference=reference,  # pyright: ignore[reportGeneralTypeIssues]
+                view=view,  # pyright: ignore[reportGeneralTypeIssues]
             )
             for page in pages
         ]
