@@ -33,7 +33,7 @@ uvloop = ["uvloop"]
 asyncpg-stubs = "0.27.0"
 black = "23.3.0"
 coverage = {extras = ["toml"], version = "7.2.7"}
-mypy = "1.3.0"
+mypy = "1.4.0"
 pre-commit = "3.3.3"
 pytest = "7.3.2"
 pytest-asyncio = "0.21.0"
@@ -42,7 +42,7 @@ pytest-mock = "3.11.1"
 pytest-sugar = "0.9.7"
 pytest-xdist = "3.3.1"
 pytest-rerunfailures = "11.1.2"
-ruff = "0.0.272"
+ruff = "0.0.274"
 
 [tool.black]
 line-length = 88
