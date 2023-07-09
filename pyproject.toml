@@ -30,7 +30,7 @@ sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.27.0"
+asyncpg-stubs = "0.28.0"
 black = "23.3.0"
 coverage = {extras = ["toml"], version = "7.2.7"}
 mypy = "1.4.1"
