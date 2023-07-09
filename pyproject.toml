@@ -18,7 +18,7 @@ click = "^8.1.3"
 "discord.py" = "^2.3.1"
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
-asyncpg = {version = "~0.27.0", optional = true}
+asyncpg = {version = "~0.28.0", optional = true}
 sqlalchemy = {version = "~2.0.18", optional = true}
 uvloop = {version = "~0.17.0", optional = true}
 greenlet = {version = "^2.0.2", optional = true}
@@ -30,7 +30,7 @@ sqlalchemy = ["sqlalchemy", "asyncpg", "greenlet"]
 uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.27.0"
+asyncpg-stubs = "0.28.0"
 black = "23.3.0"
 coverage = {extras = ["toml"], version = "7.2.7"}
 mypy = "1.4.1"
