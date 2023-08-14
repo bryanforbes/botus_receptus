@@ -33,8 +33,8 @@ class MockUser:
     id: int
 
     @override
-    def __eq__(self, other: Any) -> bool:
-        return self.id == other.id
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, MockUser) and self.id == other.id
 
 
 class MockDMChannel(discord.DMChannel):
