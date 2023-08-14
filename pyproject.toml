@@ -15,7 +15,7 @@ aioitertools = "^0.11.0"
 "async-timeout" = "~4.0.3"
 attrs = "^23.1.0"
 click = "^8.1.6"
-"discord.py" = "^2.3.1"
+"discord.py" = "^2.3.2"
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
 asyncpg = {version = "~0.28.0", optional = true}
