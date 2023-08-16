@@ -33,7 +33,7 @@ uvloop = ["uvloop"]
 asyncpg-stubs = "0.28.0"
 black = "23.7.0"
 coverage = {extras = ["toml"], version = "7.3.0"}
-mypy = "1.5.0"
+mypy = "1.5.1"
 pre-commit = "3.3.3"
 pytest = "7.4.0"
 pytest-asyncio = "0.21.1"
