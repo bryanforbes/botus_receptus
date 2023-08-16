@@ -28,7 +28,7 @@ class MockBot:
 @pytest.fixture
 def cli_runner() -> Iterator[CliRunner]:
     runner = CliRunner()
-    with runner.isolated_filesystem():  # type: ignore
+    with runner.isolated_filesystem():
         yield runner
 
 
@@ -78,7 +78,7 @@ def test_run(
         f.write('')
 
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    cli_runner.invoke(command, [])  # type: ignore
+    cli_runner.invoke(command, [])
 
     mock_setup_logging.assert_called_once_with(
         {
@@ -133,7 +133,7 @@ def test_run_logging_config(
         './config.toml',
         handler_cls=cast('Any', mock_cls),
     )
-    cli_runner.invoke(command, [])  # type: ignore
+    cli_runner.invoke(command, [])
 
     assert mock_config_load.call_args[0][0].endswith('/config.toml')
     mock_setup_logging.assert_called_once_with(
@@ -162,7 +162,7 @@ def test_run_config(
         f.write('')
 
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    cli_runner.invoke(command, ['--config=config-test.toml'])  # type: ignore
+    cli_runner.invoke(command, ['--config=config-test.toml'])
 
     assert mock_config_load.call_args[0][0].endswith('config-test.toml')
 
@@ -174,7 +174,7 @@ def test_run_log_to_console(
         f.write('')
 
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    cli_runner.invoke(command, ['--log-to-console'])  # type: ignore
+    cli_runner.invoke(command, ['--log-to-console'])
 
     mock_setup_logging.assert_called_once_with(
         {
@@ -199,7 +199,7 @@ def test_run_log_level(
         f.write('')
 
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    cli_runner.invoke(command, ['--log-level=critical'])  # type: ignore
+    cli_runner.invoke(command, ['--log-level=critical'])
 
     mock_setup_logging.assert_called_once_with(
         {
@@ -221,7 +221,7 @@ def test_run_error_no_config(
     cli_runner: CliRunner, mock_bot_class: Mock, mock_setup_logging: MagicMock
 ) -> None:
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    result = cli_runner.invoke(command, [])  # type: ignore
+    result = cli_runner.invoke(command, [])
     assert result.exit_code == 2
     mock_setup_logging.assert_not_called()
 
@@ -237,7 +237,7 @@ def test_run_error_reading(
 
     mock_config_load.side_effect = OSError()
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    result = cli_runner.invoke(command, [])  # type: ignore
+    result = cli_runner.invoke(command, [])
     assert result.exit_code == 2
     assert 'Error reading configuration file: ' in result.output
     mock_setup_logging.assert_not_called()
@@ -254,7 +254,7 @@ def test_run_config_exception(
 
     mock_config_load.side_effect = ConfigException('No section and stuff')
     command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
-    result = cli_runner.invoke(command, [])  # type: ignore
+    result = cli_runner.invoke(command, [])
     assert result.exit_code == 2
     assert 'No section and stuff' in result.output
     mock_setup_logging.assert_not_called()

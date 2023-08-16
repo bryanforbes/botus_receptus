@@ -23,16 +23,22 @@ _MISSING: Final = discord.utils.MISSING
 
 
 class GuildContext(commands.Context[_BotT]):
-    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
-    def guild(self) -> discord.Guild:
+    @discord.utils.cached_property
+    def guild(  # pyright: ignore[reportIncompatibleVariableOverride]
+        self,
+    ) -> discord.Guild:
         return self.message.guild  # pyright: ignore[reportGeneralTypeIssues]
 
-    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
-    def channel(self) -> discord.TextChannel:
+    @discord.utils.cached_property
+    def channel(  # pyright: ignore[reportIncompatibleVariableOverride]
+        self,
+    ) -> discord.TextChannel:
         return self.message.channel  # pyright: ignore[reportGeneralTypeIssues]
 
-    @discord.utils.cached_property  # pyright: ignore[reportIncompatibleVariableOverride]  # noqa: E501
-    def author(self) -> discord.Member:
+    @discord.utils.cached_property
+    def author(  # pyright: ignore[reportIncompatibleVariableOverride]
+        self,
+    ) -> discord.Member:
         return self.message.author  # pyright: ignore[reportGeneralTypeIssues]
 
 

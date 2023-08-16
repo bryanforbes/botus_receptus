@@ -86,7 +86,7 @@ class TestTSVector:
         assert tsvector.options == {'regconfig': 'pg_catalog.simple'}
 
     def test_match(self, user_table: type[User]) -> None:
-        expr = user_table.search_index.match('something')  # type: ignore
+        expr = user_table.search_index.match('something')
 
         assert str(expr.compile(dialect=postgresql.dialect())) == (
             "users.search_index @@ plainto_tsquery('pg_catalog.finnish', "
@@ -94,19 +94,19 @@ class TestTSVector:
         )
 
     def test_concat(self, user_table: type[User]) -> None:
-        assert str(
-            user_table.search_index | user_table.search_index  # type: ignore
-        ) == ('users.search_index || users.search_index')
+        assert str(user_table.search_index | user_table.search_index) == (
+            'users.search_index || users.search_index'
+        )
 
     def test_match_concatenation(self, user_table: type[User]) -> None:
-        concat = user_table.search_index | user_table.search_index  # type: ignore
+        concat = user_table.search_index | user_table.search_index
         assert str(concat.match('something').compile(dialect=postgresql.dialect())) == (
             '(users.search_index || users.search_index) @@ '
             "plainto_tsquery('pg_catalog.finnish', %(param_1)s)"
         )
 
     def test_match_with_catalog(self, user_table: type[User]) -> None:
-        expr = user_table.search_index.match(  # type: ignore
+        expr = user_table.search_index.match(
             'something', postgresql_regconfig='pg_catalog.simple'
         )
         assert str(expr.compile(dialect=postgresql.dialect())) == (
