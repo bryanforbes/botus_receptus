@@ -10,3 +10,5 @@ botus_receptus.egg-info/
 .coverage*
 .testmondata
 *.pyc
+.envrc
+.tool-versions
