@@ -130,6 +130,7 @@ reportUnusedVariable = "none"
 reportImportCycles = "none"
 reportImplicitOverride = "error"
 enableExperimentalFeatures = true
+deprecateTypingAliases = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
