@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, Self, cast
 
 import pytest
 from attrs import define
@@ -8,7 +8,6 @@ from attrs import define
 from botus_receptus.db import utils
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
     from unittest.mock import AsyncMock
 
     from ..types import MockerFixture

@@ -3,8 +3,16 @@ from __future__ import annotations
 from collections.abc import Awaitable, Generator, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Concatenate, ParamSpec, TypeAlias, overload
-from typing_extensions import LiteralString, TypeVar, override
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Concatenate,
+    LiteralString,
+    ParamSpec,
+    TypeAlias,
+    overload,
+)
+from typing_extensions import TypeVar, override
 
 from attrs import define
 from discord.ext import commands

@@ -1,7 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeAlias, TypeGuard, cast, overload
-from typing_extensions import LiteralString, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    LiteralString,
+    TypeAlias,
+    TypeGuard,
+    cast,
+    overload,
+)
+from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag
-from typing import TYPE_CHECKING
-from typing_extensions import Self, TypeVar, override
+from typing import TYPE_CHECKING, Self
+from typing_extensions import TypeVar, override
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR

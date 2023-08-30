@@ -10,7 +10,7 @@ jobs:
   build:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests.yml@master
     with:
-      python_versions: '["3.10", "3.11"]'
+      python_versions: '["3.11", "3.12-rc"]'
       coverage: true
       poetry_args: '--extras all'
       pytest_args: '-p no:sugar'

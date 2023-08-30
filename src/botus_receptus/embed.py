@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, NotRequired, TypedDict
 
 import discord
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
     from datetime import datetime
-    from typing_extensions import NotRequired
 
     from discord.types.embed import EmbedType
 

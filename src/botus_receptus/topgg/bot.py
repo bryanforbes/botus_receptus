@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Final, TypedDict
+from typing import TYPE_CHECKING, Final, NotRequired, TypedDict
 from typing_extensions import override
 
 import async_timeout
@@ -13,8 +13,6 @@ from discord.ext import tasks
 from .. import bot
 
 if TYPE_CHECKING:
-    from typing_extensions import NotRequired
-
     from pendulum.datetime import DateTime
 
 _log: Final = logging.getLogger(__name__)

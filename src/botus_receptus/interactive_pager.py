@@ -4,8 +4,8 @@ import asyncio
 import contextlib
 import enum
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Any, Generic, TypeAlias, TypedDict, cast
-from typing_extensions import Self, TypeVar, override
+from typing import TYPE_CHECKING, Any, Generic, Self, TypeAlias, TypedDict, cast
+from typing_extensions import TypeVar, override
 
 import discord
 import discord.abc

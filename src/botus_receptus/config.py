@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, NotRequired, TypedDict
 
 import discord
 import tomli
 
 if TYPE_CHECKING:
     from os import PathLike
-    from typing_extensions import NotRequired
 
 
 class ConfigException(Exception):

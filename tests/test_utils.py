@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, cast
-from typing_extensions import assert_type
+from typing import TYPE_CHECKING, Any, assert_type, cast
 from unittest.mock import ANY, AsyncMock, Mock
 
 import discord
