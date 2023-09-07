@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import inspect
 from typing import TYPE_CHECKING, Any, Final, NotRequired, TypedDict, Unpack, overload
 from typing_extensions import TypeVar
 
@@ -78,10 +77,7 @@ async def race(
     *,
     timeout: float | None = None,
 ) -> _T:
-    tasks = {
-        asyncio.create_task(future) if inspect.iscoroutine(future) else future
-        for future in futures
-    }
+    tasks = {asyncio.ensure_future(future) for future in futures}
 
     done, pending = await asyncio.wait(
         tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED

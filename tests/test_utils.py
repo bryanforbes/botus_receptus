@@ -13,6 +13,8 @@ from discord.ext import commands
 from botus_receptus import utils
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from pendulum.duration import Duration
 
     from .types import ClockAdvancer, MockerFixture
@@ -155,11 +157,17 @@ async def test_race(
         await asyncio.sleep(50)
         return 2
 
-    async def three() -> int:
-        await asyncio.sleep(25)
-        return 3
+    class Three:
+        async def do_it(self) -> int:
+            await asyncio.sleep(25)
+            return 3
 
-    task = event_loop.create_task(utils.race([one(), two(), three()]))
+        def __await__(self) -> Generator[Any, Any, int]:
+            return self.do_it().__await__()
+
+    task = event_loop.create_task(
+        utils.race([one(), event_loop.create_task(two()), Three()])
+    )
     await advance_time(35)
     await advance_time(60)
     await advance_time(110)
