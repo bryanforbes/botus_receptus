@@ -19,7 +19,7 @@ click = "^8.1.7"
 tomli = "^2.0.1"
 pendulum = "~2.1.2"
 asyncpg = {version = "~0.28.0", optional = true}
-sqlalchemy = {version = "~2.0.20", optional = true}
+sqlalchemy = {version = "~2.0.21", optional = true}
 uvloop = {version = "~0.17.0", optional = true}
 greenlet = {version = "^2.0.2", optional = true}
 
