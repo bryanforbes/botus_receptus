@@ -439,7 +439,7 @@ class FieldPageSource(PageSource[_T]):
 
 @define
 class InteractiveFieldPager(InteractivePager[_T]):
-    source: FieldPageSource[_T]
+    source: FieldPageSource[_T]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @override
     async def modify_embed(  # pyright: ignore[reportIncompatibleMethodOverride]
