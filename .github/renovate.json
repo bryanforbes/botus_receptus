@@ -3,5 +3,6 @@
   "extends": [
     "github>bryanforbes/python-workflows:library"
   ],
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "ignoreDeps": ["python"]
 }
