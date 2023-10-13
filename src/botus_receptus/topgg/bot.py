@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import time
 from typing import TYPE_CHECKING, Final, NotRequired, TypedDict
 from typing_extensions import override
 
-import async_timeout
 import discord
 import pendulum
 from discord.ext import tasks
@@ -37,7 +37,7 @@ class BotBase(bot.BotBase):
         stats = self._get_topgg_stats()
         headers = {'Content-Type': 'application/json', 'Authorization': token}
 
-        async with async_timeout.timeout(10):
+        async with asyncio.timeout(10):
             user_id = self.user.id
 
             _log.info('POSTing stats for bot %s: %s', user_id, stats)
