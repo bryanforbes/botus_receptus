@@ -14,8 +14,6 @@ if TYPE_CHECKING:
     from collections.abc import Awaitable, Container, Iterable, Sequence
     from datetime import datetime
 
-    from pendulum.duration import Duration
-
     from .types import Coroutine
 
 _T = TypeVar('_T', infer_variance=True)
@@ -42,7 +40,7 @@ UNITS: Final = {
 
 
 # Adapted from https://github.com/python-discord/site/blob/master/pysite/utils/time.py
-def parse_duration(duration: str, /) -> Duration:
+def parse_duration(duration: str, /) -> pendulum.Duration:
     duration = duration.strip()
 
     if not duration:

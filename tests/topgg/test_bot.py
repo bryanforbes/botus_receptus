@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, cast
 
 import discord
+import pendulum
 import pytest
 from attrs import define, field
-from pendulum.duration import Duration
 
 from botus_receptus.topgg.bot import AutoShardedBot, Bot
 
@@ -69,7 +69,7 @@ def mock_task_cancel(mocker: MockerFixture) -> Mock:
 
 @pytest.fixture
 def mock_in_minutes(mocker: MockerFixture) -> Mock:
-    return mocker.patch.object(Duration, 'in_minutes')
+    return mocker.patch.object(pendulum.Duration, 'in_minutes')
 
 
 class TestTopggBot:

@@ -15,8 +15,6 @@ from botus_receptus import utils
 if TYPE_CHECKING:
     from collections.abc import Generator
 
-    from pendulum.duration import Duration
-
     from .types import ClockAdvancer, MockerFixture
 
 
@@ -127,7 +125,7 @@ def test_has_any_role_id(mock_member: discord.Member) -> None:
         (' 2m  1y ', pendulum.duration(years=1, seconds=120)),
     ],
 )
-def test_parse_duration(duration: str, expected: Duration) -> None:
+def test_parse_duration(duration: str, expected: pendulum.Duration) -> None:
     assert utils.parse_duration(duration) == expected
 
 

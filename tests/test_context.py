@@ -3,11 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import discord
+import pendulum
 import pytest
 from attrs import define
 from discord.ext.commands.view import StringView  # type: ignore
-from pendulum import now
-from pendulum.tz.timezone import UTC
 
 from botus_receptus.context import EmbedContext, PaginatedContext
 
@@ -116,7 +115,7 @@ class TestEmbedContext:
             prefix='~', message=mock_message, bot=mock_bot, view=string_view
         )
 
-        time = now(UTC)
+        time = pendulum.now(pendulum.UTC)
         await ctx.send_embed(
             'foo',
             title='bar',

@@ -12,9 +12,6 @@ from discord.ext import tasks
 
 from .. import bot
 
-if TYPE_CHECKING:
-    from pendulum.datetime import DateTime
-
 _log: Final = logging.getLogger(__name__)
 
 
@@ -59,16 +56,9 @@ class BotBase(bot.BotBase):
 
         self.__topgg_task.start(token)
 
-        next_hour: DateTime = (
-            pendulum.now('UTC')
-            .start_of('hour')  # pyright: ignore[reportUnknownMemberType]
-            .add(hours=1)
-        )
+        next_hour = pendulum.now('UTC').start_of('hour').add(hours=1)
 
-        if (
-            next_hour.diff().in_minutes()  # pyright: ignore[reportUnknownMemberType]
-            > 15
-        ):
+        if next_hour.diff().in_minutes() > 15:
             await self.__topgg_task(token)
 
     @override
