@@ -11,8 +11,8 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.11"
 typing_extensions = "~4.8.0"
+aiohttp = "^3.9.0b0"
 aioitertools = "^0.11.0"
-"async-timeout" = "~4.0.3"
 attrs = "^23.1.0"
 click = "^8.1.7"
 "discord.py" = "^2.3.2"
@@ -144,7 +144,7 @@ filterwarnings = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = clean,py311,report
+envlist = clean,py311,py312,report
 isolated_build = True
 
 [testenv]
@@ -159,11 +159,11 @@ deps =
 extras =
     all
 setenv =
-    py{311}: COVERAGE_FILE=.coverage.{envname}
+    py31{1,2}: COVERAGE_FILE=.coverage.{envname}
 commands = py.test {posargs:-vv}
 depends =
-    py31{1}: clean
-    report: py311
+    py31{1,2}: clean
+    report: py31{1,2}
 
 [testenv:clean]
 deps = coverage[toml]
