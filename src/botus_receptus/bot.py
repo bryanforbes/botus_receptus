@@ -43,6 +43,11 @@ class BotBase(bot.BotBase):
             tree_cls=CommandTree,
         )
 
+    async def start_with_config(self, *, reconnect: bool = True) -> None:
+        await cast(discord.Client, self).start(
+            self.config['discord_api_key'], reconnect=reconnect
+        )
+
     def run_with_config(self) -> None:
         cast(discord.Client, self).run(self.config['discord_api_key'], log_handler=None)
 

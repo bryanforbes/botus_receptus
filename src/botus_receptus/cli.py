@@ -7,6 +7,11 @@ import click
 import discord
 import tomli
 
+try:
+    from uvloop import run as _run
+except ImportError:  # pragma: no cover
+    from asyncio import run as _run
+
 from . import config, logging
 
 if TYPE_CHECKING:
@@ -76,6 +81,10 @@ def cli(
 
         with logging.setup_logging(bot_config, handler_cls=handler_cls):
             bot = bot_class(bot_config)
-            bot.run_with_config()
+
+            try:
+                _run(bot.start_with_config())
+            except KeyboardInterrupt:
+                return
 
     return main

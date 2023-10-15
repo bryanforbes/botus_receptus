@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 
 @define
 class MockBot:
+    start_with_config: Mock
     run_with_config: MagicMock
 
 
@@ -34,12 +35,20 @@ def cli_runner() -> Iterator[CliRunner]:
 
 @pytest.fixture
 def mock_bot_class_instance(mocker: MockerFixture) -> MockBot:
-    return MockBot(mocker.stub())
+    return MockBot(
+        mocker.Mock(return_value=mocker.sentinel.start_with_config_return),
+        mocker.stub(),
+    )
 
 
 @pytest.fixture
 def mock_bot_class(mocker: MockerFixture, mock_bot_class_instance: MockBot) -> Mock:
     return mocker.Mock(return_value=mock_bot_class_instance)
+
+
+@pytest.fixture
+def mock_run(mocker: MockerFixture) -> Mock:
+    return mocker.patch('botus_receptus.cli._run')
 
 
 @pytest.fixture(autouse=True)
@@ -68,11 +77,13 @@ def mock_config_load(mocker: MockerFixture, mock_config: Config) -> Mock:
 
 
 def test_run(
+    mocker: MockerFixture,
     cli_runner: CliRunner,
     mock_bot_class: Mock,
     mock_bot_class_instance: MockBot,
     mock_setup_logging: MagicMock,
     mock_config_load: MagicMock,
+    mock_run: Mock,
 ) -> None:
     with Path('config.toml').open('w') as f:
         f.write('')
@@ -97,7 +108,45 @@ def test_run(
     mock_config_load.assert_called_once()
     assert mock_config_load.call_args[0][0].endswith('/config.toml')
     mock_bot_class.assert_called()
-    mock_bot_class_instance.run_with_config.assert_called()
+    mock_bot_class_instance.start_with_config.assert_called()
+    mock_run.assert_called_once_with(mocker.sentinel.start_with_config_return)
+
+
+def test_run_exception(
+    cli_runner: CliRunner,
+    mock_bot_class: Mock,
+    mock_bot_class_instance: MockBot,
+    mock_setup_logging: MagicMock,
+    mock_config_load: MagicMock,
+    mock_run: Mock,
+) -> None:
+    mock_bot_class_instance.start_with_config.side_effect = KeyboardInterrupt
+
+    with Path('config.toml').open('w') as f:
+        f.write('')
+
+    command = cli(cast('type[BotBase]', mock_bot_class), './config.toml')
+    cli_runner.invoke(command, [])
+
+    mock_setup_logging.assert_called_once_with(
+        {
+            'bot_name': 'botty',
+            'discord_api_key': 'API_KEY',
+            'application_id': 1,
+            'intents': discord.Intents.all(),
+            'logging': {
+                'log_file': 'botty.log',
+                'log_to_console': False,
+                'log_level': 'info',
+            },
+        },
+        handler_cls=discord.utils.MISSING,
+    )
+    mock_config_load.assert_called_once()
+    assert mock_config_load.call_args[0][0].endswith('/config.toml')
+    mock_bot_class.assert_called()
+    mock_bot_class_instance.start_with_config.assert_called()
+    mock_run.assert_not_called()
 
 
 @pytest.mark.parametrize(

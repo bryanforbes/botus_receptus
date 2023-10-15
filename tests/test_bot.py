@@ -80,6 +80,31 @@ class TestBot:
 
         assert isinstance(bot, OriginalBot)
 
+    async def test_start_with_config(
+        self, mocker: MockerFixture, config: Config
+    ) -> None:
+        start = mocker.patch(
+            'discord.ext.commands.Bot.start', new_callable=mocker.AsyncMock
+        )
+
+        bot = Bot(config)
+
+        await bot.start_with_config()
+        start.assert_awaited_once_with('API_KEY', reconnect=True)
+
+    @pytest.mark.parametrize('reconnect', [True, False])
+    async def test_start_with_config_reconnect(
+        self, mocker: MockerFixture, config: Config, reconnect: bool
+    ) -> None:
+        start = mocker.patch(
+            'discord.ext.commands.Bot.start', new_callable=mocker.AsyncMock
+        )
+
+        bot = Bot(config)
+
+        await bot.start_with_config(reconnect=reconnect)
+        start.assert_awaited_once_with('API_KEY', reconnect=reconnect)
+
     def test_run_with_config(self, mocker: MockerFixture, config: Config) -> None:
         run = mocker.patch('discord.ext.commands.Bot.run')
 
