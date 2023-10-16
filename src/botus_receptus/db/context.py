@@ -3,21 +3,11 @@ from __future__ import annotations
 from collections.abc import Awaitable, Generator, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Concatenate,
-    LiteralString,
-    ParamSpec,
-    TypeAlias,
-    overload,
-)
-from typing_extensions import TypeVar, override
+from typing import TYPE_CHECKING, Any, Concatenate, LiteralString, overload, override
 
 from attrs import define
 from discord.ext import commands
 
-from ..types import Coroutine, CoroutineFunc
 from .utils import (
     ConditionsType,
     delete_from,
@@ -32,15 +22,10 @@ if TYPE_CHECKING:
     from asyncpg import Record
     from asyncpg.pool import PoolConnectionProxy
 
+    from ..types import Coroutine, CoroutineFunc
     from .bot import AutoShardedBot, Bot
 
-_Record = TypeVar('_Record', bound='Record', infer_variance=True)
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
-_ContextT = TypeVar('_ContextT', bound='Context[Any]', infer_variance=True)
-_P = ParamSpec('_P')
-_R = TypeVar('_R', infer_variance=True)
-
-_DbMethod: TypeAlias = CoroutineFunc[Concatenate[_ContextT, _P], _R]
+type _DbMethod[C: 'Context[Any]', **P, R] = CoroutineFunc[Concatenate[C, P], R]
 
 
 @define
@@ -71,11 +56,11 @@ class AcquireContextManager(
         await self.ctx.release()
 
 
-def ensure_db(func: _DbMethod[_ContextT, _P, _R], /) -> _DbMethod[_ContextT, _P, _R]:
+def ensure_db[
+    C: 'Context[Any]', **P, R
+](func: _DbMethod[C, P, R], /) -> _DbMethod[C, P, R]:
     @wraps(func)
-    def wrapper(
-        self: _ContextT, /, *args: _P.args, **kwargs: _P.kwargs
-    ) -> Coroutine[_R]:
+    def wrapper(self: C, /, *args: P.args, **kwargs: P.kwargs) -> Coroutine[R]:
         if not hasattr(self, 'db'):
             raise RuntimeError(
                 'No database object available; ensure acquire() was called'
@@ -86,7 +71,7 @@ def ensure_db(func: _DbMethod[_ContextT, _P, _R], /) -> _DbMethod[_ContextT, _P,
     return wrapper
 
 
-class Context(commands.Context[_BotT]):
+class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     db: PoolConnectionProxy[Record]
 
     def acquire(self, /, *, timeout: float | None = None) -> AcquireContextManager:
@@ -112,7 +97,9 @@ class Context(commands.Context[_BotT]):
     ) -> list[Record]: ...
 
     @overload
-    async def select_all(
+    async def select_all[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -122,11 +109,13 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = ...,
         order_by: LiteralString | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-        record_class: type[_Record],
-    ) -> list[_Record]: ...
+        record_class: type[RecordT],
+    ) -> list[RecordT]: ...
 
     @ensure_db
-    def select_all(
+    def select_all[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -136,7 +125,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = None,
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: type[_Record] | None = None,
+        record_class: type[RecordT] | None = None,
     ) -> Coroutine[list[Any]]:
         return select_all(
             self.db,
@@ -164,7 +153,9 @@ class Context(commands.Context[_BotT]):
     ) -> Record | None: ...
 
     @overload
-    async def select_one(
+    async def select_one[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -173,11 +164,13 @@ class Context(commands.Context[_BotT]):
         where: ConditionsType | None = ...,
         group_by: Sequence[LiteralString] | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-        record_class: type[_Record],
-    ) -> _Record | None: ...
+        record_class: type[RecordT],
+    ) -> (RecordT | None): ...
 
     @ensure_db
-    def select_one(
+    def select_one[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -186,7 +179,7 @@ class Context(commands.Context[_BotT]):
         where: ConditionsType | None = None,
         group_by: Sequence[LiteralString] | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: type[_Record] | None = None,
+        record_class: type[RecordT] | None = None,
     ) -> Coroutine[Any | None]:
         return select_one(
             self.db,
@@ -216,7 +209,9 @@ class Context(commands.Context[_BotT]):
     ) -> list[Record]: ...
 
     @overload
-    async def search(
+    async def search[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -228,11 +223,13 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = None,
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: type[_Record],
-    ) -> list[_Record]: ...
+        record_class: type[RecordT],
+    ) -> list[RecordT]: ...
 
     @ensure_db
-    def search(
+    def search[
+        RecordT: Record
+    ](
         self,
         /,
         *args: object,
@@ -244,7 +241,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = None,
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-        record_class: type[_Record] | None = None,
+        record_class: type[RecordT] | None = None,
     ) -> Coroutine[list[Any]]:
         return search(
             self.db,

@@ -4,11 +4,9 @@ from typing import (
     TYPE_CHECKING,
     Any,
     LiteralString,
-    TypeAlias,
     cast,
     overload,
 )
-from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
@@ -19,12 +17,10 @@ if TYPE_CHECKING:
 
     from ..types import Coroutine
 
-_Record = TypeVar('_Record', bound='Record', infer_variance=True)
-
 __all__ = ('delete_from', 'insert_into', 'search', 'select_all', 'select_one')
 
 
-ConditionsType: TypeAlias = 'Sequence[LiteralString] | LiteralString'
+type ConditionsType = Sequence[LiteralString] | LiteralString
 
 
 def _is_literal_string(obj: ConditionsType | None) -> TypeIs[LiteralString]:
@@ -66,8 +62,10 @@ def _get_group_by_string(group_by: Sequence[LiteralString] | None, /) -> Literal
 
 
 @overload
-async def select_all(
-    db: Connection[_Record] | PoolConnectionProxy[_Record],
+async def select_all[
+    RecordT: Record
+](
+    db: Connection[RecordT] | PoolConnectionProxy[RecordT],
     /,
     *args: object,
     table: LiteralString,
@@ -77,11 +75,13 @@ async def select_all(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
-) -> list[_Record]: ...
+) -> list[RecordT]: ...
 
 
 @overload
-async def select_all(
+async def select_all[
+    RecordT: Record
+](
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: object,
@@ -91,11 +91,13 @@ async def select_all(
     group_by: Sequence[LiteralString] | None = ...,
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-    record_class: type[_Record],
-) -> list[_Record]: ...
+    record_class: type[RecordT],
+) -> list[RecordT]: ...
 
 
-def select_all(
+def select_all[
+    RecordT: Record
+](
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: object,
@@ -105,7 +107,7 @@ def select_all(
     group_by: Sequence[LiteralString] | None = None,
     order_by: LiteralString | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-    record_class: type[_Record] | None = None,
+    record_class: type[RecordT] | None = None,
 ) -> Coroutine[list[Any]]:
     columns_str = ', '.join(columns)
     where_str = _get_where_string(where)
@@ -122,8 +124,10 @@ def select_all(
 
 
 @overload
-async def select_one(
-    db: Connection[_Record] | PoolConnectionProxy[_Record],
+async def select_one[
+    RecordT: Record
+](
+    db: Connection[RecordT] | PoolConnectionProxy[RecordT],
     /,
     *args: object,
     table: LiteralString,
@@ -132,30 +136,34 @@ async def select_one(
     where: ConditionsType | None = ...,
     group_by: Sequence[LiteralString] | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-) -> _Record | None: ...
+) -> (RecordT | None): ...
 
 
 @overload
-async def select_one(
+async def select_one[
+    RecordT: Record
+](
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
-    record_class: type[_Record],
+    record_class: type[RecordT],
     where: ConditionsType | None = ...,
     group_by: Sequence[LiteralString] | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-) -> _Record | None: ...
+) -> (RecordT | None): ...
 
 
-def select_one(
+def select_one[
+    RecordT: Record
+](
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: object,
     table: LiteralString,
     columns: Sequence[LiteralString],
-    record_class: type[_Record] | None = None,
+    record_class: type[RecordT] | None = None,
     where: ConditionsType | None = None,
     group_by: Sequence[LiteralString] | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
@@ -174,8 +182,10 @@ def select_one(
 
 
 @overload
-async def search(
-    db: Connection[_Record] | PoolConnectionProxy[_Record],
+async def search[
+    RecordT: Record
+](
+    db: Connection[RecordT] | PoolConnectionProxy[RecordT],
     /,
     *args: object,
     table: LiteralString,
@@ -187,11 +197,13 @@ async def search(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
-) -> list[_Record]: ...
+) -> list[RecordT]: ...
 
 
 @overload
-async def search(
+async def search[
+    RecordT: Record
+](
     db: Connection[Any] | PoolConnectionProxy[Any],
     /,
     *args: object,
@@ -203,12 +215,14 @@ async def search(
     group_by: Sequence[LiteralString] | None = ...,
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-    record_class: type[_Record],
-) -> list[_Record]: ...
+    record_class: type[RecordT],
+) -> list[RecordT]: ...
 
 
-def search(
-    db: Connection[_Record] | PoolConnectionProxy[_Record],
+def search[
+    RecordT: Record
+](
+    db: Connection[RecordT] | PoolConnectionProxy[RecordT],
     /,
     *args: object,
     table: LiteralString,
@@ -219,8 +233,8 @@ def search(
     group_by: Sequence[LiteralString] | None = None,
     order_by: LiteralString | None = None,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
-    record_class: type[_Record] | None = None,
-) -> Coroutine[list[_Record]]:
+    record_class: type[RecordT] | None = None,
+) -> Coroutine[list[RecordT]]:
     if where is None:
         where_list: list[LiteralString] = []
     elif _is_literal_string(where):

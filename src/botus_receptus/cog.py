@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic
-from typing_extensions import TypeVar
+from typing import TYPE_CHECKING
 
 from discord.ext import commands
 
@@ -9,16 +8,13 @@ if TYPE_CHECKING:
     from .bot import AutoShardedBot, Bot
 
 
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
+class Cog[BotT: Bot | AutoShardedBot](commands.Cog):
+    bot: BotT
 
-
-class Cog(commands.Cog, Generic[_BotT]):
-    bot: _BotT
-
-    def __init__(self, bot: _BotT, /) -> None:
+    def __init__(self, bot: BotT, /) -> None:
         super().__init__()
 
         self.bot = bot
 
 
-class GroupCog(commands.GroupCog, Cog[_BotT]): ...
+class GroupCog[BotT: Bot | AutoShardedBot](commands.GroupCog, Cog[BotT]): ...

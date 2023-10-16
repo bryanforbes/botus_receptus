@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Final, overload
-from typing_extensions import TypeVar, override
+from typing import TYPE_CHECKING, Any, Final, overload, override
 
 import discord
 from discord import app_commands
@@ -12,11 +11,6 @@ if TYPE_CHECKING:
     from . import bot
 
 
-_T = TypeVar('_T', infer_variance=True)
-_ClientT = TypeVar(
-    '_ClientT', bound='bot.Bot | bot.AutoShardedBot', infer_variance=True
-)
-
 _ADMIN_ONLY: Final = -1
 _TEST_ONLY: Final = -2
 _admin_only_decorator: Final = app_commands.guilds(-1)
@@ -24,14 +18,14 @@ _test_only_decorator: Final = app_commands.guilds(-2)
 
 
 @overload
-def admin_guild_only(item: _T, /) -> _T: ...
+def admin_guild_only[T](item: T, /) -> T: ...
 
 
 @overload
-def admin_guild_only() -> Callable[[_T], _T]: ...
+def admin_guild_only[T]() -> Callable[[T], T]: ...
 
 
-def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
+def admin_guild_only[T](item: T | None = None, /) -> Callable[[T], T] | T:
     if item is not None:
         return _admin_only_decorator(item)
 
@@ -39,21 +33,23 @@ def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
 
 
 @overload
-def test_guilds_only(item: _T, /) -> _T: ...
+def test_guilds_only[T](item: T, /) -> T: ...
 
 
 @overload
-def test_guilds_only() -> Callable[[_T], _T]: ...
+def test_guilds_only[T]() -> Callable[[T], T]: ...
 
 
-def test_guilds_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
+def test_guilds_only[T](item: T | None = None, /) -> Callable[[T], T] | T:
     if item is not None:
         return _test_only_decorator(item)
 
     return _test_only_decorator
 
 
-class CommandTree(app_commands.CommandTree[_ClientT]):
+class CommandTree[ClientT: bot.Bot | bot.AutoShardedBot](
+    app_commands.CommandTree[ClientT]
+):
     @override
     def add_command(
         self,

@@ -11,7 +11,6 @@ from typing import (
     Unpack,
     overload,
 )
-from typing_extensions import TypeVar
 
 import discord
 import pendulum
@@ -25,7 +24,6 @@ if TYPE_CHECKING:
 
     from .types import Coroutine
 
-_T = TypeVar('_T', infer_variance=True)
 
 _MISSING: Final = discord.utils.MISSING
 
@@ -78,12 +76,14 @@ def parse_duration(duration: str, /) -> pendulum.Duration:
     return pendulum.duration(**args)
 
 
-async def race(
-    futures: Iterable[asyncio.Future[_T] | Awaitable[_T]],
+async def race[
+    T
+](
+    futures: Iterable[asyncio.Future[T] | Awaitable[T]],
     /,
     *,
     timeout: float | None = None,
-) -> _T:
+) -> T:
     tasks = {asyncio.ensure_future(future) for future in futures}
 
     done, pending = await asyncio.wait(

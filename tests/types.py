@@ -1,13 +1,10 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Protocol, overload
-from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from unittest import mock
-
-_T = TypeVar('_T', infer_variance=True)
 
 
 class ClockAdvancer(Protocol):
@@ -32,21 +29,25 @@ class _Patcher(Protocol):
     ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
-    def object(
+    def object[
+        T
+    ](
         self,
         target: object,
         attribute: str,
-        new: _T,
+        new: T,
         spec: object | None = None,
         create: bool = False,
         spec_set: object | None = None,
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
-    def object(
+    def object[
+        T
+    ](
         self,
         target: object,
         attribute: str,
@@ -56,9 +57,9 @@ class _Patcher(Protocol):
         spec_set: object | None = None,
         autospec: object | None = None,
         *,
-        new_callable: Callable[[], _T],
+        new_callable: Callable[[], T],
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
     def context_manager(
@@ -75,21 +76,25 @@ class _Patcher(Protocol):
     ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
-    def context_manager(
+    def context_manager[
+        T
+    ](
         self,
         target: object,
         attribute: str,
-        new: _T,
+        new: T,
         spec: object | None = None,
         create: bool = False,
         spec_set: object | None = None,
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
-    def context_manager(
+    def context_manager[
+        T
+    ](
         self,
         target: object,
         attribute: str,
@@ -99,9 +104,9 @@ class _Patcher(Protocol):
         spec_set: object | None = None,
         autospec: object | None = None,
         *,
-        new_callable: Callable[[], _T],
+        new_callable: Callable[[], T],
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
     def multiple(
@@ -116,7 +121,9 @@ class _Patcher(Protocol):
     ) -> dict[str, mock.MagicMock | mock.AsyncMock]: ...
 
     @overload
-    def multiple(
+    def multiple[
+        T
+    ](
         self,
         target: object,
         spec: object | None = None,
@@ -124,29 +131,33 @@ class _Patcher(Protocol):
         spec_set: object | None = None,
         autospec: object | None = None,
         *,
-        new_callable: Callable[[], _T],
+        new_callable: Callable[[], T],
         **kwargs: Any,
-    ) -> dict[str, _T]: ...
+    ) -> dict[str, T]: ...
 
     def dict(
         self, in_dict: Any, values: Any = ..., cleaer: Any = ..., *kwargs: Any
     ) -> Any: ...
 
     @overload
-    def __call__(
+    def __call__[
+        T
+    ](
         self,
         target: str,
-        new: _T,
+        new: T,
         spec: object | None = None,
         create: bool = False,
         spec_set: object | None = None,
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
-    def __call__(
+    def __call__[
+        T
+    ](
         self,
         target: str,
         new: None = ...,
@@ -155,9 +166,9 @@ class _Patcher(Protocol):
         spec_set: object | None = None,
         autospec: object | None = None,
         *,
-        new_callable: Callable[[], _T],
+        new_callable: Callable[[], T],
         **kwargs: Any,
-    ) -> _T: ...
+    ) -> T: ...
 
     @overload
     def __call__(
