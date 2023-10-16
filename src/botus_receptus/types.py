@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Coroutine as _Coroutine
-from typing import Any, ParamSpec, TypeAlias
-from typing_extensions import TypeVar
+from typing import TYPE_CHECKING, Any
 
-from discord.ext import commands
+if TYPE_CHECKING:
+    from collections.abc import Callable, Coroutine as _Coroutine
 
-_T = TypeVar('_T', infer_variance=True)
-_P = ParamSpec('_P')
-_R = TypeVar('_R', infer_variance=True)
+    from discord.ext import commands
 
-Coroutine: TypeAlias = _Coroutine[Any, Any, _T]
-CoroutineFunc: TypeAlias = Callable[_P, Coroutine[_R]]
-AnyCoroutineFunc: TypeAlias = CoroutineFunc[..., Any]
-AnyExtCommand: TypeAlias = commands.Command[Any, ..., Any]
+type AnyCallable = Callable[..., Any]
+type Coroutine[T] = _Coroutine[Any, Any, T]
+type CoroutineFunc[**P, R] = Callable[P, Coroutine[R]]
+type AnyCoroutineFunc = CoroutineFunc[..., Any]
+type AnyExtCommand = commands.Command[Any, ..., Any]
