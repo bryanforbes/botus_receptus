@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, cast
-from typing_extensions import override
+from typing import TYPE_CHECKING, Any, cast, override
 
 import discord
 import pytest

@@ -3,8 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import time
-from typing import TYPE_CHECKING, Final, NotRequired, TypedDict
-from typing_extensions import override
+from typing import TYPE_CHECKING, Final, NotRequired, TypedDict, override
 
 import discord
 import pendulum
