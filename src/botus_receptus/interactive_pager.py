@@ -4,8 +4,7 @@ import asyncio
 import contextlib
 import enum
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Any, Generic, Self, TypeAlias, TypedDict, cast
-from typing_extensions import TypeVar, override
+from typing import TYPE_CHECKING, Any, Self, TypedDict, cast, override
 
 import discord
 import discord.abc
@@ -24,8 +23,7 @@ if TYPE_CHECKING:
     from discord.ext import commands
 
 
-_T = TypeVar('_T', infer_variance=True)
-_WaitResult: TypeAlias = tuple[discord.Reaction, discord.User | discord.Member]
+type _WaitResult = tuple[discord.Reaction, discord.User | discord.Member]
 
 # Inspired by paginator from https://github.com/Rapptz/RoboDanny
 
@@ -50,7 +48,7 @@ class Page(TypedDict):
 
 
 @define
-class PageSource(Generic[_T]):
+class PageSource[T]:
     total: int
     per_page: int
     show_entry_count: bool
@@ -71,9 +69,9 @@ class PageSource(Generic[_T]):
     @abstractmethod
     def get_page_items(
         self, page: int, /
-    ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]: ...
+    ) -> Awaitable[AnyIterable[T]] | AnyIterable[T]: ...
 
-    def format_line(self, index: int, entry: _T, /) -> str:
+    def format_line(self, index: int, entry: T, /) -> str:
         return f'{index}. {entry}'
 
     def get_footer_text(self, page: int, /) -> str | None:
@@ -88,7 +86,7 @@ class PageSource(Generic[_T]):
         return text
 
     async def get_page(self, page: int, /) -> Page:
-        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         lines = [
             self.format_line(index, entry)
             async for index, entry in aenumerate(
@@ -102,18 +100,18 @@ class PageSource(Generic[_T]):
 
 
 @define
-class ListPageSource(PageSource[_T]):
-    entries: list[_T]
+class ListPageSource[T](PageSource[T]):
+    entries: list[T]
 
     @override
-    def get_page_items(self, page: int, /) -> list[_T]:
+    def get_page_items(self, page: int, /) -> list[T]:
         base = (page - 1) * self.per_page
         return self.entries[base : base + self.per_page]
 
     @classmethod
     def create(
         cls,
-        entries: list[_T],
+        entries: list[T],
         per_page: int,
         /,
         *,
@@ -128,13 +126,13 @@ class ListPageSource(PageSource[_T]):
 
 
 @define
-class InteractivePager(Generic[_T]):
+class InteractivePager[T]:
     bot: commands.Bot
     message: discord.Message
     channel: discord.abc.MessageableChannel
     author: discord.User | discord.Member
     can_manage_messages: bool
-    source: PageSource[_T]
+    source: PageSource[T]
 
     embed: discord.Embed = field(init=False)
     paginating: bool = field(init=False)
@@ -384,7 +382,7 @@ class InteractivePager(Generic[_T]):
             await self.match()
 
     @classmethod
-    def create(cls, ctx: commands.Context[Any], source: PageSource[_T], /) -> Self:
+    def create(cls, ctx: commands.Context[Any], source: PageSource[T], /) -> Self:
         if ctx.guild is not None:
             permissions = ctx.channel.permissions_for(ctx.guild.me)
         else:
@@ -419,13 +417,13 @@ class FieldPage(Page):
 
 
 @define
-class FieldPageSource(PageSource[_T]):
-    def format_field(self, index: int, entry: _T, /) -> tuple[int, _T]:
+class FieldPageSource[T](PageSource[T]):
+    def format_field(self, index: int, entry: T, /) -> tuple[int, T]:
         return (index, entry)
 
     @override
     async def get_page(self, page: int, /) -> FieldPage:
-        entries: AnyIterable[_T] = await maybe_await(self.get_page_items(page))
+        entries: AnyIterable[T] = await maybe_await(self.get_page_items(page))
         fields = starmap(
             self.format_field, aenumerate(entries, 1 + (page - 1) * self.per_page)
         )
@@ -437,8 +435,8 @@ class FieldPageSource(PageSource[_T]):
 
 
 @define
-class InteractiveFieldPager(InteractivePager[_T]):
-    source: FieldPageSource[_T]  # pyright: ignore[reportIncompatibleVariableOverride]
+class InteractiveFieldPager[T](InteractivePager[T]):
+    source: FieldPageSource[T]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @override
     async def modify_embed(  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -456,6 +454,6 @@ class InteractiveFieldPager(InteractivePager[_T]):
     @classmethod
     @override
     def create(  # pyright: ignore[reportIncompatibleMethodOverride]
-        cls, ctx: commands.Context[Any], source: FieldPageSource[_T], /
+        cls, ctx: commands.Context[Any], source: FieldPageSource[T], /
     ) -> Self:
         return super().create(ctx, source)

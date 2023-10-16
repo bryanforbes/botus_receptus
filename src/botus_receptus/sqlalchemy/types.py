@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from enum import Flag as _EnumFlag
-from typing import TYPE_CHECKING
-from typing_extensions import TypeVar, override
+from typing import TYPE_CHECKING, override
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
-_FlagT = TypeVar('_FlagT', bound=_EnumFlag, infer_variance=True)
+if TYPE_CHECKING:
+    from enum import Flag as _EnumFlag
 
 
 class Snowflake(TypeDecorator[int]):
@@ -77,27 +76,27 @@ class TSVector(TypeDecorator[str]):
         super().__init__()
 
 
-class Flag(TypeDecorator[_FlagT]):
+class Flag[FlagT: _EnumFlag](TypeDecorator[FlagT]):
     impl = BigInteger
     cache_ok = True
 
-    _flag_cls: type[_FlagT]
+    _flag_cls: type[FlagT]
 
     def __init__(
-        self, flag_cls: type[_FlagT], /, *args: object, **kwargs: object
+        self, flag_cls: type[FlagT], /, *args: object, **kwargs: object
     ) -> None:
         self._flag_cls = flag_cls
         super().__init__(*args, **kwargs)
 
     @override
-    def process_bind_param(self, value: _FlagT | None, dialect: object) -> int | None:
+    def process_bind_param(self, value: FlagT | None, dialect: object) -> int | None:
         if value is None:
             return None
 
         return value.value
 
     @override
-    def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
+    def process_result_value(self, value: int | None, dialect: object) -> FlagT | None:
         if value is None:
             return None
 
