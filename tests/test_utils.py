@@ -44,7 +44,7 @@ def mock_member() -> MockMember:
 def mock_context(mocker: MockerFixture) -> Mock:
     mock: Mock = mocker.create_autospec(commands.Context)
     mock.message = mocker.MagicMock()
-    mock.send.return_value = mocker.sentinel.context_send_return  # type: ignore
+    mock.send.return_value = mocker.sentinel.context_send_return
 
     return mock
 
@@ -52,7 +52,7 @@ def mock_context(mocker: MockerFixture) -> Mock:
 @pytest.fixture
 def mock_messageable(mocker: MockerFixture) -> Mock:
     mock: Mock = mocker.create_autospec(discord.TextChannel)
-    mock.send.return_value = mocker.sentinel.messageable_send_return  # type: ignore
+    mock.send.return_value = mocker.sentinel.messageable_send_return
 
     return mock
 
@@ -80,12 +80,8 @@ def mock_interaction(mocker: MockerFixture) -> Mock:
     mock: Mock = mocker.create_autospec(discord.Interaction)
     mock.response = mocker.create_autospec(discord.InteractionResponse)
     mock.followup = mocker.create_autospec(discord.Webhook)
-    mock.followup.send.return_value = (  # type: ignore
-        mocker.sentinel.followup_send_return
-    )
-    mock.original_response.return_value = (  # type: ignore
-        mocker.sentinel.original_response_return
-    )
+    mock.followup.send.return_value = mocker.sentinel.followup_send_return
+    mock.original_response.return_value = mocker.sentinel.original_response_return
 
     return mock
 
@@ -252,27 +248,23 @@ async def test_send_with_context(
         )
     ) is mocker.sentinel.context_send_return
 
-    mock_context.send.assert_awaited_once_with(**expected_args)  # type: ignore
+    mock_context.send.assert_awaited_once_with(**expected_args)
 
     if expected_embed is None:
-        assert mock_context.send.await_args_list[0][1]['embeds'] is None  # type: ignore
+        assert mock_context.send.await_args_list[0][1]['embeds'] is None
     else:
         assert (
-            mock_context.send.await_args_list[0][1]['embeds'][  # type: ignore
-                0
-            ].to_dict()
+            mock_context.send.await_args_list[0][1]['embeds'][0].to_dict()
             == expected_embed
         )
 
     if 'reference' in kwargs:
         assert (
-            mock_context.send.await_args_list[0][1]['reference']  # type: ignore
-            is kwargs['reference']
+            mock_context.send.await_args_list[0][1]['reference'] is kwargs['reference']
         )
     else:
         assert (
-            mock_context.send.await_args_list[0][1]['reference']  # type: ignore
-            is mock_context.message  # type: ignore
+            mock_context.send.await_args_list[0][1]['reference'] is mock_context.message
         )
 
 
@@ -342,31 +334,23 @@ async def test_send_with_messageable(
         )
     ) is mocker.sentinel.messageable_send_return
 
-    mock_messageable.send.assert_awaited_once_with(**expected_args)  # type: ignore
+    mock_messageable.send.assert_awaited_once_with(**expected_args)
 
     if expected_embed is None:
-        assert (
-            mock_messageable.send.await_args_list[0][1]['embeds']  # type: ignore
-            is None
-        )
+        assert mock_messageable.send.await_args_list[0][1]['embeds'] is None
     else:
         assert (
-            mock_messageable.send.await_args_list[0][1]['embeds'][  # type: ignore
-                0
-            ].to_dict()
+            mock_messageable.send.await_args_list[0][1]['embeds'][0].to_dict()
             == expected_embed
         )
 
     if 'reference' in kwargs:
         assert (
-            mock_messageable.send.await_args_list[0][1]['reference']  # type: ignore
+            mock_messageable.send.await_args_list[0][1]['reference']
             is kwargs['reference']
         )
     else:
-        assert (
-            mock_messageable.send.await_args_list[0][1]['reference']  # type: ignore
-            is None
-        )
+        assert mock_messageable.send.await_args_list[0][1]['reference'] is None
 
 
 @pytest.mark.parametrize(
@@ -433,30 +417,24 @@ async def test_send_with_message(
         )
     ) is mocker.sentinel.message_send_return
 
-    mock_message.channel.send.assert_awaited_once_with(**expected_args)  # type: ignore
+    mock_message.channel.send.assert_awaited_once_with(**expected_args)
 
     if expected_embed is None:
-        assert (
-            mock_message.channel.send.await_args_list[0][1]['embeds']  # type: ignore
-            is None
-        )
+        assert mock_message.channel.send.await_args_list[0][1]['embeds'] is None
     else:
         assert (
-            mock_message.channel.send.await_args_list[0][1]['embeds'][  # type: ignore
-                0
-            ].to_dict()
+            mock_message.channel.send.await_args_list[0][1]['embeds'][0].to_dict()
             == expected_embed
         )
 
     if 'reference' in kwargs:
         assert (
-            mock_message.channel.send.await_args_list[0][1]['reference']  # type: ignore
+            mock_message.channel.send.await_args_list[0][1]['reference']
             is kwargs['reference']
         )
     else:
         assert (
-            mock_message.channel.send.await_args_list[0][1]['reference']  # type: ignore
-            is mock_message
+            mock_message.channel.send.await_args_list[0][1]['reference'] is mock_message
         )
 
 
@@ -530,18 +508,15 @@ async def test_send_with_webhook(
         )
     ) is mocker.sentinel.webhook_send_return
 
-    mock_webhook.send.assert_awaited_once_with(**expected_args)  # type: ignore
+    mock_webhook.send.assert_awaited_once_with(**expected_args)
 
     if expected_embed is None:
         assert (
-            mock_webhook.send.await_args_list[0][1]['embeds']  # type: ignore
-            is discord.utils.MISSING
+            mock_webhook.send.await_args_list[0][1]['embeds'] is discord.utils.MISSING
         )
     else:
         assert (
-            mock_webhook.send.await_args_list[0][1]['embeds'][  # type: ignore
-                0
-            ].to_dict()
+            mock_webhook.send.await_args_list[0][1]['embeds'][0].to_dict()
             == expected_embed
         )
 
@@ -656,45 +631,39 @@ async def test_send_with_interaction(
     )
 
     if not is_done:
-        mock_interaction.response.send_message.assert_awaited_once_with(  # type: ignore
-            **expected_args
-        )
+        mock_interaction.response.send_message.assert_awaited_once_with(**expected_args)
 
         if expected_embed is None:
             assert (
-                mock_interaction.response.send_message.await_args_list[  # type: ignore
-                    0
-                ][1]['embeds']
+                mock_interaction.response.send_message.await_args_list[0][1]['embeds']
                 is discord.utils.MISSING
             )
         else:
             assert (
-                mock_interaction.response.send_message.await_args_list[  # type: ignore
+                mock_interaction.response.send_message.await_args_list[0][1]['embeds'][
                     0
-                ][1]['embeds'][0].to_dict()
+                ].to_dict()
                 == expected_embed
             )
 
-        mock_interaction.followup.send.assert_not_awaited()  # type: ignore
+        mock_interaction.followup.send.assert_not_awaited()
     else:
-        mock_interaction.response.send_message.assert_not_awaited()  # type: ignore
-        mock_interaction.original_response.assert_not_awaited()  # type: ignore
-        mock_interaction.followup.send.assert_awaited_once_with(  # type: ignore
+        mock_interaction.response.send_message.assert_not_awaited()
+        mock_interaction.original_response.assert_not_awaited()
+        mock_interaction.followup.send.assert_awaited_once_with(
             wait=True, **expected_args
         )
 
         if expected_embed is None:
             assert (
-                mock_interaction.followup.send.await_args_list[0][1][  # type: ignore
-                    'embeds'
-                ]
+                mock_interaction.followup.send.await_args_list[0][1]['embeds']
                 is discord.utils.MISSING
             )
         else:
             assert (
-                mock_interaction.followup.send.await_args_list[0][1][  # type: ignore
-                    'embeds'
-                ][0].to_dict()
+                mock_interaction.followup.send.await_args_list[0][1]['embeds'][
+                    0
+                ].to_dict()
                 == expected_embed
             )
 

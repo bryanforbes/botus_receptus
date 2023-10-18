@@ -62,7 +62,7 @@ class TestBotBase:
     ) -> None:
         Bot(config, sessionmaker=mock_sessionmaker)
 
-        mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
+        mock_sessionmaker.configure.assert_called_once_with(
             bind=mocker.sentinel.create_async_engine_result
         )
         mock_create_async_engine.assert_called_once_with('some://db/url')
@@ -76,7 +76,7 @@ class TestBotBase:
     ) -> None:
         Bot(config, sessionmaker=mock_sessionmaker, engine_kwargs={'one': 1, 'two': 2})
 
-        mock_sessionmaker.configure.assert_called_once_with(  # type: ignore
+        mock_sessionmaker.configure.assert_called_once_with(
             bind=mocker.sentinel.create_async_engine_result
         )
         mock_create_async_engine.assert_called_once_with('some://db/url', one=1, two=2)
@@ -92,5 +92,5 @@ class TestBotBase:
         await bot.close()
 
         mock_close_all_sessions.assert_called_once_with()
-        mock_sessionmaker.close_all.assert_not_called()  # type: ignore
+        mock_sessionmaker.close_all.assert_not_called()
         mock_bot_base_close.assert_awaited_once_with()
