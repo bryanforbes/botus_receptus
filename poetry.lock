@@ -190,17 +190,16 @@ test = ["flake8 (>=6.1,<7.0)", "uvloop (>=0.15.3)"]
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.29.0"
+version = "0.29.1"
 description = "asyncpg stubs"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "asyncpg_stubs-0.29.0-py3-none-any.whl", hash = "sha256:07268b8da5c774aca8abaf0f2a2e0714283c741bc5640e8c475e7bbee0531671"},
-    {file = "asyncpg_stubs-0.29.0.tar.gz", hash = "sha256:61c277d5556b8f9faddb89326aa2651a07f2d611d95424c0693a6058b148b4c4"},
+    {file = "asyncpg_stubs-0.29.1-py3-none-any.whl", hash = "sha256:cce994d5a19394249e74ae8d252bde3c77cee0ddfc776cc708b724fdb4adebb6"},
+    {file = "asyncpg_stubs-0.29.1.tar.gz", hash = "sha256:686afcc0af3a2f3c8e393cd850e0de430e5a139ce82b2f28ef8f693ecdf918bf"},
 ]
 
 [package.dependencies]
-async-timeout = {version = ">=4.0.3", markers = "python_version < \"3.12\""}
 asyncpg = ">=0.29,<0.30"
 typing-extensions = ">=4.7.0,<5.0.0"
 
@@ -1534,4 +1533,4 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2e2bad020b111dd12a8dd734c7d3fad93888370aaf5c25b16c272da132345784"
+content-hash = "a0c924dd5f429f6f81e304c9c82136936c474a74f92a522f30f1338bbffc967e"
