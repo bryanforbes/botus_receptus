@@ -31,7 +31,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.29.1"
-black = "23.10.1"
+black = "23.11.0"
 coverage = {extras = ["toml"], version = "7.3.2"}
 mypy = "1.6.1"
 pre-commit = "3.5.0"
