@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING
 from typing_extensions import TypeVar, override
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
@@ -29,7 +29,7 @@ class Snowflake(TypeDecorator[int]):
         return int(value)
 
     @override
-    def copy(self, /, **kwargs: object) -> Self:
+    def copy(self, /, **kwargs: object) -> Snowflake:
         if TYPE_CHECKING:
             assert isinstance(self.impl_instance, String)
 
