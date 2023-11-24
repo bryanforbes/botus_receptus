@@ -994,18 +994,18 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-rerunfailures"
-version = "12.0"
+version = "13.0"
 description = "pytest plugin to re-run tests to eliminate flaky failures"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-rerunfailures-12.0.tar.gz", hash = "sha256:784f462fa87fe9bdf781d0027d856b47a4bfe6c12af108f6bd887057a917b48e"},
-    {file = "pytest_rerunfailures-12.0-py3-none-any.whl", hash = "sha256:9a1afd04e21b8177faf08a9bbbf44de7a0fe3fc29f8ddbe83b9684bd5f8f92a9"},
+    {file = "pytest-rerunfailures-13.0.tar.gz", hash = "sha256:e132dbe420bc476f544b96e7036edd0a69707574209b6677263c950d19b09199"},
+    {file = "pytest_rerunfailures-13.0-py3-none-any.whl", hash = "sha256:34919cb3fcb1f8e5d4b940aa75ccdea9661bade925091873b7c6fa5548333069"},
 ]
 
 [package.dependencies]
 packaging = ">=17.1"
-pytest = ">=6.2"
+pytest = ">=7"
 
 [[package]]
 name = "pytest-sugar"
@@ -1550,4 +1550,4 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c74bc77cf110530897da742639adc47a464ad70e55483fa1ce3121a505e2ea30"
+content-hash = "f2710cbefa12a99761580e4a0b69d05aa151e8edcb45ebc3d3430a493edd9c9d"
