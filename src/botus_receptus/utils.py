@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, Final, NotRequired, TypedDict, Unpack, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Final,
+    Literal,
+    NotRequired,
+    TypedDict,
+    Unpack,
+    overload,
+)
 from typing_extensions import TypeVar
 
 import discord
@@ -141,8 +150,10 @@ class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs):
     ...
 
 
-def _pop_value(kwargs: TypedDict, key: str, default: object) -> Any:  # noqa: ANN401
-    value = kwargs.pop(key, _MISSING)  # pyright: ignore[reportGeneralTypeIssues]
+def _pop_value(
+    kwargs: SendInteractionKwargs, key: Literal['ephemeral', 'content'], default: object
+) -> Any:  # noqa: ANN401
+    value = kwargs.pop(key, _MISSING)
     return default if value is _MISSING else value
 
 

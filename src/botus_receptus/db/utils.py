@@ -249,7 +249,7 @@ def search(
     group_by_str = _get_group_by_string(group_by)
     order_by_str = _get_order_by_string(order_by)
 
-    return db.fetch(  # pyright: ignore[reportUnknownArgumentType]
+    return db.fetch(
         f'SELECT {columns_str} FROM {table}{joins_str}{where_str}'  # noqa: S608
         f'{group_by_str}{order_by_str}',
         *args,
