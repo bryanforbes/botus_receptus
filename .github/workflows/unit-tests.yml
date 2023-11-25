@@ -1,4 +1,4 @@
-name: Test and scan
+name: Unit Tests
 
 on:
   push:
@@ -7,24 +7,12 @@ on:
   pull_request:
 
 jobs:
-  test_and_scan:
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version:
-          - '3.11'
-          - '3.12'
-    uses: bryanforbes/python-workflows/.github/workflows/reusable-test-and-scan.yml@master
+  build:
+    uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests.yml@master
     with:
-      python_version: ${{ matrix.python-version }}
+      python_versions: '["3.11", "3.12"]'
       coverage: true
       poetry_args: '--extras all'
       pytest_args: '-p no:sugar'
-      filters: |
-        scan:
-          - '.github/workflows/unit-tests.yml'
-          - 'src/**'
-          - 'tests/**'
-          - 'poetry.lock'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

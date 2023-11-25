@@ -1,4 +1,4 @@
-name: "Code scanning - action"
+name: CodeQL Analysis
 
 on:
   push:
@@ -14,7 +14,13 @@ on:
     - cron: '0 22 * * 2'
 
 jobs:
-  analzye:
-    uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis.yml@master
+  analyze:
+    strategy:
+      matrix:
+        python-version:
+          - '3.11'
+          - '3.12'
+    uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
-      python_versions: '["3.11", "3.12"]'
+      python_version: ${{ matrix.python-version }}
+      poetry_args: '--all-extras'
