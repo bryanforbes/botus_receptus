@@ -24,3 +24,4 @@ jobs:
     with:
       python_version: ${{ matrix.python-version }}
       poetry_args: '--all-extras'
+      category: python-${{ matrix.python-version }}
