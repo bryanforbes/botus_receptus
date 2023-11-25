@@ -7,12 +7,17 @@ on:
   pull_request:
 
 jobs:
-  build:
-    uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests.yml@master
+  test:
+    strategy:
+      matrix:
+        python-version:
+          - '3.11'
+          - '3.12'
+    uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests-new.yml@master
     with:
-      python_versions: '["3.11", "3.12"]'
+      python_version: ${{ matrix.python-version }}
       coverage: true
-      poetry_args: '--extras all'
+      poetry_args: '--all-extras'
       pytest_args: '-p no:sugar'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
