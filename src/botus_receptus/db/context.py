@@ -35,11 +35,14 @@ if TYPE_CHECKING:
     from .bot import AutoShardedBot, Bot
 
 _Record = TypeVar('_Record', bound='Record', infer_variance=True)
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
+# TODO: Add infer_variance=True when https://github.com/microsoft/pyright/issues/6574
+# is fixed
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_ContextT = TypeVar('_ContextT', bound='Context[Any]', infer_variance=True)
 _P = ParamSpec('_P')
 _R = TypeVar('_R', infer_variance=True)
 
-_DbMethod: TypeAlias = CoroutineFunc[Concatenate['Context[Any]', _P], _R]
+_DbMethod: TypeAlias = CoroutineFunc[Concatenate[_ContextT, _P], _R]
 
 
 @define
@@ -70,7 +73,7 @@ class AcquireContextManager(
         await self.ctx.release()
 
 
-def ensure_db(func: _DbMethod[_P, _R], /) -> _DbMethod[_P, _R]:
+def ensure_db(func: _DbMethod[_ContextT, _P, _R], /) -> _DbMethod[_ContextT, _P, _R]:
     @wraps(func)
     def wrapper(
         self: Context[Any], /, *args: _P.args, **kwargs: _P.kwargs
