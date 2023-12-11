@@ -35,9 +35,7 @@ if TYPE_CHECKING:
     from .bot import AutoShardedBot, Bot
 
 _Record = TypeVar('_Record', bound='Record', infer_variance=True)
-# TODO: Add infer_variance=True when https://github.com/microsoft/pyright/issues/6574
-# is fixed
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot')
+_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
 _ContextT = TypeVar('_ContextT', bound='Context[Any]', infer_variance=True)
 _P = ParamSpec('_P')
 _R = TypeVar('_R', infer_variance=True)
