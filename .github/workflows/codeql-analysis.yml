@@ -18,7 +18,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.11'
           - '3.12'
     uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
