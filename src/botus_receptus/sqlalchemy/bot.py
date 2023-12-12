@@ -3,8 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 from typing_extensions import override
 
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.orm import close_all_sessions
+from sqlalchemy.ext.asyncio import (
+    async_sessionmaker,
+    close_all_sessions,
+    create_async_engine,
+)
 
 from .. import bot
 
@@ -38,7 +41,7 @@ class BotBase(bot.BotBase):
 
     @override
     async def close(self) -> None:
-        close_all_sessions()
+        await close_all_sessions()
 
         await super().close()
 

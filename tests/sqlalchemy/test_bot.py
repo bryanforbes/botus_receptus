@@ -86,11 +86,11 @@ class TestBotBase:
         config: Config,
         mock_sessionmaker: Mock,
         mock_bot_base_close: AsyncMock,
-        mock_close_all_sessions: Mock,
+        mock_close_all_sessions: AsyncMock,
     ) -> None:
         bot = Bot(config, sessionmaker=mock_sessionmaker)
         await bot.close()
 
-        mock_close_all_sessions.assert_called_once_with()
+        mock_close_all_sessions.assert_awaited_once_with()
         mock_sessionmaker.close_all.assert_not_called()
         mock_bot_base_close.assert_awaited_once_with()
