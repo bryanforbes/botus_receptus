@@ -59,7 +59,7 @@ class BotBase(bot.BotBase):
         if (setup := _get_special_method(self.__db_setup_connection__)) is not None:
             pool_kwargs['setup'] = setup
 
-        self.pool = await create_pool(  # pyright: ignore[reportGeneralTypeIssues]
+        self.pool = await create_pool(  # pyright: ignore[reportGeneralTypeIssues, reportUnboundVariable]
             self.config.get('db_url', ''),
             min_size=1,
             max_size=10,
