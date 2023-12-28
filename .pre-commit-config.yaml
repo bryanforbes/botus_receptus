@@ -15,6 +15,6 @@ repos:
       language: system
       entry: poetry run black --check
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.339
+    rev: v1.1.343
     hooks:
     - id: pyright
