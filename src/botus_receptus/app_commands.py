@@ -24,7 +24,7 @@ _test_only_decorator: Final = app_commands.guilds(-2)
 
 
 @overload
-def admin_guild_only(item: _T) -> _T:
+def admin_guild_only(item: _T, /) -> _T:
     ...
 
 
@@ -41,7 +41,7 @@ def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
 
 
 @overload
-def test_guilds_only(item: _T) -> _T:
+def test_guilds_only(item: _T, /) -> _T:
     ...
 
 
