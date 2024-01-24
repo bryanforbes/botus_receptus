@@ -256,27 +256,27 @@ def send(
             tts=tts,
             embeds=None
             if embeds is _MISSING
-            else embeds,  # pyright: ignore[reportGeneralTypeIssues]
+            else embeds,  # pyright: ignore[reportArgumentType]
             files=None
             if files is _MISSING
-            else files,  # pyright: ignore[reportGeneralTypeIssues]
+            else files,  # pyright: ignore[reportArgumentType]
             delete_after=(
                 None
                 if delete_after is _MISSING
-                else delete_after  # pyright: ignore[reportGeneralTypeIssues]
+                else delete_after  # pyright: ignore[reportArgumentType]
             ),
             nonce=None
             if nonce is _MISSING
-            else nonce,  # pyright: ignore[reportGeneralTypeIssues]
+            else nonce,  # pyright: ignore[reportArgumentType]
             allowed_mentions=(
                 None
                 if allowed_mentions is _MISSING
-                else allowed_mentions  # pyright: ignore[reportGeneralTypeIssues]
+                else allowed_mentions  # pyright: ignore[reportArgumentType]
             ),
-            reference=reference,  # pyright: ignore[reportGeneralTypeIssues]
+            reference=reference,  # pyright: ignore[reportArgumentType]
             view=None
             if view is _MISSING
-            else view,  # pyright: ignore[reportGeneralTypeIssues]
+            else view,  # pyright: ignore[reportArgumentType]
         )
 
     if isinstance(ctx_or_intx, discord.Webhook):

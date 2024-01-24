@@ -27,19 +27,19 @@ class GuildContext(commands.Context[_BotT]):
     def guild(  # pyright: ignore[reportIncompatibleVariableOverride]
         self,
     ) -> discord.Guild:
-        return self.message.guild  # pyright: ignore[reportGeneralTypeIssues]
+        return self.message.guild  # pyright: ignore[reportReturnType]
 
     @discord.utils.cached_property
     def channel(  # pyright: ignore[reportIncompatibleVariableOverride]
         self,
     ) -> discord.TextChannel:
-        return self.message.channel  # pyright: ignore[reportGeneralTypeIssues]
+        return self.message.channel  # pyright: ignore[reportReturnType]
 
     @discord.utils.cached_property
     def author(  # pyright: ignore[reportIncompatibleVariableOverride]
         self,
     ) -> discord.Member:
-        return self.message.author  # pyright: ignore[reportGeneralTypeIssues]
+        return self.message.author  # pyright: ignore[reportReturnType]
 
 
 class EmbedContext(commands.Context[_BotT]):
@@ -91,13 +91,13 @@ class PaginatedContext(commands.Context[_BotT]):
         view: discord.ui.View | None = None,
     ) -> list[discord.Message]:
         return [
-            await self.send(
+            await self.send(  # pyright: ignore[reportCallIssue]
                 page,
                 tts=tts,
-                delete_after=delete_after,  # pyright: ignore[reportGeneralTypeIssues]
-                nonce=nonce,  # pyright: ignore[reportGeneralTypeIssues]
-                reference=reference,  # pyright: ignore[reportGeneralTypeIssues]
-                view=view,  # pyright: ignore[reportGeneralTypeIssues]
+                delete_after=delete_after,  # pyright: ignore[reportArgumentType]
+                nonce=nonce,  # pyright: ignore[reportArgumentType]
+                reference=reference,  # pyright: ignore[reportArgumentType]
+                view=view,  # pyright: ignore[reportArgumentType]
             )
             for page in pages
         ]
