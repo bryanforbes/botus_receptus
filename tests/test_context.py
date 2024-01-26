@@ -19,8 +19,7 @@ if TYPE_CHECKING:
 
 
 @define
-class MockBot:
-    ...
+class MockBot: ...
 
 
 @define

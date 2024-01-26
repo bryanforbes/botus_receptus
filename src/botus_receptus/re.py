@@ -14,18 +14,15 @@ _ReOrStrType: TypeAlias = str | re.Pattern[str]
 
 
 class _ReOrStrFuncType(Protocol):
-    def __call__(self, /, *args: _ReOrStrType) -> str:
-        ...
+    def __call__(self, /, *args: _ReOrStrType) -> str: ...
 
 
 class _ReOrStrGreedyFuncType(Protocol):
-    def __call__(self, /, *args: _ReOrStrType, greedy: bool = True) -> str:
-        ...
+    def __call__(self, /, *args: _ReOrStrType, greedy: bool = True) -> str: ...
 
 
 class _GrouperType(Protocol):
-    def __call__(self, /, *args: _ReOrStrType, joiner: str = '') -> str:
-        ...
+    def __call__(self, /, *args: _ReOrStrType, joiner: str = '') -> str: ...
 
 
 Match: Final = re.Match

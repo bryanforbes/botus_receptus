@@ -123,8 +123,7 @@ class BaseSendWebhookKwargs(BaseSendInteractionKwargs):
     thread: NotRequired[discord.Thread | discord.Object]
 
 
-class BaseSendAnyKwargs(BaseSendMessageableKwargs, BaseSendWebhookKwargs):
-    ...
+class BaseSendAnyKwargs(BaseSendMessageableKwargs, BaseSendWebhookKwargs): ...
 
 
 class SendKwargs(BaseSendKwargs):
@@ -134,20 +133,16 @@ class SendKwargs(BaseSendKwargs):
     files: NotRequired[Sequence[discord.File]]
 
 
-class SendMessageableKwargs(SendKwargs, BaseSendMessageableKwargs):
-    ...
+class SendMessageableKwargs(SendKwargs, BaseSendMessageableKwargs): ...
 
 
-class SendInteractionKwargs(SendKwargs, BaseSendInteractionKwargs):
-    ...
+class SendInteractionKwargs(SendKwargs, BaseSendInteractionKwargs): ...
 
 
-class SendWebhookKwargs(SendKwargs, BaseSendInteractionKwargs):
-    ...
+class SendWebhookKwargs(SendKwargs, BaseSendInteractionKwargs): ...
 
 
-class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs):
-    ...
+class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs): ...
 
 
 def _pop_value(
@@ -178,8 +173,7 @@ async def send(
     ctx: discord.abc.Messageable | discord.Message,
     /,
     **kwargs: Unpack[SendMessageableKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
@@ -187,8 +181,7 @@ async def send(
     ctx: discord.Webhook,
     /,
     **kwargs: Unpack[SendWebhookKwargs],
-) -> discord.WebhookMessage:
-    ...
+) -> discord.WebhookMessage: ...
 
 
 @overload
@@ -196,27 +189,29 @@ async def send(
     interaction: discord.Interaction,
     /,
     **kwargs: Unpack[SendInteractionKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send(
-    ctx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     **kwargs: Unpack[SendAnyKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 def send(
-    ctx_or_intx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx_or_intx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     *,
     content: str = _MISSING,
@@ -228,10 +223,9 @@ def send(
     ephemeral: bool = _MISSING,
     delete_after: float = _MISSING,
     nonce: int = _MISSING,
-    reference: discord.Message
-    | discord.MessageReference
-    | discord.PartialMessage
-    | None = _MISSING,
+    reference: (
+        discord.Message | discord.MessageReference | discord.PartialMessage | None
+    ) = _MISSING,
     username: str = _MISSING,
     avatar_url: str = _MISSING,
     thread: discord.Thread | discord.Object = _MISSING,
@@ -254,29 +248,29 @@ def send(
         return messageable.send(
             content=None if content is _MISSING else content,
             tts=tts,
-            embeds=None
-            if embeds is _MISSING
-            else embeds,  # pyright: ignore[reportArgumentType]
-            files=None
-            if files is _MISSING
-            else files,  # pyright: ignore[reportArgumentType]
+            embeds=(
+                None if embeds is _MISSING else embeds
+            ),  # pyright: ignore[reportArgumentType]
+            files=(
+                None if files is _MISSING else files
+            ),  # pyright: ignore[reportArgumentType]
             delete_after=(
                 None
                 if delete_after is _MISSING
                 else delete_after  # pyright: ignore[reportArgumentType]
             ),
-            nonce=None
-            if nonce is _MISSING
-            else nonce,  # pyright: ignore[reportArgumentType]
+            nonce=(
+                None if nonce is _MISSING else nonce
+            ),  # pyright: ignore[reportArgumentType]
             allowed_mentions=(
                 None
                 if allowed_mentions is _MISSING
                 else allowed_mentions  # pyright: ignore[reportArgumentType]
             ),
             reference=reference,  # pyright: ignore[reportArgumentType]
-            view=None
-            if view is _MISSING
-            else view,  # pyright: ignore[reportArgumentType]
+            view=(
+                None if view is _MISSING else view
+            ),  # pyright: ignore[reportArgumentType]
         )
 
     if isinstance(ctx_or_intx, discord.Webhook):
@@ -318,24 +312,19 @@ class EmbedKwargs(TypedDict):
     fields: NotRequired[Sequence[FieldData] | None]
 
 
-class SendEmbedKwargs(BaseSendKwargs, EmbedKwargs):
-    ...
+class SendEmbedKwargs(BaseSendKwargs, EmbedKwargs): ...
 
 
-class SendEmbedMessageableKwargs(SendEmbedKwargs, BaseSendMessageableKwargs):
-    ...
+class SendEmbedMessageableKwargs(SendEmbedKwargs, BaseSendMessageableKwargs): ...
 
 
-class SendEmbedWebhookKwargs(SendEmbedKwargs, BaseSendWebhookKwargs):
-    ...
+class SendEmbedWebhookKwargs(SendEmbedKwargs, BaseSendWebhookKwargs): ...
 
 
-class SendEmbedInteractionKwargs(SendEmbedKwargs, BaseSendInteractionKwargs):
-    ...
+class SendEmbedInteractionKwargs(SendEmbedKwargs, BaseSendInteractionKwargs): ...
 
 
-class SendEmbedAnyKwargs(SendEmbedKwargs, BaseSendAnyKwargs):
-    ...
+class SendEmbedAnyKwargs(SendEmbedKwargs, BaseSendAnyKwargs): ...
 
 
 @overload
@@ -343,41 +332,41 @@ async def send_embed(
     ctx: discord.abc.Messageable | discord.Message,
     /,
     **kwargs: Unpack[SendEmbedMessageableKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send_embed(
     interaction: discord.Webhook, /, **kwargs: Unpack[SendEmbedWebhookKwargs]
-) -> discord.WebhookMessage:
-    ...
+) -> discord.WebhookMessage: ...
 
 
 @overload
 async def send_embed(
     interaction: discord.Interaction, /, **kwargs: Unpack[SendEmbedInteractionKwargs]
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send_embed(
-    ctx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     **kwargs: Unpack[SendEmbedAnyKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 def send_embed(
-    ctx_or_intx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx_or_intx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> Coroutine[discord.Message]:
@@ -418,41 +407,41 @@ async def send_embed_error(
     ctx: discord.abc.Messageable | discord.Message,
     /,
     **kwargs: Unpack[SendEmbedMessageableKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send_embed_error(
     interaction: discord.Webhook, /, **kwargs: Unpack[SendEmbedWebhookKwargs]
-) -> discord.WebhookMessage:
-    ...
+) -> discord.WebhookMessage: ...
 
 
 @overload
 async def send_embed_error(
     interaction: discord.Interaction, /, **kwargs: Unpack[SendEmbedInteractionKwargs]
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send_embed_error(
-    ctx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     **kwargs: Unpack[SendEmbedAnyKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 def send_embed_error(
-    ctx_or_intx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    ctx_or_intx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     /,
     **kwargs: Unpack[SendEmbedAnyKwargs],
 ) -> Coroutine[discord.Message]:

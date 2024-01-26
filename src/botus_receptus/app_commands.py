@@ -24,13 +24,11 @@ _test_only_decorator: Final = app_commands.guilds(-2)
 
 
 @overload
-def admin_guild_only(item: _T, /) -> _T:
-    ...
+def admin_guild_only(item: _T, /) -> _T: ...
 
 
 @overload
-def admin_guild_only() -> Callable[[_T], _T]:
-    ...
+def admin_guild_only() -> Callable[[_T], _T]: ...
 
 
 def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
@@ -41,13 +39,11 @@ def admin_guild_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
 
 
 @overload
-def test_guilds_only(item: _T, /) -> _T:
-    ...
+def test_guilds_only(item: _T, /) -> _T: ...
 
 
 @overload
-def test_guilds_only() -> Callable[[_T], _T]:
-    ...
+def test_guilds_only() -> Callable[[_T], _T]: ...
 
 
 def test_guilds_only(item: _T | None = None, /) -> Callable[[_T], _T] | _T:
@@ -61,9 +57,11 @@ class CommandTree(app_commands.CommandTree[_ClientT]):
     @override
     def add_command(
         self,
-        command: app_commands.Command[Any, ..., Any]
-        | app_commands.ContextMenu
-        | app_commands.Group,
+        command: (
+            app_commands.Command[Any, ..., Any]
+            | app_commands.ContextMenu
+            | app_commands.Group
+        ),
         /,
         *,
         guild: discord.abc.Snowflake | None = discord.utils.MISSING,

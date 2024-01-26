@@ -26,8 +26,7 @@ class BotBase(bot.BotBase):
     if TYPE_CHECKING:
 
         @property
-        def user(self) -> discord.ClientUser:
-            ...
+        def user(self) -> discord.ClientUser: ...
 
     def _get_topgg_stats(self) -> _BotStats:
         raise NotImplementedError

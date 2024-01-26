@@ -26,8 +26,7 @@ class BotBase(bot.BotBase):
     if TYPE_CHECKING:
 
         @property
-        def application_id(self) -> int:
-            ...
+        def application_id(self) -> int: ...
 
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.config = config
@@ -75,9 +74,7 @@ class BotBase(bot.BotBase):
         await self.session.close()
 
 
-class Bot(BotBase, commands.Bot):
-    ...
+class Bot(BotBase, commands.Bot): ...
 
 
-class AutoShardedBot(BotBase, commands.AutoShardedBot):
-    ...
+class AutoShardedBot(BotBase, commands.AutoShardedBot): ...

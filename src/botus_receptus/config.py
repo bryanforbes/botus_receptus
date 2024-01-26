@@ -10,8 +10,7 @@ if TYPE_CHECKING:
     from os import PathLike
 
 
-class ConfigException(Exception):
-    ...
+class ConfigException(Exception): ...
 
 
 class _BaseConfig(TypedDict):

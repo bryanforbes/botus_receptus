@@ -36,8 +36,7 @@ class MockMessage:
 
 
 @define
-class MockCommand:
-    ...
+class MockCommand: ...
 
 
 class TestContext:

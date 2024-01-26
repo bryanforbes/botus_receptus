@@ -11,11 +11,9 @@ _T = TypeVar('_T', infer_variance=True)
 
 
 class ClockAdvancer(Protocol):
-    async def __call__(self, seconds: float) -> None:
-        ...
+    async def __call__(self, seconds: float) -> None: ...
 
-    def time(self) -> float:
-        ...
+    def time(self) -> float: ...
 
 
 class _Patcher(Protocol):
@@ -31,8 +29,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> mock.MagicMock | mock.AsyncMock:
-        ...
+    ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
     def object(
@@ -46,8 +43,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def object(
@@ -62,8 +58,7 @@ class _Patcher(Protocol):
         *,
         new_callable: Callable[[], _T],
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def context_manager(
@@ -77,8 +72,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> mock.MagicMock | mock.AsyncMock:
-        ...
+    ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
     def context_manager(
@@ -92,8 +86,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def context_manager(
@@ -108,8 +101,7 @@ class _Patcher(Protocol):
         *,
         new_callable: Callable[[], _T],
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def multiple(
@@ -121,8 +113,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> dict[str, mock.MagicMock | mock.AsyncMock]:
-        ...
+    ) -> dict[str, mock.MagicMock | mock.AsyncMock]: ...
 
     @overload
     def multiple(
@@ -135,13 +126,11 @@ class _Patcher(Protocol):
         *,
         new_callable: Callable[[], _T],
         **kwargs: Any,
-    ) -> dict[str, _T]:
-        ...
+    ) -> dict[str, _T]: ...
 
     def dict(
         self, in_dict: Any, values: Any = ..., cleaer: Any = ..., *kwargs: Any
-    ) -> Any:
-        ...
+    ) -> Any: ...
 
     @overload
     def __call__(
@@ -154,8 +143,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def __call__(
@@ -169,8 +157,7 @@ class _Patcher(Protocol):
         *,
         new_callable: Callable[[], _T],
         **kwargs: Any,
-    ) -> _T:
-        ...
+    ) -> _T: ...
 
     @overload
     def __call__(
@@ -183,8 +170,7 @@ class _Patcher(Protocol):
         autospec: object | None = None,
         new_callable: None = None,
         **kwargs: Any,
-    ) -> mock.MagicMock | mock.AsyncMock:
-        ...
+    ) -> mock.MagicMock | mock.AsyncMock: ...
 
 
 class MockerFixture(Protocol):
@@ -209,25 +195,18 @@ class MockerFixture(Protocol):
         *,
         unsafe: bool = ...,
         **kwargs: Any,
-    ) -> Any:
-        ...
+    ) -> Any: ...
 
-    def mock_open(self, mock: Any | None = ..., read_data: Any = ...) -> Any:
-        ...
+    def mock_open(self, mock: Any | None = ..., read_data: Any = ...) -> Any: ...
 
-    def seal(self, mock: Any) -> None:
-        ...
+    def seal(self, mock: Any) -> None: ...
 
     def resetall(
         self, *, return_value: bool = False, side_effect: bool = False
-    ) -> None:
-        ...
+    ) -> None: ...
 
-    def stopall(self) -> None:
-        ...
+    def stopall(self) -> None: ...
 
-    def spy(self, obj: object, name: str) -> mock.MagicMock | mock.AsyncMock:
-        ...
+    def spy(self, obj: object, name: str) -> mock.MagicMock | mock.AsyncMock: ...
 
-    def stub(self, name: str | None = None) -> mock.MagicMock:
-        ...
+    def stub(self, name: str | None = None) -> mock.MagicMock: ...
