@@ -106,8 +106,7 @@ class EmbedPaginator(Paginator):
 
 
 class PluralizerType(Protocol):
-    def __call__(self, value: int, /, *, include_number: bool = True) -> str:
-        ...
+    def __call__(self, value: int, /, *, include_number: bool = True) -> str: ...
 
 
 def pluralizer(word: str, suffix: str = 's') -> PluralizerType:

@@ -21,5 +21,4 @@ class Cog(commands.Cog, Generic[_BotT]):
         self.bot = bot
 
 
-class GroupCog(commands.GroupCog, Cog[_BotT]):
-    ...
+class GroupCog(commands.GroupCog, Cog[_BotT]): ...

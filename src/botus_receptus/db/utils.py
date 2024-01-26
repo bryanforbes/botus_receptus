@@ -77,8 +77,7 @@ async def select_all(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
-) -> list[_Record]:
-    ...
+) -> list[_Record]: ...
 
 
 @overload
@@ -93,8 +92,7 @@ async def select_all(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: type[_Record],
-) -> list[_Record]:
-    ...
+) -> list[_Record]: ...
 
 
 def select_all(
@@ -134,8 +132,7 @@ async def select_one(
     where: ConditionsType | None = ...,
     group_by: Sequence[LiteralString] | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-) -> _Record | None:
-    ...
+) -> _Record | None: ...
 
 
 @overload
@@ -149,8 +146,7 @@ async def select_one(
     where: ConditionsType | None = ...,
     group_by: Sequence[LiteralString] | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
-) -> _Record | None:
-    ...
+) -> _Record | None: ...
 
 
 def select_one(
@@ -191,8 +187,7 @@ async def search(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: None = ...,
-) -> list[_Record]:
-    ...
+) -> list[_Record]: ...
 
 
 @overload
@@ -209,8 +204,7 @@ async def search(
     order_by: LiteralString | None = ...,
     joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
     record_class: type[_Record],
-) -> list[_Record]:
-    ...
+) -> list[_Record]: ...
 
 
 def search(

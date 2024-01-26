@@ -69,14 +69,14 @@ class BotBase(bot.BotBase):
         await super().setup_hook()
 
     @_db_special_method
-    async def __db_init_connection__(self, connection: Connection[Record], /) -> None:
-        ...
+    async def __db_init_connection__(
+        self, connection: Connection[Record], /
+    ) -> None: ...
 
     @_db_special_method
     async def __db_setup_connection__(
         self, connection: PoolConnectionProxy[Record], /
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @override
     async def close(self) -> None:
@@ -91,9 +91,7 @@ class BotBase(bot.BotBase):
             await self.invoke(ctx)
 
 
-class Bot(BotBase, bot.Bot):
-    ...
+class Bot(BotBase, bot.Bot): ...
 
 
-class AutoShardedBot(BotBase, bot.AutoShardedBot):
-    ...
+class AutoShardedBot(BotBase, bot.AutoShardedBot): ...

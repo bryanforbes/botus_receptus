@@ -71,8 +71,7 @@ class PageSource(Generic[_T]):
     @abstractmethod
     def get_page_items(
         self, page: int, /
-    ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]:
-        ...
+    ) -> Awaitable[AnyIterable[_T]] | AnyIterable[_T]: ...
 
     def format_line(self, index: int, entry: _T, /) -> str:
         return f'{index}. {entry}'

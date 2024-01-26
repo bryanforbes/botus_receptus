@@ -32,8 +32,7 @@ class MockClient:
 def test_admin_guild_only() -> None:
     @app_commands.command()
     @admin_guild_only
-    async def my_command(interaction: discord.Interaction) -> None:
-        ...
+    async def my_command(interaction: discord.Interaction) -> None: ...
 
     assert my_command._guild_ids == [-1]
 
@@ -41,8 +40,7 @@ def test_admin_guild_only() -> None:
 def test_admin_guild_only_invoke() -> None:
     @app_commands.command()
     @admin_guild_only()
-    async def my_command(interaction: discord.Interaction) -> None:
-        ...
+    async def my_command(interaction: discord.Interaction) -> None: ...
 
     assert my_command._guild_ids == [-1]
 
@@ -50,8 +48,7 @@ def test_admin_guild_only_invoke() -> None:
 def test_test_guilds_only() -> None:
     @app_commands.command()
     @_test_guilds_only
-    async def my_command(interaction: discord.Interaction) -> None:
-        ...
+    async def my_command(interaction: discord.Interaction) -> None: ...
 
     assert my_command._guild_ids == [-2]
 
@@ -59,8 +56,7 @@ def test_test_guilds_only() -> None:
 def test_test_guilds_only_invoke() -> None:
     @app_commands.command()
     @_test_guilds_only()
-    async def my_command(interaction: discord.Interaction) -> None:
-        ...
+    async def my_command(interaction: discord.Interaction) -> None: ...
 
     assert my_command._guild_ids == [-2]
 
@@ -75,18 +71,15 @@ class TestCommandTree:
         mock_client.config['test_guilds'] = [23456, 34567]
 
         @app_commands.command()
-        async def my_command(interaction: discord.Interaction) -> None:
-            ...
+        async def my_command(interaction: discord.Interaction) -> None: ...
 
         @app_commands.command()
         @admin_guild_only()
-        async def my_admin_command(interaction: discord.Interaction) -> None:
-            ...
+        async def my_admin_command(interaction: discord.Interaction) -> None: ...
 
         @app_commands.command()
         @_test_guilds_only()
-        async def my_test_command(interaction: discord.Interaction) -> None:
-            ...
+        async def my_test_command(interaction: discord.Interaction) -> None: ...
 
         tree = CommandTree(mock_client)
 
@@ -102,8 +95,7 @@ class TestCommandTree:
     def test_add_command_raises(self, mock_client: Bot) -> None:
         @app_commands.command()
         @app_commands.guilds(-1, -2)
-        async def my_command(interaction: discord.Interaction) -> None:
-            ...
+        async def my_command(interaction: discord.Interaction) -> None: ...
 
         tree = CommandTree(mock_client)
 

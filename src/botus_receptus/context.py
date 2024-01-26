@@ -55,9 +55,9 @@ class EmbedContext(commands.Context[_BotT]):
         image: str | None = None,
         timestamp: datetime | None = None,
         fields: Sequence[embed.FieldData] | None = None,
-        reference: discord.Message
-        | discord.MessageReference
-        | discord.PartialMessage = _MISSING,
+        reference: (
+            discord.Message | discord.MessageReference | discord.PartialMessage
+        ) = _MISSING,
         view: discord.ui.View = _MISSING,
     ) -> Coroutine[discord.Message]:
         return utils.send_embed(
@@ -84,10 +84,9 @@ class PaginatedContext(commands.Context[_BotT]):
         tts: bool = False,
         delete_after: float | None = None,
         nonce: int | None = None,
-        reference: discord.Message
-        | discord.MessageReference
-        | discord.PartialMessage
-        | None = None,
+        reference: (
+            discord.Message | discord.MessageReference | discord.PartialMessage | None
+        ) = None,
         view: discord.ui.View | None = None,
     ) -> list[discord.Message]:
         return [

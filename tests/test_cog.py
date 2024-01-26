@@ -7,8 +7,7 @@ from botus_receptus import Bot, Cog
 from botus_receptus.cog import GroupCog
 
 
-class MockBot:
-    ...
+class MockBot: ...
 
 
 @pytest.fixture

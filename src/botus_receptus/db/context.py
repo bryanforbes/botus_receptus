@@ -109,8 +109,7 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: None = ...,
-    ) -> list[Record]:
-        ...
+    ) -> list[Record]: ...
 
     @overload
     async def select_all(
@@ -124,8 +123,7 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: type[_Record],
-    ) -> list[_Record]:
-        ...
+    ) -> list[_Record]: ...
 
     @ensure_db
     def select_all(
@@ -163,8 +161,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: None = ...,
-    ) -> Record | None:
-        ...
+    ) -> Record | None: ...
 
     @overload
     async def select_one(
@@ -177,8 +174,7 @@ class Context(commands.Context[_BotT]):
         group_by: Sequence[LiteralString] | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: type[_Record],
-    ) -> _Record | None:
-        ...
+    ) -> _Record | None: ...
 
     @ensure_db
     def select_one(
@@ -217,8 +213,7 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: None = ...,
-    ) -> list[Record]:
-        ...
+    ) -> list[Record]: ...
 
     @overload
     async def search(
@@ -234,8 +229,7 @@ class Context(commands.Context[_BotT]):
         order_by: LiteralString | None = None,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = None,
         record_class: type[_Record],
-    ) -> list[_Record]:
-        ...
+    ) -> list[_Record]: ...
 
     @ensure_db
     def search(
