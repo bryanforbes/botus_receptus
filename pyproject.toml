@@ -30,12 +30,12 @@ uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.29.1"
-black = "24.1.0"
-coverage = {extras = ["toml"], version = "7.4.0"}
+black = "24.1.1"
+coverage = {extras = ["toml"], version = "7.4.1"}
 mypy = "1.8.0"
 pre-commit = "3.6.0"
 pytest = "7.4.4"
-pytest-asyncio = "0.23.3"
+pytest-asyncio = "0.23.4"
 pytest-cov = "4.1.0"
 pytest-mock = "3.12.0"
 pytest-sugar = "0.9.7"
