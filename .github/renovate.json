@@ -4,5 +4,15 @@
     "github>bryanforbes/python-workflows:library"
   ],
   "rangeStrategy": "bump",
-  "ignoreDeps": ["python"]
+  "ignoreDeps": [
+    "python"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "pytest"
+      ],
+      "allowedVersions": "<8"
+    }
+  ]
 }
