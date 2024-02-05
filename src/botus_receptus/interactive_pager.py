@@ -265,7 +265,7 @@ class InteractivePager(Generic[_T]):
             message = await self.bot.wait_for(
                 'message', check=self.__message_check, timeout=30.0
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             to_delete.append(await self.channel.send('Took too long.'))
             await asyncio.sleep(5)
         else:
@@ -366,7 +366,7 @@ class InteractivePager(Generic[_T]):
         while self.paginating:
             try:
                 reaction, user = await wait_for_reaction()
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 self.paginating = False
 
                 try:
