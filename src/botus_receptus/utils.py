@@ -92,7 +92,7 @@ async def race(
 
     try:
         if len(pending) == len(tasks):
-            raise asyncio.TimeoutError
+            raise TimeoutError
 
         return done.pop().result()
     finally:
