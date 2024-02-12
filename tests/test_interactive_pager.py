@@ -191,17 +191,21 @@ class TestInteractivePager:
         return MockGuild(me=me_user)
 
     @pytest.fixture
-    def context(
+    async def context(
         self,
         mocker: MockerFixture,
         bot_user: MockUser,
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         permissions: MockPermissions,
         guild: MockGuild,
     ) -> MockContext:
         return MockContext.create(
-            mocker, event_loop, advance_time, bot_user, permissions, guild
+            mocker,
+            asyncio.get_running_loop(),
+            advance_time,
+            bot_user,
+            permissions,
+            guild,
         )
 
     @pytest.fixture
@@ -263,14 +267,14 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(70)
         assert p.paginating
         await advance_time(125)
@@ -298,14 +302,14 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(125)
         assert not p.paginating
         assert isinstance(context, MockContext)
@@ -326,15 +330,15 @@ class TestInteractivePager:
         self,
         mocker: MockerFixture,
         context: MockContext,
-        event_loop: asyncio.AbstractEventLoop,
         fetcher: ListPageSource[int],
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert p.paginating
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(125)
         assert not p.paginating
         context.channel.send.assert_awaited_once_with(embed=p.embed)
@@ -351,14 +355,14 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
         assert not p.paginating
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(125)
         assert not p.paginating
         page = await fetcher.get_page(1)
@@ -491,13 +495,13 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
         reaction = MockReaction.create(
             '\N{BLACK RIGHT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}', p.message.id
@@ -521,13 +525,13 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        event_loop: asyncio.AbstractEventLoop,
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
+        event_loop = asyncio.get_running_loop()
         p = InteractivePager.create(cast('Any', context), fetcher)
 
-        event_loop.create_task(p.paginate())
+        event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
 
         # mismatching author id

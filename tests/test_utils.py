@@ -140,9 +140,7 @@ def test_parse_duration_failures(duration: str, message: str) -> None:
         utils.parse_duration(duration)
 
 
-async def test_race(
-    event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
-) -> None:
+async def test_race(advance_time: ClockAdvancer) -> None:
     async def one() -> int:
         await asyncio.sleep(100)
         return 1
@@ -159,6 +157,8 @@ async def test_race(
         def __await__(self) -> Generator[Any, Any, int]:
             return self.do_it().__await__()
 
+    event_loop = asyncio.get_running_loop()
+
     task = event_loop.create_task(
         utils.race([one(), event_loop.create_task(two()), Three()])
     )
@@ -168,9 +168,7 @@ async def test_race(
     assert task.result() == 3
 
 
-async def test_race_timeout(
-    event_loop: asyncio.AbstractEventLoop, advance_time: ClockAdvancer
-) -> None:
+async def test_race_timeout(advance_time: ClockAdvancer) -> None:
     async def one() -> int:
         await asyncio.sleep(100)
         return 1
@@ -178,6 +176,8 @@ async def test_race_timeout(
     async def two() -> int:
         await asyncio.sleep(50)
         return 2
+
+    event_loop = asyncio.get_running_loop()
 
     task = event_loop.create_task(utils.race([one(), two()], timeout=25))
     await advance_time(30)
