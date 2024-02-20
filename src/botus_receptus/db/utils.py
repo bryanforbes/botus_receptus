@@ -5,7 +5,6 @@ from typing import (
     Any,
     LiteralString,
     TypeAlias,
-    TypeGuard,
     cast,
     overload,
 )
@@ -13,6 +12,7 @@ from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
+    from typing_extensions import TypeIs
 
     from asyncpg import Connection, Record
     from asyncpg.pool import PoolConnectionProxy
@@ -27,7 +27,7 @@ __all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
 ConditionsType: TypeAlias = 'Sequence[LiteralString] | LiteralString'
 
 
-def _is_literal_string(obj: object) -> TypeGuard[LiteralString]:
+def _is_literal_string(obj: ConditionsType | None) -> TypeIs[LiteralString]:
     return isinstance(obj, str)
 
 

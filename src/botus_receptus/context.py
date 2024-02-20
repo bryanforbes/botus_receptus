@@ -24,19 +24,19 @@ _MISSING: Final = discord.utils.MISSING
 
 class GuildContext(commands.Context[_BotT]):
     @discord.utils.cached_property
-    def guild(  # pyright: ignore[reportIncompatibleVariableOverride]
+    def guild(
         self,
     ) -> discord.Guild:
         return self.message.guild  # pyright: ignore[reportReturnType]
 
     @discord.utils.cached_property
-    def channel(  # pyright: ignore[reportIncompatibleVariableOverride]
+    def channel(
         self,
     ) -> discord.TextChannel:
         return self.message.channel  # pyright: ignore[reportReturnType]
 
     @discord.utils.cached_property
-    def author(  # pyright: ignore[reportIncompatibleVariableOverride]
+    def author(
         self,
     ) -> discord.Member:
         return self.message.author  # pyright: ignore[reportReturnType]
