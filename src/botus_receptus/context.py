@@ -89,7 +89,7 @@ class PaginatedContext(commands.Context[_BotT]):
         ) = None,
         view: discord.ui.View | None = None,
     ) -> list[discord.Message]:
-        return [
+        return [  # pyright: ignore[reportUnknownVariableType]
             await self.send(  # pyright: ignore[reportCallIssue]
                 page,
                 tts=tts,
