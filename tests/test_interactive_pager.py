@@ -112,7 +112,7 @@ class TestListPageSource:
     )
     def test_init(self, per_page: int, max_pages: int, paginated: bool) -> None:
         strings = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        source = ListPageSource.create(strings, per_page)
+        source = ListPageSource[str].create(strings, per_page)
 
         assert source.total == len(strings)
         assert source.max_pages == max_pages
@@ -122,7 +122,7 @@ class TestListPageSource:
     @pytest.mark.parametrize('per_page', [2, 3, 4, 10])
     async def test_get_page(self, per_page: int, show_entry_count: bool) -> None:
         strings = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        source = ListPageSource.create(
+        source = ListPageSource[str].create(
             strings, per_page, show_entry_count=show_entry_count
         )
 
@@ -170,7 +170,7 @@ class TestFieldPageSource:
 class TestInteractivePager:
     @pytest.fixture
     def fetcher(self, request: SubRequest) -> ListPageSource[int]:
-        return ListPageSource.create(
+        return ListPageSource[int].create(
             *getattr(request, 'param', [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 4])
         )
 
@@ -222,7 +222,7 @@ class TestInteractivePager:
 
     @pytest.mark.parametrize('me_user', [MockUser(id=400)])
     def test_create(self, context: MockContext, fetcher: ListPageSource[int]) -> None:
-        InteractivePager.create(cast('Any', context), fetcher)
+        InteractivePager[int].create(cast('Any', context), fetcher)
 
         assert context.guild is not None
         context.channel.permissions_for.assert_called_with(context.guild.me)
@@ -234,7 +234,7 @@ class TestInteractivePager:
         fetcher: ListPageSource[int],
         guild: discord.Guild,
     ) -> None:
-        InteractivePager.create(cast('Any', context), fetcher)
+        InteractivePager[int].create(cast('Any', context), fetcher)
 
         context.channel.permissions_for.assert_called_with(context.bot.user)
 
@@ -258,7 +258,7 @@ class TestInteractivePager:
         reason: CannotPaginateReason,
     ) -> None:
         with pytest.raises(CannotPaginate) as excinfo:
-            InteractivePager.create(cast('Any', context), fetcher)
+            InteractivePager[str].create(cast('Any', context), fetcher)
 
         assert excinfo.value.reason == reason
 
@@ -271,7 +271,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())  # noqa: RUF006
@@ -306,7 +306,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())  # noqa: RUF006
@@ -335,7 +335,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         assert p.paginating
         event_loop.create_task(p.paginate())  # noqa: RUF006
@@ -359,7 +359,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         assert not p.paginating
         event_loop.create_task(p.paginate())  # noqa: RUF006
@@ -383,7 +383,7 @@ class TestInteractivePager:
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
@@ -413,7 +413,7 @@ class TestInteractivePager:
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
@@ -454,7 +454,7 @@ class TestInteractivePager:
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
@@ -477,7 +477,7 @@ class TestInteractivePager:
         advance_time: ClockAdvancer,
         send_result: MockMessage,
     ) -> None:
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         asyncio.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
@@ -499,7 +499,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
@@ -529,7 +529,7 @@ class TestInteractivePager:
         send_result: MockMessage,
     ) -> None:
         event_loop = asyncio.get_running_loop()
-        p = InteractivePager.create(cast('Any', context), fetcher)
+        p = InteractivePager[int].create(cast('Any', context), fetcher)
 
         event_loop.create_task(p.paginate())  # noqa: RUF006
         await advance_time(0)
