@@ -83,9 +83,9 @@ class TestCommandTree:
 
         tree = CommandTree(mock_client)
 
-        tree.add_command(my_command)
-        tree.add_command(my_admin_command)
-        tree.add_command(my_test_command)
+        tree.add_command(my_command)  # pyright: ignore[reportUnknownArgumentType]
+        tree.add_command(my_admin_command)  # pyright: ignore[reportUnknownArgumentType]
+        tree.add_command(my_test_command)  # pyright: ignore[reportUnknownArgumentType]
 
         assert tree.get_commands() == [my_command]
         assert tree.get_commands(guild=discord.Object(id=12345)) == [my_admin_command]
@@ -100,4 +100,4 @@ class TestCommandTree:
         tree = CommandTree(mock_client)
 
         with pytest.raises(TypeError):
-            tree.add_command(my_command)
+            tree.add_command(my_command)  # pyright: ignore[reportUnknownArgumentType]
