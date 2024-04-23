@@ -6,5 +6,8 @@
   "rangeStrategy": "bump",
   "ignoreDeps": [
     "python"
-  ]
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
 }
