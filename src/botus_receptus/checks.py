@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
-from typing_extensions import TypeVar
 
 import discord
 from discord.ext import commands
@@ -13,10 +12,8 @@ if TYPE_CHECKING:
 
     from .types import AnyCoroutineFunc, AnyExtCommand
 
-_F = TypeVar('_F', bound='AnyCoroutineFunc | AnyExtCommand', infer_variance=True)
 
-
-def dm_only() -> Callable[[_F], _F]:
+def dm_only[F: AnyCoroutineFunc | AnyExtCommand]() -> Callable[[F], F]:
     def predicate(ctx: commands.Context[Any], /) -> bool:
         if not isinstance(ctx.channel, discord.DMChannel):
             raise OnlyDirectMessage('This command can only be used in private messags.')
@@ -25,7 +22,7 @@ def dm_only() -> Callable[[_F], _F]:
     return commands.check(predicate)
 
 
-def is_guild_owner() -> Callable[[_F], _F]:
+def is_guild_owner[F: AnyCoroutineFunc | AnyExtCommand]() -> Callable[[F], F]:
     def predicate(ctx: commands.Context[Any], /) -> bool:
         if ctx.guild is None:
             raise commands.NoPrivateMessage(
