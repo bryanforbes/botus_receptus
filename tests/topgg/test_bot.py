@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from typing import TYPE_CHECKING, Any, cast
 
 import discord
@@ -133,7 +134,12 @@ class TestTopggBot:
         bot = Bot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
-        bot._closed = True
+
+        async def _close() -> None:
+            return None
+
+        bot._closing_task = asyncio.create_task(_close())
+
         await bot.close()
 
         mock_task_cancel.assert_called_once_with()
@@ -201,7 +207,12 @@ class TestTopggAutoShardedBot:
         bot = AutoShardedBot(config)
         cast('Any', bot)._connection = MockConnection()
         await bot.setup_hook()
-        bot._closed = True
+
+        async def _close() -> None:
+            return None
+
+        bot._closing_task = asyncio.create_task(_close())
+
         await bot.close()
 
         mock_task_cancel.assert_called_once_with()
