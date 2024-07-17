@@ -2,6 +2,24 @@ from __future__ import annotations
 
 import re
 from functools import partial
+from re import (
+    ASCII as ASCII,  # noqa: PLC0414
+    DEBUG as DEBUG,  # noqa: PLC0414
+    DOTALL as DOTALL,  # noqa: PLC0414
+    IGNORECASE as IGNORECASE,  # noqa: PLC0414
+    LOCALE as LOCALE,  # noqa: PLC0414
+    MULTILINE as MULTILINE,  # noqa: PLC0414
+    VERBOSE as VERBOSE,  # noqa: PLC0414
+    A as A,  # noqa: PLC0414
+    I as I,  # noqa: PLC0414
+    L as L,  # noqa: PLC0414
+    M as M,  # noqa: PLC0414
+    Match as Match,  # noqa: PLC0414
+    Pattern as Pattern,  # noqa: PLC0414
+    RegexFlag as RegexFlag,  # noqa: PLC0414
+    S as S,  # noqa: PLC0414
+    X as X,  # noqa: PLC0414
+)
 from typing import TYPE_CHECKING, Final, Protocol, TypeAlias, cast
 
 if TYPE_CHECKING:
@@ -23,26 +41,6 @@ class _ReOrStrGreedyFuncType(Protocol):
 
 class _GrouperType(Protocol):
     def __call__(self, /, *args: _ReOrStrType, joiner: str = '') -> str: ...
-
-
-Match: Final = re.Match
-Pattern: Final = re.Pattern
-RegexFlag: Final = re.RegexFlag
-
-
-A: Final = re.A
-ASCII: Final = re.ASCII
-DEBUG: Final = re.DEBUG
-I: Final = re.I  # noqa: E741
-IGNORECASE: Final = re.IGNORECASE
-L: Final = re.L
-LOCALE: Final = re.LOCALE
-M: Final = re.M
-MULTILINE: Final = re.MULTILINE
-S: Final = re.S
-DOTALL: Final = re.DOTALL
-X: Final = re.X
-VERBOSE: Final = re.VERBOSE
 
 
 def compile(*args: _ReOrStrType, flags: int | re.RegexFlag = 0) -> re.Pattern[str]:
