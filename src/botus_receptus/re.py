@@ -20,7 +20,7 @@ from re import (
     S as S,  # noqa: PLC0414
     X as X,  # noqa: PLC0414
 )
-from typing import TYPE_CHECKING, Final, Protocol, TypeAlias, cast
+from typing import TYPE_CHECKING, Final, Protocol, cast
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 # Inspired by https://github.com/TehShrike/regex-fun
 
 
-_ReOrStrType: TypeAlias = str | re.Pattern[str]
+type _ReOrStrType = str | re.Pattern[str]
 
 
 class _ReOrStrFuncType(Protocol):
