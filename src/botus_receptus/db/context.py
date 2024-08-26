@@ -74,7 +74,7 @@ class AcquireContextManager(
 def ensure_db(func: _DbMethod[_ContextT, _P, _R], /) -> _DbMethod[_ContextT, _P, _R]:
     @wraps(func)
     def wrapper(
-        self: Context[Any], /, *args: _P.args, **kwargs: _P.kwargs
+        self: _ContextT, /, *args: _P.args, **kwargs: _P.kwargs
     ) -> Coroutine[_R]:
         if not hasattr(self, 'db'):
             raise RuntimeError(
