@@ -141,6 +141,7 @@ asyncio_mode = "auto"
 filterwarnings = [
   "ignore:.*'audioop' is deprecated:DeprecationWarning"
 ]
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.tox]
 legacy_tox_ini = """
