@@ -41,9 +41,7 @@ def _get_join_string(
 
 
 def _get_where_string(conditions: ConditionsType | None, /) -> LiteralString:
-    _conditions: (
-        Sequence[LiteralString] | None
-    ) = (  # pyright: ignore[reportAssignmentType]
+    _conditions: Sequence[LiteralString] | None = (
         [conditions] if _is_literal_string(conditions) else conditions
     )
 
@@ -228,7 +226,7 @@ def search(
     elif _is_literal_string(where):
         where_list = [where]
     else:
-        where_list = list[LiteralString](where)  # pyright: ignore[reportArgumentType]
+        where_list = list[LiteralString](where)
 
     columns_str = ', '.join(columns)
     joins_str = _get_join_string(joins)
