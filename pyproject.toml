@@ -183,5 +183,5 @@ commands =
 """
 
 [build-system]
-requires = ["poetry_core>=1.9.0"]
+requires = ["poetry_core>=1.9.1"]
 build-backend = "poetry.core.masonry.api"
