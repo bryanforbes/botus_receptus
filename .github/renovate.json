@@ -9,5 +9,14 @@
   ],
   "vulnerabilityAlerts": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "groupName": "asyncpg packages",
+      "matchPackageNames": [
+        "asyncpg",
+        "asyncpg-stubs"
+      ]
+    }
+  ]
 }
