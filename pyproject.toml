@@ -41,7 +41,7 @@ pytest-mock = "3.14.0"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.6.1"
 pytest-rerunfailures = "14.0"
-ruff = "0.7.1"
+ruff = "0.7.2"
 
 [tool.black]
 line-length = 88
