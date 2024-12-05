@@ -7,11 +7,11 @@ from .context import Context
 from .utils import delete_from, insert_into, search, select_all, select_one
 
 __all__ = [
-    'UniqueViolationError',
     'AutoShardedBot',
     'Bot',
     'BotBase',
     'Context',
+    'UniqueViolationError',
     'delete_from',
     'insert_into',
     'search',

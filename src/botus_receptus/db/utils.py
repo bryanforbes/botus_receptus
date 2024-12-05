@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 _Record = TypeVar('_Record', bound='Record', infer_variance=True)
 
-__all__ = ('select_all', 'select_one', 'insert_into', 'delete_from', 'search')
+__all__ = ('delete_from', 'insert_into', 'search', 'select_all', 'select_one')
 
 
 ConditionsType: TypeAlias = 'Sequence[LiteralString] | LiteralString'
