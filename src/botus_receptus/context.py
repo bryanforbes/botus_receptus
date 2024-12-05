@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Final
-from typing_extensions import TypeVar
 
 import discord
 from discord.ext import commands
@@ -17,12 +16,10 @@ if TYPE_CHECKING:
     from .types import Coroutine
 
 
-_BotT = TypeVar('_BotT', bound='Bot | AutoShardedBot', infer_variance=True)
-
 _MISSING: Final = discord.utils.MISSING
 
 
-class GuildContext(commands.Context[_BotT]):
+class GuildContext[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     @discord.utils.cached_property
     def guild(
         self,
@@ -42,7 +39,7 @@ class GuildContext(commands.Context[_BotT]):
         return self.message.author  # pyright: ignore[reportReturnType]
 
 
-class EmbedContext(commands.Context[_BotT]):
+class EmbedContext[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     def send_embed(
         self,
         description: str,
@@ -76,7 +73,7 @@ class EmbedContext(commands.Context[_BotT]):
         )
 
 
-class PaginatedContext(commands.Context[_BotT]):
+class PaginatedContext[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     async def send_pages(
         self,
         pages: Iterable[str],

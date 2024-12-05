@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
-from typing_extensions import TypeVar, override
+from typing import TYPE_CHECKING, Any, override
 
 from .. import bot
 from .context import Context
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
-
     import discord
 
     from ..config import Config
+    from ..types import AnyCallable
 
 try:
     from asyncpg import Connection, Record, create_pool
@@ -24,15 +22,12 @@ except ImportError:
     _has_asyncpg = False
 
 
-_F = TypeVar('_F', bound='Callable[..., Any]', infer_variance=True)
-
-
-def _db_special_method(func: _F, /) -> _F:
+def _db_special_method[F: AnyCallable](func: F, /) -> F:
     func.__db_special_method__ = None  # pyright: ignore[reportFunctionMemberAccess]
     return func
 
 
-def _get_special_method(method: _F, /) -> _F | None:
+def _get_special_method[F: AnyCallable](method: F, /) -> F | None:
     return getattr(
         method.__func__,  # pyright: ignore[reportFunctionMemberAccess]
         '__db_special_method__',

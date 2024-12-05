@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
-from typing_extensions import override
+from typing import TYPE_CHECKING, Any, override
 
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
