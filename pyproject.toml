@@ -35,13 +35,13 @@ coverage = {extras = ["toml"], version = "7.6.9"}
 mypy = "1.13.0"
 pre-commit = "4.0.1"
 pytest = "8.3.4"
-pytest-asyncio = "0.24.0"
+pytest-asyncio = "0.25.0"
 pytest-cov = "6.0.0"
 pytest-mock = "3.14.0"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.6.1"
 pytest-rerunfailures = "15.0"
-ruff = "0.8.2"
+ruff = "0.8.3"
 
 [tool.black]
 line-length = 88
