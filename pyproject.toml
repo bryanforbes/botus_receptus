@@ -17,7 +17,7 @@ packages = [
 [tool.poetry.dependencies]
 typing_extensions = "~4.12.2"
 aioitertools = "^0.12.0"
-attrs = "^24.3.0"
+attrs = "^25.1.0"
 click = "^8.1.8"
 "discord.py" = "^2.4.0"
 tomli = "^2.2.1"
