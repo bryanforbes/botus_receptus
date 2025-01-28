@@ -6,7 +6,7 @@ authors = [
   {name = "Bryan Forbes", email = "bryan@reigndropsfall.net"}
 ]
 license = "BSD-3-Clause"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.12,<3.14"
 dynamic = ["dependencies"]
 
 [tool.poetry]
