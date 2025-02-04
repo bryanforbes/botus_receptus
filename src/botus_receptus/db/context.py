@@ -56,9 +56,9 @@ class AcquireContextManager(
         await self.ctx.release()
 
 
-def ensure_db[
-    C: 'Context[Any]', **P, R
-](func: _DbMethod[C, P, R], /) -> _DbMethod[C, P, R]:
+def ensure_db[C: 'Context[Any]', **P, R](
+    func: _DbMethod[C, P, R], /
+) -> _DbMethod[C, P, R]:
     @wraps(func)
     def wrapper(self: C, /, *args: P.args, **kwargs: P.kwargs) -> Coroutine[R]:
         if not hasattr(self, 'db'):
@@ -97,9 +97,7 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     ) -> list[Record]: ...
 
     @overload
-    async def select_all[
-        RecordT: Record
-    ](
+    async def select_all[RecordT: Record](
         self,
         /,
         *args: object,
@@ -113,9 +111,7 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     ) -> list[RecordT]: ...
 
     @ensure_db
-    def select_all[
-        RecordT: Record
-    ](
+    def select_all[RecordT: Record](
         self,
         /,
         *args: object,
@@ -153,9 +149,7 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     ) -> Record | None: ...
 
     @overload
-    async def select_one[
-        RecordT: Record
-    ](
+    async def select_one[RecordT: Record](
         self,
         /,
         *args: object,
@@ -165,12 +159,10 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
         group_by: Sequence[LiteralString] | None = ...,
         joins: Sequence[tuple[LiteralString, LiteralString]] | None = ...,
         record_class: type[RecordT],
-    ) -> (RecordT | None): ...
+    ) -> RecordT | None: ...
 
     @ensure_db
-    def select_one[
-        RecordT: Record
-    ](
+    def select_one[RecordT: Record](
         self,
         /,
         *args: object,
@@ -209,9 +201,7 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     ) -> list[Record]: ...
 
     @overload
-    async def search[
-        RecordT: Record
-    ](
+    async def search[RecordT: Record](
         self,
         /,
         *args: object,
@@ -227,9 +217,7 @@ class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
     ) -> list[RecordT]: ...
 
     @ensure_db
-    def search[
-        RecordT: Record
-    ](
+    def search[RecordT: Record](
         self,
         /,
         *args: object,

@@ -76,9 +76,7 @@ def parse_duration(duration: str, /) -> pendulum.Duration:
     return pendulum.duration(**args)
 
 
-async def race[
-    T
-](
+async def race[T](
     futures: Iterable[asyncio.Future[T] | Awaitable[T]],
     /,
     *,
