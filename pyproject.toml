@@ -20,7 +20,7 @@ aioitertools = "^0.12.0"
 attrs = "^25.1.0"
 "audioop-lts" = {version = "*", python = "^3.13"}
 click = "^8.1.8"
-"discord.py" = "^2.4.0"
+"discord.py" = "^2.5.2"
 tomli = "^2.2.1"
 pendulum = "~3.0.0"
 asyncpg = {version = "~0.30.0", optional = true}
