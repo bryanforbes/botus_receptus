@@ -68,7 +68,7 @@ def load(path: str | PathLike[str], /) -> Config:
     if isinstance(raw_config['intents'], str):
         intents: discord.Intents = getattr(discord.Intents, raw_config['intents'])()
     else:
-        intents = discord.Intents(**{key: True for key in raw_config['intents']})
+        intents = discord.Intents(**dict.fromkeys(raw_config['intents'], True))
 
     raw_logging = raw_config.get('logging', {})
 

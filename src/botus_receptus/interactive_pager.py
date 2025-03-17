@@ -280,7 +280,7 @@ class InteractivePager[T]:
                 await asyncio.sleep(5)
 
         with contextlib.suppress(Exception):
-            await cast(discord.TextChannel, self.channel).delete_messages(to_delete)
+            await cast('discord.TextChannel', self.channel).delete_messages(to_delete)
 
     async def __stop_pages(self) -> None:
         """stops the interactive pagination session"""

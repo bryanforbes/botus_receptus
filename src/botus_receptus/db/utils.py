@@ -228,7 +228,7 @@ def search[RecordT: Record](
     joins_str = _get_join_string(joins)
     search_columns_str = " || ' ' || ".join(search_columns)
     args = (*args, ' & '.join(terms))
-    len_str: LiteralString = cast(LiteralString, str(len(args)))
+    len_str: LiteralString = cast('LiteralString', str(len(args)))
 
     where_list.append(
         f"to_tsvector('english', {search_columns_str}) @@ "
