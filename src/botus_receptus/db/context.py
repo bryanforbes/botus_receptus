@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from asyncpg import Record
     from asyncpg.pool import PoolConnectionProxy
 
-    from ..types import Coroutine, CoroutineFunc
+    from ..types import Coroutine, CoroutineFunc, CoroutineType
     from .bot import AutoShardedBot, Bot
 
 type _DbMethod[C: 'Context[Any]', **P, R] = CoroutineFunc[Concatenate[C, P], R]
@@ -48,7 +48,7 @@ class AcquireContextManager(
         return self.__acquire().__await__()
 
     @override
-    def __aenter__(self) -> Coroutine[PoolConnectionProxy[Record]]:
+    def __aenter__(self) -> CoroutineType[PoolConnectionProxy[Record]]:
         return self.__acquire()
 
     @override
