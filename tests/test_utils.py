@@ -215,7 +215,7 @@ async def test_race_timeout(advance_time: ClockAdvancer) -> None:
                 'reference': ANY,
                 'view': None,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'reference': object()},
@@ -299,7 +299,7 @@ async def test_send_with_context(
                 'reference': ANY,
                 'view': None,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'reference': object()},
@@ -384,7 +384,7 @@ async def test_send_with_messageable(
                 'reference': ANY,
                 'view': None,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'reference': object()},
@@ -473,7 +473,7 @@ async def test_send_with_message(
                 'avatar_url': discord.utils.MISSING,
                 'thread': discord.utils.MISSING,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'ephemeral': True},
@@ -550,7 +550,7 @@ async def test_send_with_webhook(
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'ephemeral': True},
@@ -592,7 +592,7 @@ async def test_send_with_webhook(
                 'view': discord.utils.MISSING,
                 'ephemeral': False,
             },
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'ephemeral': True},
@@ -674,17 +674,17 @@ async def test_send_with_interaction(
         (
             {},
             {'embeds': [ANY]},
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
         (
             {'description': 'asdf'},
             {'embeds': [ANY]},
-            {'type': 'rich', 'description': 'asdf'},
+            {'type': 'rich', 'flags': 0, 'description': 'asdf'},
         ),
         (
             {'reference': [object()]},
             {'embeds': [ANY], 'reference': ANY},
-            {'type': 'rich'},
+            {'type': 'rich', 'flags': 0},
         ),
     ],
 )
@@ -713,11 +713,11 @@ async def test_send_embed_with_context(
 @pytest.mark.parametrize(
     'kwargs,expected_args,expected_embed',
     [
-        ({}, {'embeds': [ANY]}, {'type': 'rich'}),
+        ({}, {'embeds': [ANY]}, {'type': 'rich', 'flags': 0}),
         (
             {'description': 'asdf', 'ephemeral': False},
             {'embeds': [ANY], 'ephemeral': False},
-            {'type': 'rich', 'description': 'asdf'},
+            {'type': 'rich', 'flags': 0, 'description': 'asdf'},
         ),
     ],
 )
@@ -749,22 +749,22 @@ async def test_send_embed_with_interaction(
         (
             {},
             {'embeds': [ANY], 'ephemeral': True},
-            {'type': 'rich', 'color': 15158332},
+            {'type': 'rich', 'flags': 0, 'color': 15158332},
         ),
         (
             {'description': 'asdf'},
             {'embeds': [ANY], 'ephemeral': True},
-            {'type': 'rich', 'description': 'asdf', 'color': 15158332},
+            {'type': 'rich', 'flags': 0, 'description': 'asdf', 'color': 15158332},
         ),
         (
             {'reference': [object()]},
             {'embeds': [ANY], 'reference': ANY, 'ephemeral': True},
-            {'type': 'rich', 'color': 15158332},
+            {'type': 'rich', 'flags': 0, 'color': 15158332},
         ),
         (
             {'color': discord.Color.blue()},
             {'embeds': [ANY], 'ephemeral': True},
-            {'type': 'rich', 'color': 3447003},
+            {'type': 'rich', 'flags': 0, 'color': 3447003},
         ),
     ],
 )
@@ -796,17 +796,27 @@ async def test_send_embed_error_with_context(
         (
             {},
             {'embeds': [ANY], 'ephemeral': True},
-            {'type': 'rich', 'color': discord.Color.red().value},
+            {'type': 'rich', 'flags': 0, 'color': discord.Color.red().value},
         ),
         (
             {'description': 'asdf', 'ephemeral': False},
             {'embeds': [ANY], 'ephemeral': False},
-            {'type': 'rich', 'description': 'asdf', 'color': discord.Color.red().value},
+            {
+                'type': 'rich',
+                'flags': 0,
+                'description': 'asdf',
+                'color': discord.Color.red().value,
+            },
         ),
         (
             {'title': 'asdf', 'color': discord.Color.blue()},
             {'embeds': [ANY], 'ephemeral': True},
-            {'type': 'rich', 'title': 'asdf', 'color': discord.Color.blue().value},
+            {
+                'type': 'rich',
+                'flags': 0,
+                'title': 'asdf',
+                'color': discord.Color.blue().value,
+            },
         ),
     ],
 )

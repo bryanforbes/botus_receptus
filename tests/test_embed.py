@@ -13,8 +13,11 @@ class TestEmbed:
     @pytest.mark.parametrize(
         'kwargs,expected',
         [
-            ({}, {'type': 'rich'}),
-            ({'description': 'baz'}, {'description': 'baz', 'type': 'rich'}),
+            ({}, {'type': 'rich', 'flags': 0}),
+            (
+                {'description': 'baz'},
+                {'description': 'baz', 'type': 'rich', 'flags': 0},
+            ),
             (
                 {
                     'title': 'bar',
@@ -30,6 +33,7 @@ class TestEmbed:
                 },
                 {
                     'type': 'rich',
+                    'flags': 0,
                     'title': 'bar',
                     'color': 0,
                     'footer': {'text': 'baz'},
@@ -47,6 +51,7 @@ class TestEmbed:
                 },
                 {
                     'type': 'rich',
+                    'flags': 0,
                     'footer': {'text': 'baz', 'icon_url': 'bar'},
                     'author': {'name': 'spam', 'url': 'foo', 'icon_url': 'blah'},
                 },

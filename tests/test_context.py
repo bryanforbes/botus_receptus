@@ -88,6 +88,7 @@ class TestEmbedContext:
         assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'description': 'baz',
             'type': 'rich',
+            'flags': 0,
         }
         mock_context_send.assert_called_once_with(
             content=None,
@@ -131,6 +132,7 @@ class TestEmbedContext:
 
         assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
+            'flags': 0,
             'description': 'foo',
             'title': 'bar',
             'color': 0,
@@ -177,6 +179,7 @@ class TestEmbedContext:
 
         assert mock_context_send.call_args_list[0][1]['embeds'][0].to_dict() == {
             'type': 'rich',
+            'flags': 0,
             'description': 'foo',
             'footer': {'text': 'bar', 'icon_url': 'baz'},
             'author': {'name': 'ham', 'url': 'spam', 'icon_url': 'lamb'},
