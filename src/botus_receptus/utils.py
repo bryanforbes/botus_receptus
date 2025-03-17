@@ -7,10 +7,10 @@ from typing import (
     Final,
     Literal,
     NotRequired,
-    TypedDict,
     Unpack,
     overload,
 )
+from typing_extensions import TypedDict
 
 import discord
 import pendulum
@@ -131,16 +131,18 @@ class SendKwargs(BaseSendKwargs):
     files: NotRequired[Sequence[discord.File]]
 
 
-class SendMessageableKwargs(SendKwargs, BaseSendMessageableKwargs): ...
+class SendMessageableKwargs(SendKwargs, BaseSendMessageableKwargs, closed=True): ...
 
 
-class SendInteractionKwargs(SendKwargs, BaseSendInteractionKwargs): ...
+class SendInteractionKwargs(SendKwargs, BaseSendInteractionKwargs, closed=True): ...
 
 
-class SendWebhookKwargs(SendKwargs, BaseSendInteractionKwargs): ...
+class SendWebhookKwargs(SendKwargs, BaseSendInteractionKwargs, closed=True): ...
 
 
-class SendAnyKwargs(SendMessageableKwargs, SendWebhookKwargs): ...
+class SendAnyKwargs(
+    SendKwargs, BaseSendMessageableKwargs, BaseSendInteractionKwargs, closed=True
+): ...
 
 
 def _pop_value(
@@ -313,16 +315,20 @@ class EmbedKwargs(TypedDict):
 class SendEmbedKwargs(BaseSendKwargs, EmbedKwargs): ...
 
 
-class SendEmbedMessageableKwargs(SendEmbedKwargs, BaseSendMessageableKwargs): ...
+class SendEmbedMessageableKwargs(
+    SendEmbedKwargs, BaseSendMessageableKwargs, closed=True
+): ...
 
 
-class SendEmbedWebhookKwargs(SendEmbedKwargs, BaseSendWebhookKwargs): ...
+class SendEmbedWebhookKwargs(SendEmbedKwargs, BaseSendWebhookKwargs, closed=True): ...
 
 
-class SendEmbedInteractionKwargs(SendEmbedKwargs, BaseSendInteractionKwargs): ...
+class SendEmbedInteractionKwargs(
+    SendEmbedKwargs, BaseSendInteractionKwargs, closed=True
+): ...
 
 
-class SendEmbedAnyKwargs(SendEmbedKwargs, BaseSendAnyKwargs): ...
+class SendEmbedAnyKwargs(SendEmbedKwargs, BaseSendAnyKwargs, closed=True): ...
 
 
 @overload
