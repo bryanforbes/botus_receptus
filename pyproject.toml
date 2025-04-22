@@ -15,7 +15,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-typing_extensions = "~4.12.2"
+typing_extensions = "~4.13.2"
 aioitertools = "^0.12.0"
 attrs = "^25.3.0"
 "audioop-lts" = {version = "*", python = "^3.13"}
