@@ -26,7 +26,7 @@ class MockRole:
 
 @define
 class MockMember:
-    roles: list[MockRole] = field(factory=list)
+    roles: list[MockRole] = field(factory=list[MockRole])
 
 
 @pytest.fixture
