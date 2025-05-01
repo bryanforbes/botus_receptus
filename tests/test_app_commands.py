@@ -26,7 +26,7 @@ class MockConnection:
 class MockClient:
     http: object = field(factory=object)
     _connection: MockConnection = field(factory=MockConnection)
-    config: dict[str, Any] = field(factory=dict)
+    config: dict[str, Any] = field(factory=dict[str, Any])
 
 
 def test_admin_guild_only() -> None:
