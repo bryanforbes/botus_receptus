@@ -4,6 +4,7 @@ import asyncio
 from typing import TYPE_CHECKING
 
 import pytest
+import pytest_asyncio
 
 if TYPE_CHECKING:
     from asyncio.events import AbstractEventLoop
@@ -54,9 +55,9 @@ class EventLoopClockAdvancer:
             await asyncio.sleep(self.sleep_duration)
 
 
-@pytest.fixture
-def advance_time(event_loop: AbstractEventLoop) -> EventLoopClockAdvancer:
-    return EventLoopClockAdvancer(event_loop)
+@pytest_asyncio.fixture
+async def advance_time() -> EventLoopClockAdvancer:
+    return EventLoopClockAdvancer(asyncio.get_running_loop())
 
 
 @pytest.fixture
