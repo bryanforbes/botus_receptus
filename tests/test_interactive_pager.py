@@ -231,7 +231,6 @@ class TestInteractivePager:
         self,
         context: MockContext,
         fetcher: ListPageSource[int],
-        guild: discord.Guild,
     ) -> None:
         InteractivePager[int].create(cast('Any', context), fetcher)
 
@@ -327,7 +326,6 @@ class TestInteractivePager:
     @pytest.mark.flaky(reruns=5)
     async def test_paginate_timeout_no_manage_messages(
         self,
-        mocker: MockerFixture,
         context: MockContext,
         fetcher: ListPageSource[int],
         advance_time: ClockAdvancer,

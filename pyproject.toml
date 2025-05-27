@@ -41,7 +41,7 @@ coverage = {extras = ["toml"], version = "7.8.2"}
 mypy = "1.15.0"
 pre-commit = "4.2.0"
 pytest = "8.3.5"
-pytest-asyncio = "0.26.0"
+pytest-asyncio = "1.0.0"
 pytest-cov = "6.1.1"
 pytest-mock = "3.14.1"
 pytest-sugar = "1.0.0"
@@ -143,10 +143,10 @@ deprecateTypingAliases = true
 minversion = "6.0"
 addopts ="--cov=botus_receptus --cov-branch --cov-report=term"
 testpaths = ["tests"]
-asyncio_mode = "auto"
 filterwarnings = [
   "ignore:.*'audioop' is deprecated:DeprecationWarning"
 ]
+asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.tox]
