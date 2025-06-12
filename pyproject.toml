@@ -36,6 +36,7 @@ uvloop = ["uvloop"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.1"
+basedpyright = "1.29.4"
 black = "25.1.0"
 coverage = {extras = ["toml"], version = "7.9.0"}
 mypy = "1.16.0"
@@ -138,6 +139,15 @@ reportImportCycles = "none"
 reportImplicitOverride = "error"
 enableExperimentalFeatures = true
 deprecateTypingAliases = true
+
+enableTypeIgnoreComments = false
+reportIgnoreCommentWithoutRule = "error"
+reportPrivateLocalImportUsage = "error"
+reportImplicitRelativeImport = "error"
+reportImplicitAbstractClass = "error"
+reportIncompatibleUnannotatedOverride = "error"
+reportUnannotatedClassAttribute = "error"
+reportInvalidAbstractMethod = "error"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

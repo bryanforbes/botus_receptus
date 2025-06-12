@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import enum
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Self, TypedDict, cast, override
 
 import discord
@@ -48,7 +48,7 @@ class Page(TypedDict):
 
 
 @define
-class PageSource[T]:
+class PageSource[T](ABC):
     total: int
     per_page: int
     show_entry_count: bool
@@ -417,7 +417,7 @@ class FieldPage(Page):
 
 
 @define
-class FieldPageSource[T](PageSource[T]):
+class FieldPageSource[T](PageSource[T], ABC):
     def format_field(self, index: int, entry: T, /) -> tuple[int, T]:
         return (index, entry)
 

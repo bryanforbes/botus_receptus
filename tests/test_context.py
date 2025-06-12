@@ -6,7 +6,9 @@ import discord
 import pendulum
 import pytest
 from attrs import define
-from discord.ext.commands.view import StringView  # type: ignore
+from discord.ext.commands.view import (  # pyright: ignore[reportMissingTypeStubs]
+    StringView,
+)
 
 from botus_receptus.context import EmbedContext, PaginatedContext
 

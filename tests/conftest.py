@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, final
 
 import pytest
 import pytest_asyncio
@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from .types import MockerFixture
 
 
+@final
 class EventLoopClockAdvancer:
     """
     A helper object that when called will advance the event loop's time. If the

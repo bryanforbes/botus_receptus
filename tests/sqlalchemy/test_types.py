@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag, auto
-from typing import Protocol
+from typing import Protocol, final
 
 import pytest
 from sqlalchemy import BigInteger, Column, Integer, String
@@ -24,9 +24,10 @@ def sqlalchemy_registry() -> registry:
 
 @pytest.fixture
 def user_table(sqlalchemy_registry: registry) -> type[object]:
+    @final
     @sqlalchemy_registry.mapped
     class User:
-        __tablename__ = 'users'
+        __tablename__: str = 'users'
 
         id = Column(Integer, primary_key=True)
         name = Column(String)

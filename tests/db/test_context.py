@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, final
 
 import pytest
 from attrs import define
-from discord.ext.commands.view import StringView  # type: ignore
+from discord.ext.commands.view import (  # pyright: ignore[reportMissingTypeStubs]
+    StringView,
+)
 
 from botus_receptus.db import Context
 
@@ -42,6 +44,7 @@ class MockCommand: ...
 class TestContext:
     @pytest.fixture
     def mock_bot(self, mocker: MockerFixture) -> MockBot:
+        @final
         class MockPool:
             acquire = mocker.AsyncMock()
             release = mocker.AsyncMock()

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, override
+from typing import TYPE_CHECKING, Any, override
 
 from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
@@ -8,10 +8,12 @@ from sqlalchemy.dialects.postgresql import TSVECTOR
 if TYPE_CHECKING:
     from enum import Flag as _EnumFlag
 
+    from sqlalchemy.types import TypeEngine
+
 
 class Snowflake(TypeDecorator[int]):
-    impl = String
-    cache_ok = True
+    impl: TypeEngine[Any] | type[TypeEngine[Any]] = String
+    cache_ok: bool | None = True
 
     @override
     def process_bind_param(self, value: int | None, dialect: object) -> str | None:
@@ -55,8 +57,11 @@ class _TSVectorComparator(TSVECTOR.Comparator[str]):
 
 
 class TSVector(TypeDecorator[str]):
-    impl = TSVECTOR
-    cache_ok = True
+    impl: TypeEngine[Any] | type[TypeEngine[Any]] = TSVECTOR
+    cache_ok: bool | None = True
+
+    columns: tuple[object, ...]
+    options: dict[str, object]
 
     @property
     @override
@@ -77,8 +82,8 @@ class TSVector(TypeDecorator[str]):
 
 
 class Flag[FlagT: _EnumFlag](TypeDecorator[FlagT]):
-    impl = BigInteger
-    cache_ok = True
+    impl: TypeEngine[Any] | type[TypeEngine[Any]] = BigInteger
+    cache_ok: bool | None = True
 
     _flag_cls: type[FlagT]
 
