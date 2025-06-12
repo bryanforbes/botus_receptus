@@ -248,29 +248,15 @@ def send(
         return messageable.send(
             content=None if content is _MISSING else content,
             tts=tts,
-            embeds=(
-                None if embeds is _MISSING else embeds
-            ),  # pyright: ignore[reportArgumentType]
-            files=(
-                None if files is _MISSING else files
-            ),  # pyright: ignore[reportArgumentType]
-            delete_after=(
-                None
-                if delete_after is _MISSING
-                else delete_after  # pyright: ignore[reportArgumentType]
-            ),
-            nonce=(
-                None if nonce is _MISSING else nonce
-            ),  # pyright: ignore[reportArgumentType]
+            embeds=(None if embeds is _MISSING else embeds),  # pyright: ignore[reportArgumentType]
+            files=(None if files is _MISSING else files),  # pyright: ignore[reportArgumentType]
+            delete_after=(None if delete_after is _MISSING else delete_after),  # pyright: ignore[reportArgumentType]
+            nonce=(None if nonce is _MISSING else nonce),  # pyright: ignore[reportArgumentType]
             allowed_mentions=(
-                None
-                if allowed_mentions is _MISSING
-                else allowed_mentions  # pyright: ignore[reportArgumentType]
-            ),
-            reference=reference,  # pyright: ignore[reportArgumentType]
-            view=(
-                None if view is _MISSING else view
+                None if allowed_mentions is _MISSING else allowed_mentions
             ),  # pyright: ignore[reportArgumentType]
+            reference=reference,  # pyright: ignore[reportArgumentType]
+            view=(None if view is _MISSING else view),  # pyright: ignore[reportArgumentType]
         )
 
     if isinstance(ctx_or_intx, discord.Webhook):

@@ -37,7 +37,6 @@ uvloop = ["uvloop"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.1"
 basedpyright = "1.29.4"
-black = "25.1.0"
 coverage = {extras = ["toml"], version = "7.9.0"}
 mypy = "1.16.0"
 pre-commit = "4.2.0"
@@ -49,23 +48,6 @@ pytest-sugar = "1.0.0"
 pytest-xdist = "3.7.0"
 pytest-rerunfailures = "15.1"
 ruff = "0.11.13"
-
-[tool.black]
-line-length = 88
-target-version = ["py312"]
-skip-string-normalization = true
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.pytest_cache
-  | \.venv
-  | alembic
-  | htmlcov
-)/
-'''
 
 [tool.coverage.paths]
 source = [
@@ -88,6 +70,9 @@ exclude_lines = [
 extend-exclude = [".venv*"]
 line-length = 88
 target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "single"
 
 [tool.ruff.lint]
 select = [

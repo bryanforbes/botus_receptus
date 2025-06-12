@@ -72,9 +72,7 @@ def cli(
         type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
         default='info',
     )
-    def main(
-        bot_config: config.Config, log_to_console: bool, log_level: str  # noqa: FBT001
-    ) -> None:
+    def main(bot_config: config.Config, log_to_console: bool, log_level: str) -> None:  # noqa: FBT001
         cast('dict[str, object]', bot_config['logging']).update(
             {'log_to_console': log_to_console, 'log_level': log_level}
         )
