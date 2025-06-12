@@ -1,6 +1,6 @@
 [project]
 name = "botus_receptus"
-version = "25.5.1.dev0"
+version = "25.6.0"
 description = ""
 authors = [
   {name = "Bryan Forbes", email = "bryan@reigndropsfall.net"}
