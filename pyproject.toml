@@ -83,6 +83,7 @@ select = [
 ignore = ["PLR0913", "PLR2004", "TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
+"src/*.py" = ["PT"]
 "*.pyi" = ["E501", "E701", "E741", "F401", "F403", "F405", "F811", "TCH"]
 "tests/*.py" = ["ANN401", "FBT001", "FBT002", "PGH003", "PLR0912", "S101"]
 

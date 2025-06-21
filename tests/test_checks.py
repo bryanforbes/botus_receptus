@@ -35,6 +35,10 @@ class MockUser:
     def __eq__(self, other: object) -> bool:
         return isinstance(other, MockUser) and self.id == other.id
 
+    @override
+    def __hash__(self) -> int:
+        return hash(self.id)
+
 
 class MockDMChannel(discord.DMChannel):
     def __init__(self) -> None:
