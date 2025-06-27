@@ -30,13 +30,13 @@ type _DbMethod[C: 'Context[Any]', **P, R] = CoroutineFunc[Concatenate[C, P], R]
 
 @define
 class AcquireContextManager(
-    AbstractAsyncContextManager['PoolConnectionProxy[Record]'],
-    Awaitable['PoolConnectionProxy[Record]'],
+    AbstractAsyncContextManager['PoolConnectionProxy'],
+    Awaitable['PoolConnectionProxy'],
 ):
     ctx: Context[Any]
     timeout: float | None = None
 
-    async def __acquire(self) -> PoolConnectionProxy[Record]:
+    async def __acquire(self) -> PoolConnectionProxy:
         ctx = self.ctx
         if not hasattr(ctx, 'db'):
             ctx.db = await ctx.bot.pool.acquire(timeout=self.timeout)
@@ -44,11 +44,11 @@ class AcquireContextManager(
         return ctx.db
 
     @override
-    def __await__(self) -> Generator[Any, None, PoolConnectionProxy[Record]]:
+    def __await__(self) -> Generator[Any, None, PoolConnectionProxy]:
         return self.__acquire().__await__()
 
     @override
-    def __aenter__(self) -> CoroutineType[PoolConnectionProxy[Record]]:
+    def __aenter__(self) -> CoroutineType[PoolConnectionProxy]:
         return self.__acquire()
 
     @override
@@ -72,7 +72,7 @@ def ensure_db[C: 'Context[Any]', **P, R](
 
 
 class Context[BotT: Bot | AutoShardedBot](commands.Context[BotT]):
-    db: PoolConnectionProxy[Record]
+    db: PoolConnectionProxy
 
     def acquire(self, /, *, timeout: float | None = None) -> AcquireContextManager:
         return AcquireContextManager(self, timeout)

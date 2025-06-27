@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from ..types import AnyCallable
 
 try:
-    from asyncpg import Connection, Record, create_pool
+    from asyncpg import Connection, create_pool
 
     if TYPE_CHECKING:
         from asyncpg.pool import Pool, PoolConnectionProxy
@@ -36,7 +36,7 @@ def _get_special_method[F: AnyCallable](method: F, /) -> F | None:
 
 
 class BotBase(bot.BotBase):
-    pool: Pool[Record]
+    pool: Pool
 
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         if not _has_asyncpg:
@@ -64,13 +64,11 @@ class BotBase(bot.BotBase):
         await super().setup_hook()
 
     @_db_special_method
-    async def __db_init_connection__(
-        self, connection: Connection[Record], /
-    ) -> None: ...
+    async def __db_init_connection__(self, connection: Connection, /) -> None: ...
 
     @_db_special_method
     async def __db_setup_connection__(
-        self, connection: PoolConnectionProxy[Record], /
+        self, connection: PoolConnectionProxy, /
     ) -> None: ...
 
     @override
