@@ -37,7 +37,7 @@ uvloop = ["uvloop"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.2"
 basedpyright = "1.29.5"
-coverage = {extras = ["toml"], version = "7.9.1"}
+coverage = {extras = ["toml"], version = "7.9.2"}
 mypy = "1.16.1"
 pre-commit = "4.2.0"
 pytest = "8.4.1"
@@ -47,7 +47,7 @@ pytest-mock = "3.14.1"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.8.0"
 pytest-rerunfailures = "15.1"
-ruff = "0.12.1"
+ruff = "0.12.2"
 
 [tool.coverage.paths]
 source = [
