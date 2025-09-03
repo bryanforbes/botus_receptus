@@ -54,7 +54,7 @@ pytest-cov = "6.2.1"
 pytest-mock = "3.14.1"
 pytest-sugar = "1.1.1"
 pytest-xdist = "3.8.0"
-pytest-rerunfailures = "15.1"
+pytest-rerunfailures = "16.0.1"
 ruff = "0.12.11"
 
 [tool.coverage.paths]
