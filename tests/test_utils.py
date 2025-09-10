@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from typing import TYPE_CHECKING, Any, assert_type, cast
-from unittest.mock import ANY, AsyncMock, Mock
+from unittest.mock import ANY
 
 import discord
 import pendulum
@@ -14,6 +14,7 @@ from botus_receptus import utils
 
 if TYPE_CHECKING:
     from collections.abc import Generator
+    from unittest.mock import AsyncMock, Mock
 
     from .types import ClockAdvancer, MockerFixture
 

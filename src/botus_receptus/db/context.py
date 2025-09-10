@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Generator, Mapping, Sequence
+from collections.abc import Awaitable
 from contextlib import AbstractAsyncContextManager
 from functools import wraps
 from typing import TYPE_CHECKING, Any, Concatenate, LiteralString, overload, override
@@ -8,22 +8,17 @@ from typing import TYPE_CHECKING, Any, Concatenate, LiteralString, overload, ove
 from attrs import define
 from discord.ext import commands
 
-from .utils import (
-    ConditionsType,
-    delete_from,
-    insert_into,
-    search,
-    select_all,
-    select_one,
-    update,
-)
+from .utils import delete_from, insert_into, search, select_all, select_one, update
 
 if TYPE_CHECKING:
+    from collections.abc import Generator, Mapping, Sequence
+
     from asyncpg import Record
     from asyncpg.pool import PoolConnectionProxy
 
     from ..types import Coroutine, CoroutineFunc, CoroutineType
     from .bot import AutoShardedBot, Bot
+    from .utils import ConditionsType
 
 type _DbMethod[C: 'Context[Any]', **P, R] = CoroutineFunc[Concatenate[C, P], R]
 

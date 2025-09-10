@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    LiteralString,
-    cast,
-    overload,
-)
+from typing import TYPE_CHECKING, Any, LiteralString, cast, overload
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence

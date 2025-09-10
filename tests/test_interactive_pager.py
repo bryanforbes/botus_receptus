@@ -17,18 +17,12 @@ from botus_receptus.interactive_pager import (
     PageSource,
 )
 
-from .mocks import (
-    MockChannel,
-    MockContext,
-    MockGuild,
-    MockMessage,
-    MockPermissions,
-    MockUser,
-)
+from .mocks import MockContext, MockGuild, MockMessage, MockPermissions, MockUser
 
 if TYPE_CHECKING:
     from _pytest.fixtures import SubRequest
 
+    from .mocks import MockChannel
     from .types import ClockAdvancer, MockerFixture
 
 

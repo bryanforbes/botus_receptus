@@ -2,16 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, override
 
-from sqlalchemy.ext.asyncio import (
-    async_sessionmaker,
-    close_all_sessions,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import close_all_sessions, create_async_engine
 
 from .. import bot
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+
+    from sqlalchemy.ext.asyncio import async_sessionmaker
 
     from ..config import Config
 

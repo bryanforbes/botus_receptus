@@ -12,9 +12,10 @@ if TYPE_CHECKING:
     from ..types import AnyCallable
 
 try:
-    from asyncpg import Connection, create_pool
+    from asyncpg import create_pool
 
     if TYPE_CHECKING:
+        from asyncpg import Connection
         from asyncpg.pool import Pool, PoolConnectionProxy
 
     _has_asyncpg = True

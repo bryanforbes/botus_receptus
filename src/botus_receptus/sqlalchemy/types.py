@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, override
 
-from sqlalchemy import BigInteger, ColumnOperators, Operators, String, TypeDecorator
+from sqlalchemy import BigInteger, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
 if TYPE_CHECKING:
     from enum import Flag as _EnumFlag
 
+    from sqlalchemy import ColumnOperators, Operators
     from sqlalchemy.types import TypeEngine
 
 

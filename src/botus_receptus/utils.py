@@ -1,27 +1,20 @@
 from __future__ import annotations
 
 import asyncio
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Final,
-    Literal,
-    NotRequired,
-    Unpack,
-    overload,
-)
+from typing import TYPE_CHECKING, Any, Final, Literal, NotRequired, Unpack, overload
 from typing_extensions import TypedDict
 
 import discord
 import pendulum
 from discord.ext import commands
 
-from .embed import AuthorData, Embed, FieldData, FooterData
+from .embed import Embed
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Container, Iterable, Sequence
     from datetime import datetime
 
+    from .embed import AuthorData, FieldData, FooterData
     from .types import Coroutine
 
 

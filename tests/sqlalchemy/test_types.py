@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 from enum import Flag as _EnumFlag, auto
-from typing import Protocol, final
+from typing import TYPE_CHECKING, Protocol, final
 
 import pytest
 from sqlalchemy import BigInteger, Column, Integer, String
 from sqlalchemy.dialects import postgresql
-from sqlalchemy.orm import Mapped, registry
+from sqlalchemy.orm import registry
 
 from botus_receptus.sqlalchemy.types import Flag, Snowflake, TSVector
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Mapped
 
 
 class User(Protocol):

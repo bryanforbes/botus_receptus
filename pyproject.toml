@@ -84,15 +84,16 @@ quote-style = "single"
 
 [tool.ruff.lint]
 select = [
-  "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "EXE", "F", "FBT", "G",
+  "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "EXE", "F", "FA", "FBT", "G",
   "I", "I002", "ISC", "INP", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "Q", "RET",
-  "RSE", "S", "SIM", "T10", "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
+  "RSE", "S", "SIM", "T10", "T20", "TC", "TID251", "TRY", "UP", "W", "RUF"
 ]
 ignore = ["PLR0913", "PLR2004", "TRY003"]
+future-annotations = true
 
 [tool.ruff.lint.per-file-ignores]
 "src/*.py" = ["PT"]
-"*.pyi" = ["E501", "E701", "E741", "F401", "F403", "F405", "F811", "TCH"]
+"*.pyi" = ["E501", "E701", "E741", "F401", "F403", "F405", "F811", "TC"]
 "tests/*.py" = ["ANN401", "FBT001", "FBT002", "PGH003", "PLR0912", "S101"]
 
 [tool.ruff.lint.mccabe]
@@ -103,6 +104,7 @@ extra-standard-library = ["typing_extensions", "_types", "_typeshed"]
 known-first-party = ["botus_receptus"]
 combine-as-imports = true
 required-imports = ["from __future__ import annotations"]
+split-on-trailing-comma = false
 
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
@@ -117,6 +119,10 @@ inline-quotes = "single"
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "typing.TypeVar".msg = "Use `typing_extensions.TypeVar` instead."
+
+[tool.ruff.lint.flake8-type-checking]
+strict = false
+runtime-evaluated-base-classes = ["sqlalchemy.orm.DeclarativeBase"]
 
 [tool.pyright]
 include = ["src", "tests"]

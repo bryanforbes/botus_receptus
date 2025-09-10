@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 from discord.ext import commands
 
-from botus_receptus import Bot, Cog
+from botus_receptus import Cog
 from botus_receptus.cog import GroupCog
+
+if TYPE_CHECKING:
+    from botus_receptus import Bot
 
 
 class MockBot: ...
