@@ -1,22 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>bryanforbes/python-workflows:library.json5"
+    "github>bryanforbes/renovate-presets:python-lib.json5",
+    "github>bryanforbes/renovate-presets:python-asyncpg.json5"
   ],
   "rangeStrategy": "bump",
   "ignoreDeps": [
     "python"
-  ],
-  "vulnerabilityAlerts": {
-    "enabled": true
-  },
-  "packageRules": [
-    {
-      "groupName": "asyncpg packages",
-      "matchPackageNames": [
-        "asyncpg",
-        "asyncpg-stubs"
-      ]
-    }
   ]
 }
