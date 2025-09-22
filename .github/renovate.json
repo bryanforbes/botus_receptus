@@ -2,10 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>bryanforbes/renovate-presets:python-lib.json5",
-    "github>bryanforbes/renovate-presets:python-asyncpg.json5"
+    "github>bryanforbes/renovate-presets:group-asyncpg.json5"
   ],
-  "rangeStrategy": "bump",
-  "ignoreDeps": [
-    "python"
-  ]
+  "rangeStrategy": "bump"
 }
