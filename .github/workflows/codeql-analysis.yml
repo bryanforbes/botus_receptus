@@ -10,18 +10,18 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'poetry.lock'
+      - 'pyproject.toml'
   schedule:
     - cron: '0 22 * * 2'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   analyze:
-    strategy:
-      matrix:
-        python-version:
-          - '3.12'
-          - '3.13'
     uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
-      python_version: ${{ matrix.python-version }}
+      python_version: '3.13'
       poetry_args: '--all-extras'
-      category: python-${{ matrix.python-version }}
+      category: python-3.13
