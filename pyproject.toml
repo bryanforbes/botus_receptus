@@ -23,7 +23,7 @@ all = [
   'asyncpg ~=0.30.0',
   'greenlet >=3.2.4, <4.0.0',
   'sqlalchemy ~=2.0.44',
-  'uvloop ~=0.21.0',
+  'uvloop ~=0.22.1',
 ]
 db = [
   'asyncpg ~=0.30.0',
@@ -34,7 +34,7 @@ sqlalchemy = [
   'sqlalchemy ~=2.0.44',
 ]
 uvloop = [
-  'uvloop ~=0.21.0',
+  'uvloop ~=0.22.1',
 ]
 
 [tool.poetry]
