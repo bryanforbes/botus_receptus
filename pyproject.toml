@@ -149,9 +149,10 @@ reportIncompatibleUnannotatedOverride = "error"
 reportUnannotatedClassAttribute = "error"
 reportInvalidAbstractMethod = "error"
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts ="--cov=botus_receptus --cov-branch --cov-report=term"
+[tool.pytest]
+minversion = "9.0"
+strict = true
+addopts = ["--cov=botus_receptus", "--cov-branch", "--cov-report=term"]
 testpaths = ["tests"]
 filterwarnings = [
   "ignore:.*'audioop' is deprecated:DeprecationWarning"
