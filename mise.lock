@@ -1,0 +1,11 @@
+[[tools.poetry]]
+version = "2.2.1"
+backend = "asdf:poetry"
+
+[[tools.python]]
+version = "3.12.12"
+backend = "core:python"
+
+[[tools.python]]
+version = "3.13.9"
+backend = "core:python"

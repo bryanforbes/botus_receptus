@@ -1,0 +1,37 @@
+[settings]
+experimental = true
+lockfile = true
+
+[settings.python]
+venv_stdlib = true
+
+[tools]
+poetry = "latest"
+python = ["3.13", "3.12"]
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+[hooks]
+postinstall = 'mise run dev'
+
+[tasks."dev:venv"]
+description = "Set up virtual environment"
+run = 'poetry install --all-extras'
+sources = ['pyproject.toml', 'poetry.lock', 'mise.toml']
+outputs = ['.venv/lib/python3.*/site-packages/botus_receptus.pth']
+
+[tasks."dev:pre-commit"]
+description = "Set up pre-commit hooks"
+depends = ['dev:venv']
+run = 'pre-commit install'
+sources = ['.pre-commit-config.yaml', 'mise.toml']
+outputs = ['.git/hooks/pre-commit']
+
+[tasks.dev]
+description = "Set up development environment"
+depends = ['dev:*']
+
+[tasks.test]
+description = "Run the test suite"
+run = 'poetry run py.test'
