@@ -343,14 +343,14 @@ files = [
 
 [[package]]
 name = "basedpyright"
-version = "1.38.0"
+version = "1.38.1"
 description = "static type checking for Python (but based)"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "basedpyright-1.38.0-py3-none-any.whl", hash = "sha256:a6c11a343fd12a2152a0d721b0e92f54f2e2e3322ee2562197e27dad952f1a61"},
-    {file = "basedpyright-1.38.0.tar.gz", hash = "sha256:7a9cf631d7eaf5859022a4352b51ed0e78ce115435a8599402239804000d0cdf"},
+    {file = "basedpyright-1.38.1-py3-none-any.whl", hash = "sha256:24f21661d2754687b64f3bc35efcc78781e11b08c8b2310312ed92bf178ea627"},
+    {file = "basedpyright-1.38.1.tar.gz", hash = "sha256:e4876aa3ef7c76569ffdcd908d4e260b8d1a1deaa8838f2486f91a10b60d68d6"},
 ]
 
 [package.dependencies]
@@ -2205,4 +2205,4 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "61b5684eef18f5529b0a8bcb430e7db2974fdc6ce30814a0e3a3b0d4ec4e7516"
+content-hash = "52263ffab480e14887766eb67e94ba8937a24fa78fe800a8948b97fcb56e9fad"
