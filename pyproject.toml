@@ -21,7 +21,7 @@ dependencies = [
 [project.optional-dependencies]
 all = [
   'asyncpg ~=0.31.0',
-  'greenlet >=3.3.1, <4.0.0',
+  'greenlet >=3.3.2, <4.0.0',
   'sqlalchemy ~=2.0.46',
   'uvloop ~=0.22.1',
 ]
@@ -30,7 +30,7 @@ db = [
 ]
 sqlalchemy = [
   'asyncpg ~=0.31.0',
-  'greenlet >=3.3.1, <4.0.0',
+  'greenlet >=3.3.2, <4.0.0',
   'sqlalchemy ~=2.0.46',
 ]
 uvloop = [
