@@ -43,7 +43,7 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.31.1"
+asyncpg-stubs = "0.31.2"
 basedpyright = "1.38.1"
 coverage = {extras = ["toml"], version = "7.13.4"}
 mypy = "1.19.1"
