@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, Final
 import discord
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
     from .config import Config
 
@@ -34,7 +34,7 @@ log_levels: Final[dict[str, int]] = {
 @contextlib.contextmanager
 def setup_logging(
     config: Config, /, handler_cls: type[FileHandler] = discord.utils.MISSING
-) -> Iterator[None]:
+) -> Generator[None]:
     log = getLogger()
 
     if handler_cls is discord.utils.MISSING:
