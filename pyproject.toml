@@ -45,7 +45,7 @@ packages = [
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.31.2"
 basedpyright = "1.39.7"
-coverage = {extras = ["toml"], version = "7.13.4"}
+coverage = {extras = ["toml"], version = "7.14.1"}
 mypy = "1.20.2"
 pre-commit = "4.6.0"
 pytest = "9.0.3"
