@@ -7,7 +7,7 @@ venv_stdlib = true
 
 [tools]
 poetry = "latest"
-python = ["3.13", "3.12"]
+python = ["3.14", "3.13"]
 
 [env]
 _.python.venv = { path = ".venv", create = true }

@@ -6,7 +6,7 @@ authors = [
   {name = "Bryan Forbes", email = "bryan@reigndropsfall.net"}
 ]
 license = "BSD-3-Clause"
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.13,<3.15"
 dependencies = [
   'typing_extensions ~=4.15.0',
   'aioitertools >=0.13.0, <1.0.0',
@@ -77,7 +77,7 @@ exclude_lines = [
 [tool.ruff]
 extend-exclude = [".venv*"]
 line-length = 88
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.format]
 quote-style = "single"
@@ -129,7 +129,7 @@ include = ["src", "tests"]
 venvPath = "."
 venv = ".venv"
 
-pythonVersion = "3.12"
+pythonVersion = "3.13"
 typeCheckingMode = "strict"
 reportUnnecessaryTypeIgnoreComment = "warning"
 reportPrivateUsage = "none"
@@ -163,7 +163,7 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = clean,py312,report
+envlist = clean,py313,report
 isolated_build = True
 
 [testenv]
@@ -178,11 +178,11 @@ deps =
 extras =
     all
 setenv =
-    py312: COVERAGE_FILE=.coverage.{envname}
+    py313: COVERAGE_FILE=.coverage.{envname}
 commands = py.test {posargs:-vv}
 depends =
-    py312: clean
-    report: py312
+    py313: clean
+    report: py313
 
 [testenv:clean]
 deps = coverage[toml]

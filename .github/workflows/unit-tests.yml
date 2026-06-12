@@ -22,8 +22,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.12'
           - '3.13'
+          - '3.14'
     uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests-new.yml@master
     with:
       python_version: ${{ matrix.python-version }}
