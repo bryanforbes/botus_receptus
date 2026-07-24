@@ -30,7 +30,7 @@ db = [
 ]
 sqlalchemy = [
   'asyncpg ~=0.31.0',
-  'greenlet >=3.5.3, <4.0.0',
+  'greenlet >=3.5.4, <4.0.0',
   'sqlalchemy ~=2.0.51',
 ]
 uvloop = [
