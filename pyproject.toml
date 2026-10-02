@@ -34,7 +34,7 @@ sqlalchemy = [
   'sqlalchemy ~=2.0.51',
 ]
 uvloop = [
-  'uvloop ~=0.22.1',
+  'uvloop ~=0.23.0',
 ]
 
 [tool.poetry]
