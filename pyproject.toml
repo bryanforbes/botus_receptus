@@ -29,7 +29,7 @@ db = [
   'asyncpg ~=0.31.0',
 ]
 sqlalchemy = [
-  'asyncpg ~=0.31.0',
+  'asyncpg ~=0.32.0',
   'greenlet >=3.5.3, <4.0.0',
   'sqlalchemy ~=2.0.51',
 ]
@@ -43,7 +43,7 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.31.2"
+asyncpg-stubs = "0.32.0"
 basedpyright = "1.39.9"
 coverage = {extras = ["toml"], version = "7.15.2"}
 mypy = "2.3.0"
